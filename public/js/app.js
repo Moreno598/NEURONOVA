@@ -35,9 +35,12 @@ class NeuroSparkApp {
         };
 
         this.storeItems = [
-            { id: 'cyber_neon',   nameKey: 'skinCyber',  cost: 100, icon: 'fa-robot',        color: '#38bdf8' },
+            { id: 'cyber_neon',   nameKey: 'skinCyber',  cost: 100, icon: 'fa-robot',        color: '#38bdf8', image: 'assets/store_cyber_neon.png' },
             { id: 'green_shield', nameKey: 'skinShield', cost: 180, icon: 'fa-shield-halved', color: '#22c55e' },
-            { id: 'golden_crown', nameKey: 'skinCrown',  cost: 250, icon: 'fa-crown',         color: '#fbbf24' }
+            { id: 'golden_crown', nameKey: 'skinCrown',  cost: 250, icon: 'fa-crown',         color: '#fbbf24' },
+            { id: 'jetpack',      nameKey: 'skinJetpack',cost: 350, icon: 'fa-rocket',        color: '#a855f7' },
+            { id: 'stellar_aura', nameKey: 'skinAura',   cost: 500, icon: 'fa-star',          color: '#f472b6' },
+            { id: 'holo_pet',     nameKey: 'skinHolopet',cost: 800, icon: 'fa-dog',           color: '#06b6d4' }
         ];
     }
 
@@ -97,10 +100,30 @@ class NeuroSparkApp {
 
     /* ---- HEADER HUD ---- */
     updateHeaderHUD() {
-        document.getElementById('player-coins').innerText       = this.state.coins;
-        document.getElementById('player-level').innerText       = this.state.level;
+        document.getElementById('player-coins').innerText         = this.state.coins.toLocaleString();
+        document.getElementById('player-level').innerText         = this.state.level;
         document.getElementById('current-profile-name').innerText = this.state.activeProfileName;
-        document.getElementById('logo-sub-text').innerText      = i18n.t('logoSub');
+        document.getElementById('logo-sub-text').innerText        = i18n.t('logoSub');
+
+        // XP progress bar: every 500 coins = 1 level
+        const coinsPerLevel = 500;
+        const coinsIntoLevel = this.state.coins % coinsPerLevel;
+        const pct = Math.min(100, Math.round((coinsIntoLevel / coinsPerLevel) * 100));
+        const xpBar = document.getElementById('xp-bar-fill');
+        const xpLabel = document.getElementById('xp-bar-label');
+        if (xpBar) {
+            xpBar.style.width = pct + '%';
+        }
+        if (xpLabel) {
+            xpLabel.innerText = coinsIntoLevel + ' / ' + coinsPerLevel;
+        }
+
+        // Check level up
+        const newLevel = Math.floor(this.state.coins / coinsPerLevel) + 1;
+        if (newLevel > this.state.level) {
+            this.state.level = newLevel;
+            this.showToast(i18n.t('toastLevelUp', { level: newLevel }), 'success');
+        }
 
         const btnMusic = document.getElementById('btn-music');
         const btnVoice = document.getElementById('btn-voice');
@@ -108,8 +131,6 @@ class NeuroSparkApp {
         else btnMusic.classList.remove('active');
         if (this.state.settings.voiceOn) btnVoice.classList.add('active');
         else btnVoice.classList.remove('active');
-
-
 
         // Update Sparky chat welcome placeholder & chips
         const chatInput = document.getElementById('chat-user-input');
@@ -617,9 +638,12 @@ class NeuroSparkApp {
                                 : bought
                                     ? `<button class="equip-btn" style="background:#7c3aed;color:white;border:none;padding:4px 10px;border-radius:4px;cursor:pointer;">${i18n.t('equip')}</button>`
                                     : `<span style="color:#fbbf24;font-weight:700;"><i class="fa-solid fa-coins"></i> ${item.cost}</span>`;
+                            const imgOrIcon = item.image 
+                                ? `<img src="${item.image}" alt="${i18n.t(item.nameKey)}" style="height: 60px; width: 60px; object-fit: contain; margin-bottom: 12px; filter: drop-shadow(0 0 10px ${item.color});" />`
+                                : `<i class="fa-solid ${item.icon}" style="font-size:2.5rem;color:${item.color};display:block;margin:10px 0;text-shadow: 0 0 10px ${item.color};"></i>`;
                             return `
                                 <div class="store-item ${bought ? 'purchased' : ''} ${active ? 'active-skin' : ''}" data-id="${item.id}">
-                                    <i class="fa-solid ${item.icon}" style="font-size:2rem;color:${item.color};display:block;margin:10px 0;"></i>
+                                    ${imgOrIcon}
                                     <strong>${i18n.t(item.nameKey)}</strong>
                                     <div style="margin-top:10px;">${btnHTML}</div>
                                 </div>`;

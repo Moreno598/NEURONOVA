@@ -38,6 +38,9 @@ const translations = {
         skinCyber:   '🤖 Skin Cyber Neon',
         skinShield:  '🛡️ Skin Sparky Guardián',
         skinCrown:   '👑 Corona del Campeón',
+        skinJetpack: '🚀 Mochila Cohete',
+        skinAura:    '✨ Aura Estelar',
+        skinHolopet: '🐶 Mascota Holográfica',
 
         // --- TEENS HOME ---
         teensWelcome:    'Hola, {name}',
@@ -285,6 +288,9 @@ const translations = {
         skinCyber:   '🤖 Cyber Neon Skin',
         skinShield:  '🛡️ Guardian Sparky Skin',
         skinCrown:   '👑 Champion Crown',
+        skinJetpack: '🚀 Rocket Jetpack',
+        skinAura:    '✨ Stellar Aura',
+        skinHolopet: '🐶 Holo-Pet Drone',
 
         // --- TEENS HOME ---
         teensWelcome:    'Hello, {name}',
