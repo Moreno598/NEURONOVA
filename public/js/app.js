@@ -869,10 +869,7 @@ class NeuroSparkApp {
         i18n.setLang(lang);
         // Re-seed default profile names in the new language
         if (this.state.profile !== 'admin') {
-            this.state.activeProfileName = i18n.t(
-                this.state.profile === 'kids' ? 'nameKids' :
-                this.state.profile === 'teens' ? 'nameTeens' : 'nameAdults'
-            );
+            // Keep user name
         }
         this.saveState();
         this.updateHeaderHUD();
