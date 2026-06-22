@@ -42,15 +42,17 @@ export const authController = {
 
     async checkUserExists(email) {
         try {
-            const { data, error } = await supabase
-                .from('correos')
-                .select('user_email')
-                .eq('user_email', email)
-                .limit(1);
-            if (data && data.length > 0) return true;
-            return false;
+            // Llama a una función RPC en Supabase para revisar la tabla auth.users directamente
+            const { data, error } = await supabase.rpc('check_user_exists', { lookup_email: email });
+            
+            if (error) {
+                console.error("RPC check_user_exists error:", error);
+                return null; // Indica que la función no existe o falló
+            }
+            return data; // Devuelve true o false
         } catch (e) {
-            return false;
+            console.error("Error validando usuario:", e);
+            return null;
         }
     },
 

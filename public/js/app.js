@@ -379,9 +379,11 @@ class NeuroSparkApp {
             btn.innerHTML = originalContent;
             btn.disabled = false;
 
-            if (!userExistsLocally && !userExistsInDB) {
-                this.showToast('El usuario no está registrado en la plataforma.', 'warning');
+            if (userExistsInDB === false && !userExistsLocally) {
+                this.showToast('El usuario no está registrado en Supabase.', 'warning');
                 return;
+            } else if (userExistsInDB === null && !userExistsLocally) {
+                this.showToast('Aviso: Verificación RPC no instalada. Se creará un perfil local.', 'info');
             }
 
             const logList = document.getElementById('admin-log-list');
@@ -423,9 +425,11 @@ class NeuroSparkApp {
             btn.innerHTML = originalContent;
             btn.disabled = false;
 
-            if (!userExistsLocally && !userExistsInDB) {
-                this.showToast('El usuario no está registrado en la plataforma.', 'warning');
+            if (userExistsInDB === false && !userExistsLocally) {
+                this.showToast('El usuario no está registrado en Supabase.', 'warning');
                 return;
+            } else if (userExistsInDB === null && !userExistsLocally) {
+                this.showToast('Aviso: Verificación RPC no instalada. Se creará una billetera local.', 'info');
             }
 
             const logList = document.getElementById('admin-log-list');
