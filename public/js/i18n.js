@@ -18,7 +18,7 @@ const translations = {
         loading:        'Cargando el Universo NeuroSpark...',
 
         // --- PROFILE NAMES ---
-        nameKids:   'Mateo',
+        nameKids:   'Matias',
         nameTeens:  'Valeria',
         nameAdults: 'Prof. Carlos',
 

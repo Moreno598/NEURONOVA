@@ -13,7 +13,7 @@ class NeuroSparkApp {
     constructor() {
         this.state = {
             profile: 'kids',
-            activeProfileName: 'Mateo',
+            activeProfileName: 'Matias',
             coins: 120,
             level: 1,
             lang: 'es',
