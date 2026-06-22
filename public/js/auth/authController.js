@@ -40,6 +40,20 @@ export const authController = {
         return user;
     },
 
+    async checkUserExists(email) {
+        try {
+            const { data, error } = await supabase
+                .from('correos')
+                .select('user_email')
+                .eq('user_email', email)
+                .limit(1);
+            if (data && data.length > 0) return true;
+            return false;
+        } catch (e) {
+            return false;
+        }
+    },
+
     onAuthStateChange(callback) {
         supabase.auth.onAuthStateChange((event, session) => {
             callback(event, session);

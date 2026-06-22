@@ -8,6 +8,7 @@ import { engine } from './games.js';
 import { dashboard } from './dashboard.js';
 import { i18n } from './i18n.js';
 import { AuthUI } from './auth/authUI.js';
+import { authController } from './auth/authController.js';
 
 class NeuroSparkApp {
     constructor() {
@@ -56,7 +57,7 @@ class NeuroSparkApp {
     }
 
     loadState(email = null) {
-        if (email) this.state.currentUserEmail = email;
+        if (email) this.state.currentUserEmail = email.toLowerCase();
         const key = this.state.currentUserEmail ? 'neurospark_state_' + this.state.currentUserEmail : 'neurospark_state';
         const saved = localStorage.getItem(key);
         if (saved) {
@@ -358,14 +359,31 @@ class NeuroSparkApp {
         emailInput.addEventListener('focus', function() { this.style.borderColor = '#7c3aed'; });
         emailInput.addEventListener('blur', function() { this.style.borderColor = 'var(--border-color)'; });
 
-        document.getElementById('btn-assign-role').addEventListener('click', () => {
-            const email = emailInput.value.trim();
+        document.getElementById('btn-assign-role').addEventListener('click', async () => {
+            const email = emailInput.value.trim().toLowerCase();
             const roleSelect = document.getElementById('admin-role-select');
             const roleText = roleSelect.options[roleSelect.selectedIndex].text;
             if (!email || !email.includes('@')) {
                 this.showToast('Ingresa un correo electrónico válido.', 'warning');
                 return;
             }
+
+            const btn = document.getElementById('btn-assign-role');
+            const originalContent = btn.innerHTML;
+            btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Verificando...';
+            btn.disabled = true;
+
+            const userExistsLocally = localStorage.getItem('neurospark_state_' + email) !== null || email === 'sparkneuro64@gmail.com';
+            const userExistsInDB = await authController.checkUserExists(email);
+
+            btn.innerHTML = originalContent;
+            btn.disabled = false;
+
+            if (!userExistsLocally && !userExistsInDB) {
+                this.showToast('El usuario no está registrado en la plataforma.', 'warning');
+                return;
+            }
+
             const logList = document.getElementById('admin-log-list');
             // Clear placeholder if present
             if (logList.children.length === 1 && logList.querySelector('[style*="circle-info"]')) {
@@ -381,8 +399,9 @@ class NeuroSparkApp {
             emailInput.value = '';
         });
 
-        document.getElementById('btn-add-coins').addEventListener('click', () => {
-            const email = document.getElementById('admin-coins-email').value.trim();
+        document.getElementById('btn-add-coins').addEventListener('click', async () => {
+            const emailInput = document.getElementById('admin-coins-email');
+            const email = emailInput.value.trim().toLowerCase();
             const amount = parseInt(document.getElementById('admin-coins-amount').value, 10);
             if (!email || !email.includes('@')) {
                 this.showToast('Ingresa un correo electrónico válido.', 'warning');
@@ -392,6 +411,23 @@ class NeuroSparkApp {
                 this.showToast('Ingresa una cantidad válida de NeuroCoins.', 'warning');
                 return;
             }
+
+            const btn = document.getElementById('btn-add-coins');
+            const originalContent = btn.innerHTML;
+            btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Verificando...';
+            btn.disabled = true;
+
+            const userExistsLocally = localStorage.getItem('neurospark_state_' + email) !== null || email === 'sparkneuro64@gmail.com';
+            const userExistsInDB = await authController.checkUserExists(email);
+
+            btn.innerHTML = originalContent;
+            btn.disabled = false;
+
+            if (!userExistsLocally && !userExistsInDB) {
+                this.showToast('El usuario no está registrado en la plataforma.', 'warning');
+                return;
+            }
+
             const logList = document.getElementById('admin-log-list');
             if (logList.children.length === 1 && logList.querySelector('[style*="circle-info"]')) {
                 logList.innerHTML = '';
@@ -405,14 +441,28 @@ class NeuroSparkApp {
             this.showToast('Se otorgaron ' + amount + ' NeuroCoins a ' + email, 'success');
             
             // Add coins to target user's state
-            const targetKey = 'neurospark_state_' + email;
+            const targetEmail = email;
+            const targetKey = 'neurospark_state_' + targetEmail;
             let targetStateStr = localStorage.getItem(targetKey);
-            let targetState = targetStateStr ? JSON.parse(targetStateStr) : { ...this.state, coins: 120 };
+            let targetState = targetStateStr ? JSON.parse(targetStateStr) : {
+                profile: 'kids',
+                activeProfileName: 'Estudiante',
+                coins: 120,
+                level: 1,
+                lang: 'es',
+                unlockedItems: ['classic_skin'],
+                activeSkin: 'classic_skin',
+                history: [],
+                tasks: [],
+                settings: { musicOn: false, voiceOn: false, lowStimulus: false, volume: 50 }
+            };
             targetState.coins = (targetState.coins || 0) + amount;
+            // Prevent injecting the admin's email into the target's state
+            targetState.currentUserEmail = targetEmail;
             localStorage.setItem(targetKey, JSON.stringify(targetState));
 
             // If the admin is gifting themselves
-            if (email === this.state.currentUserEmail) {
+            if (targetEmail === (this.state.currentUserEmail || '').toLowerCase()) {
                 this.state.coins += amount;
                 this.updateHeaderHUD();
                 this.saveState();
