@@ -597,11 +597,11 @@ class NeuroSparkApp {
                 <div class="kids-game-section">
                     <h3 class="section-title"><i class="fa-solid fa-gamepad text-accent"></i> ${i18n.t('kidsGamesTitle')}</h3>
                     <div class="games-grid">
-                        ${this._gameCard('distraction_hunter', 'g1Name', 'g1Desc', 'diff-easy',   'g1Tag', 'fa-meteor')}
-                        ${this._gameCard('spatial_focus',      'g2Name', 'g2Desc', 'diff-medium', 'g2Tag', 'fa-star-half-stroke')}
-                        ${this._gameCard('routine_builder',    'g3Name', 'g3Desc', 'diff-medium', 'g3Tag', 'fa-puzzle-piece')}
-                        ${this._gameCard('emotional_stoplight','g4Name', 'g4Desc', 'diff-easy',   'g4Tag', 'fa-traffic-light')}
-                        ${this._gameCard('musical_memory',     'g5Name', 'g5Desc', 'diff-hard',   'g5Tag', 'fa-music')}
+                        ${this._gameCard('distraction_hunter', 'g1Name', 'g1Desc', 'diff-easy',   'g1Tag', 'fa-meteor', 'distraction.png')}
+                        ${this._gameCard('spatial_focus',      'g2Name', 'g2Desc', 'diff-medium', 'g2Tag', 'fa-star-half-stroke', 'spatial.png')}
+                        ${this._gameCard('routine_builder',    'g3Name', 'g3Desc', 'diff-medium', 'g3Tag', 'fa-puzzle-piece', 'routine.png')}
+                        ${this._gameCard('emotional_stoplight','g4Name', 'g4Desc', 'diff-easy',   'g4Tag', 'fa-traffic-light', 'stoplight.png')}
+                        ${this._gameCard('musical_memory',     'g5Name', 'g5Desc', 'diff-hard',   'g5Tag', 'fa-music', 'memory.png')}
                     </div>
                 </div>
 
@@ -660,11 +660,11 @@ class NeuroSparkApp {
         });
     }
 
-    _gameCard(id, nameKey, descKey, diffClass, tagKey, icon) {
+    _gameCard(id, nameKey, descKey, diffClass, tagKey, icon, imgName) {
         return `
             <div class="game-card">
-                <div class="game-thumbnail">
-                    <i class="fa-solid ${icon}" style="color:var(--primary-blue);"></i>
+                <div class="game-thumbnail" style="background-image: url('assets/games/${imgName}');">
+                    <i class="fa-solid ${icon}" style="display:none;"></i>
                 </div>
                 <div class="game-info">
                     <span class="game-tag">${i18n.t(tagKey)}</span>
@@ -692,11 +692,11 @@ class NeuroSparkApp {
                     </div>
                     <h3 class="section-title"><i class="fa-solid fa-brain text-blue"></i> ${i18n.t('teensGamesTitle')}</h3>
                     <div class="games-grid" style="grid-template-columns:1fr 1fr;">
-                        ${this._teenRow('distraction_hunter','g1Name','g1Tag')}
-                        ${this._teenRow('spatial_focus',     'g2Name','g2Tag')}
-                        ${this._teenRow('routine_builder',   'g3Name','g3Tag')}
-                        ${this._teenRow('emotional_stoplight','g4Name','g4Tag')}
-                        ${this._teenRow('musical_memory',    'g5Name','g5Tag')}
+                        ${this._gameCard('distraction_hunter', 'g1Name', 'g1Desc', 'diff-easy',   'g1Tag', 'fa-meteor', 'distraction.png')}
+                        ${this._gameCard('spatial_focus',      'g2Name', 'g2Desc', 'diff-medium', 'g2Tag', 'fa-star-half-stroke', 'spatial.png')}
+                        ${this._gameCard('routine_builder',    'g3Name', 'g3Desc', 'diff-medium', 'g3Tag', 'fa-puzzle-piece', 'routine.png')}
+                        ${this._gameCard('emotional_stoplight','g4Name', 'g4Desc', 'diff-easy',   'g4Tag', 'fa-traffic-light', 'stoplight.png')}
+                        ${this._gameCard('musical_memory',     'g5Name', 'g5Desc', 'diff-hard',   'g5Tag', 'fa-music', 'memory.png')}
                     </div>
                 </div>
 
@@ -734,7 +734,7 @@ class NeuroSparkApp {
                 </div>
             </div>`;
 
-        mount.querySelectorAll('.teen-play-btn').forEach(btn =>
+        mount.querySelectorAll('.play-btn[data-game]').forEach(btn =>
             btn.addEventListener('click', () => engine.launch(btn.getAttribute('data-game')))
         );
 
@@ -803,16 +803,7 @@ class NeuroSparkApp {
         this.setupPomodoro();
     }
 
-    _teenRow(id, nameKey, tagKey) {
-        return `
-            <div class="task-item" style="padding:16px;">
-                <div>
-                    <strong style="display:block;">${i18n.t(nameKey)}</strong>
-                    <small style="color:var(--text-muted);">${i18n.t(tagKey)}</small>
-                </div>
-                <button class="teen-play-btn play-btn" data-game="${id}">${i18n.t('trainBtn')}</button>
-            </div>`;
-    }
+
 
     setupPomodoro() {
         let timer = null, timeRemaining = 20 * 60, running = false;

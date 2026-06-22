@@ -543,7 +543,7 @@ body.light-theme .school-insignia {
 
 .game-card {
     background: var(--bg-card);
-    border: 3px solid var(--border-color);
+    border: 1px solid var(--border-color);
     border-radius: var(--radius-lg);
     overflow: hidden;
     transition: var(--transition-smooth);
@@ -551,9 +551,16 @@ body.light-theme .school-insignia {
     flex-direction: column;
     height: 380px;
     position: relative;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.2);
 }
 
-/* Playful style specifically for Kids mode */
+.game-card:hover {
+    transform: translateY(-8px);
+    border-color: var(--primary-purple);
+    box-shadow: 0 12px 32px var(--glow-color);
+}
+
+/* Playful style specifically for Kids mode override */
 .kids-mode .game-card {
     border-color: hsla(var(--h-blue), 80%, 65%, 0.5);
     border-radius: 28px;
@@ -566,23 +573,28 @@ body.light-theme .school-insignia {
 }
 
 .game-thumbnail {
-    height: 160px;
-    background: linear-gradient(135deg, var(--bg-app), var(--border-color));
+    height: 180px;
+    background-size: cover;
+    background-position: center;
+    position: relative;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 4rem;
-    position: relative;
 }
 
-.game-card:hover .game-thumbnail i {
-    animation: spin-pulse 2s infinite linear;
+.game-thumbnail::after {
+    content: '';
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    height: 60px;
+    background: linear-gradient(to top, var(--bg-card), transparent);
 }
 
-@keyframes spin-pulse {
-    0% { transform: scale(1); }
-    50% { transform: scale(1.15) rotate(5deg); }
-    100% { transform: scale(1); }
+.game-thumbnail i {
+    font-size: 3rem;
+    color: rgba(255,255,255,0.8);
+    text-shadow: 0 2px 8px rgba(0,0,0,0.5);
+    z-index: 1;
 }
 
 .game-info {
