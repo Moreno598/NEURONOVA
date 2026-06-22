@@ -56,6 +56,28 @@ export const authController = {
         }
     },
 
+    async loadUserState(email) {
+        try {
+            const { data, error } = await supabase
+                .from('user_profiles')
+                .select('state_data')
+                .eq('email', email)
+                .single();
+            if (data && data.state_data) return data.state_data;
+        } catch (e) {}
+        return null;
+    },
+
+    async saveUserState(email, stateData) {
+        try {
+            await supabase
+                .from('user_profiles')
+                .upsert({ email: email, state_data: stateData });
+        } catch (e) {
+            console.error("Error guardando en Supabase:", e);
+        }
+    },
+
     onAuthStateChange(callback) {
         supabase.auth.onAuthStateChange((event, session) => {
             callback(event, session);

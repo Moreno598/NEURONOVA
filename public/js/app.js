@@ -56,30 +56,43 @@ class NeuroSparkApp {
         }, 1500);
     }
 
-    loadState(email = null) {
+    async loadState(email = null) {
         if (email) this.state.currentUserEmail = email.toLowerCase();
         const key = this.state.currentUserEmail ? 'neurospark_state_' + this.state.currentUserEmail : 'neurospark_state';
+        
+        // 1. Cargar estado local inmediato
         const saved = localStorage.getItem(key);
         if (saved) {
             try {
                 const parsed = JSON.parse(saved);
-                // Merge to handle missing keys in old saves
-                this.state = { ...this.state, ...parsed,
-                    settings: { ...this.state.settings, ...(parsed.settings || {}) }
-                };
-            } catch (e) {
-                console.error('Error loading saved state', e);
+                this.state = { ...this.state, ...parsed, settings: { ...this.state.settings, ...(parsed.settings || {}) } };
+            } catch (e) {}
+        }
+
+        // 2. Cargar estado remoto de Supabase (Sincronización)
+        if (this.state.currentUserEmail) {
+            const dbState = await authController.loadUserState(this.state.currentUserEmail);
+            if (dbState) {
+                this.state = { ...this.state, ...dbState, settings: { ...this.state.settings, ...(dbState.settings || {}) } };
+                localStorage.setItem(key, JSON.stringify(this.state));
             }
         }
+
         i18n.setLang(this.state.lang || 'es');
         sound.setVolume(this.state.settings.volume / 100);
         coach.voiceEnabled = this.state.settings.voiceOn;
         if (this.state.settings.lowStimulus) document.body.classList.add('low-stimulus');
+        
+        this.updateHeaderHUD();
     }
 
-    saveState() {
+    async saveState() {
         const key = this.state.currentUserEmail ? 'neurospark_state_' + this.state.currentUserEmail : 'neurospark_state';
         localStorage.setItem(key, JSON.stringify(this.state));
+        
+        if (this.state.currentUserEmail) {
+            await authController.saveUserState(this.state.currentUserEmail, this.state);
+        }
     }
 
     /* ---- HEADER HUD ---- */
@@ -447,23 +460,33 @@ class NeuroSparkApp {
             // Add coins to target user's state
             const targetEmail = email;
             const targetKey = 'neurospark_state_' + targetEmail;
-            let targetStateStr = localStorage.getItem(targetKey);
-            let targetState = targetStateStr ? JSON.parse(targetStateStr) : {
-                profile: 'kids',
-                activeProfileName: 'Estudiante',
-                coins: 120,
-                level: 1,
-                lang: 'es',
-                unlockedItems: ['classic_skin'],
-                activeSkin: 'classic_skin',
-                history: [],
-                tasks: [],
-                settings: { musicOn: false, voiceOn: false, lowStimulus: false, volume: 50 }
-            };
+            
+            // Try to load from Supabase first
+            let targetState = await authController.loadUserState(targetEmail);
+            
+            if (!targetState) {
+                let targetStateStr = localStorage.getItem(targetKey);
+                targetState = targetStateStr ? JSON.parse(targetStateStr) : {
+                    profile: 'kids',
+                    activeProfileName: 'Estudiante',
+                    coins: 120,
+                    level: 1,
+                    lang: 'es',
+                    unlockedItems: ['classic_skin'],
+                    activeSkin: 'classic_skin',
+                    history: [],
+                    tasks: [],
+                    settings: { musicOn: false, voiceOn: false, lowStimulus: false, volume: 50 }
+                };
+            }
+            
             targetState.coins = (targetState.coins || 0) + amount;
             // Prevent injecting the admin's email into the target's state
             targetState.currentUserEmail = targetEmail;
+            
+            // Save to Local and Supabase DB
             localStorage.setItem(targetKey, JSON.stringify(targetState));
+            await authController.saveUserState(targetEmail, targetState);
 
             // If the admin is gifting themselves
             if (targetEmail === (this.state.currentUserEmail || '').toLowerCase()) {
