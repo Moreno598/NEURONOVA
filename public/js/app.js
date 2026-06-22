@@ -301,6 +301,15 @@ class NeuroSparkApp {
                             <i class="fa-solid fa-check"></i> Asignar Rol
                         </button>
                     </div>
+
+                    <p style="color: var(--text-muted); margin: 10px 0 0; font-size: 1rem;">Otorga NeuroCoins a los estudiantes para recompensar su esfuerzo.</p>
+                    <div style="display: flex; gap: 16px; flex-wrap: wrap;">
+                        <input type="email" id="admin-coins-email" placeholder="correo_estudiante@ejemplo.com" style="flex: 1; min-width: 220px; padding: 16px; border-radius: 12px; border: 2px solid var(--border-color); background: rgba(0,0,0,0.25); color: var(--text-main); font-size: 1rem; outline: none; transition: border-color 0.3s;">
+                        <input type="number" id="admin-coins-amount" placeholder="Cantidad (ej. 500)" style="width: 150px; padding: 16px; border-radius: 12px; border: 2px solid var(--border-color); background: #1e293b; color: white; font-size: 1rem; outline: none;">
+                        <button id="btn-add-coins" class="play-btn" style="background: linear-gradient(135deg, #f59e0b, #d97706); padding: 0 32px; font-size: 1rem; border-radius: 12px; height: 54px; white-space: nowrap;">
+                            <i class="fa-solid fa-coins"></i> Dar Coins
+                        </button>
+                    </div>
                     <div style="border-top: 1px solid var(--border-color); padding-top: 24px;">
                         <h4 style="margin: 0 0 18px 0; color: white; font-size: 1.1rem;"><i class="fa-solid fa-clock-rotate-left" style="margin-right: 8px;"></i>Asignaciones Recientes</h4>
                         <div id="admin-log-list" style="display: flex; flex-direction: column; gap: 12px; max-height: 240px; overflow-y: auto;">
@@ -343,6 +352,32 @@ class NeuroSparkApp {
             setTimeout(() => { item.style.opacity = '1'; item.style.transform = 'translateY(0)'; }, 10);
             this.showToast('Rol "' + roleText + '" asignado a ' + email, 'success');
             emailInput.value = '';
+        });
+
+        document.getElementById('btn-add-coins').addEventListener('click', () => {
+            const email = document.getElementById('admin-coins-email').value.trim();
+            const amount = parseInt(document.getElementById('admin-coins-amount').value, 10);
+            if (!email || !email.includes('@')) {
+                this.showToast('Ingresa un correo electrónico válido.', 'warning');
+                return;
+            }
+            if (isNaN(amount) || amount <= 0) {
+                this.showToast('Ingresa una cantidad válida de NeuroCoins.', 'warning');
+                return;
+            }
+            const logList = document.getElementById('admin-log-list');
+            if (logList.children.length === 1 && logList.querySelector('[style*="circle-info"]')) {
+                logList.innerHTML = '';
+            }
+            const item = document.createElement('div');
+            item.style.cssText = 'padding: 16px 20px; background: rgba(245,158,11,0.08); border-radius: 10px; border: 1px solid rgba(245,158,11,0.25); display: flex; justify-content: space-between; align-items: center; opacity: 0; transform: translateY(-8px); transition: all 0.35s ease;';
+            item.innerHTML = '<span style="font-size: 0.95rem;"><i class="fa-solid fa-user-plus" style="color:#f59e0b; margin-right: 8px;"></i>' + email + '</span>' +
+                             '<span style="background: rgba(245,158,11,0.2); color: #fbbf24; padding: 4px 12px; border-radius: 20px; font-size: 0.8rem; font-weight: 600;">+' + amount + ' Coins</span>';
+            logList.prepend(item);
+            setTimeout(() => { item.style.opacity = '1'; item.style.transform = 'translateY(0)'; }, 10);
+            this.showToast('Se otorgaron ' + amount + ' NeuroCoins a ' + email, 'success');
+            document.getElementById('admin-coins-email').value = '';
+            document.getElementById('admin-coins-amount').value = '';
         });
     }
 
