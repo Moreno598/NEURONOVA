@@ -1,0 +1,539 @@
+/* -------------------------------------------------------------
+   NEUROSPARK i18n — Internationalization Module
+   Supported languages: 'es' (Spanish), 'en' (English)
+   ------------------------------------------------------------- */
+
+const translations = {
+    es: {
+        // --- HEADER ---
+        logoSub:        'Neuroeducación IA',
+        hdrCoins:       'NeuroCoins ganados',
+        hdrLevel:       'Nivel del perfil',
+        hdrMusic:       'Música Relajante',
+        hdrVoice:       'Narrador por Voz',
+        hdrSettings:    'Ajustes de Accesibilidad',
+        modeKids:       'Modo Niños (6-12 años)',
+        modeTeens:      'Modo Adolescentes (13-17)',
+        modeAdults:     'Padres / Docentes',
+        loading:        'Cargando el Universo NeuroSpark...',
+
+        // --- PROFILE NAMES ---
+        nameKids:   'Mateo',
+        nameTeens:  'Valeria',
+        nameAdults: 'Prof. Carlos',
+
+        // --- KIDS HOME ---
+        kidsWelcome:    '¡Hola, {name}! 🚀',
+        kidsWelcomeSub: '¿Qué planeta cognitivo entrenaremos hoy en nuestra nave?',
+        kidsGamesTitle: 'Tus Simuladores de Entrenamiento',
+        storeTitle:     'Tienda de Sparky',
+        storeSub:       'Personaliza a tu asistente Sparky con tus NeuroCoins ganadas.',
+        equipped:       'Equipado',
+        equip:          'Equipar',
+        notEnoughCoins: 'Monedas insuficientes. ¡Sigue entrenando!',
+        bought:         '¡Compraste {name}!',
+        customized:     '¡Mascota personalizada!',
+
+        // --- STORE ITEMS ---
+        skinCyber:   '🤖 Skin Cyber Neon',
+        skinShield:  '🛡️ Skin Sparky Guardián',
+        skinCrown:   '👑 Corona del Campeón',
+
+        // --- TEENS HOME ---
+        teensWelcome:    'Hola, {name}',
+        teensWelcomeSub: 'Plataforma de hiperfoco y entrenamiento cognitivo para estudiantes autónomos.',
+        teensGamesTitle: 'Simuladores Neurocognitivos',
+        pomodoroTitle:   '⏱️ Temporizador Pomodoro Adaptativo',
+        pomodoroSub:     'Regulación óptima del tiempo de estudio',
+        pomodoroStart:   'Iniciar',
+        pomodoroPause:   'Pausar',
+        pomodoroReset:   'Reiniciar',
+        plannerTitle:    '📅 Organizador Diario',
+        plannerAdd:      'Escribe tu nueva tarea académica:',
+        taskDone:        'completada',
+        trainBtn:        'Entrenar',
+
+        // --- GAME CARDS ---
+        g1Name: '🛸 Cazadores de Distracciones',
+        g1Desc: '¡Entrena tu atención selectiva destruyendo los objetos falsos y asteroides!',
+        g1Tag:  'Atención Selectiva',
+
+        g2Name: '🌌 Viaje de Enfoque Espacial',
+        g2Desc: 'Presta mucha atención al orden de las estrellas y repítelas.',
+        g2Tag:  'Atención Sostenida',
+
+        g3Name: '🧩 Constructor de Rutinas',
+        g3Desc: 'Organiza el día del astronauta sin fatigarte.',
+        g3Tag:  'Planificación',
+
+        g4Name: '🚦 Semáforo Emocional',
+        g4Desc: '¡Pulsa cuando esté verde y detén el impulso con el rojo!',
+        g4Tag:  'Control de impulsos',
+
+        g5Name: '🎵 Memoria Musical',
+        g5Desc: 'Escucha los hermosos sonidos del espacio e inténtalos de memoria.',
+        g5Tag:  'Memoria de Trabajo',
+
+        playBtn:  'Jugar',
+
+        // --- GAME HUD ---
+        hudTime:   'Tiempo Restante',
+        hudScore:  'NeuroCoins de la Partida',
+        hudLevel:  'Nivel de Dificultad',
+        hudErrors: 'Fallos / Impulsos',
+        hudExit:   'Salir',
+
+        // --- GAME RESULTS ---
+        missionDone:     '¡Misión Completada!',
+        missionSub:      'Entrenamiento cerebral terminado con éxito.',
+        metricAtt:       'Atención Sostenida',
+        metricImpulse:   'Control de Impulsos',
+        sparkyResult:    '¡Tu cerebro está más fuerte hoy! Seguir entrenando de forma divertida te ayuda en tus estudios y tu rutina diaria.',
+        btnHome:         'Ir a Inicio',
+        btnReplay:       'Volver a Jugar',
+
+        // --- GAME CANVAS STRINGS ---
+        canvasShowSeq:     'Mira la secuencia espacial...',
+        canvasYourTurn:    '¡Tu turno! Repite el patrón en orden.',
+        canvasSuccess:     '¡Excelente secuencia! Siguiente ronda...',
+        canvasFailure:     '¡Error! Observa la secuencia corregida...',
+        canvasListenSeq:   'Escucha los tonos musicales...',
+        canvasRepeatNotes: '¡Tu turno! Repite las notas musicales.',
+        canvasGoodEar:     '¡Excelente oído! Sumando dificultad...',
+        canvasWrongNote:   '¡Oh, te perdiste! Observa el tono correcto...',
+        canvasGo:          '¡PULSA ESPACIO / CLIC!',
+        canvasFast:        '¡RÁPIDO, PRESIONA!',
+        canvasStop:        '¡ALTO! ¡NO TOQUES!',
+        canvasPrepare:     'PREPARANDO...',
+        canvasHit:         '¡ACIERTO!',
+        canvasStop2:       '¡ALTO! ERA ROJO',
+        canvasTooSlow:     '¡MUY LENTO!',
+        canvasRoutineTitle: 'Día {day}: Organiza la Rutina Espacial',
+        canvasSelectTask:   'Selecciona tarea izq. → asigna al bloque horario.',
+        canvasAstroEnergy:  'Energía del Astronauta: {val}%',
+        canvasLifeBalance:  'Balance de Vida: {val}%',
+        canvasAvailTasks:   'Tareas Disponibles',
+        canvasDayAgenda:    'Agenda del Día',
+        canvasSelectHere:   'Selecciona una tarea y haz clic aquí',
+        canvasFatigue:      '⚠️ ¡Advertencia: Fatiga crítica! Añade pausas activas.',
+
+        // --- ROUTINE BUILDER ACTIVITIES ---
+        actStudy: '✏️ Estudiar',
+        actBreak: '🤸 Pausa Activa',
+        actPlay:  '🎮 Recreo / Videojuego',
+        actSleep: '💤 Dormir',
+
+        // --- ROUTINE TIME SLOTS ---
+        slotMorning:   '🌅 Mañana (9:00 - 13:00)',
+        slotAfternoon: '☀️ Tarde (13:00 - 17:00)',
+        slotEvening:   '🌇 Atardecer (17:00 - 21:00)',
+        slotNight:     '🌌 Noche (21:00 - 5:00)',
+
+        // --- MUSICAL MEMORY PAD LABELS ---
+        padC4: '🔴 Do (C4)',
+        padE4: '🟢 Mi (E4)',
+        padG4: '🔵 Sol (G4)',
+        padC5: '🟡 Do (C5)',
+
+        // --- DASHBOARD ---
+        dashTitle:      '📊 Panel de Monitoreo Neurocognitivo',
+        dashExport:     'Exportar Reporte Docente',
+        statSessions:   'Entrenamientos Realizados',
+        statTime:       'Tiempo de Concentración',
+        statCoins:      'NeuroCoins Totales',
+        chartCognitive: '🧠 Habilidades Cognitivas de {name}',
+        chartSub:       'Detección temprana y fortalezas detectadas en tiempo real.',
+        diagTitle:      '🩺 Diagnóstico Predictivo IA',
+        diagSuspect:    'Perfil Sospechado:',
+        recTitle:       '📋 Sugerencias Neuroeducativas',
+        recFor:         'Para el Aula y el Hogar:',
+        histTitle:      '📈 Historial Reciente de Misiones',
+        histDate:       'Fecha',
+        histGame:       'Juego',
+        histDiff:       'Dificultad',
+        histCoins:      'NeuroCoins',
+        histAtt:        'Atención',
+        histControl:    'Control Impulso',
+        histEmpty:      'Aún no hay partidas jugadas en este perfil.',
+
+        // --- RADAR LABELS ---
+        radarAtt:  'ATENCIÓN',
+        radarCtrl: 'AUTORREGULACIÓN',
+        radarMem:  'MEMORIA',
+        radarOrg:  'ORGANIZACIÓN',
+
+        // --- SETTINGS ---
+        settingsTitle:   '⚙️ Ajustes de Accesibilidad',
+        settingStimLabel: 'Reducir Estímulos Visuales',
+        settingStimDesc:  'Desactiva fondos dinámicos y animaciones para evitar distracciones.',
+        settingVoiceLabel: 'Narrador por Voz IA',
+        settingVoiceDesc:  'Permite que Sparky lea en voz alta instrucciones y reportes.',
+        settingVolLabel:   'Volumen General',
+        settingVolDesc:    'Ajusta el volumen de sintetizadores y efectos sonoros.',
+        settingLangLabel:  'Idioma / Language',
+        settingLangDesc:   'Cambia el idioma de toda la plataforma.',
+        settingReset:      'Reiniciar Datos de Progreso',
+        settingResetConfirm: '¿Estás seguro de reiniciar todos tus datos de NeuroSpark? Esto borrará tus NeuroCoins y tu historial cognitivo de entrenamiento.',
+
+        // --- SPARKY CHAT ---
+        chatWelcome:    '¡Hola, Explorador! Estoy aquí para ayudarte a entrenar tu cerebro, darte consejos y asegurarme de que hagas pausas activas. ¿Qué te gustaría hacer hoy?',
+        chatBreakChip:  'Sugerir Pausa',
+        chatTipChip:    'Tip de Estudio',
+        chatReportChip: 'Reporte Rápido',
+        chatPlaceholder: 'Pregúntale a Sparky...',
+        chatSendUser1:  'Sugiéreme una pausa activa',
+        chatSendUser2:  'Dame un tip de estudio',
+        chatSendUser3:  'Reporte rápido cognitivo',
+
+        // --- TOASTS ---
+        toastMusicOn:   'Música relajante binaural activada',
+        toastMusicOff:  'Música desactivada',
+        toastVoiceOn:   'Lectura por voz activada',
+        toastVoiceOff:  'Lectura por voz desactivada',
+        toastModeSwitched: 'Modo cambiado a {name}',
+        toastGameBusy:  'Termina tu partida actual antes de cambiar',
+        toastLevelUp:   '¡Subiste de nivel! Nivel {level} Alcanzado 🚀',
+        toastLangChanged: 'Idioma cambiado a Español',
+
+        // --- COACH RESPONSES ---
+        coachWelcome:  '¡Hola de nuevo! Todo listo para entrenar tu cerebro.',
+        coachHalfTime: '¡Vas por la mitad, explorador! Respira y mantén la concentración.',
+        coachWinMsg:   '¡Excelente trabajo explorador! Has ganado {coins} NeuroCoins en este entrenamiento.',
+        coachLevelUp:  '¡Excelente! Has alcanzado el nivel {level} de entrenamiento cognitivo.',
+        coachPomodoro: '¡Buen trabajo! Has terminado tu sesión. Realiza una pausa activa.',
+        coachSlowDown: '¡Todo está bien! Disminuye la velocidad. Tómate tu tiempo.',
+        coachVoiceOn:  '¡Narrador activado! Hola explorador, te acompañaré en tu viaje.',
+        coachImpulsive: '¡Oye, astronauta! Vamos a respirar profundo y tomar las cosas con calma.',
+        coachDistracted: '¿Buscando estrellas? Volvamos a la misión principal. ¡Tú puedes!',
+
+        // --- REPORT ---
+        reportTitle:      'REPORTE NEUROEDUCATIVO CLINICO',
+        reportIntro:      'Este informe detalla el perfil de estimulación atencional y de control inhibitorio registrado mediante las simulaciones interactivas de NeuroSpark.',
+        reportStudent:    'Información del Estudiante',
+        reportName:       'Nombre del Estudiante:',
+        reportLevel:      'Nivel de Estimulación:',
+        reportSessions:   'Misiones completadas:',
+        reportTime:       'Tiempo de concentración:',
+        reportMetrics:    'Métricas de Habilidades Cognitivas',
+        reportAttDesc:    'Habilidad para mantener el foco en estímulos específicos durante períodos extendidos sin fatigarse.',
+        reportCtrlDesc:   'Capacidad de resistir estímulos distractores e impulsos de responder incorrectamente.',
+        reportMemDesc:    'Habilidad de retener información visual o auditiva a corto plazo durante tareas complejas.',
+        reportOrgDesc:    'Habilidad para secuenciar tareas de forma estructurada balanceando energía y tiempo.',
+        reportDiagTitle:  '💡 Diagnóstico Predictivo de Subtipo & Sugerencias',
+        reportDiagLabel:  'Diagnóstico de Comportamiento:',
+        reportRecLabel:   'Recomendación Profesional:',
+        reportDisclaimer: 'Este reporte es generado de forma automatizada por la IA de NeuroSpark basado en evidencia neuropsicológica del TDAH. No sustituye un diagnóstico clínico formal.',
+        reportPrint:      'Imprimir / Guardar PDF',
+
+        // --- SUBTYPES ---
+        subtypeInattentive: 'Posible Perfil Inatento predominante',
+        subtypeHyperactive: 'Posible Perfil Hiperactivo-Impulsivo predominante',
+        subtypeCombined:    'Posible Perfil Tipo Combinado',
+        subtypeBalanced:    'Desempeño Cognitivo Balanceado (En Rango Normativo)',
+        recInattentive: 'Se sugieren recordatorios visuales fuertes, checklists de tareas simplificados y lectura guiada por voz.',
+        recHyperactive: 'Se sugiere incorporar pausas kinestésicas frecuentes, sistemas de recompensa inmediata y autoverbalización.',
+        recCombined:    'Se recomienda estructurar el día con agendas de bloques visuales, reducir el desorden y promover la relajación.',
+        recBalanced:    'Continuar estimulando la memoria de trabajo y la planificación con retos progresivos.',
+
+        // --- REPORT LEVELS ---
+        modeKidsLabel:  'Infantil (6-12 años)',
+        modeTeensLabel: 'Adolescente (13-17 años)',
+
+        // --- NO DATA ---
+        noData: 'Aún no he recopilado suficientes datos. ¡Completa un par de misiones cognitivas!',
+
+        // --- GAME NAMES ---
+        gameName1: 'Cazadores de Distracciones',
+        gameName2: 'Viaje de Enfoque Espacial',
+        gameName3: 'Constructor de Rutinas',
+        gameName4: 'Semáforo Emocional',
+        gameName5: 'Memoria Musical Adaptativa',
+        gameNameDefault: 'Entrenamiento Cognitivo',
+    },
+
+    en: {
+        // --- HEADER ---
+        logoSub:        'AI Neuroeducation',
+        hdrCoins:       'NeuroCoins earned',
+        hdrLevel:       'Profile level',
+        hdrMusic:       'Relaxing Music',
+        hdrVoice:       'Voice Narrator',
+        hdrSettings:    'Accessibility Settings',
+        modeKids:       'Kids Mode (6-12 years)',
+        modeTeens:      'Teen Mode (13-17)',
+        modeAdults:     'Parents / Teachers',
+        loading:        'Loading the NeuroSpark Universe...',
+
+        // --- PROFILE NAMES ---
+        nameKids:   'Alex',
+        nameTeens:  'Jordan',
+        nameAdults: 'Prof. Smith',
+
+        // --- KIDS HOME ---
+        kidsWelcome:    'Hello, {name}! 🚀',
+        kidsWelcomeSub: 'Which cognitive planet will we train on today?',
+        kidsGamesTitle: 'Your Training Simulators',
+        storeTitle:     "Sparky's Shop",
+        storeSub:       'Customize your Sparky assistant with your earned NeuroCoins.',
+        equipped:       'Equipped',
+        equip:          'Equip',
+        notEnoughCoins: 'Not enough coins. Keep training!',
+        bought:         'You bought {name}!',
+        customized:     'Mascot customized!',
+
+        // --- STORE ITEMS ---
+        skinCyber:   '🤖 Cyber Neon Skin',
+        skinShield:  '🛡️ Guardian Sparky Skin',
+        skinCrown:   '👑 Champion Crown',
+
+        // --- TEENS HOME ---
+        teensWelcome:    'Hello, {name}',
+        teensWelcomeSub: 'Hyperfocus and cognitive training platform for independent learners.',
+        teensGamesTitle: 'Neurocognitive Simulators',
+        pomodoroTitle:   '⏱️ Adaptive Pomodoro Timer',
+        pomodoroSub:     'Optimal regulation of study time',
+        pomodoroStart:   'Start',
+        pomodoroPause:   'Pause',
+        pomodoroReset:   'Reset',
+        plannerTitle:    '📅 Daily Organizer',
+        plannerAdd:      'Write your new academic task:',
+        taskDone:        'completed',
+        trainBtn:        'Train',
+
+        // --- GAME CARDS ---
+        g1Name: '🛸 Distraction Hunters',
+        g1Desc: 'Train your selective attention by destroying fake objects and asteroids!',
+        g1Tag:  'Selective Attention',
+
+        g2Name: '🌌 Spatial Focus Journey',
+        g2Desc: 'Pay close attention to the order of the stars and repeat them.',
+        g2Tag:  'Sustained Attention',
+
+        g3Name: '🧩 Routine Builder',
+        g3Desc: "Organize the astronaut's day without exhausting yourself.",
+        g3Tag:  'Planning',
+
+        g4Name: '🚦 Emotional Stoplight',
+        g4Desc: 'Press when green and hold the impulse when red!',
+        g4Tag:  'Impulse Control',
+
+        g5Name: '🎵 Musical Memory',
+        g5Desc: "Listen to the beautiful sounds of space and try to remember them.",
+        g5Tag:  'Working Memory',
+
+        playBtn:  'Play',
+
+        // --- GAME HUD ---
+        hudTime:   'Time Remaining',
+        hudScore:  'Session NeuroCoins',
+        hudLevel:  'Difficulty Level',
+        hudErrors: 'Errors / Impulses',
+        hudExit:   'Exit',
+
+        // --- GAME RESULTS ---
+        missionDone:   'Mission Complete!',
+        missionSub:    'Brain training successfully finished.',
+        metricAtt:     'Sustained Attention',
+        metricImpulse: 'Impulse Control',
+        sparkyResult:  "Your brain is stronger today! Training in a fun way helps you in your studies and daily routine.",
+        btnHome:       'Go Home',
+        btnReplay:     'Play Again',
+
+        // --- GAME CANVAS STRINGS ---
+        canvasShowSeq:     'Watch the space sequence...',
+        canvasYourTurn:    'Your turn! Repeat the pattern in order.',
+        canvasSuccess:     'Excellent sequence! Next round...',
+        canvasFailure:     'Error! Watch the correct sequence...',
+        canvasListenSeq:   'Listen to the musical tones...',
+        canvasRepeatNotes: 'Your turn! Repeat the musical notes.',
+        canvasGoodEar:     'Great ear! Adding difficulty...',
+        canvasWrongNote:   'Oh, you missed it! Watch the correct tone...',
+        canvasGo:          'PRESS SPACE / CLICK!',
+        canvasFast:        'QUICK, PRESS!',
+        canvasStop:        'STOP! DON\'T TOUCH!',
+        canvasPrepare:     'PREPARING...',
+        canvasHit:         'HIT!',
+        canvasStop2:       'STOP! IT WAS RED',
+        canvasTooSlow:     'TOO SLOW!',
+        canvasRoutineTitle: 'Day {day}: Organize the Space Routine',
+        canvasSelectTask:   'Select task on left → assign to time block.',
+        canvasAstroEnergy:  'Astronaut Energy: {val}%',
+        canvasLifeBalance:  'Life Balance: {val}%',
+        canvasAvailTasks:   'Available Tasks',
+        canvasDayAgenda:    "Day's Schedule",
+        canvasSelectHere:   'Select a task and click here',
+        canvasFatigue:      '⚠️ Warning: Critical fatigue! Add active breaks.',
+
+        // --- ROUTINE BUILDER ACTIVITIES ---
+        actStudy: '✏️ Study',
+        actBreak: '🤸 Active Break',
+        actPlay:  '🎮 Play / Video Game',
+        actSleep: '💤 Sleep',
+
+        // --- ROUTINE TIME SLOTS ---
+        slotMorning:   '🌅 Morning (9:00 - 1:00 PM)',
+        slotAfternoon: '☀️ Afternoon (1:00 - 5:00 PM)',
+        slotEvening:   '🌇 Evening (5:00 - 9:00 PM)',
+        slotNight:     '🌌 Night (9:00 PM - 5:00 AM)',
+
+        // --- MUSICAL MEMORY PAD LABELS ---
+        padC4: '🔴 C (C4)',
+        padE4: '🟢 E (E4)',
+        padG4: '🔵 G (G4)',
+        padC5: '🟡 C (C5)',
+
+        // --- DASHBOARD ---
+        dashTitle:      '📊 Neurocognitive Monitoring Panel',
+        dashExport:     'Export Teacher Report',
+        statSessions:   'Training Sessions',
+        statTime:       'Focus Time',
+        statCoins:      'Total NeuroCoins',
+        chartCognitive: "🧠 {name}'s Cognitive Skills",
+        chartSub:       'Early detection and strengths detected in real time.',
+        diagTitle:      '🩺 AI Predictive Diagnosis',
+        diagSuspect:    'Suspected Profile:',
+        recTitle:       '📋 Neuroeducational Suggestions',
+        recFor:         'For Classroom and Home:',
+        histTitle:      '📈 Recent Mission History',
+        histDate:       'Date',
+        histGame:       'Game',
+        histDiff:       'Difficulty',
+        histCoins:      'NeuroCoins',
+        histAtt:        'Attention',
+        histControl:    'Impulse Control',
+        histEmpty:      'No games played on this profile yet.',
+
+        // --- RADAR LABELS ---
+        radarAtt:  'ATTENTION',
+        radarCtrl: 'SELF-REGULATION',
+        radarMem:  'MEMORY',
+        radarOrg:  'ORGANIZATION',
+
+        // --- SETTINGS ---
+        settingsTitle:    '⚙️ Accessibility Settings',
+        settingStimLabel: 'Reduce Visual Stimuli',
+        settingStimDesc:  'Disables dynamic backgrounds and animations to avoid distractions.',
+        settingVoiceLabel: 'AI Voice Narrator',
+        settingVoiceDesc:  'Allows Sparky to read instructions and reports aloud.',
+        settingVolLabel:   'Master Volume',
+        settingVolDesc:    'Adjust the volume of synthesizers and sound effects.',
+        settingLangLabel:  'Idioma / Language',
+        settingLangDesc:   'Change the language of the entire platform.',
+        settingReset:      'Reset Progress Data',
+        settingResetConfirm: 'Are you sure you want to reset all NeuroSpark data? This will erase your NeuroCoins and cognitive training history.',
+
+        // --- SPARKY CHAT ---
+        chatWelcome:    "Hello, Explorer! I'm here to help you train your brain, give you advice and make sure you take active breaks. What would you like to do today?",
+        chatBreakChip:  'Suggest Break',
+        chatTipChip:    'Study Tip',
+        chatReportChip: 'Quick Report',
+        chatPlaceholder: 'Ask Sparky...',
+        chatSendUser1:  'Suggest me an active break',
+        chatSendUser2:  'Give me a study tip',
+        chatSendUser3:  'Quick cognitive report',
+
+        // --- TOASTS ---
+        toastMusicOn:    'Binaural relaxing music activated',
+        toastMusicOff:   'Music deactivated',
+        toastVoiceOn:    'Voice narrator activated',
+        toastVoiceOff:   'Voice narrator deactivated',
+        toastModeSwitched: 'Mode switched to {name}',
+        toastGameBusy:   'Finish your current game before switching',
+        toastLevelUp:    'Level Up! Level {level} Reached 🚀',
+        toastLangChanged: 'Language changed to English',
+
+        // --- COACH RESPONSES ---
+        coachWelcome:   "Hello again! Everything's ready to train your brain.",
+        coachHalfTime:  "You're halfway there, explorer! Breathe and stay focused.",
+        coachWinMsg:    'Great work explorer! You earned {coins} NeuroCoins in this training.',
+        coachLevelUp:   "Excellent! You've reached level {level} of cognitive training.",
+        coachPomodoro:  "Great job! Your session is done. Take an active break.",
+        coachSlowDown:  "Everything's okay! Slow down. Take your time.",
+        coachVoiceOn:   "Voice narrator on! Hello explorer, I'll accompany you on your journey.",
+        coachImpulsive: "Hey astronaut! Let's take a deep breath and slow things down.",
+        coachDistracted: "Looking for stars? Let's get back to the main mission. You can do it!",
+
+        // --- REPORT ---
+        reportTitle:      'CLINICAL NEUROEDUCATIONAL REPORT',
+        reportIntro:      'This report details the attentional and inhibitory control profile recorded through NeuroSpark interactive simulations.',
+        reportStudent:    'Student Information',
+        reportName:       'Student Name:',
+        reportLevel:      'Stimulation Level:',
+        reportSessions:   'Sessions completed:',
+        reportTime:       'Focus time:',
+        reportMetrics:    'Cognitive Skills Metrics',
+        reportAttDesc:    'Ability to maintain focus on specific stimuli for extended periods without fatigue.',
+        reportCtrlDesc:   'Ability to resist distracting stimuli and impulses to respond incorrectly.',
+        reportMemDesc:    'Ability to retain visual or auditory information in the short term during complex tasks.',
+        reportOrgDesc:    'Ability to sequence tasks structurally, balancing energy and study time.',
+        reportDiagTitle:  '💡 Predictive Subtype Diagnosis & Suggestions',
+        reportDiagLabel:  'Behavioral Diagnosis:',
+        reportRecLabel:   'Professional Recommendation:',
+        reportDisclaimer: 'This report is automatically generated by NeuroSpark AI based on ADHD neuropsychological evidence. It does not replace a formal clinical diagnosis.',
+        reportPrint:      'Print / Save PDF',
+
+        // --- SUBTYPES ---
+        subtypeInattentive: 'Likely Predominantly Inattentive Profile',
+        subtypeHyperactive: 'Likely Predominantly Hyperactive-Impulsive Profile',
+        subtypeCombined:    'Likely Combined Type Profile',
+        subtypeBalanced:    'Balanced Cognitive Performance (Within Normative Range)',
+        recInattentive: 'Strong visual reminders, simplified task checklists, and voice-guided reading are suggested.',
+        recHyperactive: 'Frequent kinesthetic breaks, immediate reward systems and self-verbalization are suggested.',
+        recCombined:    'Daily visual block agendas, reduced clutter in study spaces, and relaxation techniques are recommended.',
+        recBalanced:    'Continue stimulating working memory and planning with progressive challenges.',
+
+        // --- REPORT LEVELS ---
+        modeKidsLabel:  'Children (6-12 years)',
+        modeTeensLabel: 'Teen (13-17 years)',
+
+        // --- NO DATA ---
+        noData: "I haven't collected enough data yet. Complete a couple of cognitive missions first!",
+
+        // --- GAME NAMES ---
+        gameName1: 'Distraction Hunters',
+        gameName2: 'Spatial Focus Journey',
+        gameName3: 'Routine Builder',
+        gameName4: 'Emotional Stoplight',
+        gameName5: 'Adaptive Musical Memory',
+        gameNameDefault: 'Cognitive Training',
+    }
+};
+
+class I18n {
+    constructor() {
+        this.lang = 'es';
+    }
+
+    setLang(lang) {
+        if (translations[lang]) {
+            this.lang = lang;
+            // Update <html lang> attribute
+            document.documentElement.lang = lang;
+        }
+    }
+
+    /**
+     * Translate a key, optionally interpolating {placeholder} values.
+     * @param {string} key - Translation key
+     * @param {Object} [vars] - Variables to interpolate, e.g. { name: 'Alex' }
+     * @returns {string}
+     */
+    t(key, vars = {}) {
+        const dict = translations[this.lang] || translations['es'];
+        let str = dict[key] ?? translations['es'][key] ?? key;
+
+        // Replace {placeholders}
+        Object.entries(vars).forEach(([k, v]) => {
+            str = str.replace(new RegExp(`\\{${k}\\}`, 'g'), v);
+        });
+
+        return str;
+    }
+
+    get currentLang() { return this.lang; }
+}
+
+export const i18n = new I18n();
+
+// Global shorthand — games can call window.t('key', vars)
+window.t = (key, vars) => i18n.t(key, vars);
