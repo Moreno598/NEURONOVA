@@ -48,7 +48,8 @@ export class AuthUI {
                 const userMeta = session.user?.user_metadata;
                 const email = session.user?.email;
 
-                app.state.isAdmin = false;
+                // Mark admin without changing normal profile flow
+                app.state.isAdmin = (email === 'sparkneuro64@gmail.com');
 
                 if (userMeta) {
                     const { firstName, lastName, age } = userMeta;
