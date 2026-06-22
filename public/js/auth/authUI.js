@@ -51,6 +51,9 @@ export class AuthUI {
                 // Mark admin without changing normal profile flow
                 app.state.isAdmin = (email === 'sparkneuro64@gmail.com');
 
+                // Load specific user state
+                app.loadState(email);
+
                 if (userMeta) {
                     const { firstName, lastName, age } = userMeta;
                     

@@ -55,8 +55,10 @@ class NeuroSparkApp {
         }, 1500);
     }
 
-    loadState() {
-        const saved = localStorage.getItem('neurospark_state');
+    loadState(email = null) {
+        if (email) this.state.currentUserEmail = email;
+        const key = this.state.currentUserEmail ? 'neurospark_state_' + this.state.currentUserEmail : 'neurospark_state';
+        const saved = localStorage.getItem(key);
         if (saved) {
             try {
                 const parsed = JSON.parse(saved);
@@ -75,7 +77,8 @@ class NeuroSparkApp {
     }
 
     saveState() {
-        localStorage.setItem('neurospark_state', JSON.stringify(this.state));
+        const key = this.state.currentUserEmail ? 'neurospark_state_' + this.state.currentUserEmail : 'neurospark_state';
+        localStorage.setItem(key, JSON.stringify(this.state));
     }
 
     /* ---- HEADER HUD ---- */
@@ -260,13 +263,37 @@ class NeuroSparkApp {
 
         // Show the pre-existing header button
         const btn = document.getElementById('btn-admin-header');
-        if (!btn) return;
-        btn.style.display = '';
+        if (btn) {
+            btn.style.display = '';
+            const fresh = btn.cloneNode(true);
+            btn.parentNode.replaceChild(fresh, btn);
+            fresh.addEventListener('click', () => this.openAdminPanel());
+        }
 
-        // Remove previous listener (clone trick)
-        const fresh = btn.cloneNode(true);
-        btn.parentNode.replaceChild(fresh, btn);
-        fresh.addEventListener('click', () => this.openAdminPanel());
+        // Show games toggle button
+        const btnGames = document.getElementById('btn-admin-games');
+        if (btnGames) {
+            btnGames.style.display = '';
+            const freshGames = btnGames.cloneNode(true);
+            btnGames.parentNode.replaceChild(freshGames, btnGames);
+            
+            // Set initial state based on current profile
+            if (this.state.profile === 'adults') {
+                freshGames.innerHTML = '<i class="fa-solid fa-gamepad"></i>';
+                freshGames.title = "Modo Juegos";
+            } else {
+                freshGames.innerHTML = '<i class="fa-solid fa-chart-line"></i>';
+                freshGames.title = "Modo Panel Principal";
+            }
+
+            freshGames.addEventListener('click', () => {
+                if (this.state.profile === 'adults') {
+                    this.changeProfileMode('kids');
+                } else {
+                    this.changeProfileMode('adults');
+                }
+            });
+        }
     }
 
     /* ---- ADMIN PANEL (MODAL) ---- */
@@ -376,6 +403,21 @@ class NeuroSparkApp {
             logList.prepend(item);
             setTimeout(() => { item.style.opacity = '1'; item.style.transform = 'translateY(0)'; }, 10);
             this.showToast('Se otorgaron ' + amount + ' NeuroCoins a ' + email, 'success');
+            
+            // Add coins to target user's state
+            const targetKey = 'neurospark_state_' + email;
+            let targetStateStr = localStorage.getItem(targetKey);
+            let targetState = targetStateStr ? JSON.parse(targetStateStr) : { ...this.state, coins: 120 };
+            targetState.coins = (targetState.coins || 0) + amount;
+            localStorage.setItem(targetKey, JSON.stringify(targetState));
+
+            // If the admin is gifting themselves
+            if (email === this.state.currentUserEmail) {
+                this.state.coins += amount;
+                this.updateHeaderHUD();
+                this.saveState();
+            }
+
             document.getElementById('admin-coins-email').value = '';
             document.getElementById('admin-coins-amount').value = '';
         });
