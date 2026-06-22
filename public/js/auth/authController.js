@@ -27,6 +27,13 @@ export const authController = {
         if (error) throw error;
     },
 
+    async saveParentEmail(email, parentEmail) {
+        const { error } = await supabase
+            .from('correos')
+            .insert([{ user_email: email, parent_email: parentEmail }]);
+        if (error) throw error;
+    },
+
     async getCurrentUser() {
         const { data: { user }, error } = await supabase.auth.getUser();
         if (error) throw error;

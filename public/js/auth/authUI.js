@@ -14,6 +14,7 @@ export class AuthUI {
         this.firstNameInput = document.getElementById('auth-firstname');
         this.lastNameInput = document.getElementById('auth-lastname');
         this.ageInput = document.getElementById('auth-age');
+        this.parentEmailInput = document.getElementById('auth-parent-email');
         this.registerFieldsContainer = document.getElementById('auth-register-fields');
 
         this.subtitle = document.getElementById('auth-subtitle');
@@ -47,8 +48,7 @@ export class AuthUI {
                 const userMeta = session.user?.user_metadata;
                 const email = session.user?.email;
 
-                // Mark admin without changing normal profile flow
-                app.state.isAdmin = (email === 'sparkneuro64@gmail.com');
+                app.state.isAdmin = false;
 
                 if (userMeta) {
                     const { firstName, lastName, age } = userMeta;
@@ -124,9 +124,10 @@ export class AuthUI {
                     const firstName = this.firstNameInput ? this.firstNameInput.value.trim() : '';
                     const lastName = this.lastNameInput ? this.lastNameInput.value.trim() : '';
                     const age = this.ageInput ? this.ageInput.value.trim() : '';
+                    const parentEmail = this.parentEmailInput ? this.parentEmailInput.value.trim() : '';
 
-                    if (!firstName || !lastName || !age) {
-                        throw new Error("Por favor completa tus datos personales (Nombres, Apellidos y Edad).");
+                    if (!firstName || !lastName || !age || !parentEmail) {
+                        throw new Error("Por favor completa tus datos personales y el correo de tus padres.");
                     }
 
                     await authController.register(email, password, {
@@ -134,6 +135,14 @@ export class AuthUI {
                         lastName,
                         age: parseInt(age, 10)
                     });
+                    
+                    // Save the parent email to the 'correos' table
+                    try {
+                        await authController.saveParentEmail(email, parentEmail);
+                    } catch(e) {
+                        console.error("Error guardando correo del padre", e);
+                    }
+
                     localStorage.setItem('ns_saved_email', email);
                     localStorage.setItem('ns_saved_password', password);
                     app.showToast('¡Cuenta creada! Hemos enviado un enlace de verificación. Por favor revisa tu correo (y la carpeta de spam).', 'success');

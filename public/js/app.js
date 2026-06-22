@@ -203,9 +203,6 @@ class NeuroSparkApp {
     /* ---- PROFILE SWITCH ---- */
     changeProfileMode(mode) {
         this.state.profile = mode;
-        this.state.activeProfileName = i18n.t(
-            mode === 'kids' ? 'nameKids' : mode === 'teens' ? 'nameTeens' : 'nameAdults'
-        );
         this.updateHeaderHUD();
         this.saveState();
         this.renderHome();
@@ -217,11 +214,6 @@ class NeuroSparkApp {
     setLanguage(lang) {
         this.state.lang = lang;
         i18n.setLang(lang);
-        // Re-seed default profile names in the new language
-        this.state.activeProfileName = i18n.t(
-            this.state.profile === 'kids' ? 'nameKids' :
-            this.state.profile === 'teens' ? 'nameTeens' : 'nameAdults'
-        );
         this.saveState();
         this.updateHeaderHUD();
         this.renderHome();
