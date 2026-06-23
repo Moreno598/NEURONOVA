@@ -146,8 +146,8 @@ export class AuthUI {
                 this.submitBtn.innerText = 'Cargando...';
 
                 if (this.isLoginMode) {
-                    await authController.login(email, password);
                     window.hasManuallyLoggedIn = true;
+                    await authController.login(email, password);
                     localStorage.setItem('ns_saved_email', email);
                     localStorage.setItem('ns_saved_password', password);
                 } else {
@@ -160,12 +160,12 @@ export class AuthUI {
                         throw new Error("Por favor completa tus datos personales y el correo de tus padres.");
                     }
 
+                    window.hasManuallyLoggedIn = true;
                     await authController.register(email, password, {
                         firstName,
                         lastName,
                         age: parseInt(age, 10)
                     });
-                    window.hasManuallyLoggedIn = true;
                     
                     // Save the parent email to the 'correos' table
                     try {
