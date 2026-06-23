@@ -865,7 +865,26 @@
                 }, 500); // wait for fade out to complete
             }, 30000); // 30 seconds
 
+            window.dismissAuthOverlay = function() {
+                const overlay = document.getElementById('auth-overlay');
+                if (!overlay) return;
+                // Premium Slide UP effect to reveal games
+                overlay.style.transition = 'transform 0.8s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.8s';
+                overlay.style.transform = 'translateY(-100%)';
+                overlay.style.opacity = '0';
+                setTimeout(() => {
+                    overlay.classList.remove('open');
+                    overlay.style.visibility = 'hidden';
+                    overlay.style.display = 'none';
+                    document.body.style.overflow = '';
+                }, 800);
+            };
+
             function openAuthModal() {
+                if (window.isUserLoggedIn) {
+                    window.dismissAuthOverlay();
+                    return;
+                }
                 const track = document.getElementById('auth-slide-track');
                 if (!track) return;
                 track.style.transition = 'transform 0.7s cubic-bezier(0.22, 1, 0.36, 1)';

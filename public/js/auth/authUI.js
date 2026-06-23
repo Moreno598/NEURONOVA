@@ -35,11 +35,29 @@ export class AuthUI {
 
         // Listen to auth state changes
         authController.onAuthStateChange((event, session) => {
+            window.isUserLoggedIn = !!session;
+
             if (session) {
-                this.overlay.classList.remove('open');
-                this.overlay.style.opacity = '0';
-                this.overlay.style.visibility = 'hidden';
-                document.body.style.overflow = ''; // Restore scroll
+                if (event === 'SIGNED_IN') {
+                    if (window.dismissAuthOverlay) {
+                        window.dismissAuthOverlay();
+                    } else {
+                        this.overlay.classList.remove('open');
+                        this.overlay.style.opacity = '0';
+                        this.overlay.style.visibility = 'hidden';
+                        document.body.style.overflow = '';
+                    }
+                } else {
+                    // Update buttons for logged in users (INITIAL_SESSION)
+                    const btnNav = document.getElementById('btn-nav-register');
+                    if (btnNav) btnNav.innerHTML = '<i class="fa-solid fa-gamepad" style="color: #38bdf8; font-size: 0.9rem;"></i><span style="color: white; font-weight: 800; font-size: 0.9rem; letter-spacing: 0.5px;">Ir a Juegos</span>';
+                    
+                    const btnComenzar = document.querySelector('.premium-btn');
+                    if (btnComenzar && btnComenzar.innerText.includes('COMENZAR')) {
+                        btnComenzar.innerHTML = 'IR A LOS JUEGOS <i class="fa-solid fa-gamepad"></i>';
+                    }
+                }
+
                 
                 if (isAlreadyAuthenticated) return;
                 isAlreadyAuthenticated = true;
