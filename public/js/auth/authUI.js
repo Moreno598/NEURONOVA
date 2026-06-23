@@ -51,10 +51,14 @@ export class AuthUI {
                 // Load specific user state
                 app.loadState(email);
 
-                // Mark admin without changing normal profile flow
+                // Mark admin and redirect directly to games view
                 app.state.isAdmin = (email === 'sparkneuro64@gmail.com');
 
-                if (userMeta) {
+                if (app.state.isAdmin) {
+                    // Admin always goes directly to games (kids view)
+                    app.state.profile = 'kids';
+                    app.state.activeProfileName = 'Matias M.';
+                } else if (userMeta) {
                     const { firstName, lastName, age } = userMeta;
                     
                     // Set Profile Name

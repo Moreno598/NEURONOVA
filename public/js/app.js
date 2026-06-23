@@ -342,7 +342,8 @@ class NeuroSparkApp {
         }
 
         overlay.innerHTML = `
-            <div class="settings-modal" style="max-width: 800px; width: 95%; padding: 0; overflow: hidden;">
+            <div id="admin-panel-modal-inner" class="settings-modal" style="padding: 0; overflow: hidden; position: relative;">
+                <div class="admin-shimmer-bar"></div>
                 <div style="background: linear-gradient(135deg, #1e293b, #0f172a); padding: 30px 40px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid rgba(255,255,255,0.08);">
                     <h2 style="font-size: 1.8rem; color: white; display: flex; align-items: center; gap: 14px; margin: 0;">
                         <i class="fa-solid fa-shield-halved" style="color: #a78bfa;"></i> Panel de Administración
