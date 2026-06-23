@@ -524,142 +524,13 @@
 
         </div><!-- end auth-slide-track -->
 
-            
             <style>
-                @keyframes drift {
-                    0% { transform: translate(0px, 0px) scale(1); }
-                    100% { transform: translate(40px, 60px) scale(1.15); }
-                }
-                @keyframes floatCard {
-                    0% { transform: translateY(0px) rotate(0deg); }
-                    100% { transform: translateY(-20px) rotate(2deg); }
-                }
-                @keyframes slideInLeft {
-                    from { opacity: 0; transform: translateX(-60px); }
-                    to { opacity: 1; transform: translateX(0); }
-                }
-                @keyframes slideInRight {
-                    from { opacity: 0; transform: translateX(60px); }
-                    to { opacity: 1; transform: translateX(0); }
-                }
                 @keyframes slideInUp {
                     from { opacity: 0; transform: translateY(40px); }
                     to { opacity: 1; transform: translateY(0); }
                 }
-                /* Specialized class to avoid breaking absolute center transform */
-                .quote-card-float {
-                    animation: floatCardCenter 8s ease-in-out infinite alternate !important;
-                }
-                @keyframes floatCardCenter {
-                    0% { transform: translate(-50%, -50%) rotate(0deg); }
-                    100% { transform: translate(-50%, calc(-50% - 15px)) rotate(1deg); }
-                }
             </style>
 
-            <!-- Back Button -->
-            <div onclick="closeAuthModal()" style="position: absolute; top: 40px; left: 5vw; color: rgba(255,255,255,0.7); cursor: pointer; font-size: 1.1rem; font-weight: 700; display: flex; align-items: center; gap: 10px; transition: color 0.3s; z-index: 10;" onmouseover="this.style.color='#38bdf8'" onmouseout="this.style.color='rgba(255,255,255,0.7)'">
-                <i class="fa-solid fa-arrow-left"></i> Volver al inicio
-            </div>
-
-            <div style="display: flex; width: 100%; height: 100%;">
-                
-                <!-- Left Side: Form Area -->
-                <div style="flex: 1; display: flex; align-items: center; justify-content: center; padding: 40px; animation: slideInLeft 0.8s cubic-bezier(0.22, 1, 0.36, 1) forwards;">
-                    <div style="width: 100%; max-width: 420px; display: flex; flex-direction: column;">
-                        
-                        <!-- Small Logo -->
-                        <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 40px;">
-                            <div style="width: 36px; height: 36px; border-radius: 10px; background: linear-gradient(135deg, #38bdf8, #a78bfa); display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 15px rgba(56, 189, 248, 0.4);">
-                                <i class="fa-solid fa-brain" style="color: white; font-size: 1.1rem;"></i>
-                            </div>
-                            <span style="color: white; font-size: 1.2rem; font-weight: 900; letter-spacing: 1px; text-transform: uppercase;">NeuroSpark</span>
-                        </div>
-
-                        <!-- Header -->
-                        <div style="display: flex; flex-direction: column; margin-bottom: 35px; gap: 8px;">
-                            <h3 style="color: white; font-size: 2.2rem; font-weight: 900; letter-spacing: -1px;" id="auth-title">Iniciar Sesión</h3>
-                            <div id="btn-auth-toggle" style="color: rgba(255,255,255,0.6); font-size: 1rem; font-weight: 500; cursor: pointer; transition: color 0.3s;">¿No tienes una cuenta? <span style="color: #38bdf8; font-weight: 800;">Crear una ahora</span></div>
-                        </div>
-                        
-                        <p id="auth-subtitle" style="display:none;"></p>
-                        
-                        <!-- Inputs -->
-                        <div style="display: flex; flex-direction: column; gap: 20px;">
-                            
-                            <!-- Register Only Fields -->
-                            <div id="auth-register-fields" style="display: none; flex-direction: column; gap: 20px;">
-                                <div style="display: flex; gap: 15px;">
-                                    <div style="position: relative; flex: 1;">
-                                        <i class="fa-regular fa-user" style="position: absolute; left: 20px; top: 50%; transform: translateY(-50%); color: rgba(255,255,255,0.4); font-size: 1.1rem;"></i>
-                                        <input class="premium-input" type="text" id="auth-firstname" placeholder="Nombres" style="width: 100%; padding: 18px 20px 18px 52px; border-radius: 14px; border: 1px solid rgba(255,255,255,0.1); background: rgba(255,255,255,0.03); color: white; outline: none; font-family: inherit; font-size: 1.05rem; transition: all 0.3s;">
-                                    </div>
-                                    <div style="position: relative; flex: 1;">
-                                        <input class="premium-input" type="text" id="auth-lastname" placeholder="Apellidos" style="width: 100%; padding: 18px 20px; border-radius: 14px; border: 1px solid rgba(255,255,255,0.1); background: rgba(255,255,255,0.03); color: white; outline: none; font-family: inherit; font-size: 1.05rem; transition: all 0.3s;">
-                                    </div>
-                                </div>
-                                <div style="position: relative;">
-                                    <i class="fa-solid fa-cake-candles" style="position: absolute; left: 20px; top: 50%; transform: translateY(-50%); color: rgba(255,255,255,0.4); font-size: 1.1rem;"></i>
-                                    <input class="premium-input" type="number" id="auth-age" placeholder="Edad (ej. 10)" min="4" max="99" style="width: 100%; padding: 18px 20px 18px 52px; border-radius: 14px; border: 1px solid rgba(255,255,255,0.1); background: rgba(255,255,255,0.03); color: white; outline: none; font-family: inherit; font-size: 1.05rem; transition: all 0.3s;">
-                                </div>
-                                <div style="position: relative;">
-                                    <i class="fa-solid fa-envelope-open-text" style="position: absolute; left: 20px; top: 50%; transform: translateY(-50%); color: rgba(255,255,255,0.4); font-size: 1.1rem;"></i>
-                                    <input class="premium-input" type="email" id="auth-parent-email" placeholder="Correo de tus padres (Obligatorio)" style="width: 100%; padding: 18px 20px 18px 52px; border-radius: 14px; border: 1px solid rgba(255,255,255,0.1); background: rgba(255,255,255,0.03); color: white; outline: none; font-family: inherit; font-size: 1.05rem; transition: all 0.3s;" required>
-                                </div>
-                            </div>
-                            <div style="position: relative;">
-                                <i class="fa-regular fa-envelope" style="position: absolute; left: 20px; top: 50%; transform: translateY(-50%); color: rgba(255,255,255,0.4); font-size: 1.1rem;"></i>
-                                <input class="premium-input" type="email" id="auth-email" placeholder="Correo electrónico" style="width: 100%; padding: 18px 20px 18px 52px; border-radius: 14px; border: 1px solid rgba(255,255,255,0.1); background: rgba(255,255,255,0.03); color: white; outline: none; font-family: inherit; font-size: 1.05rem; transition: all 0.3s;">
-                            </div>
-                            <div style="position: relative;">
-                                <i class="fa-solid fa-lock" style="position: absolute; left: 20px; top: 50%; transform: translateY(-50%); color: rgba(255,255,255,0.4); font-size: 1.1rem;"></i>
-                                <input class="premium-input" type="password" id="auth-password" placeholder="Contraseña" style="width: 100%; padding: 18px 20px 18px 52px; border-radius: 14px; border: 1px solid rgba(255,255,255,0.1); background: rgba(255,255,255,0.03); color: white; outline: none; font-family: inherit; font-size: 1.05rem; transition: all 0.3s;">
-                            </div>
-                        </div>
-                        
-                        <button class="premium-btn" id="btn-auth-submit" style="width: 100%; margin-top: 35px; padding: 20px; background: #38bdf8; color: #0f172a; border: none; border-radius: 14px; font-weight: 900; font-size: 1.1rem; letter-spacing: 0.5px; cursor: pointer; display: flex; justify-content: center; align-items: center; gap: 10px; transition: all 0.3s; box-shadow: 0 10px 25px rgba(56, 189, 248, 0.3);">
-                            INGRESAR AL PORTAL <i class="fa-solid fa-arrow-right"></i>
-                        </button>
-                    </div>
-                </div>
-
-                <!-- Right Side: Beautiful Graphic Panel -->
-                <style>
-                    @media (min-width: 1000px) {
-                        #auth-graphic-side { display: block !important; }
-                    }
-                </style>
-                <div id="auth-graphic-side" style="display: none; flex: 1; margin: 20px 20px 20px 0; border-radius: 30px; background: #080c16; position: relative; overflow: hidden; box-shadow: inset 0 0 0 1px rgba(255,255,255,0.05); animation: slideInRight 0.8s cubic-bezier(0.22, 1, 0.36, 1) forwards;">
-                    
-                    <!-- Abstract Tech Grid Overlay -->
-                    <div style="position: absolute; inset: 0; background-image: linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px); background-size: 40px 40px; opacity: 0.6;"></div>
-
-                    <!-- Vibrant Mesh Blobs -->
-                    <div style="position: absolute; top: -15%; left: -15%; width: 70%; height: 70%; background: radial-gradient(circle, #38bdf8 0%, transparent 70%); opacity: 0.35; filter: blur(60px); animation: drift 12s ease-in-out infinite alternate;"></div>
-                    <div style="position: absolute; bottom: -15%; right: -15%; width: 80%; height: 80%; background: radial-gradient(circle, #818cf8 0%, transparent 70%); opacity: 0.25; filter: blur(70px); animation: drift 18s ease-in-out infinite alternate-reverse;"></div>
-                    <div style="position: absolute; top: 30%; left: 20%; width: 60%; height: 60%; background: radial-gradient(circle, #c084fc 0%, transparent 70%); opacity: 0.15; filter: blur(80px); animation: floatCard 10s ease-in-out infinite alternate;"></div>
-                    
-                    <!-- Decorative Floating Elements -->
-                    <div style="position: absolute; top: 15%; right: 10%; width: 120px; height: 120px; border-radius: 50%; border: 1px solid rgba(255,255,255,0.1); backdrop-filter: blur(5px); animation: floatCard 8s ease-in-out infinite alternate;"></div>
-                    <div style="position: absolute; bottom: 20%; left: 8%; width: 70px; height: 70px; border-radius: 50%; border: 1px solid rgba(56,189,248,0.2); backdrop-filter: blur(5px); animation: floatCard 6s ease-in-out infinite alternate-reverse;"></div>
-
-                    <!-- Floating Glassmorphism Quote Card -->
-                    <div class="quote-card-float" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 85%; max-width: 460px; padding: 45px; background: rgba(255, 255, 255, 0.03); backdrop-filter: blur(35px); -webkit-backdrop-filter: blur(35px); border: 1px solid rgba(255, 255, 255, 0.15); border-radius: 28px; box-shadow: 0 40px 80px rgba(0,0,0,0.8), inset 0 1px 0 rgba(255,255,255,0.2);">
-                        <i class="fa-solid fa-quote-left" style="background: linear-gradient(135deg, #38bdf8, #a78bfa); -webkit-background-clip: text; background-clip: text; color: transparent; font-size: 3rem; margin-bottom: 25px; display: inline-block;"></i>
-                        <div id="auth-quote-content" style="transition: opacity 0.5s ease-in-out;">
-                            <p id="auth-quote-text" style="color: rgba(255,255,255,0.95); font-size: 1.7rem; font-weight: 600; line-height: 1.4; margin-bottom: 35px; letter-spacing: -0.5px;">"La educación del futuro no trata de memorizar, sino de entrenar la adaptabilidad y la lógica."</p>
-                            <div style="display: flex; align-items: center; gap: 18px;">
-                                <div id="auth-quote-avatar" style="width: 55px; height: 55px; border-radius: 16px; background: linear-gradient(135deg, #38bdf8, #818cf8); display: flex; align-items: center; justify-content: center; font-weight: 900; font-size: 1.3rem; color: #070a13; box-shadow: 0 10px 25px rgba(56, 189, 248, 0.4);">NS</div>
-                                <div style="display: flex; flex-direction: column;">
-                                    <strong id="auth-quote-author" style="color: white; font-weight: 800; font-size: 1.15rem;">Equipo NeuroSpark</strong>
-                                    <span id="auth-quote-role" style="color: #38bdf8; font-size: 0.95rem; font-weight: 600;">Plataforma Educativa IA</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        </div>
 
         </div>
 
@@ -817,54 +688,6 @@
         </div>
 
         <script>
-            // --- Quote Rotator Logic ---
-            const authQuotes = [
-                {
-                    text: '"La educación del futuro no trata de memorizar, sino de entrenar la adaptabilidad y la lógica."',
-                    avatar: 'NS',
-                    author: 'Equipo NeuroSpark',
-                    role: 'Plataforma Educativa IA',
-                    bg: 'linear-gradient(135deg, #38bdf8, #818cf8)'
-                },
-                {
-                    text: '"El cerebro es como un músculo. Con el estímulo correcto y retos adaptativos, su capacidad es ilimitada."',
-                    avatar: 'IA',
-                    author: 'Sparky AI',
-                    role: 'Asistente Cognitivo',
-                    bg: 'linear-gradient(135deg, #a78bfa, #c084fc)'
-                },
-                {
-                    text: '"NeuroSpark ha transformado mi forma de aprender. Ahora el estudio es interactivo y muy divertido."',
-                    avatar: 'LD',
-                    author: 'Lucas D.',
-                    role: 'Estudiante Top 1%',
-                    bg: 'linear-gradient(135deg, #34d399, #10b981)'
-                }
-            ];
-
-            let currentQuoteIndex = 0;
-            setInterval(() => {
-                const contentDiv = document.getElementById('auth-quote-content');
-                if(!contentDiv) return;
-                
-                // Fade out
-                contentDiv.style.opacity = '0';
-                
-                setTimeout(() => {
-                    currentQuoteIndex = (currentQuoteIndex + 1) % authQuotes.length;
-                    const q = authQuotes[currentQuoteIndex];
-                    
-                    document.getElementById('auth-quote-text').innerText = q.text;
-                    document.getElementById('auth-quote-avatar').innerText = q.avatar;
-                    document.getElementById('auth-quote-author').innerText = q.author;
-                    document.getElementById('auth-quote-role').innerText = q.role;
-                    document.getElementById('auth-quote-avatar').style.background = q.bg;
-                    
-                    // Fade in
-                    contentDiv.style.opacity = '1';
-                }, 500); // wait for fade out to complete
-            }, 30000); // 30 seconds
-
             window.dismissAuthOverlay = function() {
                 const overlay = document.getElementById('auth-overlay');
                 if (!overlay) return;
