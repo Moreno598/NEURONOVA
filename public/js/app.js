@@ -1154,8 +1154,7 @@ class NeuroSparkApp {
                 const { authController } = await import('./auth/authController.js');
                 await authController.logout();
                 localStorage.removeItem('neurospark_state');
-                overlay.classList.remove('open');
-                this.showToast('Sesión cerrada correctamente.', 'info');
+                window.location.reload();
             } catch (err) {
                 console.error('Logout error:', err);
                 this.showToast('Error al cerrar sesión.', 'warning');
