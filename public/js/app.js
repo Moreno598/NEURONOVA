@@ -342,53 +342,183 @@ class NeuroSparkApp {
         }
 
         overlay.innerHTML = `
-            <div id="admin-panel-modal-inner" class="settings-modal" style="padding: 0; overflow: hidden; position: relative;">
+            <div id="admin-panel-modal-inner" class="settings-modal" style="padding: 0; overflow: hidden; position: relative; max-height: 90vh; display: flex; flex-direction: column;">
                 <div class="admin-shimmer-bar"></div>
-                <div style="background: linear-gradient(135deg, #1e293b, #0f172a); padding: 30px 40px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid rgba(255,255,255,0.08);">
-                    <h2 style="font-size: 1.8rem; color: white; display: flex; align-items: center; gap: 14px; margin: 0;">
+
+                <!-- Header -->
+                <div style="background: linear-gradient(135deg, #1e293b, #0f172a); padding: 24px 36px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid rgba(255,255,255,0.08); flex-shrink: 0;">
+                    <h2 style="font-size: 1.6rem; color: white; display: flex; align-items: center; gap: 12px; margin: 0;">
                         <i class="fa-solid fa-shield-halved" style="color: #a78bfa;"></i> Panel de Administración
                     </h2>
-                    <button id="btn-close-admin" style="background: rgba(255,255,255,0.08); border: none; color: white; width: 38px; height: 38px; border-radius: 50%; font-size: 1.1rem; cursor: pointer;">
+                    <button id="btn-close-admin" style="background: rgba(255,255,255,0.08); border: none; color: white; width: 36px; height: 36px; border-radius: 50%; font-size: 1rem; cursor: pointer; transition: background 0.2s, transform 0.2s;">
                         <i class="fa-solid fa-xmark"></i>
                     </button>
                 </div>
-                <div style="padding: 35px 40px; display: flex; flex-direction: column; gap: 28px;">
-                    <p style="color: var(--text-muted); margin: 0; font-size: 1rem;">Asigna roles de acceso especial a usuarios registrados en la plataforma.</p>
-                    <div style="display: flex; gap: 16px; flex-wrap: wrap;">
-                        <input type="email" id="admin-search-email" placeholder="correo@ejemplo.com" style="flex: 1; min-width: 220px; padding: 16px; border-radius: 12px; border: 2px solid var(--border-color); background: rgba(0,0,0,0.25); color: var(--text-main); font-size: 1rem; outline: none; transition: border-color 0.3s;">
-                        <select id="admin-role-select" style="padding: 16px; border-radius: 12px; border: 2px solid var(--border-color); background: #1e293b; color: white; font-size: 1rem; outline: none; cursor: pointer; min-width: 220px;">
-                            <option value="padre">Padre / Apoderado</option>
-                            <option value="docente">Docente / Especialista</option>
-                        </select>
-                        <button id="btn-assign-role" class="play-btn" style="background: linear-gradient(135deg, #7c3aed, #1d4ed8); padding: 0 32px; font-size: 1rem; border-radius: 12px; height: 54px; white-space: nowrap;">
-                            <i class="fa-solid fa-check"></i> Asignar Rol
-                        </button>
+
+                <!-- Scrollable body -->
+                <div style="padding: 28px 36px; display: flex; flex-direction: column; gap: 24px; overflow-y: auto;">
+
+                    <!-- Usuarios Registrados -->
+                    <div>
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
+                            <h4 style="margin: 0; color: white; font-size: 1.15rem; display: flex; align-items: center; gap: 10px;">
+                                <i class="fa-solid fa-users" style="color: #38bdf8;"></i> Usuarios Registrados
+                                <span id="admin-user-count" style="background: rgba(56,189,248,0.15); border: 1px solid rgba(56,189,248,0.3); color: #38bdf8; padding: 2px 10px; border-radius: 20px; font-size: 0.8rem; font-weight: 700;">…</span>
+                            </h4>
+                            <button id="btn-refresh-users" style="background: rgba(56,189,248,0.1); border: 1px solid rgba(56,189,248,0.25); color: #38bdf8; padding: 6px 14px; border-radius: 8px; cursor: pointer; font-size: 0.85rem; font-weight: 600; transition: all 0.2s;">
+                                <i class="fa-solid fa-rotate-right"></i> Actualizar
+                            </button>
+                        </div>
+
+                        <!-- Search bar -->
+                        <input type="text" id="admin-user-search" placeholder="🔍  Buscar por nombre o correo..." style="width: 100%; padding: 12px 16px; border-radius: 10px; border: 1.5px solid var(--border-color); background: rgba(0,0,0,0.25); color: var(--text-main); font-size: 0.95rem; outline: none; margin-bottom: 14px; transition: border-color 0.3s; font-family: inherit;">
+
+                        <!-- Table -->
+                        <div style="overflow-x: auto; border-radius: 12px; border: 1px solid rgba(255,255,255,0.07);">
+                            <table id="admin-users-table" style="width: 100%; border-collapse: collapse; font-size: 0.9rem;">
+                                <thead>
+                                    <tr style="background: rgba(255,255,255,0.04); border-bottom: 1px solid rgba(255,255,255,0.08);">
+                                        <th style="padding: 12px 16px; text-align: left; color: rgba(255,255,255,0.5); font-weight: 600; font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.5px;">Estudiante</th>
+                                        <th style="padding: 12px 16px; text-align: left; color: rgba(255,255,255,0.5); font-weight: 600; font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.5px;">Correo</th>
+                                        <th style="padding: 12px 16px; text-align: center; color: rgba(255,255,255,0.5); font-weight: 600; font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.5px;">Edad</th>
+                                        <th style="padding: 12px 16px; text-align: center; color: rgba(255,255,255,0.5); font-weight: 600; font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.5px;">Perfil</th>
+                                        <th style="padding: 12px 16px; text-align: center; color: rgba(255,255,255,0.5); font-weight: 600; font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.5px;">NeuroCoins</th>
+                                        <th style="padding: 12px 16px; text-align: center; color: rgba(255,255,255,0.5); font-weight: 600; font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.5px;">Nivel</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="admin-users-tbody">
+                                    <tr><td colspan="6" style="text-align:center; padding: 30px; color: var(--text-muted);">
+                                        <i class="fa-solid fa-spinner fa-spin" style="margin-right:8px;"></i>Cargando usuarios...
+                                    </td></tr>
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
 
-                    <p style="color: var(--text-muted); margin: 10px 0 0; font-size: 1rem;">Otorga NeuroCoins a los estudiantes para recompensar su esfuerzo.</p>
-                    <div style="display: flex; gap: 16px; flex-wrap: wrap;">
-                        <input type="email" id="admin-coins-email" placeholder="correo_estudiante@ejemplo.com" style="flex: 1; min-width: 220px; padding: 16px; border-radius: 12px; border: 2px solid var(--border-color); background: rgba(0,0,0,0.25); color: var(--text-main); font-size: 1rem; outline: none; transition: border-color 0.3s;">
-                        <input type="number" id="admin-coins-amount" placeholder="Cantidad (ej. 500)" style="width: 150px; padding: 16px; border-radius: 12px; border: 2px solid var(--border-color); background: #1e293b; color: white; font-size: 1rem; outline: none;">
-                        <button id="btn-add-coins" class="play-btn" style="background: linear-gradient(135deg, #f59e0b, #d97706); padding: 0 32px; font-size: 1rem; border-radius: 12px; height: 54px; white-space: nowrap;">
-                            <i class="fa-solid fa-coins"></i> Dar Coins
-                        </button>
+                    <!-- Separator -->
+                    <div style="border-top: 1px solid rgba(255,255,255,0.06);"></div>
+
+                    <!-- Dar Coins -->
+                    <div>
+                        <p style="color: var(--text-muted); margin: 0 0 14px; font-size: 0.95rem;"><i class="fa-solid fa-coins" style="color:#f59e0b; margin-right:6px;"></i>Otorga NeuroCoins a un estudiante.</p>
+                        <div style="display: flex; gap: 12px; flex-wrap: wrap;">
+                            <input type="email" id="admin-coins-email" placeholder="correo_estudiante@ejemplo.com" style="flex: 1; min-width: 200px; padding: 14px; border-radius: 10px; border: 2px solid var(--border-color); background: rgba(0,0,0,0.25); color: var(--text-main); font-size: 0.95rem; outline: none; transition: border-color 0.3s;">
+                            <input type="number" id="admin-coins-amount" placeholder="Cantidad" style="width: 130px; padding: 14px; border-radius: 10px; border: 2px solid var(--border-color); background: #1e293b; color: white; font-size: 0.95rem; outline: none;">
+                            <button id="btn-add-coins" class="play-btn" style="background: linear-gradient(135deg, #f59e0b, #d97706); padding: 0 28px; font-size: 0.95rem; border-radius: 10px; height: 50px; white-space: nowrap;">
+                                <i class="fa-solid fa-coins"></i> Dar Coins
+                            </button>
+                        </div>
                     </div>
-                    <div style="border-top: 1px solid var(--border-color); padding-top: 24px;">
-                        <h4 style="margin: 0 0 18px 0; color: white; font-size: 1.1rem;"><i class="fa-solid fa-clock-rotate-left" style="margin-right: 8px;"></i>Asignaciones Recientes</h4>
-                        <div id="admin-log-list" style="display: flex; flex-direction: column; gap: 12px; max-height: 240px; overflow-y: auto;">
-                            <div style="padding: 16px 20px; background: rgba(255,255,255,0.03); border-radius: 10px; border: 1px solid rgba(255,255,255,0.05); display: flex; justify-content: space-between; align-items: center;">
-                                <span style="font-size: 0.95rem; color: var(--text-muted);"><i class="fa-solid fa-circle-info" style="margin-right: 8px;"></i>Aún no hay asignaciones en esta sesión.</span>
-                            </div>
+
+                    <!-- Asignar Rol -->
+                    <div>
+                        <p style="color: var(--text-muted); margin: 0 0 14px; font-size: 0.95rem;"><i class="fa-solid fa-user-shield" style="color:#a78bfa; margin-right:6px;"></i>Asigna un rol especial a un usuario.</p>
+                        <div style="display: flex; gap: 12px; flex-wrap: wrap;">
+                            <input type="email" id="admin-search-email" placeholder="correo@ejemplo.com" style="flex: 1; min-width: 200px; padding: 14px; border-radius: 10px; border: 2px solid var(--border-color); background: rgba(0,0,0,0.25); color: var(--text-main); font-size: 0.95rem; outline: none; transition: border-color 0.3s;">
+                            <select id="admin-role-select" style="padding: 14px; border-radius: 10px; border: 2px solid var(--border-color); background: #1e293b; color: white; font-size: 0.95rem; outline: none; cursor: pointer; min-width: 190px;">
+                                <option value="padre">Padre / Apoderado</option>
+                                <option value="docente">Docente / Especialista</option>
+                            </select>
+                            <button id="btn-assign-role" class="play-btn" style="background: linear-gradient(135deg, #7c3aed, #1d4ed8); padding: 0 28px; font-size: 0.95rem; border-radius: 10px; height: 50px; white-space: nowrap;">
+                                <i class="fa-solid fa-check"></i> Asignar Rol
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Log -->
+                    <div id="admin-log-list" style="display: flex; flex-direction: column; gap: 10px; max-height: 180px; overflow-y: auto;">
+                        <div style="padding: 14px 18px; background: rgba(255,255,255,0.03); border-radius: 10px; border: 1px solid rgba(255,255,255,0.05); display: flex; justify-content: space-between; align-items: center;">
+                            <span style="font-size: 0.9rem; color: var(--text-muted);"><i class="fa-solid fa-circle-info" style="margin-right: 8px;"></i>Aún no hay asignaciones en esta sesión.</span>
                         </div>
                     </div>
                 </div>
             </div>
         `;
 
+
         overlay.classList.add('open');
 
         document.getElementById('btn-close-admin').addEventListener('click', () => overlay.classList.remove('open'));
         overlay.addEventListener('click', e => { if (e.target === overlay) overlay.classList.remove('open'); });
+
+        // ── Load & render users table ──────────────────────────────
+        let allUsers = [];
+
+        const profileLabel = { kids: '🧒 Niños', teens: '🧑 Adolescentes', adults: '👨 Adultos', admin: '🛡️ Admin' };
+        const profileColor = { kids: '#38bdf8', teens: '#a78bfa', adults: '#22c55e', admin: '#f59e0b' };
+
+        const renderUsersTable = (users) => {
+            const tbody = document.getElementById('admin-users-tbody');
+            if (!tbody) return;
+            if (!users.length) {
+                tbody.innerHTML = `<tr><td colspan="6" style="text-align:center; padding: 30px; color: var(--text-muted);">
+                    <i class="fa-solid fa-user-slash" style="margin-right:8px;"></i>No se encontraron usuarios.
+                </td></tr>`;
+                return;
+            }
+            tbody.innerHTML = users.map((u, idx) => {
+                const s = u.state_data || {};
+                const name  = s.activeProfileName || '—';
+                const age   = s.age || '—';
+                const prof  = s.profile || 'kids';
+                const coins = (s.coins ?? 0).toLocaleString();
+                const level = s.level || 1;
+                const color = profileColor[prof] || '#38bdf8';
+                const label = profileLabel[prof] || prof;
+                const initials = name !== '—' ? name.split(' ').map(w => w[0]).join('').slice(0,2).toUpperCase() : '?';
+                return `<tr style="border-bottom: 1px solid rgba(255,255,255,0.04); transition: background 0.2s;" 
+                    onmouseover="this.style.background='rgba(255,255,255,0.03)'" 
+                    onmouseout="this.style.background='transparent'">
+                    <td style="padding: 13px 16px;">
+                        <div style="display:flex; align-items:center; gap:12px;">
+                            <div style="width:36px;height:36px;border-radius:10px;background:linear-gradient(135deg,${color}33,${color}22);border:1px solid ${color}44;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:0.8rem;color:${color};flex-shrink:0;">${initials}</div>
+                            <span style="color:white;font-weight:600;">${name}</span>
+                        </div>
+                    </td>
+                    <td style="padding: 13px 16px; color: rgba(255,255,255,0.65); font-size:0.85rem;">${u.email}</td>
+                    <td style="padding: 13px 16px; text-align:center; color: white; font-weight:600;">${age}</td>
+                    <td style="padding: 13px 16px; text-align:center;">
+                        <span style="background:${color}22;border:1px solid ${color}44;color:${color};padding:3px 10px;border-radius:20px;font-size:0.78rem;font-weight:700;white-space:nowrap;">${label}</span>
+                    </td>
+                    <td style="padding: 13px 16px; text-align:center;">
+                        <span style="color:#fbbf24;font-weight:700;"><i class="fa-solid fa-coins" style="margin-right:4px;font-size:0.8rem;"></i>${coins}</span>
+                    </td>
+                    <td style="padding: 13px 16px; text-align:center;">
+                        <span style="background:rgba(167,139,250,0.15);border:1px solid rgba(167,139,250,0.3);color:#a78bfa;padding:3px 10px;border-radius:20px;font-size:0.8rem;font-weight:700;">Lv. ${level}</span>
+                    </td>
+                </tr>`;
+            }).join('');
+        };
+
+        const loadUsers = async () => {
+            const tbody = document.getElementById('admin-users-tbody');
+            const countBadge = document.getElementById('admin-user-count');
+            if (tbody) tbody.innerHTML = `<tr><td colspan="6" style="text-align:center;padding:30px;color:var(--text-muted);"><i class="fa-solid fa-spinner fa-spin" style="margin-right:8px;"></i>Cargando...</td></tr>`;
+            allUsers = await authController.getAllUsers();
+            if (countBadge) countBadge.textContent = allUsers.length;
+            renderUsersTable(allUsers);
+        };
+
+        loadUsers();
+
+        document.getElementById('btn-refresh-users')?.addEventListener('click', loadUsers);
+
+        document.getElementById('admin-user-search')?.addEventListener('input', function() {
+            const q = this.value.trim().toLowerCase();
+            if (!q) { renderUsersTable(allUsers); return; }
+            const filtered = allUsers.filter(u => {
+                const name = ((u.state_data || {}).activeProfileName || '').toLowerCase();
+                return u.email.toLowerCase().includes(q) || name.includes(q);
+            });
+            renderUsersTable(filtered);
+        });
+
+        // Focus styles for search
+        const userSearch = document.getElementById('admin-user-search');
+        if (userSearch) {
+            userSearch.addEventListener('focus', function() { this.style.borderColor = '#38bdf8'; });
+            userSearch.addEventListener('blur', function() { this.style.borderColor = 'var(--border-color)'; });
+        }
 
         const emailInput = document.getElementById('admin-search-email');
         emailInput.addEventListener('focus', function() { this.style.borderColor = '#7c3aed'; });

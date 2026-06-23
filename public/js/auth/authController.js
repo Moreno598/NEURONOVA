@@ -82,5 +82,19 @@ export const authController = {
         supabase.auth.onAuthStateChange((event, session) => {
             callback(event, session);
         });
+    },
+
+    async getAllUsers() {
+        try {
+            const { data, error } = await supabase
+                .from('user_profiles')
+                .select('email, state_data')
+                .order('email', { ascending: true });
+            if (error) throw error;
+            return data || [];
+        } catch (e) {
+            console.error('Error obteniendo usuarios:', e);
+            return [];
+        }
     }
 };
