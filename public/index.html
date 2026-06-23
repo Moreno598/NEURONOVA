@@ -220,13 +220,31 @@
             <!-- Right Actions (Accessibility + Register Button) -->
             <div style="display: flex; align-items: center; gap: 20px;">
 
-                <!-- Registrarse Button -->
+                <!-- Logout Button (Hidden by default, shown if logged in) -->
+                <div id="btn-nav-logout" onclick="logoutFromLanding()" style="display: none; align-items: center; gap: 8px; background: rgba(239, 68, 68, 0.15); border: 1px solid rgba(239, 68, 68, 0.4); padding: 8px 20px; border-radius: 30px; cursor: pointer; transition: all 0.3s; box-shadow: 0 0 15px rgba(239, 68, 68, 0.2);">
+                    <i class="fa-solid fa-right-from-bracket" style="color: #ef4444; font-size: 0.9rem;"></i>
+                    <span style="color: white; font-weight: 800; font-size: 0.9rem; letter-spacing: 0.5px;">Cerrar Sesión</span>
+                </div>
+
+                <!-- Registrarse / Ir a Juegos Button -->
                 <div id="btn-nav-register" onclick="openAuthModal()" style="display: flex; align-items: center; gap: 8px; background: rgba(56, 189, 248, 0.15); border: 1px solid rgba(56, 189, 248, 0.4); padding: 8px 20px; border-radius: 30px; cursor: pointer; transition: all 0.3s; box-shadow: 0 0 15px rgba(56, 189, 248, 0.2);">
                     <i class="fa-solid fa-user-plus" style="color: #38bdf8; font-size: 0.9rem;"></i>
                     <span style="color: white; font-weight: 800; font-size: 0.9rem; letter-spacing: 0.5px;">Registrarse</span>
                 </div>
             </div>
         </div>
+
+        <script>
+            window.logoutFromLanding = async function() {
+                try {
+                    const { authController } = await import('./js/auth/authController.js');
+                    await authController.logout();
+                    window.location.reload();
+                } catch(e) {
+                    console.error("Error al cerrar sesión", e);
+                }
+            };
+        </script>
 
         <!-- Main Split Content Container -->
         <div style="flex: 1; display: flex; align-items: center; justify-content: center; gap: 5vw; padding: 20px 5vw 40px 5vw; z-index: 2; flex-wrap: wrap;">

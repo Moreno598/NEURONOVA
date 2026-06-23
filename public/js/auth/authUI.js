@@ -38,7 +38,7 @@ export class AuthUI {
             window.isUserLoggedIn = !!session;
 
             if (session) {
-                if (event === 'SIGNED_IN') {
+                if (window.hasManuallyLoggedIn) {
                     if (window.dismissAuthOverlay) {
                         window.dismissAuthOverlay();
                     } else {
@@ -48,10 +48,13 @@ export class AuthUI {
                         document.body.style.overflow = '';
                     }
                 } else {
-                    // Update buttons for logged in users (INITIAL_SESSION)
+                    // Update buttons for logged in users (INITIAL_SESSION / Page Reload)
                     const btnNav = document.getElementById('btn-nav-register');
                     if (btnNav) btnNav.innerHTML = '<i class="fa-solid fa-gamepad" style="color: #38bdf8; font-size: 0.9rem;"></i><span style="color: white; font-weight: 800; font-size: 0.9rem; letter-spacing: 0.5px;">Ir a Juegos</span>';
                     
+                    const btnLogout = document.getElementById('btn-nav-logout');
+                    if (btnLogout) btnLogout.style.display = 'flex';
+
                     const btnComenzar = document.querySelector('.premium-btn');
                     if (btnComenzar && btnComenzar.innerText.includes('COMENZAR')) {
                         btnComenzar.innerHTML = 'IR A LOS JUEGOS <i class="fa-solid fa-gamepad"></i>';
@@ -144,6 +147,7 @@ export class AuthUI {
 
                 if (this.isLoginMode) {
                     await authController.login(email, password);
+                    window.hasManuallyLoggedIn = true;
                     localStorage.setItem('ns_saved_email', email);
                     localStorage.setItem('ns_saved_password', password);
                 } else {
@@ -161,6 +165,7 @@ export class AuthUI {
                         lastName,
                         age: parseInt(age, 10)
                     });
+                    window.hasManuallyLoggedIn = true;
                     
                     // Save the parent email to the 'correos' table
                     try {
