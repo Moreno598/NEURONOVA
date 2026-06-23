@@ -285,8 +285,8 @@ class NeuroSparkApp {
         const themeClass = document.body.classList.contains('light-theme') ? ' light-theme' : ' dark-theme';
 
         if (this.state.profile === 'admin') {
-            document.body.className = 'admin-mode' + themeClass + lowStim;
-            this.renderAdminHome(mount);
+            document.body.className = 'teens-mode admin-games-mode' + themeClass + lowStim;
+            this.renderAdminGamesHome(mount);
         } else if (this.state.profile === 'kids') {
             document.body.className = 'kids-mode' + themeClass + lowStim;
             this.renderKidsHome(mount);
@@ -332,7 +332,10 @@ class NeuroSparkApp {
             btnGames.parentNode.replaceChild(freshGames, btnGames);
             
             // Set initial state based on current profile
-            if (this.state.profile === 'adults') {
+            if (this.state.isAdmin) {
+                freshGames.innerHTML = '<i class="fa-solid fa-shield-halved"></i>';
+                freshGames.title = "Abrir Panel Admin";
+            } else if (this.state.profile === 'adults') {
                 freshGames.innerHTML = '<i class="fa-solid fa-gamepad"></i>';
                 freshGames.title = "Modo Juegos";
             } else {
@@ -341,7 +344,15 @@ class NeuroSparkApp {
             }
 
             freshGames.addEventListener('click', () => {
-                if (this.state.profile === 'adults') {
+                if (this.state.isAdmin) {
+                    // Admin toggles between admin-games view and admin panel modal
+                    if (this.state.profile === 'admin') {
+                        this.openAdminPanel();
+                    } else {
+                        this.state.profile = 'admin';
+                        this.renderHome();
+                    }
+                } else if (this.state.profile === 'adults') {
                     this.changeProfileMode('kids');
                 } else {
                     this.changeProfileMode('adults');
@@ -380,9 +391,9 @@ class NeuroSparkApp {
                     <!-- Usuarios Registrados -->
                     <div>
                         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
-                            <h4 style="margin: 0; color: white; font-size: 1.15rem; display: flex; align-items: center; gap: 10px;">
-                                <i class="fa-solid fa-users" style="color: #38bdf8;"></i> Usuarios Registrados
-                                <span id="admin-user-count" style="background: rgba(56,189,248,0.15); border: 1px solid rgba(56,189,248,0.3); color: #38bdf8; padding: 2px 10px; border-radius: 20px; font-size: 0.8rem; font-weight: 700;">…</span>
+                            <h4 style="margin: 0; color: var(--text-main); font-size: 1.15rem; display: flex; align-items: center; gap: 10px;">
+                                <i class="fa-solid fa-users" style="color: var(--primary-blue);"></i> Usuarios Registrados
+                                <span id="admin-user-count" style="background: rgba(56,189,248,0.15); border: 1px solid rgba(56,189,248,0.3); color: var(--primary-blue); padding: 2px 10px; border-radius: 20px; font-size: 0.8rem; font-weight: 700;">…</span>
                             </h4>
                             <button id="btn-refresh-users" style="background: rgba(56,189,248,0.1); border: 1px solid rgba(56,189,248,0.25); color: #38bdf8; padding: 6px 14px; border-radius: 8px; cursor: pointer; font-size: 0.85rem; font-weight: 600; transition: all 0.2s;">
                                 <i class="fa-solid fa-rotate-right"></i> Actualizar
@@ -390,20 +401,20 @@ class NeuroSparkApp {
                         </div>
 
                         <!-- Search bar -->
-                        <input type="text" id="admin-user-search" placeholder="🔍  Buscar por nombre o correo..." style="width: 100%; padding: 12px 16px; border-radius: 10px; border: 1.5px solid var(--border-color); background: rgba(0,0,0,0.25); color: var(--text-main); font-size: 0.95rem; outline: none; margin-bottom: 14px; transition: border-color 0.3s; font-family: inherit;">
+                        <input type="text" id="admin-user-search" placeholder="🔍  Buscar por nombre o correo..." style="width: 100%; padding: 12px 16px; border-radius: 10px; border: 1.5px solid var(--border-color); background: var(--bg-app); color: var(--text-main); font-size: 0.95rem; outline: none; margin-bottom: 14px; transition: border-color 0.3s; font-family: inherit;">
 
                         <!-- Table -->
-                        <div style="overflow-x: auto; border-radius: 12px; border: 1px solid rgba(255,255,255,0.07);">
+                        <div style="overflow-x: auto; border-radius: 12px; border: 1px solid var(--border-color);">
                             <table id="admin-users-table" style="width: 100%; border-collapse: collapse; font-size: 0.9rem;">
                                 <thead>
-                                    <tr style="background: rgba(255,255,255,0.04); border-bottom: 1px solid rgba(255,255,255,0.08);">
-                                        <th style="padding: 12px 16px; text-align: left; color: rgba(255,255,255,0.5); font-weight: 600; font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.5px;">Estudiante</th>
-                                        <th style="padding: 12px 16px; text-align: left; color: rgba(255,255,255,0.5); font-weight: 600; font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.5px;">Correo</th>
-                                        <th style="padding: 12px 16px; text-align: center; color: rgba(255,255,255,0.5); font-weight: 600; font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.5px;">Edad</th>
-                                        <th style="padding: 12px 16px; text-align: center; color: rgba(255,255,255,0.5); font-weight: 600; font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.5px;">Perfil</th>
-                                        <th style="padding: 12px 16px; text-align: center; color: rgba(255,255,255,0.5); font-weight: 600; font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.5px;">NeuroCoins</th>
-                                        <th style="padding: 12px 16px; text-align: center; color: rgba(255,255,255,0.5); font-weight: 600; font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.5px;">Nivel</th>
-                                        <th style="padding: 12px 16px; text-align: center; color: rgba(255,255,255,0.5); font-weight: 600; font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.5px;">Acciones</th>
+                                    <tr style="background: var(--bg-app); border-bottom: 1px solid var(--border-color);">
+                                        <th style="padding: 12px 16px; text-align: left; color: var(--text-muted); font-weight: 600; font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.5px;">Estudiante</th>
+                                        <th style="padding: 12px 16px; text-align: left; color: var(--text-muted); font-weight: 600; font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.5px;">Correo</th>
+                                        <th style="padding: 12px 16px; text-align: center; color: var(--text-muted); font-weight: 600; font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.5px;">Edad</th>
+                                        <th style="padding: 12px 16px; text-align: center; color: var(--text-muted); font-weight: 600; font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.5px;">Perfil</th>
+                                        <th style="padding: 12px 16px; text-align: center; color: var(--text-muted); font-weight: 600; font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.5px;">NeuroCoins</th>
+                                        <th style="padding: 12px 16px; text-align: center; color: var(--text-muted); font-weight: 600; font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.5px;">Nivel</th>
+                                        <th style="padding: 12px 16px; text-align: center; color: var(--text-muted); font-weight: 600; font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.5px;">Acciones</th>
                                     </tr>
                                 </thead>
                                 <tbody id="admin-users-tbody">
@@ -416,15 +427,15 @@ class NeuroSparkApp {
                     </div>
 
                     <!-- Separator -->
-                    <div style="border-top: 1px solid rgba(255,255,255,0.06);"></div>
+                    <div style="border-top: 1px solid var(--border-color);"></div>
 
                     <!-- Dar Coins -->
                     <div>
                         <p style="color: var(--text-muted); margin: 0 0 14px; font-size: 0.95rem;"><i class="fa-solid fa-coins" style="color:#f59e0b; margin-right:6px;"></i>Otorga NeuroCoins a un estudiante.</p>
                         <div style="display: flex; gap: 12px; flex-wrap: wrap;">
-                            <input type="email" id="admin-coins-email" placeholder="correo_estudiante@ejemplo.com" style="flex: 1; min-width: 200px; padding: 14px; border-radius: 10px; border: 2px solid var(--border-color); background: rgba(0,0,0,0.25); color: var(--text-main); font-size: 0.95rem; outline: none; transition: border-color 0.3s;">
-                            <input type="number" id="admin-coins-amount" placeholder="Cantidad" style="width: 130px; padding: 14px; border-radius: 10px; border: 2px solid var(--border-color); background: #1e293b; color: white; font-size: 0.95rem; outline: none;">
-                            <button id="btn-add-coins" class="play-btn" style="background: linear-gradient(135deg, #f59e0b, #d97706); padding: 0 28px; font-size: 0.95rem; border-radius: 10px; height: 50px; white-space: nowrap;">
+                            <input type="email" id="admin-coins-email" placeholder="correo_estudiante@ejemplo.com" style="flex: 1; min-width: 200px; padding: 14px; border-radius: 10px; border: 2px solid var(--border-color); background: var(--bg-app); color: var(--text-main); font-size: 0.95rem; outline: none; transition: border-color 0.3s;">
+                            <input type="number" id="admin-coins-amount" placeholder="Cantidad" style="width: 130px; padding: 14px; border-radius: 10px; border: 2px solid var(--border-color); background: var(--bg-app); color: var(--text-main); font-size: 0.95rem; outline: none;">
+                            <button id="btn-add-coins" class="play-btn" style="background: linear-gradient(135deg, #f59e0b, #d97706); color: white; padding: 0 28px; font-size: 0.95rem; border-radius: 10px; height: 50px; white-space: nowrap;">
                                 <i class="fa-solid fa-coins"></i> Dar Coins
                             </button>
                         </div>
@@ -434,12 +445,12 @@ class NeuroSparkApp {
                     <div>
                         <p style="color: var(--text-muted); margin: 0 0 14px; font-size: 0.95rem;"><i class="fa-solid fa-user-shield" style="color:#a78bfa; margin-right:6px;"></i>Asigna un rol especial a un usuario.</p>
                         <div style="display: flex; gap: 12px; flex-wrap: wrap;">
-                            <input type="email" id="admin-search-email" placeholder="correo@ejemplo.com" style="flex: 1; min-width: 200px; padding: 14px; border-radius: 10px; border: 2px solid var(--border-color); background: rgba(0,0,0,0.25); color: var(--text-main); font-size: 0.95rem; outline: none; transition: border-color 0.3s;">
-                            <select id="admin-role-select" style="padding: 14px; border-radius: 10px; border: 2px solid var(--border-color); background: #1e293b; color: white; font-size: 0.95rem; outline: none; cursor: pointer; min-width: 190px;">
+                            <input type="email" id="admin-search-email" placeholder="correo@ejemplo.com" style="flex: 1; min-width: 200px; padding: 14px; border-radius: 10px; border: 2px solid var(--border-color); background: var(--bg-app); color: var(--text-main); font-size: 0.95rem; outline: none; transition: border-color 0.3s;">
+                            <select id="admin-role-select" style="padding: 14px; border-radius: 10px; border: 2px solid var(--border-color); background: var(--bg-app); color: var(--text-main); font-size: 0.95rem; outline: none; cursor: pointer; min-width: 190px;">
                                 <option value="padre">Padre / Apoderado</option>
                                 <option value="docente">Docente / Especialista</option>
                             </select>
-                            <button id="btn-assign-role" class="play-btn" style="background: linear-gradient(135deg, #7c3aed, #1d4ed8); padding: 0 28px; font-size: 0.95rem; border-radius: 10px; height: 50px; white-space: nowrap;">
+                            <button id="btn-assign-role" class="play-btn" style="background: linear-gradient(135deg, #7c3aed, #1d4ed8); color: white; padding: 0 28px; font-size: 0.95rem; border-radius: 10px; height: 50px; white-space: nowrap;">
                                 <i class="fa-solid fa-check"></i> Asignar Rol
                             </button>
                         </div>
@@ -447,7 +458,7 @@ class NeuroSparkApp {
 
                     <!-- Log -->
                     <div id="admin-log-list" style="display: flex; flex-direction: column; gap: 10px; max-height: 180px; overflow-y: auto;">
-                        <div style="padding: 14px 18px; background: rgba(255,255,255,0.03); border-radius: 10px; border: 1px solid rgba(255,255,255,0.05); display: flex; justify-content: space-between; align-items: center;">
+                        <div style="padding: 14px 18px; background: var(--bg-app); border-radius: 10px; border: 1px solid var(--border-color); display: flex; justify-content: space-between; align-items: center;">
                             <span style="font-size: 0.9rem; color: var(--text-muted);"><i class="fa-solid fa-circle-info" style="margin-right: 8px;"></i>Aún no hay asignaciones en esta sesión.</span>
                         </div>
                     </div>
@@ -486,17 +497,17 @@ class NeuroSparkApp {
                 const color = profileColor[prof] || '#38bdf8';
                 const label = profileLabel[prof] || prof;
                 const initials = name !== '—' ? name.split(' ').map(w => w[0]).join('').slice(0,2).toUpperCase() : '?';
-                return `<tr style="border-bottom: 1px solid rgba(255,255,255,0.04); transition: background 0.2s;" 
-                    onmouseover="this.style.background='rgba(255,255,255,0.03)'" 
+                return `<tr style="border-bottom: 1px solid var(--border-color); transition: background 0.2s;" 
+                    onmouseover="this.style.background='var(--bg-hover)'" 
                     onmouseout="this.style.background='transparent'">
                     <td style="padding: 13px 16px;">
                         <div style="display:flex; align-items:center; gap:12px;">
-                            <div style="width:36px;height:36px;border-radius:10px;background:linear-gradient(135deg,${color}33,${color}22);border:1px solid ${color}44;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:0.8rem;color:${color};flex-shrink:0;">${initials}</div>
-                            <span style="color:white;font-weight:600;">${name}</span>
+                            <div style="width:36px;height:36px;border-radius:10px;background:${color}22;border:1px solid ${color}44;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:0.8rem;color:${color};flex-shrink:0;">${initials}</div>
+                            <span style="color:var(--text-main);font-weight:600;">${name}</span>
                         </div>
                     </td>
-                    <td style="padding: 13px 16px; color: rgba(255,255,255,0.65); font-size:0.85rem;">${u.email}</td>
-                    <td style="padding: 13px 16px; text-align:center; color: white; font-weight:600;">${age}</td>
+                    <td style="padding: 13px 16px; color: var(--text-muted); font-size:0.85rem;">${u.email}</td>
+                    <td style="padding: 13px 16px; text-align:center; color: var(--text-main); font-weight:600;">${age}</td>
                     <td style="padding: 13px 16px; text-align:center;">
                         <span style="background:${color}22;border:1px solid ${color}44;color:${color};padding:3px 10px;border-radius:20px;font-size:0.78rem;font-weight:700;white-space:nowrap;">${label}</span>
                     </td>
@@ -1011,9 +1022,87 @@ class NeuroSparkApp {
         this.setupPomodoro();
     }
 
+    /* ---- ADMIN GAMES VIEW (all 16 games) ---- */
+    renderAdminGamesHome(mount) {
+        const name = this.state.activeProfileName;
+        mount.innerHTML = `
+            <div class="teens-home-view admin-games-view" style="gap:32px;">
+
+                <!-- Admin Welcome Banner -->
+                <div class="kids-welcome-banner" style="background: linear-gradient(135deg, rgba(124,58,237,0.7), rgba(29,78,216,0.7)); border: 1px solid rgba(167,139,250,0.3); box-shadow: 0 4px 30px rgba(124,58,237,0.2);">
+                    <div class="kids-welcome-info">
+                        <h2 style="display:flex;align-items:center;gap:12px;"><i class="fa-solid fa-shield-halved" style="color:#a78bfa;"></i> Panel de Acceso Total</h2>
+                        <p>Bienvenido, <strong>${name}</strong>. Vista exclusiva del administrador — acceso completo a los 16 módulos de juego.</p>
+                    </div>
+                    <button class="play-btn" id="btn-admin-open-panel" style="background:rgba(167,139,250,0.2);border:1px solid rgba(167,139,250,0.5);color:#a78bfa;white-space:nowrap;flex-shrink:0;">
+                        <i class="fa-solid fa-users-gear"></i> Abrir Panel Admin
+                    </button>
+                </div>
+
+                <!-- KIDS SECTION -->
+                <div style="display:flex;flex-direction:column;gap:16px;">
+                    <div style="display:flex;align-items:center;gap:12px;padding:14px 20px;background:rgba(186,230,253,0.07);border:1px solid rgba(186,230,253,0.15);border-radius:14px;">
+                        <i class="fa-solid fa-child" style="color:#bae6fd;font-size:1.3rem;"></i>
+                        <div>
+                            <h3 style="color:#bae6fd;margin:0;font-size:1.15rem;font-weight:800;">Módulos — Niños (6–11 años)</h3>
+                            <p style="color:rgba(255,255,255,0.5);margin:0;font-size:0.8rem;">8 juegos adaptativos de concentración, memoria y emociones</p>
+                        </div>
+                        <span style="margin-left:auto;background:rgba(186,230,253,0.15);border:1px solid rgba(186,230,253,0.3);color:#bae6fd;padding:4px 14px;border-radius:20px;font-size:0.8rem;font-weight:700;">8 JUEGOS</span>
+                    </div>
+                    <div class="games-grid">
+                        ${this._gameCard('distraction_hunter', 'g1Name', 'g1Desc', 'diff-easy',   'g1Tag', 'fa-meteor', 'distraction.png')}
+                        ${this._gameCard('emotional_stoplight','g4Name', 'g4Desc', 'diff-easy',   'g4Tag', 'fa-traffic-light', 'stoplight.png')}
+                        ${this._gameCard('musical_memory',     'g5Name', 'g5Desc', 'diff-medium', 'g5Tag', 'fa-music', 'memory.png')}
+                        ${this._gameCard('memory_cards',       'g6Name', 'g6Desc', 'diff-easy',   'g6Tag', 'fa-layer-group', 'spatial.png')}
+                        ${this._gameCard('kids_spatial',       'k_spatialName', 'k_spatialDesc', 'diff-medium', 'g2Tag', 'fa-star', 'spatial.png')}
+                        ${this._gameCard('kids_routine',       'k_routineName', 'k_routineDesc', 'diff-medium', 'g3Tag', 'fa-rocket', 'routine.png')}
+                        ${this._gameCard('kids_pattern',       'k_patternName', 'k_patternDesc', 'diff-medium', 'g7Tag', 'fa-shapes', 'distraction.png')}
+                        ${this._gameCard('kids_math',          'k_mathName', 'k_mathDesc', 'diff-hard',   'g8Tag', 'fa-calculator', 'memory.png')}
+                    </div>
+                </div>
+
+                <!-- DIVIDER -->
+                <div style="height:1px;background:linear-gradient(90deg,transparent,rgba(167,139,250,0.3),transparent);"></div>
+
+                <!-- TEENS SECTION -->
+                <div style="display:flex;flex-direction:column;gap:16px;">
+                    <div style="display:flex;align-items:center;gap:12px;padding:14px 20px;background:rgba(167,139,250,0.07);border:1px solid rgba(167,139,250,0.15);border-radius:14px;">
+                        <i class="fa-solid fa-user-graduate" style="color:#a78bfa;font-size:1.3rem;"></i>
+                        <div>
+                            <h3 style="color:#a78bfa;margin:0;font-size:1.15rem;font-weight:800;">Módulos — Adolescentes (12–17 años)</h3>
+                            <p style="color:rgba(255,255,255,0.5);margin:0;font-size:0.8rem;">8 juegos de lógica avanzada, velocidad y control ejecutivo</p>
+                        </div>
+                        <span style="margin-left:auto;background:rgba(167,139,250,0.15);border:1px solid rgba(167,139,250,0.3);color:#a78bfa;padding:4px 14px;border-radius:20px;font-size:0.8rem;font-weight:700;">8 JUEGOS</span>
+                    </div>
+                    <div class="games-grid" style="grid-template-columns:1fr 1fr;">
+                        ${this._gameCard('spatial_focus',      'g2Name', 'g2Desc', 'diff-medium', 'g2Tag', 'fa-star-half-stroke', 'spatial.png')}
+                        ${this._gameCard('routine_builder',    'g3Name', 'g3Desc', 'diff-hard',   'g3Tag', 'fa-puzzle-piece', 'routine.png')}
+                        ${this._gameCard('pattern_matcher',    'g7Name', 'g7Desc', 'diff-medium', 'g7Tag', 'fa-shapes', 'distraction.png')}
+                        ${this._gameCard('speed_math',         'g8Name', 'g8Desc', 'diff-hard',   'g8Tag', 'fa-calculator', 'memory.png')}
+                        ${this._gameCard('teens_distraction',  't_distName', 't_distDesc', 'diff-medium', 'g1Tag', 'fa-shield-halved', 'distraction.png')}
+                        ${this._gameCard('teens_stoplight',    't_stopName', 't_stopDesc', 'diff-hard', 'g4Tag', 'fa-bolt', 'stoplight.png')}
+                        ${this._gameCard('teens_sound',        't_soundName', 't_soundDesc', 'diff-hard', 'g5Tag', 'fa-wave-square', 'memory.png')}
+                        ${this._gameCard('teens_cards',        't_cardsName', 't_cardsDesc', 'diff-medium', 'g6Tag', 'fa-unlock-keyhole', 'spatial.png')}
+                    </div>
+                </div>
+            </div>`;
+
+        // Wire up all game launch buttons
+        mount.querySelectorAll('.play-btn[data-game]').forEach(btn =>
+            btn.addEventListener('click', () => engine.launch(btn.getAttribute('data-game')))
+        );
+
+        // Open Admin Panel button
+        const openPanelBtn = document.getElementById('btn-admin-open-panel');
+        if (openPanelBtn) {
+            openPanelBtn.addEventListener('click', () => this.openAdminPanel());
+        }
+    }
+
 
 
     setupPomodoro() {
+
         let timer = null, timeRemaining = 20 * 60, running = false;
         const display   = document.getElementById('timer-display');
         const startBtn  = document.getElementById('btn-timer-start');

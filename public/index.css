@@ -805,8 +805,179 @@ body.kids-mode {
 }
 
 /* -------------------------------------------------------------
-   TEENS MODE (MODO ADOLESCENTES) — SLICK, DARK-TECH, FOCUS
+   TEENS MODE (MODO ADOLESCENTES) — CALM FOCUS, SOFT PALETTE
+   Azul suave: concentración y tranquilidad.
+   Verde salvia: reduce estrés y fatiga visual.
+   Neutros cálidos (crema/beige): base sin sobreestimulación.
+   Lila suave: creatividad y atractivo para adolescentes.
+   Amarillo suave: energía y optimismo moderado.
    ------------------------------------------------------------- */
+body.teens-mode {
+    /* ── Base & Layout ── */
+    --bg-app:         #f3f8fc;   /* Neutro azul-grisáceo pastel muy suave (calmante) */
+    --bg-header:      #ffffff;
+    --bg-card:        #ffffff;
+    --bg-card-hover:  #f0fdfa;   /* Verde menta pastel ultra suave al posar el cursor */
+
+    /* ── Borders ── */
+    --border-color:   #bae6fd;   /* Azul cielo pastel para estructurar */
+
+    /* ── Text ── */
+    --text-main:      #334155;   /* Slate oscuro para excelente contraste y legibilidad */
+    --text-muted:     #64748b;
+
+    /* ── Sophisticated Pastel Palette ── */
+    --primary-blue:   #a0ecff;   /* Azul pastel celeste claro */
+    --primary-green:  #a7f3d0;   /* Verde menta pastel */
+    --accent-yellow:  #fef08a;   /* Amarillo pastel suave */
+    --primary-purple: #d8b4fe;   /* Lila/Lavanda pastel (Creatividad y Modernidad Teen) */
+    --accent-lilac:   #e9d5ff;   /* Lila pastel de acento */
+
+    /* ── Effects ── */
+    --glow-color:     rgba(160, 236, 255, 0.3);
+    --card-shadow:    0 8px 30px rgba(148, 163, 184, 0.12);
+}
+
+/* ── Teens Dark Theme - Dark Pastel Tech Fusion ── */
+body.teens-mode.dark-theme {
+    --bg-app:        #0f172a;   /* Slate oscuro profundo */
+    --bg-header:     #1e293b;
+    --bg-card:       #1e293b;
+    --bg-card-hover: #334155;   /* Slate medio */
+    --border-color:  #38bdf8;   /* Azul neón pastel para contraste de enfoque */
+    --text-main:     #f8fafc;
+    --text-muted:    #94a3b8;
+
+    --primary-blue:   #38bdf8;   /* Sky 400 (Azul pastel brillante) */
+    --primary-green:  #34d399;   /* Emerald 400 (Verde esmeralda suave) */
+    --accent-yellow:  #fbbf24;   /* Amber 400 (Amarillo cálido suave) */
+    --primary-purple: #c084fc;   /* Purple 400 (Lila pastel eléctrico) */
+    --accent-lilac:   #e9d5ff;
+
+    --glow-color:    rgba(56, 189, 248, 0.25);
+    --card-shadow:   0 10px 30px rgba(0, 0, 0, 0.4);
+}
+
+/* ── Teens game cards — clean, refined, no playful bouncing ── */
+body.teens-mode .game-card {
+    border-color: rgba(126, 184, 212, 0.35);
+    border-radius: 18px;
+    box-shadow: var(--card-shadow);
+}
+
+body.teens-mode .game-card:hover {
+    transform: translateY(-6px);
+    border-color: var(--primary-purple);
+    box-shadow: 0 12px 30px rgba(176, 160, 208, 0.25);
+}
+
+/* ── Teens play button — soft blue-to-lilac gradient ── */
+body.teens-mode .play-btn {
+    background: linear-gradient(135deg, var(--primary-blue), var(--primary-purple));
+    box-shadow: 0 4px 14px rgba(126, 184, 212, 0.30);
+}
+
+body.teens-mode .play-btn:hover {
+    box-shadow: 0 6px 18px rgba(176, 160, 208, 0.35);
+}
+
+/* ── Teens section header badges ── */
+body.teens-mode .section-title {
+    color: var(--text-main);
+}
+
+/* ── Teens difficulty badges — muted, non-alarming colors ── */
+body.teens-mode .diff-easy {
+    background: rgba(134, 176, 154, 0.18);
+    color: var(--primary-green);
+    border-color: var(--primary-green);
+}
+
+body.teens-mode .diff-medium {
+    background: rgba(232, 213, 138, 0.18);
+    color: #c9a63a;
+    border-color: #c9a63a;
+}
+
+body.teens-mode .diff-hard {
+    background: rgba(176, 160, 208, 0.18); /* Lila suave en vez de rojo */
+    color: var(--primary-purple);
+    border-color: var(--primary-purple);
+}
+
+/* ── Teens welcome banner — azul suave a verde salvia ── */
+body.teens-mode .kids-welcome-banner {
+    background: linear-gradient(135deg, var(--primary-blue), var(--primary-green));
+    border: 1px solid var(--border-color);
+    box-shadow: 0 8px 30px var(--glow-color);
+    color: #1e293b; /* Mantener oscuro para máxima legibilidad sobre pasteles */
+}
+
+body.teens-mode.dark-theme .kids-welcome-banner {
+    background: linear-gradient(135deg, rgba(56, 189, 248, 0.2), rgba(52, 211, 153, 0.2));
+    border: 1px solid var(--border-color);
+    color: var(--text-main);
+}
+
+/* ── Teens task planner — cream/neutral tone ── */
+body.teens-mode .teens-planner {
+    background: var(--bg-card);
+    border-color: var(--border-color);
+}
+
+body.teens-mode .task-checkbox {
+    border-color: var(--primary-blue);
+}
+
+body.teens-mode .task-item.completed .task-checkbox {
+    background: var(--primary-green);
+    border-color: var(--primary-green);
+}
+
+/* ── Teens pomodoro — lilac accent ring ── */
+body.teens-mode .timer-circle {
+    border-color: var(--primary-blue);
+    color: var(--primary-blue);
+    box-shadow: 0 0 30px var(--glow-color),
+                inset 0 0 20px rgba(160, 236, 255, 0.08);
+}
+
+body.teens-mode .timer-btn {
+    background: linear-gradient(135deg, var(--primary-blue), var(--primary-purple));
+}
+
+/* ── Teens store — warm beige items ── */
+body.teens-mode .store-container {
+    background: linear-gradient(135deg, #f0f4f8, #f4f0f8);
+    border-color: var(--border-color);
+}
+
+body.teens-mode.dark-theme .store-container {
+    background: linear-gradient(135deg, #252d3d, #2a2d3d);
+}
+
+body.teens-mode .store-item {
+    background: var(--bg-card);
+    border-color: var(--border-color);
+}
+
+body.teens-mode .store-item:hover {
+    border-color: var(--accent-lilac);
+    box-shadow: 0 8px 24px rgba(184, 168, 216, 0.22);
+}
+
+/* ── Teens game tag color ── */
+body.teens-mode .game-tag {
+    color: var(--primary-blue);
+}
+
+/* ---- Admin games view: full-column layout ---- */
+.admin-games-view {
+    display: flex !important;
+    flex-direction: column !important;
+    grid-template-columns: unset !important;
+}
+
 .teens-home-view {
     display: grid;
     grid-template-columns: 2fr 1fr;

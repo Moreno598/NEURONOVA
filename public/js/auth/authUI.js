@@ -45,6 +45,25 @@ export class AuthUI {
             });
         });
 
+        // Setup Age visual feedback
+        if (this.ageInput) {
+            this.ageInput.addEventListener('input', (e) => {
+                const val = parseInt(e.target.value, 10);
+                if (val >= 6 && val <= 11) {
+                    // Kids color feedback (Pastel Blue/Green)
+                    e.target.style.borderColor = '#86efac';
+                    e.target.style.boxShadow = '0 0 12px rgba(134, 239, 172, 0.4)';
+                } else if (val >= 12 && val <= 17) {
+                    // Teens color feedback (Purple)
+                    e.target.style.borderColor = '#a78bfa';
+                    e.target.style.boxShadow = '0 0 12px rgba(167, 139, 250, 0.4)';
+                } else {
+                    e.target.style.borderColor = 'rgba(255,255,255,0.1)';
+                    e.target.style.boxShadow = 'none';
+                }
+            });
+        }
+
         let isAlreadyAuthenticated = false;
 
         // Listen to auth state changes
@@ -64,14 +83,26 @@ export class AuthUI {
                 } else {
                     // Update buttons for logged in users (INITIAL_SESSION / Page Reload)
                     const btnNav = document.getElementById('btn-nav-register');
-                    if (btnNav) btnNav.innerHTML = '<i class="fa-solid fa-gamepad" style="color: #38bdf8; font-size: 0.9rem;"></i><span style="color: white; font-weight: 800; font-size: 0.9rem; letter-spacing: 0.5px;">Ir a Juegos</span>';
+                    if (btnNav) {
+                        btnNav.innerHTML = '<i class="fa-solid fa-gamepad" style="color: #38bdf8; font-size: 0.9rem;"></i><span style="color: white; font-weight: 800; font-size: 0.9rem; letter-spacing: 0.5px;">Ir a Juegos</span>';
+                        btnNav.removeAttribute('onclick');
+                        btnNav.addEventListener('click', (e) => {
+                            e.preventDefault();
+                            if (window.dismissAuthOverlay) window.dismissAuthOverlay();
+                        });
+                    }
                     
                     const btnLogout = document.getElementById('btn-nav-logout');
                     if (btnLogout) btnLogout.style.display = 'flex';
 
                     const btnComenzar = document.querySelector('.premium-btn');
-                    if (btnComenzar && btnComenzar.innerText.includes('COMENZAR')) {
+                    if (btnComenzar && (btnComenzar.innerText.includes('COMENZAR') || btnComenzar.innerText.includes('IR A LOS JUEGOS'))) {
                         btnComenzar.innerHTML = 'IR A LOS JUEGOS <i class="fa-solid fa-gamepad"></i>';
+                        btnComenzar.removeAttribute('onclick');
+                        btnComenzar.addEventListener('click', (e) => {
+                            e.preventDefault();
+                            if (window.dismissAuthOverlay) window.dismissAuthOverlay();
+                        });
                     }
                 }
 
@@ -90,8 +121,8 @@ export class AuthUI {
                 app.state.isAdmin = (email === 'sparkneuro64@gmail.com');
 
                 if (app.state.isAdmin) {
-                    // Admin always goes directly to games (kids view)
-                    app.state.profile = 'kids';
+                    // Admin goes to full games view
+                    app.state.profile = 'admin';
                     app.state.activeProfileName = 'Matias M.';
                 } else if (userMeta) {
                     const { firstName, lastName, age, alias, avatar } = userMeta;
@@ -177,6 +208,11 @@ export class AuthUI {
 
                     if (!firstName || !lastName || !alias || !age || !parentEmail) {
                         throw new Error("Por favor completa tus datos personales (incluyendo el alias) y el correo de tus padres.");
+                    }
+                    
+                    const ageNum = parseInt(age, 10);
+                    if (isNaN(ageNum) || ageNum < 6 || ageNum > 17) {
+                        throw new Error("NeuroSpark está diseñado exclusivamente para edades entre 6 y 17 años.");
                     }
                     
                     const selectedAvatarEl = document.querySelector('.avatar-option.selected');
