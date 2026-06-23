@@ -485,6 +485,24 @@ body.light-theme .school-insignia {
 /* -------------------------------------------------------------
    KIDS MODE (MODO NIÑOS) — COLORFUL, GAMIFIED, EASY
    ------------------------------------------------------------- */
+body.kids-mode {
+    --bg-app: #f8fafc; /* Tono neutro gris muy claro */
+    --bg-header: #ffffff; /* Blanco/Crema */
+    --bg-card: #ffffff;
+    --bg-card-hover: #f0fdf4; /* Verde pastel muy suave */
+    --border-color: #bae6fd; /* Azul pastel */
+    --text-main: #334155; /* Gris oscuro para lectura sin distracción */
+    --text-muted: #64748b;
+    
+    --primary-blue: #7dd3fc; /* Azul pastel */
+    --primary-green: #86efac; /* Verde pastel */
+    --accent-yellow: #fde047; /* Amarillo suave */
+    --primary-purple: #93c5fd; /* Azul más profundo en lugar de morado vibrante */
+    
+    --glow-color: rgba(134, 239, 172, 0.4); /* Glow verde pastel */
+    --card-shadow: 0 8px 24px 0 rgba(148, 163, 184, 0.15);
+}
+
 .kids-home-view {
     display: flex;
     flex-direction: column;
@@ -492,17 +510,17 @@ body.light-theme .school-insignia {
 }
 
 .kids-welcome-banner {
-    background: linear-gradient(135deg, hsla(200, 95%, 25%, 0.85), hsla(270, 85%, 30%, 0.85));
+    background: linear-gradient(135deg, #bae6fd, #bbf7d0); /* Azul pastel a verde pastel */
     border-radius: var(--radius-lg);
     padding: 30px 36px;
-    color: white;
+    color: var(--text-main);
     display: flex;
     justify-content: space-between;
     align-items: center;
     position: relative;
     overflow: hidden;
-    border: 1px solid hsla(270,85%,50%,0.2);
-    box-shadow: 0 8px 32px rgba(0,0,0,0.3);
+    border: 1px solid #7dd3fc;
+    box-shadow: 0 8px 32px rgba(125, 211, 252, 0.25);
 }
 
 .kids-welcome-banner::before {
@@ -610,8 +628,8 @@ body.light-theme .school-insignia {
 
 .game-thumbnail i {
     font-size: 3rem;
-    color: rgba(255,255,255,0.8);
-    text-shadow: 0 2px 8px rgba(0,0,0,0.5);
+    color: rgba(255,255,255,0.9);
+    text-shadow: 0 2px 8px rgba(0,0,0,0.2);
     z-index: 1;
 }
 
@@ -685,8 +703,8 @@ body.light-theme .school-insignia {
 
 /* Kids Reward Store — Premium Glass Design */
 .store-container {
-    background: linear-gradient(135deg, hsla(270,85%,10%,0.6), hsla(210,100%,8%,0.6));
-    border: 1px solid hsla(270,85%,50%,0.2);
+    background: linear-gradient(135deg, #f0f9ff, #f0fdf4); /* Azul muy claro a verde muy claro */
+    border: 1px solid #bae6fd;
     border-radius: var(--radius-lg);
     padding: 28px;
     margin-top: 24px;
@@ -716,7 +734,7 @@ body.light-theme .school-insignia {
 }
 
 .store-item {
-    background: hsla(222, 47%, 12%, 0.8);
+    background: #ffffff;
     border: 1px solid var(--border-color);
     border-radius: 20px;
     padding: 20px 12px;
@@ -729,6 +747,8 @@ body.light-theme .school-insignia {
     gap: 8px;
     position: relative;
     overflow: hidden;
+    color: var(--text-main);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.05);
 }
 
 .store-item::after {
@@ -775,13 +795,13 @@ body.light-theme .school-insignia {
 
 /* Rarity badge for expensive items */
 .store-item[data-id="holo_pet"] {
-    background: linear-gradient(135deg, hsla(190,100%,8%,0.9), hsla(270,85%,8%,0.9));
-    border-color: hsla(190,100%,50%,0.4);
+    background: linear-gradient(135deg, #e0f2fe, #dcfce7);
+    border-color: #7dd3fc;
 }
 
 .store-item[data-id="stellar_aura"] {
-    background: linear-gradient(135deg, hsla(310,85%,8%,0.9), hsla(270,85%,8%,0.9));
-    border-color: hsla(310,85%,50%,0.3);
+    background: linear-gradient(135deg, #fef08a, #fef9c3);
+    border-color: #fde047;
 }
 
 /* -------------------------------------------------------------

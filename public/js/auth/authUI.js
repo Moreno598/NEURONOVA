@@ -13,6 +13,7 @@ export class AuthUI {
 
         this.firstNameInput = document.getElementById('auth-firstname');
         this.lastNameInput = document.getElementById('auth-lastname');
+        this.aliasInput = document.getElementById('auth-alias');
         this.ageInput = document.getElementById('auth-age');
         this.parentEmailInput = document.getElementById('auth-parent-email');
         this.registerFieldsContainer = document.getElementById('auth-register-fields');
@@ -30,6 +31,19 @@ export class AuthUI {
         const savedPass = localStorage.getItem('ns_saved_password');
         if (savedEmail && this.emailInput) this.emailInput.value = savedEmail;
         if (savedPass && this.passwordInput) this.passwordInput.value = savedPass;
+
+        // Setup Avatar Selection
+        const avatarOptions = document.querySelectorAll('.avatar-option');
+        avatarOptions.forEach(opt => {
+            opt.addEventListener('click', () => {
+                avatarOptions.forEach(o => o.classList.remove('selected', 'active-avatar'));
+                avatarOptions.forEach(o => { o.style.borderColor = 'transparent'; o.style.boxShadow = 'none'; o.style.transform = 'scale(1)'; });
+                opt.classList.add('selected');
+                opt.style.borderColor = '#38bdf8';
+                opt.style.boxShadow = '0 0 10px #38bdf8';
+                opt.style.transform = 'scale(1.1)';
+            });
+        });
 
         let isAlreadyAuthenticated = false;
 
@@ -80,10 +94,14 @@ export class AuthUI {
                     app.state.profile = 'kids';
                     app.state.activeProfileName = 'Matias M.';
                 } else if (userMeta) {
-                    const { firstName, lastName, age } = userMeta;
+                    const { firstName, lastName, age, alias, avatar } = userMeta;
                     
+                    if (avatar) app.state.avatar = avatar;
+
                     // Set Profile Name
-                    if (firstName) {
+                    if (alias) {
+                        app.state.activeProfileName = alias;
+                    } else if (firstName) {
                         app.state.activeProfileName = `${firstName} ${lastName || ''}`.trim();
                     }
                     
@@ -153,17 +171,23 @@ export class AuthUI {
                 } else {
                     const firstName = this.firstNameInput ? this.firstNameInput.value.trim() : '';
                     const lastName = this.lastNameInput ? this.lastNameInput.value.trim() : '';
+                    const alias = this.aliasInput ? this.aliasInput.value.trim() : '';
                     const age = this.ageInput ? this.ageInput.value.trim() : '';
                     const parentEmail = this.parentEmailInput ? this.parentEmailInput.value.trim() : '';
 
-                    if (!firstName || !lastName || !age || !parentEmail) {
-                        throw new Error("Por favor completa tus datos personales y el correo de tus padres.");
+                    if (!firstName || !lastName || !alias || !age || !parentEmail) {
+                        throw new Error("Por favor completa tus datos personales (incluyendo el alias) y el correo de tus padres.");
                     }
+                    
+                    const selectedAvatarEl = document.querySelector('.avatar-option.selected');
+                    const avatar = selectedAvatarEl ? selectedAvatarEl.getAttribute('data-avatar') : 'sparky';
 
                     window.hasManuallyLoggedIn = true;
                     await authController.register(email, password, {
                         firstName,
                         lastName,
+                        alias,
+                        avatar,
                         age: parseInt(age, 10)
                     });
                     

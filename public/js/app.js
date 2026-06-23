@@ -103,6 +103,25 @@ class NeuroSparkApp {
         document.getElementById('player-coins').innerText         = this.state.coins.toLocaleString();
         document.getElementById('player-level').innerText         = this.state.level;
         document.getElementById('current-profile-name').innerText = this.state.activeProfileName;
+        
+        // Render custom avatar in header
+        const avatarIcon = document.querySelector('.profile-select-btn i.fa-user-astronaut');
+        if (this.state.avatar && document.querySelector('.profile-select-btn')) {
+            const profileBtn = document.querySelector('.profile-select-btn');
+            let imgEl = document.getElementById('header-avatar-img');
+            if (!imgEl) {
+                imgEl = document.createElement('img');
+                imgEl.id = 'header-avatar-img';
+                imgEl.style.width = '24px';
+                imgEl.style.height = '24px';
+                imgEl.style.borderRadius = '50%';
+                imgEl.style.background = 'rgba(255,255,255,0.1)';
+                if(avatarIcon) avatarIcon.style.display = 'none';
+                profileBtn.insertBefore(imgEl, document.getElementById('current-profile-name'));
+            }
+            imgEl.src = `https://api.dicebear.com/7.x/bottts/svg?seed=${this.state.avatar.charAt(0).toUpperCase() + this.state.avatar.slice(1)}`;
+            imgEl.style.display = 'block';
+        }
         document.getElementById('logo-sub-text').innerText        = i18n.t('logoSub');
 
         // XP progress bar: every 500 coins = 1 level
@@ -772,10 +791,13 @@ class NeuroSparkApp {
                     <h3 class="section-title"><i class="fa-solid fa-gamepad text-accent"></i> ${i18n.t('kidsGamesTitle')}</h3>
                     <div class="games-grid">
                         ${this._gameCard('distraction_hunter', 'g1Name', 'g1Desc', 'diff-easy',   'g1Tag', 'fa-meteor', 'distraction.png')}
-                        ${this._gameCard('spatial_focus',      'g2Name', 'g2Desc', 'diff-medium', 'g2Tag', 'fa-star-half-stroke', 'spatial.png')}
-                        ${this._gameCard('routine_builder',    'g3Name', 'g3Desc', 'diff-medium', 'g3Tag', 'fa-puzzle-piece', 'routine.png')}
                         ${this._gameCard('emotional_stoplight','g4Name', 'g4Desc', 'diff-easy',   'g4Tag', 'fa-traffic-light', 'stoplight.png')}
-                        ${this._gameCard('musical_memory',     'g5Name', 'g5Desc', 'diff-hard',   'g5Tag', 'fa-music', 'memory.png')}
+                        ${this._gameCard('musical_memory',     'g5Name', 'g5Desc', 'diff-medium', 'g5Tag', 'fa-music', 'memory.png')}
+                        ${this._gameCard('memory_cards',       'g6Name', 'g6Desc', 'diff-easy',   'g6Tag', 'fa-layer-group', 'spatial.png')}
+                        ${this._gameCard('kids_spatial',       'k_spatialName', 'k_spatialDesc', 'diff-medium', 'g2Tag', 'fa-star', 'spatial.png')}
+                        ${this._gameCard('kids_routine',       'k_routineName', 'k_routineDesc', 'diff-medium', 'g3Tag', 'fa-rocket', 'routine.png')}
+                        ${this._gameCard('kids_pattern',       'k_patternName', 'k_patternDesc', 'diff-medium', 'g7Tag', 'fa-shapes', 'distraction.png')}
+                        ${this._gameCard('kids_math',          'k_mathName', 'k_mathDesc', 'diff-hard',   'g8Tag', 'fa-calculator', 'memory.png')}
                     </div>
                 </div>
 
@@ -875,11 +897,14 @@ class NeuroSparkApp {
                     </div>
                     <h3 class="section-title"><i class="fa-solid fa-brain text-blue"></i> ${i18n.t('teensGamesTitle')}</h3>
                     <div class="games-grid" style="grid-template-columns:1fr 1fr;">
-                        ${this._gameCard('distraction_hunter', 'g1Name', 'g1Desc', 'diff-easy',   'g1Tag', 'fa-meteor', 'distraction.png')}
                         ${this._gameCard('spatial_focus',      'g2Name', 'g2Desc', 'diff-medium', 'g2Tag', 'fa-star-half-stroke', 'spatial.png')}
-                        ${this._gameCard('routine_builder',    'g3Name', 'g3Desc', 'diff-medium', 'g3Tag', 'fa-puzzle-piece', 'routine.png')}
-                        ${this._gameCard('emotional_stoplight','g4Name', 'g4Desc', 'diff-easy',   'g4Tag', 'fa-traffic-light', 'stoplight.png')}
-                        ${this._gameCard('musical_memory',     'g5Name', 'g5Desc', 'diff-hard',   'g5Tag', 'fa-music', 'memory.png')}
+                        ${this._gameCard('routine_builder',    'g3Name', 'g3Desc', 'diff-hard',   'g3Tag', 'fa-puzzle-piece', 'routine.png')}
+                        ${this._gameCard('pattern_matcher',    'g7Name', 'g7Desc', 'diff-medium', 'g7Tag', 'fa-shapes', 'distraction.png')}
+                        ${this._gameCard('speed_math',         'g8Name', 'g8Desc', 'diff-hard',   'g8Tag', 'fa-calculator', 'memory.png')}
+                        ${this._gameCard('teens_distraction',  't_distName', 't_distDesc', 'diff-medium', 'g1Tag', 'fa-shield-halved', 'distraction.png')}
+                        ${this._gameCard('teens_stoplight',    't_stopName', 't_stopDesc', 'diff-hard', 'g4Tag', 'fa-bolt', 'stoplight.png')}
+                        ${this._gameCard('teens_sound',        't_soundName', 't_soundDesc', 'diff-hard', 'g5Tag', 'fa-wave-square', 'memory.png')}
+                        ${this._gameCard('teens_cards',        't_cardsName', 't_cardsDesc', 'diff-medium', 'g6Tag', 'fa-unlock-keyhole', 'spatial.png')}
                     </div>
                 </div>
 

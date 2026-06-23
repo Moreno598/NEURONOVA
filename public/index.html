@@ -522,6 +522,19 @@
                             </div>
                         </div>
                         <div style="position: relative;">
+                            <i class="fa-solid fa-user-ninja" style="position: absolute; left: 18px; top: 50%; transform: translateY(-50%); color: rgba(255,255,255,0.4); font-size: 1rem;"></i>
+                            <input class="premium-input" type="text" id="auth-alias" placeholder="Alias (Nombre de usuario)" style="width: 100%; padding: 16px 18px 16px 48px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.1); background: rgba(255,255,255,0.03); color: white; outline: none; font-family: inherit; font-size: 1rem; transition: all 0.3s;" required>
+                        </div>
+                        <div style="display: flex; flex-direction: column; gap: 8px;">
+                            <label style="color: rgba(255,255,255,0.7); font-size: 0.85rem; font-weight: 600;">Elige tu Avatar:</label>
+                            <div style="display: flex; gap: 12px; overflow-x: auto; padding: 5px;" id="auth-avatar-selector">
+                                <img src="https://api.dicebear.com/7.x/bottts/svg?seed=Sparky" class="avatar-option selected" data-avatar="sparky" style="width: 50px; height: 50px; border-radius: 50%; border: 2px solid #38bdf8; cursor: pointer; background: rgba(255,255,255,0.1); transition: all 0.2s;">
+                                <img src="https://api.dicebear.com/7.x/bottts/svg?seed=Astro" class="avatar-option" data-avatar="astro" style="width: 50px; height: 50px; border-radius: 50%; border: 2px solid transparent; cursor: pointer; background: rgba(255,255,255,0.1); transition: all 0.2s;">
+                                <img src="https://api.dicebear.com/7.x/bottts/svg?seed=Alien" class="avatar-option" data-avatar="alien" style="width: 50px; height: 50px; border-radius: 50%; border: 2px solid transparent; cursor: pointer; background: rgba(255,255,255,0.1); transition: all 0.2s;">
+                                <img src="https://api.dicebear.com/7.x/bottts/svg?seed=Dog" class="avatar-option" data-avatar="dog" style="width: 50px; height: 50px; border-radius: 50%; border: 2px solid transparent; cursor: pointer; background: rgba(255,255,255,0.1); transition: all 0.2s;">
+                            </div>
+                        </div>
+                        <div style="position: relative;">
                             <i class="fa-solid fa-cake-candles" style="position: absolute; left: 18px; top: 50%; transform: translateY(-50%); color: rgba(255,255,255,0.4); font-size: 1rem;"></i>
                             <input class="premium-input" type="number" id="auth-age" placeholder="Edad (ej. 10)" min="4" max="99" style="width: 100%; padding: 16px 18px 16px 48px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.1); background: rgba(255,255,255,0.03); color: white; outline: none; font-family: inherit; font-size: 1rem; transition: all 0.3s;">
                         </div>

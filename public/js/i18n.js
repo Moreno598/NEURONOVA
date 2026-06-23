@@ -77,6 +77,42 @@ const translations = {
         g5Desc: 'Escucha los hermosos sonidos del espacio e inténtalos de memoria.',
         g5Tag:  'Memoria de Trabajo',
 
+        g6Name: '🃏 Cartas de Memoria',
+        g6Desc: 'Encuentra las parejas de cartas espaciales ocultas.',
+        g6Tag:  'Memoria Visual',
+
+        g7Name: '🧩 Buscador de Patrones',
+        g7Desc: 'Encuentra la figura que no encaja en el grupo rápidamente.',
+        g7Tag:  'Flexibilidad Cognitiva',
+
+        g8Name: '🧮 Astro Matemáticas',
+        g8Desc: 'Resuelve las ecuaciones lo más rápido posible.',
+        g8Tag:  'Velocidad de Procesamiento',
+
+        k_spatialName: '🌌 Laberinto Estelar',
+        k_spatialDesc: 'Sigue a las estrellas en el orden correcto.',
+        
+        k_routineName: '🚀 Día del Astronauta',
+        k_routineDesc: 'Ayuda al astronauta a ordenar su día.',
+        
+        k_patternName: '👽 Figuras Alienígenas',
+        k_patternDesc: '¡Encuentra al alienígena intruso que es diferente!',
+        
+        k_mathName: '☄️ Meteoritos Matemáticos',
+        k_mathDesc: 'Resuelve la suma espacial antes de que caiga el meteorito.',
+        
+        t_distName: '🛡️ Ciber Defensa',
+        t_distDesc: 'Destruye las amenazas y esquiva los archivos seguros.',
+        
+        t_stopName: '⚡ Control de Reactor',
+        t_stopDesc: 'Pulsa rápido en verde, detente por completo en rojo.',
+        
+        t_soundName: '📡 Secuencias de Radar',
+        t_soundDesc: 'Identifica y replica las frecuencias de sonido exactas.',
+        
+        t_cardsName: '🔐 Desencriptación Visual',
+        t_cardsDesc: 'Encuentra las coincidencias en el panel de datos.',
+
         playBtn:  'Jugar',
 
         // --- GAME HUD ---
@@ -251,6 +287,17 @@ const translations = {
         gameName3: 'Constructor de Rutinas',
         gameName4: 'Semáforo Emocional',
         gameName5: 'Memoria Musical Adaptativa',
+        gameName6: 'Cartas de Memoria',
+        gameName7: 'Buscador de Patrones',
+        gameName8: 'Astro Matemáticas',
+        gameName9: 'Laberinto Estelar',
+        gameName10: 'Día del Astronauta',
+        gameName11: 'Figuras Alienígenas',
+        gameName12: 'Meteoritos Matemáticos',
+        gameName13: 'Ciber Defensa',
+        gameName14: 'Control de Reactor',
+        gameName15: 'Secuencias de Radar',
+        gameName16: 'Desencriptación Visual',
         gameNameDefault: 'Entrenamiento Cognitivo',
     },
 
@@ -326,6 +373,42 @@ const translations = {
         g5Name: '🎵 Musical Memory',
         g5Desc: "Listen to the beautiful sounds of space and try to remember them.",
         g5Tag:  'Working Memory',
+
+        g6Name: '🃏 Memory Cards',
+        g6Desc: 'Find the hidden space card pairs.',
+        g6Tag:  'Visual Memory',
+
+        g7Name: '🧩 Pattern Matcher',
+        g7Desc: 'Find the shape that does not fit in the group quickly.',
+        g7Tag:  'Cognitive Flexibility',
+
+        g8Name: '🧮 Astro Math',
+        g8Desc: 'Solve the equations as fast as possible.',
+        g8Tag:  'Processing Speed',
+
+        k_spatialName: '🌌 Star Maze',
+        k_spatialDesc: 'Follow the stars in the correct order.',
+        
+        k_routineName: '🚀 Astronaut Day',
+        k_routineDesc: 'Help the astronaut organize their day.',
+        
+        k_patternName: '👽 Alien Shapes',
+        k_patternDesc: 'Find the intruder alien that is different!',
+        
+        k_mathName: '☄️ Math Meteorites',
+        k_mathDesc: 'Solve the space math before the meteorite falls.',
+        
+        t_distName: '🛡️ Cyber Defense',
+        t_distDesc: 'Destroy the threats and dodge safe files.',
+        
+        t_stopName: '⚡ Reactor Control',
+        t_stopDesc: 'Press fast on green, stop completely on red.',
+        
+        t_soundName: '📡 Radar Sequences',
+        t_soundDesc: 'Identify and replicate the exact sound frequencies.',
+        
+        t_cardsName: '🔐 Visual Decryption',
+        t_cardsDesc: 'Find the matches on the data panel.',
 
         playBtn:  'Play',
 
@@ -501,6 +584,17 @@ const translations = {
         gameName3: 'Routine Builder',
         gameName4: 'Emotional Stoplight',
         gameName5: 'Adaptive Musical Memory',
+        gameName6: 'Memory Cards',
+        gameName7: 'Pattern Matcher',
+        gameName8: 'Astro Math',
+        gameName9: 'Star Maze',
+        gameName10: 'Astronaut Day',
+        gameName11: 'Alien Shapes',
+        gameName12: 'Math Meteorites',
+        gameName13: 'Cyber Defense',
+        gameName14: 'Reactor Control',
+        gameName15: 'Radar Sequences',
+        gameName16: 'Visual Decryption',
         gameNameDefault: 'Cognitive Training',
     }
 };

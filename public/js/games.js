@@ -137,16 +137,22 @@ class GameController {
         try {
             // Dynamically import the module
             let module;
-            if (gameId === 'distraction_hunter') {
+            if (gameId === 'distraction_hunter' || gameId === 'teens_distraction') {
                 module = await import('./games/distraction_hunter.js');
-            } else if (gameId === 'spatial_focus') {
+            } else if (gameId === 'spatial_focus' || gameId === 'kids_spatial') {
                 module = await import('./games/spatial_focus.js');
-            } else if (gameId === 'routine_builder') {
+            } else if (gameId === 'routine_builder' || gameId === 'kids_routine') {
                 module = await import('./games/routine_builder.js');
-            } else if (gameId === 'emotional_stoplight') {
+            } else if (gameId === 'emotional_stoplight' || gameId === 'teens_stoplight') {
                 module = await import('./games/emotional_stoplight.js');
-            } else if (gameId === 'musical_memory') {
+            } else if (gameId === 'musical_memory' || gameId === 'teens_sound') {
                 module = await import('./games/musical_memory.js');
+            } else if (gameId === 'memory_cards' || gameId === 'teens_cards') {
+                module = await import('./games/memory_cards.js');
+            } else if (gameId === 'pattern_matcher' || gameId === 'kids_pattern') {
+                module = await import('./games/pattern_matcher.js');
+            } else if (gameId === 'speed_math' || gameId === 'kids_math') {
+                module = await import('./games/speed_math.js');
             }
             
             if (module && module.default) {
@@ -386,7 +392,18 @@ class GameController {
             spatial_focus: 'gameName2',
             routine_builder: 'gameName3',
             emotional_stoplight: 'gameName4',
-            musical_memory: 'gameName5'
+            musical_memory: 'gameName5',
+            memory_cards: 'gameName6',
+            pattern_matcher: 'gameName7',
+            speed_math: 'gameName8',
+            kids_spatial: 'gameName9',
+            kids_routine: 'gameName10',
+            kids_pattern: 'gameName11',
+            kids_math: 'gameName12',
+            teens_distraction: 'gameName13',
+            teens_stoplight: 'gameName14',
+            teens_sound: 'gameName15',
+            teens_cards: 'gameName16'
         };
         return i18n.t(map[gameId] || 'gameNameDefault');
     }
