@@ -384,10 +384,11 @@ class NeuroSparkApp {
                                         <th style="padding: 12px 16px; text-align: center; color: rgba(255,255,255,0.5); font-weight: 600; font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.5px;">Perfil</th>
                                         <th style="padding: 12px 16px; text-align: center; color: rgba(255,255,255,0.5); font-weight: 600; font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.5px;">NeuroCoins</th>
                                         <th style="padding: 12px 16px; text-align: center; color: rgba(255,255,255,0.5); font-weight: 600; font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.5px;">Nivel</th>
+                                        <th style="padding: 12px 16px; text-align: center; color: rgba(255,255,255,0.5); font-weight: 600; font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.5px;">Acciones</th>
                                     </tr>
                                 </thead>
                                 <tbody id="admin-users-tbody">
-                                    <tr><td colspan="6" style="text-align:center; padding: 30px; color: var(--text-muted);">
+                                    <tr><td colspan="7" style="text-align:center; padding: 30px; color: var(--text-muted);">
                                         <i class="fa-solid fa-spinner fa-spin" style="margin-right:8px;"></i>Cargando usuarios...
                                     </td></tr>
                                 </tbody>
@@ -451,7 +452,7 @@ class NeuroSparkApp {
             const tbody = document.getElementById('admin-users-tbody');
             if (!tbody) return;
             if (!users.length) {
-                tbody.innerHTML = `<tr><td colspan="6" style="text-align:center; padding: 30px; color: var(--text-muted);">
+                tbody.innerHTML = `<tr><td colspan="7" style="text-align:center; padding: 30px; color: var(--text-muted);">
                     <i class="fa-solid fa-user-slash" style="margin-right:8px;"></i>No se encontraron usuarios.
                 </td></tr>`;
                 return;
@@ -484,7 +485,12 @@ class NeuroSparkApp {
                         <span style="color:#fbbf24;font-weight:700;"><i class="fa-solid fa-coins" style="margin-right:4px;font-size:0.8rem;"></i>${coins}</span>
                     </td>
                     <td style="padding: 13px 16px; text-align:center;">
-                        <span style="background:rgba(167,139,250,0.15);border:1px solid rgba(167,139,250,0.3);color:#a78bfa;padding:3px 10px;border-radius:20px;font-size:0.8rem;font-weight:700;">Lv. ${level}</span>
+                        <span style="background:rgba(167,139,250,0.15);border:1px solid rgba(167,139,250,0.3);color:#a78bfa;padding:3px 10px;border-radius:20px;font-size:0.8rem;font-weight:700;white-space:nowrap;display:inline-block;">Lv. ${level}</span>
+                    </td>
+                    <td style="padding: 13px 16px; text-align:center;">
+                        <button class="btn-delete-user" data-email="${u.email}" style="background:rgba(239, 68, 68, 0.1); border:1px solid rgba(239, 68, 68, 0.3); color:#ef4444; width:30px; height:30px; border-radius:6px; cursor:pointer; transition:all 0.2s;" title="Eliminar Perfil" onmouseover="this.style.background='rgba(239, 68, 68, 0.2)'" onmouseout="this.style.background='rgba(239, 68, 68, 0.1)'">
+                            <i class="fa-solid fa-trash-can"></i>
+                        </button>
                     </td>
                 </tr>`;
             }).join('');
@@ -493,13 +499,29 @@ class NeuroSparkApp {
         const loadUsers = async () => {
             const tbody = document.getElementById('admin-users-tbody');
             const countBadge = document.getElementById('admin-user-count');
-            if (tbody) tbody.innerHTML = `<tr><td colspan="6" style="text-align:center;padding:30px;color:var(--text-muted);"><i class="fa-solid fa-spinner fa-spin" style="margin-right:8px;"></i>Cargando...</td></tr>`;
+            if (tbody) tbody.innerHTML = `<tr><td colspan="7" style="text-align:center;padding:30px;color:var(--text-muted);"><i class="fa-solid fa-spinner fa-spin" style="margin-right:8px;"></i>Cargando...</td></tr>`;
             allUsers = await authController.getAllUsers();
             if (countBadge) countBadge.textContent = allUsers.length;
             renderUsersTable(allUsers);
         };
 
         loadUsers();
+
+        // Eliminar usuario
+        document.getElementById('admin-users-tbody')?.addEventListener('click', async (e) => {
+            const btn = e.target.closest('.btn-delete-user');
+            if (!btn) return;
+            const email = btn.getAttribute('data-email');
+            if (confirm(`¿Estás seguro de que deseas eliminar permanentemente el perfil de ${email}?`)) {
+                try {
+                    await authController.deleteUserProfile(email);
+                    this.showToast('Usuario eliminado correctamente.', 'success');
+                    loadUsers();
+                } catch (err) {
+                    this.showToast('Error al eliminar usuario.', 'warning');
+                }
+            }
+        });
 
         document.getElementById('btn-refresh-users')?.addEventListener('click', loadUsers);
 
@@ -816,6 +838,12 @@ class NeuroSparkApp {
     }
 
     _gameCard(id, nameKey, descKey, diffClass, tagKey, icon, imgName) {
+        const isEn = typeof i18n !== 'undefined' && i18n.currentLang === 'en';
+        const diffMapEs = { 'diff-easy': 'FÁCIL', 'diff-medium': 'MEDIO', 'diff-hard': 'DIFÍCIL' };
+        const diffMapEn = { 'diff-easy': 'EASY', 'diff-medium': 'MEDIUM', 'diff-hard': 'HARD' };
+        const map = isEn ? diffMapEn : diffMapEs;
+        const diffLabel = map[diffClass] || diffClass.replace('diff-','').toUpperCase();
+        
         return `
             <div class="game-card">
                 <div class="game-thumbnail" style="background-image: url('assets/games/${imgName}');">
@@ -826,7 +854,7 @@ class NeuroSparkApp {
                     <h4 class="game-title">${i18n.t(nameKey)}</h4>
                     <p class="game-desc">${i18n.t(descKey)}</p>
                     <div class="game-footer">
-                        <span class="difficulty-badge ${diffClass}">${diffClass.replace('diff-','').toUpperCase()}</span>
+                        <span class="difficulty-badge ${diffClass}">${diffLabel}</span>
                         <button class="play-btn" data-game="${id}">${i18n.t('playBtn')} <i class="fa-solid fa-play"></i></button>
                     </div>
                 </div>

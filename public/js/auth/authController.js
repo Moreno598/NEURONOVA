@@ -96,5 +96,19 @@ export const authController = {
             console.error('Error obteniendo usuarios:', e);
             return [];
         }
+    },
+
+    async deleteUserProfile(email) {
+        try {
+            const { error } = await supabase
+                .from('user_profiles')
+                .delete()
+                .eq('email', email);
+            if (error) throw error;
+            return true;
+        } catch (e) {
+            console.error('Error eliminando perfil de usuario:', e);
+            throw e;
+        }
     }
 };
