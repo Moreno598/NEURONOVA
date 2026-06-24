@@ -545,6 +545,22 @@
                                             <i class="fa-solid fa-chevron-right builder-arrow" onclick="change3DFeature('skin', 1)"></i>
                                         </div>
                                     </div>
+                                    <!-- Pelo Estilo -->
+                                    <div style="display:flex; justify-content:space-between; align-items:center; background:rgba(255,255,255,0.05); border-radius:6px; padding:4px 8px;">
+                                        <span style="font-size:0.75rem; color:rgba(255,255,255,0.8);"><i class="fa-solid fa-scissors"></i> Pelo</span>
+                                        <div style="display:flex; gap:8px; align-items:center;">
+                                            <i class="fa-solid fa-chevron-left builder-arrow" onclick="change3DFeature('hairStyle', -1)"></i>
+                                            <i class="fa-solid fa-chevron-right builder-arrow" onclick="change3DFeature('hairStyle', 1)"></i>
+                                        </div>
+                                    </div>
+                                    <!-- Color Pelo -->
+                                    <div style="display:flex; justify-content:space-between; align-items:center; background:rgba(255,255,255,0.05); border-radius:6px; padding:4px 8px;">
+                                        <span style="font-size:0.75rem; color:rgba(255,255,255,0.8);"><i class="fa-solid fa-palette"></i> C. Pelo</span>
+                                        <div style="display:flex; gap:8px; align-items:center;">
+                                            <i class="fa-solid fa-chevron-left builder-arrow" onclick="change3DFeature('hairColor', -1)"></i>
+                                            <i class="fa-solid fa-chevron-right builder-arrow" onclick="change3DFeature('hairColor', 1)"></i>
+                                        </div>
+                                    </div>
                                     <!-- Camisa -->
                                     <div style="display:flex; justify-content:space-between; align-items:center; background:rgba(255,255,255,0.05); border-radius:6px; padding:4px 8px;">
                                         <span style="font-size:0.75rem; color:rgba(255,255,255,0.8);"><i class="fa-solid fa-shirt"></i> Camisa</span>
@@ -644,30 +660,35 @@
             const avatarColors = {
                 skin: ['#fcd0a1', '#e5a07e', '#d68863', '#a56a4b', '#7c4a35', '#f8d25c', '#ffb6c1'],
                 shirt: ['#38bdf8', '#ef4444', '#22c55e', '#a78bfa', '#facc15', '#f472b6', '#ffffff', '#1e293b'],
-                pants: ['#1e3a8a', '#334155', '#450a0a', '#14532d', '#4c1d95', '#000000', '#f3f4f6']
+                pants: ['#1e3a8a', '#334155', '#450a0a', '#14532d', '#4c1d95', '#000000', '#f3f4f6'],
+                hairColor: ['#2c1b18', '#b58143', '#d6b370', '#724133', '#111111', '#f59797', '#ecdcbf', '#c93305', '#6c3ce0'],
+                hairStyle: ['None', 'Short', 'Spike', 'Long', 'Bob', 'Ponytail']
             };
 
             const state3D = {
                 skin: 0,
                 shirt: 0,
                 pants: 0,
-                gender: 'Block' // Block or Round
+                hairStyle: 1,
+                hairColor: 0,
+                gender: 'Block'
             };
 
             function draw3DAvatar() {
                 const canvas = document.getElementById('avatar-canvas-generator');
                 const ctx = canvas.getContext('2d');
                 
-                // Colors
                 const skinColor = avatarColors.skin[state3D.skin];
                 const shirtColor = avatarColors.shirt[state3D.shirt];
                 const pantsColor = avatarColors.pants[state3D.pants];
+                const hairCol = avatarColors.hairColor[state3D.hairColor];
+                const hairName = avatarColors.hairStyle[state3D.hairStyle];
+                const isBlock = state3D.gender === 'Block';
                 
-                // Clear and draw background
-                ctx.clearRect(0,0,200,200);
+                ctx.clearRect(0, 0, 200, 200);
                 
-                // Create a gradient background for the profile pic
-                const grad = ctx.createLinearGradient(0,0,200,200);
+                // Gradient background circle
+                const grad = ctx.createLinearGradient(0, 0, 200, 200);
                 grad.addColorStop(0, '#38bdf8');
                 grad.addColorStop(1, '#a78bfa');
                 ctx.fillStyle = grad;
@@ -675,48 +696,45 @@
                 ctx.arc(100, 100, 100, 0, Math.PI * 2);
                 ctx.fill();
 
-                // Draw Roblox-like 2D Block Character
-                const isBlock = state3D.gender === 'Block';
-                
                 // Shadow
                 ctx.fillStyle = 'rgba(0,0,0,0.2)';
                 ctx.beginPath();
-                ctx.ellipse(100, 180, 40, 10, 0, 0, Math.PI*2);
+                ctx.ellipse(100, 180, 40, 10, 0, 0, Math.PI * 2);
                 ctx.fill();
 
                 // Legs
                 ctx.fillStyle = pantsColor;
-                if(isBlock) {
-                    ctx.fillRect(70, 130, 26, 45); // L
-                    ctx.fillRect(104, 130, 26, 45); // R
+                if (isBlock) {
+                    ctx.fillRect(70, 130, 26, 45);
+                    ctx.fillRect(104, 130, 26, 45);
                 } else {
                     ctx.beginPath(); ctx.roundRect(70, 130, 26, 45, 10); ctx.fill();
                     ctx.beginPath(); ctx.roundRect(104, 130, 26, 45, 10); ctx.fill();
                 }
 
-                // Arms
+                // Arms (skin)
                 ctx.fillStyle = skinColor;
-                if(isBlock) {
-                    ctx.fillRect(40, 70, 24, 60); // L
-                    ctx.fillRect(136, 70, 24, 60); // R
+                if (isBlock) {
+                    ctx.fillRect(40, 70, 24, 60);
+                    ctx.fillRect(136, 70, 24, 60);
                 } else {
                     ctx.beginPath(); ctx.roundRect(40, 70, 24, 60, 12); ctx.fill();
                     ctx.beginPath(); ctx.roundRect(136, 70, 24, 60, 12); ctx.fill();
                 }
 
-                // Shirt Sleeves
+                // Shirt sleeves
                 ctx.fillStyle = shirtColor;
-                if(isBlock) {
+                if (isBlock) {
                     ctx.fillRect(40, 70, 24, 25);
                     ctx.fillRect(136, 70, 24, 25);
                 } else {
-                    ctx.beginPath(); ctx.roundRect(40, 70, 24, 25, [12,12,0,0]); ctx.fill();
-                    ctx.beginPath(); ctx.roundRect(136, 70, 24, 25, [12,12,0,0]); ctx.fill();
+                    ctx.beginPath(); ctx.roundRect(40, 70, 24, 25, [12, 12, 0, 0]); ctx.fill();
+                    ctx.beginPath(); ctx.roundRect(136, 70, 24, 25, [12, 12, 0, 0]); ctx.fill();
                 }
 
                 // Torso
                 ctx.fillStyle = shirtColor;
-                if(isBlock) {
+                if (isBlock) {
                     ctx.fillRect(68, 70, 64, 60);
                 } else {
                     ctx.beginPath(); ctx.roundRect(68, 70, 64, 60, 8); ctx.fill();
@@ -724,36 +742,99 @@
 
                 // Head
                 ctx.fillStyle = skinColor;
-                if(isBlock) {
+                if (isBlock) {
                     ctx.fillRect(65, 15, 70, 55);
                 } else {
                     ctx.beginPath(); ctx.roundRect(65, 15, 70, 55, 20); ctx.fill();
                 }
 
-                // Face
-                ctx.fillStyle = '#000000';
-                // Eyes
-                ctx.fillRect(80, 35, 8, 8);
-                ctx.fillRect(112, 35, 8, 8);
+                // ---- HAIR ----
+                ctx.fillStyle = hairCol;
+                if (hairName === 'Short') {
+                    if (isBlock) {
+                        ctx.fillRect(63, 10, 74, 15);
+                        ctx.fillRect(60, 15, 10, 22);
+                        ctx.fillRect(130, 15, 10, 22);
+                    } else {
+                        ctx.beginPath(); ctx.roundRect(60, 8, 80, 18, [12, 12, 0, 0]); ctx.fill();
+                        ctx.beginPath(); ctx.roundRect(58, 15, 12, 22, 6); ctx.fill();
+                        ctx.beginPath(); ctx.roundRect(130, 15, 12, 22, 6); ctx.fill();
+                    }
+                } else if (hairName === 'Spike') {
+                    ctx.beginPath();
+                    ctx.moveTo(63, 25); ctx.lineTo(73, 2); ctx.lineTo(85, 20);
+                    ctx.lineTo(100, -2); ctx.lineTo(115, 20);
+                    ctx.lineTo(127, 2); ctx.lineTo(137, 25);
+                    ctx.closePath(); ctx.fill();
+                    if (isBlock) { ctx.fillRect(63, 15, 74, 10); }
+                    else { ctx.beginPath(); ctx.roundRect(63, 15, 74, 10, 4); ctx.fill(); }
+                } else if (hairName === 'Long') {
+                    if (isBlock) {
+                        ctx.fillRect(58, 8, 84, 18);
+                        ctx.fillRect(58, 26, 14, 50);
+                        ctx.fillRect(128, 26, 14, 50);
+                    } else {
+                        ctx.beginPath(); ctx.roundRect(55, 6, 90, 20, [14, 14, 0, 0]); ctx.fill();
+                        ctx.beginPath(); ctx.roundRect(55, 20, 16, 55, [0, 0, 8, 8]); ctx.fill();
+                        ctx.beginPath(); ctx.roundRect(129, 20, 16, 55, [0, 0, 8, 8]); ctx.fill();
+                    }
+                } else if (hairName === 'Bob') {
+                    if (isBlock) {
+                        ctx.fillRect(55, 8, 90, 22);
+                        ctx.fillRect(55, 30, 14, 28);
+                        ctx.fillRect(131, 30, 14, 28);
+                    } else {
+                        ctx.beginPath(); ctx.roundRect(52, 5, 96, 55, 18); ctx.fill();
+                        // Re-draw face on top of bob
+                        ctx.fillStyle = skinColor;
+                        ctx.beginPath(); ctx.roundRect(68, 20, 64, 48, 14); ctx.fill();
+                        ctx.fillStyle = hairCol;
+                    }
+                } else if (hairName === 'Ponytail') {
+                    if (isBlock) {
+                        ctx.fillRect(63, 8, 74, 16);
+                        ctx.fillRect(120, 6, 12, 40);
+                    } else {
+                        ctx.beginPath(); ctx.roundRect(60, 6, 80, 18, [12, 12, 0, 0]); ctx.fill();
+                        ctx.beginPath(); ctx.roundRect(120, 4, 14, 42, 7); ctx.fill();
+                    }
+                    // Bun
+                    ctx.beginPath(); ctx.arc(133, 8, 10, 0, Math.PI * 2); ctx.fill();
+                }
+
+                // ---- FACE ----
+                ctx.fillStyle = '#1e293b';
+                // Eyes (white part)
+                ctx.fillStyle = '#ffffff';
+                ctx.fillRect(79, 34, 12, 10);
+                ctx.fillRect(109, 34, 12, 10);
+                // Pupils
+                ctx.fillStyle = '#1e293b';
+                ctx.fillRect(83, 36, 6, 6);
+                ctx.fillRect(113, 36, 6, 6);
                 
                 // Smile
-                ctx.beginPath();
-                ctx.arc(100, 48, 12, 0.1 * Math.PI, 0.9 * Math.PI, false);
-                ctx.lineWidth = 4;
+                ctx.strokeStyle = '#1e293b';
+                ctx.lineWidth = 3;
                 ctx.lineCap = 'round';
+                ctx.beginPath();
+                ctx.arc(100, 50, 10, 0.15 * Math.PI, 0.85 * Math.PI, false);
                 ctx.stroke();
 
                 // Apply to preview
                 const dataUrl = canvas.toDataURL('image/png');
-                document.getElementById('avatar-preview-img').src = dataUrl;
-                document.getElementById('avatar-preview-img').setAttribute('data-avatar', dataUrl);
+                const imgEl = document.getElementById('avatar-preview-img');
+                if (imgEl) {
+                    imgEl.src = dataUrl;
+                    imgEl.setAttribute('data-avatar', dataUrl);
+                }
             }
 
             function change3DFeature(feature, direction) {
                 const arr = avatarColors[feature];
                 state3D[feature] += direction;
-                if(state3D[feature] < 0) state3D[feature] = arr.length - 1;
-                if(state3D[feature] >= arr.length) state3D[feature] = 0;
+                if (state3D[feature] < 0) state3D[feature] = arr.length - 1;
+                if (state3D[feature] >= arr.length) state3D[feature] = 0;
                 draw3DAvatar();
             }
 
@@ -767,6 +848,8 @@
                 state3D.skin = Math.floor(Math.random() * avatarColors.skin.length);
                 state3D.shirt = Math.floor(Math.random() * avatarColors.shirt.length);
                 state3D.pants = Math.floor(Math.random() * avatarColors.pants.length);
+                state3D.hairStyle = Math.floor(Math.random() * avatarColors.hairStyle.length);
+                state3D.hairColor = Math.floor(Math.random() * avatarColors.hairColor.length);
                 state3D.gender = Math.random() > 0.5 ? 'Block' : 'Round';
                 document.getElementById('gender-label').innerText = state3D.gender;
                 draw3DAvatar();
@@ -778,9 +861,7 @@
                 breathFrame += 0.05;
                 const offset = Math.sin(breathFrame) * 3;
                 const img = document.getElementById('avatar-preview-img');
-                if(img) {
-                    img.style.transform = `translateY(${offset}px)`;
-                }
+                if (img) { img.style.transform = `translateY(${offset}px)`; }
                 requestAnimationFrame(animatePreview);
             }
 
