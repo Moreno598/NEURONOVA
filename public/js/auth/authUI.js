@@ -223,7 +223,14 @@ export class AuthUI {
                         localStorage.removeItem('ns_is_parent');
                     }
 
-                    await authController.login(loginEmail, password);
+                    try {
+                        await authController.login(loginEmail, password);
+                    } catch (loginErr) {
+                        if (isParent) {
+                            throw new Error('Contraseña incorrecta. Recuerda que debes usar la misma contraseña que tu hijo(a) creó al registrarse en NeuroSpark.');
+                        }
+                        throw loginErr;
+                    }
                     localStorage.setItem('ns_saved_email', email);
                     localStorage.setItem('ns_saved_password', password);
                 } else {

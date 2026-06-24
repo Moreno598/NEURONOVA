@@ -41,9 +41,16 @@ export const authController = {
                 .select('user_email')
                 .eq('parent_email', parentEmail)
                 .single();
+            
+            console.log('[Parent Lookup] Query result:', { data, error, parentEmail });
+            
+            if (error) {
+                console.warn('[Parent Lookup] Supabase error (posible RLS):', error.message);
+                return null;
+            }
             if (data && data.user_email) return data.user_email;
         } catch (e) {
-            console.error("Error checking parent email:", e);
+            console.error("[Parent Lookup] Exception:", e);
         }
         return null;
     },
