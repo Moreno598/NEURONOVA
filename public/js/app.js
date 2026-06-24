@@ -119,7 +119,8 @@ class NeuroSparkApp {
                 if(avatarIcon) avatarIcon.style.display = 'none';
                 profileBtn.insertBefore(imgEl, document.getElementById('current-profile-name'));
             }
-            imgEl.src = `https://api.dicebear.com/7.x/bottts/svg?seed=${this.state.avatar.charAt(0).toUpperCase() + this.state.avatar.slice(1)}`;
+            const avState = this.state.avatar;
+            imgEl.src = avState.startsWith('http') ? avState : `https://api.dicebear.com/7.x/bottts/svg?seed=${avState.charAt(0).toUpperCase() + avState.slice(1)}`;
             imgEl.style.display = 'block';
         }
         document.getElementById('logo-sub-text').innerText        = i18n.t('logoSub');
@@ -287,6 +288,9 @@ class NeuroSparkApp {
         if (this.state.profile === 'admin') {
             document.body.className = 'teens-mode admin-games-mode' + themeClass + lowStim;
             this.renderAdminGamesHome(mount);
+        } else if (this.state.profile === 'parent') {
+            document.body.className = 'teens-mode parent-panel-mode' + themeClass + lowStim;
+            this.renderParentHome(mount);
         } else if (this.state.profile === 'kids') {
             document.body.className = 'kids-mode' + themeClass + lowStim;
             this.renderKidsHome(mount);
@@ -335,6 +339,8 @@ class NeuroSparkApp {
             if (this.state.isAdmin) {
                 freshGames.innerHTML = '<i class="fa-solid fa-shield-halved"></i>';
                 freshGames.title = "Abrir Panel Admin";
+            } else if (this.state.profile === 'parent') {
+                freshGames.style.display = 'none';
             } else if (this.state.profile === 'adults') {
                 freshGames.innerHTML = '<i class="fa-solid fa-gamepad"></i>';
                 freshGames.title = "Modo Juegos";
@@ -1022,6 +1028,133 @@ class NeuroSparkApp {
         this.setupPomodoro();
     }
 
+    /* ---- PARENT DASHBOARD VIEW ---- */
+    renderParentHome(mount) {
+        const studentName = this.state.activeProfileName.replace('Apoderado de ', '');
+        const coins = this.state.coins || 0;
+        const level = this.state.level || 1;
+        const coinsPerLevel = 500;
+        const coinsIntoLevel = coins % coinsPerLevel;
+        const pct = Math.min(100, Math.round((coinsIntoLevel / coinsPerLevel) * 100));
+        const avatar = this.state.avatar || 'sparky';
+        const avatarUrl = avatar.startsWith('http') ? avatar : `https://api.dicebear.com/7.x/bottts/svg?seed=${avatar.charAt(0).toUpperCase() + avatar.slice(1)}`;
+        
+        // Determine age group
+        const userAge = this.state.userAge || '—';
+        const profileType = (parseInt(userAge) <= 11) ? 'Perfil Niños (6-11)' : 'Perfil Adolescentes (12-17)';
+        const profileColor = (parseInt(userAge) <= 11) ? '#86efac' : '#c4b5fd';
+        
+        mount.innerHTML = `
+            <div class="teens-home-view parent-panel-view" style="gap:28px;">
+                <!-- Parent Welcome Banner -->
+                <div class="kids-welcome-banner" style="background: linear-gradient(135deg, var(--primary-green), var(--primary-blue)); border: 1px solid var(--border-color); box-shadow: 0 8px 30px var(--glow-color);">
+                    <div class="kids-welcome-info" style="display:flex;align-items:center;gap:20px;width:100%;">
+                        <img src="${avatarUrl}" style="width:64px;height:64px;border-radius:50%;background:rgba(255,255,255,0.3);border:3px solid rgba(255,255,255,0.5);flex-shrink:0;">
+                        <div>
+                            <h2 style="display:flex;align-items:center;gap:10px;color:#1e293b;margin:0 0 6px;font-size:1.4rem;"><i class="fa-solid fa-user-shield"></i> Portal para Padres</h2>
+                            <p style="color:#1e293b;margin:0;font-size:0.95rem;">Monitorea el progreso de <strong>${studentName}</strong>. Aquí puedes visualizar su avance cognitivo y logros recientes.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- STATS CARDS -->
+                <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px;">
+                    <div class="game-card" style="padding: 24px; text-align: center;">
+                        <i class="fa-solid fa-coins" style="font-size: 2.2rem; color: #f59e0b; margin-bottom: 10px;"></i>
+                        <h3 style="color: var(--text-main); margin: 0; font-size: 1.05rem;">NeuroCoins</h3>
+                        <p style="color: var(--text-muted); font-size: 2rem; font-weight: 900; margin: 6px 0 0;">${coins}</p>
+                    </div>
+                    <div class="game-card" style="padding: 24px; text-align: center;">
+                        <i class="fa-solid fa-star" style="font-size: 2.2rem; color: var(--primary-blue); margin-bottom: 10px;"></i>
+                        <h3 style="color: var(--text-main); margin: 0; font-size: 1.05rem;">Nivel Actual</h3>
+                        <p style="color: var(--text-muted); font-size: 2rem; font-weight: 900; margin: 6px 0 0;">${level}</p>
+                    </div>
+                    <div class="game-card" style="padding: 24px; text-align: center;">
+                        <i class="fa-solid fa-child" style="font-size: 2.2rem; color: ${profileColor}; margin-bottom: 10px;"></i>
+                        <h3 style="color: var(--text-main); margin: 0; font-size: 1.05rem;">Edad</h3>
+                        <p style="color: var(--text-muted); font-size: 2rem; font-weight: 900; margin: 6px 0 0;">${userAge}</p>
+                    </div>
+                    <div class="game-card" style="padding: 24px; text-align: center;">
+                        <i class="fa-solid fa-brain" style="font-size: 2.2rem; color: var(--primary-purple); margin-bottom: 10px;"></i>
+                        <h3 style="color: var(--text-main); margin: 0; font-size: 1.05rem;">Perfil</h3>
+                        <p style="color: ${profileColor}; font-size: 1.1rem; font-weight: 800; margin: 6px 0 0;">${profileType}</p>
+                    </div>
+                </div>
+
+                <!-- LEVEL PROGRESS -->
+                <div style="background:var(--bg-card);border:1px solid var(--border-color);border-radius:14px;padding:24px;">
+                    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;">
+                        <h3 style="color:var(--text-main);margin:0;font-size:1.1rem;font-weight:800;"><i class="fa-solid fa-chart-line" style="color:var(--primary-blue);margin-right:8px;"></i> Progreso al Nivel ${level + 1}</h3>
+                        <span style="color:var(--text-muted);font-size:0.85rem;font-weight:700;">${coinsIntoLevel} / ${coinsPerLevel} coins</span>
+                    </div>
+                    <div style="width:100%;height:14px;background:rgba(255,255,255,0.06);border-radius:10px;overflow:hidden;border:1px solid var(--border-color);">
+                        <div style="width:${pct}%;height:100%;background:linear-gradient(90deg, var(--primary-blue), var(--primary-purple));border-radius:10px;transition:width 0.6s ease;"></div>
+                    </div>
+                </div>
+
+                <!-- ACTIVITY SUMMARY -->
+                <div style="display:flex;flex-direction:column;gap:16px;">
+                    <div style="display:flex;align-items:center;gap:12px;padding:14px 20px;background:var(--bg-card);border:1px solid var(--border-color);border-radius:14px;">
+                        <i class="fa-solid fa-gamepad" style="color:var(--primary-green);font-size:1.3rem;"></i>
+                        <div>
+                            <h3 style="color:var(--text-main);margin:0;font-size:1.15rem;font-weight:800;">Módulos de Entrenamiento</h3>
+                            <p style="color:var(--text-muted);margin:0;font-size:0.8rem;">Juegos cognitivos disponibles para ${studentName}</p>
+                        </div>
+                    </div>
+                    <div style="background:var(--bg-card);border-radius:14px;border:1px solid var(--border-color);padding:24px;">
+                        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:12px;">
+                            ${this._getParentGamesList()}
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- PARENT TIPS -->
+                <div style="background:rgba(56,189,248,0.05);border:1px solid rgba(56,189,248,0.12);border-radius:14px;padding:24px;">
+                    <h3 style="color:var(--text-main);margin:0 0 12px;font-size:1.05rem;font-weight:800;"><i class="fa-solid fa-lightbulb" style="color:#f59e0b;margin-right:8px;"></i> Consejos para Padres</h3>
+                    <ul style="color:var(--text-muted);margin:0;padding-left:20px;line-height:1.8;font-size:0.9rem;">
+                        <li>Sesiones de <strong>15-20 minutos</strong> son ideales para mantener la concentración.</li>
+                        <li>Anima a tu hijo(a) a completar módulos de <strong>diferentes áreas cognitivas</strong>.</li>
+                        <li>Los <strong>NeuroCoins</strong> que gana pueden ser canjeados en la tienda por personalizaciones.</li>
+                        <li>Evita sesiones de juego antes de dormir para no alterar el ciclo de sueño.</li>
+                    </ul>
+                </div>
+            </div>`;
+    }
+
+    _getParentGamesList() {
+        const age = parseInt(this.state.userAge) || 10;
+        let games = [];
+        if (age <= 11) {
+            games = [
+                { icon: 'fa-puzzle-piece', name: 'Memory Cards', color: '#38bdf8' },
+                { icon: 'fa-eye', name: 'Buscador Visual', color: '#22c55e' },
+                { icon: 'fa-calculator', name: 'Mathcraft', color: '#f59e0b' },
+                { icon: 'fa-shapes', name: 'Patrón Mágico', color: '#a78bfa' },
+                { icon: 'fa-book-open', name: 'Lecturas Activas', color: '#f43f5e' },
+                { icon: 'fa-calendar-check', name: 'Rutina Builder', color: '#14b8a6' },
+                { icon: 'fa-music', name: 'Ritmo Cognitivo', color: '#e879f9' },
+                { icon: 'fa-lightbulb', name: 'Inventos Locos', color: '#fb923c' }
+            ];
+        } else {
+            games = [
+                { icon: 'fa-code', name: 'NeuroCode', color: '#38bdf8' },
+                { icon: 'fa-flask', name: 'Laboratorio IA', color: '#22c55e' },
+                { icon: 'fa-chess', name: 'Estrategia Pro', color: '#a78bfa' },
+                { icon: 'fa-file-lines', name: 'Comprensión+', color: '#f59e0b' },
+                { icon: 'fa-brain', name: 'Memoria Avanzada', color: '#f43f5e' },
+                { icon: 'fa-clock', name: 'Gestión Tiempo', color: '#14b8a6' },
+                { icon: 'fa-pen-fancy', name: 'Escritura Creativa', color: '#e879f9' },
+                { icon: 'fa-chart-bar', name: 'Finanzas Básicas', color: '#fb923c' }
+            ];
+        }
+        return games.map(g => `
+            <div style="display:flex;align-items:center;gap:10px;padding:10px 14px;background:rgba(255,255,255,0.03);border:1px solid var(--border-color);border-radius:10px;">
+                <i class="fa-solid ${g.icon}" style="color:${g.color};font-size:1.1rem;width:22px;text-align:center;"></i>
+                <span style="color:var(--text-main);font-size:0.85rem;font-weight:600;">${g.name}</span>
+            </div>
+        `).join('');
+    }
+
     /* ---- ADMIN GAMES VIEW (all 16 games) ---- */
     renderAdminGamesHome(mount) {
         const name = this.state.activeProfileName;
@@ -1296,6 +1429,7 @@ class NeuroSparkApp {
                 const { authController } = await import('./auth/authController.js');
                 await authController.logout();
                 localStorage.removeItem('neurospark_state');
+                localStorage.removeItem('ns_is_parent');
                 window.location.reload();
             } catch (err) {
                 console.error('Logout error:', err);

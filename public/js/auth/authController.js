@@ -34,6 +34,20 @@ export const authController = {
         if (error) throw error;
     },
 
+    async getStudentEmailByParent(parentEmail) {
+        try {
+            const { data, error } = await supabase
+                .from('correos')
+                .select('user_email')
+                .eq('parent_email', parentEmail)
+                .single();
+            if (data && data.user_email) return data.user_email;
+        } catch (e) {
+            console.error("Error checking parent email:", e);
+        }
+        return null;
+    },
+
     async getCurrentUser() {
         const { data: { user }, error } = await supabase.auth.getUser();
         if (error) throw error;

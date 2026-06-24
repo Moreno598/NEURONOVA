@@ -19,6 +19,7 @@ export class AuthUI {
         this.registerFieldsContainer = document.getElementById('auth-register-fields');
 
         this.subtitle = document.getElementById('auth-subtitle');
+        this.parentToggleContainer = document.getElementById('auth-parent-toggle-container');
 
         this.init();
     }
@@ -136,8 +137,16 @@ export class AuthUI {
                         app.state.activeProfileName = `${firstName} ${lastName || ''}`.trim();
                     }
                     
-                    // Set Game Mode by Age
-                    if (age) {
+                    const isParent = localStorage.getItem('ns_is_parent') === 'true';
+
+                    // Save age for parent dashboard
+                    if (age) app.state.userAge = parseInt(age, 10);
+
+                    // Set Game Mode by Age or Role
+                    if (isParent) {
+                        app.state.profile = 'parent';
+                        app.state.activeProfileName = 'Apoderado de ' + app.state.activeProfileName;
+                    } else if (age) {
                         const userAge = parseInt(age, 10);
                         if (userAge <= 11) {
                             app.state.profile = 'kids';
@@ -171,12 +180,14 @@ export class AuthUI {
                 this.submitBtn.innerText = 'Ingresar al Portal';
                 this.toggleBtn.innerHTML = '¿No tienes una cuenta? <span style="color: #38bdf8; font-weight: 800;">Crear una ahora</span>';
                 if(this.registerFieldsContainer) this.registerFieldsContainer.style.display = 'none';
+                if(this.parentToggleContainer) this.parentToggleContainer.style.display = 'flex';
             } else {
                 this.title.innerText = 'Crear Cuenta';
                 if(this.subtitle) this.subtitle.innerText = 'Únete a NeuroSpark y transforma tu aprendizaje.';
                 this.submitBtn.innerText = 'Registrarse';
                 this.toggleBtn.innerHTML = '¿Ya tienes cuenta? <span style="color: #38bdf8; font-weight: 800;">Inicia sesión aquí</span>';
                 if(this.registerFieldsContainer) this.registerFieldsContainer.style.display = 'flex';
+                if(this.parentToggleContainer) this.parentToggleContainer.style.display = 'none';
             }
         });
 
@@ -196,7 +207,23 @@ export class AuthUI {
 
                 if (this.isLoginMode) {
                     window.hasManuallyLoggedIn = true;
-                    await authController.login(email, password);
+                    let loginEmail = email;
+                    let isParent = false;
+
+                    // Auto-detect: check if this email is registered as a parent
+                    const studentEmail = await authController.getStudentEmailByParent(email);
+                    if (studentEmail) {
+                        loginEmail = studentEmail;
+                        isParent = true;
+                    }
+
+                    if (isParent) {
+                        localStorage.setItem('ns_is_parent', 'true');
+                    } else {
+                        localStorage.removeItem('ns_is_parent');
+                    }
+
+                    await authController.login(loginEmail, password);
                     localStorage.setItem('ns_saved_email', email);
                     localStorage.setItem('ns_saved_password', password);
                 } else {
@@ -215,8 +242,8 @@ export class AuthUI {
                         throw new Error("NeuroSpark está diseñado exclusivamente para edades entre 6 y 17 años.");
                     }
                     
-                    const selectedAvatarEl = document.querySelector('.avatar-option.selected');
-                    const avatar = selectedAvatarEl ? selectedAvatarEl.getAttribute('data-avatar') : 'sparky';
+                    const avatarImgEl = document.getElementById('avatar-preview-img');
+                    const avatar = avatarImgEl ? avatarImgEl.getAttribute('data-avatar') : 'sparky';
 
                     window.hasManuallyLoggedIn = true;
                     await authController.register(email, password, {

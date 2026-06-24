@@ -220,6 +220,7 @@ body.light-theme .dynamic-bg .nebula {
     letter-spacing: 0.5px;
     background: linear-gradient(90deg, var(--primary-blue), var(--primary-purple));
     -webkit-background-clip: text;
+    background-clip: text;
     -webkit-text-fill-color: transparent;
 }
 
@@ -437,6 +438,7 @@ body.light-theme .school-insignia {
     margin-bottom: 12px;
     background: linear-gradient(90deg, var(--primary-blue), var(--primary-purple), var(--accent-yellow));
     -webkit-background-clip: text;
+    background-clip: text;
     -webkit-text-fill-color: transparent;
 }
 
