@@ -36,16 +36,23 @@ export const authController = {
 
     async getStudentEmailByParent(parentEmail) {
         try {
+            // DEBUG: First check ALL rows in correos table
+            const { data: allRows, error: allErr } = await supabase
+                .from('correos')
+                .select('*');
+            console.log('[Parent Lookup] ALL rows in correos:', allRows, 'Error:', allErr);
+
+            // Now do the specific lookup
             const { data, error } = await supabase
                 .from('correos')
                 .select('user_email')
                 .eq('parent_email', parentEmail)
-                .single();
+                .maybeSingle();
             
-            console.log('[Parent Lookup] Query result:', { data, error, parentEmail });
+            console.log('[Parent Lookup] Specific query for:', parentEmail, '→ data:', data, 'error:', error);
             
             if (error) {
-                console.warn('[Parent Lookup] Supabase error (posible RLS):', error.message);
+                console.warn('[Parent Lookup] Supabase error:', error.message);
                 return null;
             }
             if (data && data.user_email) return data.user_email;
