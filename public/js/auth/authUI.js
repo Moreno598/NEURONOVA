@@ -224,6 +224,7 @@ export class AuthUI {
                     }
 
                     try {
+                        console.log('[LOGIN DEBUG] Attempting login with:', { loginEmail, isParent, originalEmail: email, passwordLength: password.length });
                         await authController.login(loginEmail, password);
                     } catch (loginErr) {
                         if (isParent) {

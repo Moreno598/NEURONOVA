@@ -1289,9 +1289,9 @@ class NeuroSparkApp {
 
         overlay.innerHTML = `
             <div class="settings-modal">
-                <div class="settings-header">
-                    <h3>${i18n.t('settingsTitle')}</h3>
-                    <button class="close-chat-btn" id="btn-close-settings">&times;</button>
+                <div class="settings-header" style="display: flex; justify-content: space-between; align-items: center; width: 100%;">
+                    <h3 style="margin: 0; color: #1e293b;">${i18n.t('settingsTitle')}</h3>
+                    <button id="btn-close-settings" style="background: transparent; border: none; font-size: 2rem; color: #1e293b; cursor: pointer; line-height: 1; padding: 0 10px;">&times;</button>
                 </div>
 
                 <!-- Low Stimulus -->
