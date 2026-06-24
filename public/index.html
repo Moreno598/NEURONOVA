@@ -535,39 +535,38 @@
                                 <div style="flex-shrink: 0; position: relative;">
                                     <div style="width: 80px; height: 80px; border-radius: 50%; background: linear-gradient(135deg, #38bdf8, #a78bfa); display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 15px rgba(0,0,0,0.3);">
                                         <img id="avatar-preview-img" src="https://api.dicebear.com/7.x/avataaars/svg?seed=Neuro&skinColor=edb98a&top=shortHairShortFlat&hairColor=2c1b18&eyes=happy&mouth=smile" style="width: 100%; height: 100%; border-radius: 50%;">
-                                    </div>
-                                </div>
-                                <div style="flex: 1; display: flex; flex-direction: column; gap: 8px;">
-                                    <!-- Cabello -->
-                                    <div style="display:flex; justify-content:space-between; align-items:center; background:rgba(255,255,255,0.05); border-radius:6px; padding:4px 8px;">
-                                        <span style="font-size:0.75rem; color:rgba(255,255,255,0.8);"><i class="fa-solid fa-scissors"></i> Pelo</span>
-                                        <div style="display:flex; gap:8px; align-items:center;">
-                                            <i class="fa-solid fa-chevron-left builder-arrow" onclick="changeAvatarFeature('top', -1)"></i>
-                                            <i class="fa-solid fa-chevron-right builder-arrow" onclick="changeAvatarFeature('top', 1)"></i>
-                                        </div>
-                                    </div>
+                                    </                                <div style="flex: 1; display: flex; flex-direction: column; gap: 8px;">
                                     <!-- Color Piel -->
                                     <div style="display:flex; justify-content:space-between; align-items:center; background:rgba(255,255,255,0.05); border-radius:6px; padding:4px 8px;">
-                                        <span style="font-size:0.75rem; color:rgba(255,255,255,0.8);"><i class="fa-solid fa-palette"></i> Piel</span>
+                                        <span style="font-size:0.75rem; color:rgba(255,255,255,0.8);"><i class="fa-solid fa-hand"></i> Piel</span>
                                         <div style="display:flex; gap:8px; align-items:center;">
-                                            <i class="fa-solid fa-chevron-left builder-arrow" onclick="changeAvatarFeature('skinColor', -1)"></i>
-                                            <i class="fa-solid fa-chevron-right builder-arrow" onclick="changeAvatarFeature('skinColor', 1)"></i>
+                                            <i class="fa-solid fa-chevron-left builder-arrow" onclick="change3DFeature('skin', -1)"></i>
+                                            <i class="fa-solid fa-chevron-right builder-arrow" onclick="change3DFeature('skin', 1)"></i>
                                         </div>
                                     </div>
-                                    <!-- Ojos -->
+                                    <!-- Camisa -->
                                     <div style="display:flex; justify-content:space-between; align-items:center; background:rgba(255,255,255,0.05); border-radius:6px; padding:4px 8px;">
-                                        <span style="font-size:0.75rem; color:rgba(255,255,255,0.8);"><i class="fa-regular fa-eye"></i> Ojos</span>
+                                        <span style="font-size:0.75rem; color:rgba(255,255,255,0.8);"><i class="fa-solid fa-shirt"></i> Camisa</span>
                                         <div style="display:flex; gap:8px; align-items:center;">
-                                            <i class="fa-solid fa-chevron-left builder-arrow" onclick="changeAvatarFeature('eyes', -1)"></i>
-                                            <i class="fa-solid fa-chevron-right builder-arrow" onclick="changeAvatarFeature('eyes', 1)"></i>
+                                            <i class="fa-solid fa-chevron-left builder-arrow" onclick="change3DFeature('shirt', -1)"></i>
+                                            <i class="fa-solid fa-chevron-right builder-arrow" onclick="change3DFeature('shirt', 1)"></i>
                                         </div>
                                     </div>
-                                    <!-- Boca -->
+                                    <!-- Pantalón -->
                                     <div style="display:flex; justify-content:space-between; align-items:center; background:rgba(255,255,255,0.05); border-radius:6px; padding:4px 8px;">
-                                        <span style="font-size:0.75rem; color:rgba(255,255,255,0.8);"><i class="fa-regular fa-face-smile"></i> Boca</span>
+                                        <span style="font-size:0.75rem; color:rgba(255,255,255,0.8);"><i class="fa-solid fa-socks"></i> Pantalón</span>
                                         <div style="display:flex; gap:8px; align-items:center;">
-                                            <i class="fa-solid fa-chevron-left builder-arrow" onclick="changeAvatarFeature('mouth', -1)"></i>
-                                            <i class="fa-solid fa-chevron-right builder-arrow" onclick="changeAvatarFeature('mouth', 1)"></i>
+                                            <i class="fa-solid fa-chevron-left builder-arrow" onclick="change3DFeature('pants', -1)"></i>
+                                            <i class="fa-solid fa-chevron-right builder-arrow" onclick="change3DFeature('pants', 1)"></i>
+                                        </div>
+                                    </div>
+                                    <!-- Género / Estilo -->
+                                    <div style="display:flex; justify-content:space-between; align-items:center; background:rgba(255,255,255,0.05); border-radius:6px; padding:4px 8px;">
+                                        <span style="font-size:0.75rem; color:rgba(255,255,255,0.8);"><i class="fa-solid fa-venus-mars"></i> Cuerpo</span>
+                                        <div style="display:flex; gap:8px; align-items:center;">
+                                            <i class="fa-solid fa-chevron-left builder-arrow" onclick="toggle3DGender()"></i>
+                                            <span id="gender-label" style="font-size:0.75rem; font-weight:600; width:30px; text-align:center;">Block</span>
+                                            <i class="fa-solid fa-chevron-right builder-arrow" onclick="toggle3DGender()"></i>
                                         </div>
                                     </div>
                                 </div>
@@ -635,60 +634,159 @@
                     INGRESAR AL PORTAL <i class="fa-solid fa-arrow-right"></i>
                 </button>
             </div>
+            
+            <!-- Hidden Canvas for Avatar Generation -->
+            <canvas id="avatar-canvas-generator" width="200" height="200" style="display:none;"></canvas>
+
         <script>
-            // Avatar Builder Logic
-            const avatarTraits = {
-                top: ['shortHairShortFlat', 'longHairStraight', 'eyepatch', 'hat', 'hijab', 'turban', 'winterHat1', 'longHairCurly', 'shortHairDreads01', 'shortHairFrizzle', 'shortHairShaggyMultipilous', 'shortHairTheCaesar'],
-                skinColor: ['ffdbb4', 'edb98a', 'fd9841', 'f8d25c', 'd08b5b', 'ae5d29', '614335'],
-                eyes: ['default', 'happy', 'wink', 'surprised', 'squint', 'hearts'],
-                mouth: ['default', 'smile', 'twinkle', 'tongue', 'serious', 'eating']
+            // 3D Canvas Avatar Builder Logic
+            const avatarColors = {
+                skin: ['#fcd0a1', '#e5a07e', '#d68863', '#a56a4b', '#7c4a35', '#f8d25c', '#ffb6c1'],
+                shirt: ['#38bdf8', '#ef4444', '#22c55e', '#a78bfa', '#facc15', '#f472b6', '#ffffff', '#1e293b'],
+                pants: ['#1e3a8a', '#334155', '#450a0a', '#14532d', '#4c1d95', '#000000', '#f3f4f6']
             };
 
-            const currentAvatarState = {
-                top: 0,
-                skinColor: 1,
-                eyes: 1,
-                mouth: 1,
-                hairColor: '2c1b18',
-                seed: 'Neuro'
+            const state3D = {
+                skin: 0,
+                shirt: 0,
+                pants: 0,
+                gender: 'Block' // Block or Round
             };
 
-            function updateAvatarPreview() {
-                const top = avatarTraits.top[currentAvatarState.top];
-                const skin = avatarTraits.skinColor[currentAvatarState.skinColor];
-                const eyes = avatarTraits.eyes[currentAvatarState.eyes];
-                const mouth = avatarTraits.mouth[currentAvatarState.mouth];
-                const hc = currentAvatarState.hairColor;
+            function draw3DAvatar() {
+                const canvas = document.getElementById('avatar-canvas-generator');
+                const ctx = canvas.getContext('2d');
                 
-                const url = `https://api.dicebear.com/7.x/avataaars/svg?seed=${currentAvatarState.seed}&skinColor=${skin}&top=${top}&hairColor=${hc}&eyes=${eyes}&mouth=${mouth}`;
-                document.getElementById('avatar-preview-img').src = url;
-                // Save it to a hidden attribute so the register function can grab it
-                document.getElementById('avatar-preview-img').setAttribute('data-avatar', url);
+                // Colors
+                const skinColor = avatarColors.skin[state3D.skin];
+                const shirtColor = avatarColors.shirt[state3D.shirt];
+                const pantsColor = avatarColors.pants[state3D.pants];
+                
+                // Clear and draw background
+                ctx.clearRect(0,0,200,200);
+                
+                // Create a gradient background for the profile pic
+                const grad = ctx.createLinearGradient(0,0,200,200);
+                grad.addColorStop(0, '#38bdf8');
+                grad.addColorStop(1, '#a78bfa');
+                ctx.fillStyle = grad;
+                ctx.beginPath();
+                ctx.arc(100, 100, 100, 0, Math.PI * 2);
+                ctx.fill();
+
+                // Draw Roblox-like 2D Block Character
+                const isBlock = state3D.gender === 'Block';
+                
+                // Shadow
+                ctx.fillStyle = 'rgba(0,0,0,0.2)';
+                ctx.beginPath();
+                ctx.ellipse(100, 180, 40, 10, 0, 0, Math.PI*2);
+                ctx.fill();
+
+                // Legs
+                ctx.fillStyle = pantsColor;
+                if(isBlock) {
+                    ctx.fillRect(70, 130, 26, 45); // L
+                    ctx.fillRect(104, 130, 26, 45); // R
+                } else {
+                    ctx.beginPath(); ctx.roundRect(70, 130, 26, 45, 10); ctx.fill();
+                    ctx.beginPath(); ctx.roundRect(104, 130, 26, 45, 10); ctx.fill();
+                }
+
+                // Arms
+                ctx.fillStyle = skinColor;
+                if(isBlock) {
+                    ctx.fillRect(40, 70, 24, 60); // L
+                    ctx.fillRect(136, 70, 24, 60); // R
+                } else {
+                    ctx.beginPath(); ctx.roundRect(40, 70, 24, 60, 12); ctx.fill();
+                    ctx.beginPath(); ctx.roundRect(136, 70, 24, 60, 12); ctx.fill();
+                }
+
+                // Shirt Sleeves
+                ctx.fillStyle = shirtColor;
+                if(isBlock) {
+                    ctx.fillRect(40, 70, 24, 25);
+                    ctx.fillRect(136, 70, 24, 25);
+                } else {
+                    ctx.beginPath(); ctx.roundRect(40, 70, 24, 25, [12,12,0,0]); ctx.fill();
+                    ctx.beginPath(); ctx.roundRect(136, 70, 24, 25, [12,12,0,0]); ctx.fill();
+                }
+
+                // Torso
+                ctx.fillStyle = shirtColor;
+                if(isBlock) {
+                    ctx.fillRect(68, 70, 64, 60);
+                } else {
+                    ctx.beginPath(); ctx.roundRect(68, 70, 64, 60, 8); ctx.fill();
+                }
+
+                // Head
+                ctx.fillStyle = skinColor;
+                if(isBlock) {
+                    ctx.fillRect(65, 15, 70, 55);
+                } else {
+                    ctx.beginPath(); ctx.roundRect(65, 15, 70, 55, 20); ctx.fill();
+                }
+
+                // Face
+                ctx.fillStyle = '#000000';
+                // Eyes
+                ctx.fillRect(80, 35, 8, 8);
+                ctx.fillRect(112, 35, 8, 8);
+                
+                // Smile
+                ctx.beginPath();
+                ctx.arc(100, 48, 12, 0.1 * Math.PI, 0.9 * Math.PI, false);
+                ctx.lineWidth = 4;
+                ctx.lineCap = 'round';
+                ctx.stroke();
+
+                // Apply to preview
+                const dataUrl = canvas.toDataURL('image/png');
+                document.getElementById('avatar-preview-img').src = dataUrl;
+                document.getElementById('avatar-preview-img').setAttribute('data-avatar', dataUrl);
             }
 
-            function changeAvatarFeature(feature, direction) {
-                const arr = avatarTraits[feature];
-                currentAvatarState[feature] += direction;
-                if (currentAvatarState[feature] < 0) currentAvatarState[feature] = arr.length - 1;
-                if (currentAvatarState[feature] >= arr.length) currentAvatarState[feature] = 0;
-                updateAvatarPreview();
+            function change3DFeature(feature, direction) {
+                const arr = avatarColors[feature];
+                state3D[feature] += direction;
+                if(state3D[feature] < 0) state3D[feature] = arr.length - 1;
+                if(state3D[feature] >= arr.length) state3D[feature] = 0;
+                draw3DAvatar();
+            }
+
+            function toggle3DGender() {
+                state3D.gender = state3D.gender === 'Block' ? 'Round' : 'Block';
+                document.getElementById('gender-label').innerText = state3D.gender;
+                draw3DAvatar();
             }
 
             function randomizeAvatar() {
-                currentAvatarState.top = Math.floor(Math.random() * avatarTraits.top.length);
-                currentAvatarState.skinColor = Math.floor(Math.random() * avatarTraits.skinColor.length);
-                currentAvatarState.eyes = Math.floor(Math.random() * avatarTraits.eyes.length);
-                currentAvatarState.mouth = Math.floor(Math.random() * avatarTraits.mouth.length);
-                
-                // Random hair color
-                const hairColors = ['2c1b18', 'b58143', 'd6b370', '724133', '4a3123', 'f59797', 'ecdcbf', 'c93305'];
-                currentAvatarState.hairColor = hairColors[Math.floor(Math.random() * hairColors.length)];
-                currentAvatarState.seed = Math.random().toString(36).substring(7);
-                updateAvatarPreview();
+                state3D.skin = Math.floor(Math.random() * avatarColors.skin.length);
+                state3D.shirt = Math.floor(Math.random() * avatarColors.shirt.length);
+                state3D.pants = Math.floor(Math.random() * avatarColors.pants.length);
+                state3D.gender = Math.random() > 0.5 ? 'Block' : 'Round';
+                document.getElementById('gender-label').innerText = state3D.gender;
+                draw3DAvatar();
             }
-            
-            // Initial call
-            setTimeout(updateAvatarPreview, 100);
+
+            // Animate breathing
+            let breathFrame = 0;
+            function animatePreview() {
+                breathFrame += 0.05;
+                const offset = Math.sin(breathFrame) * 3;
+                const img = document.getElementById('avatar-preview-img');
+                if(img) {
+                    img.style.transform = `translateY(${offset}px)`;
+                }
+                requestAnimationFrame(animatePreview);
+            }
+
+            setTimeout(() => {
+                draw3DAvatar();
+                animatePreview();
+            }, 100);
         </script>
         </div><!-- end Panel 2: Login -->
 
