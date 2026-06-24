@@ -48,9 +48,9 @@ export const authController = {
                 .select('user_email')
                 .eq('parent_email', parentEmail)
                 .limit(1);
-            
+
             console.log('[Parent Lookup] Specific query for:', parentEmail, '→ data:', data, 'error:', error);
-            
+
             if (error) {
                 console.warn('[Parent Lookup] Supabase error:', error.message);
                 return null;
@@ -72,7 +72,7 @@ export const authController = {
         try {
             // Llama a una función RPC en Supabase para revisar la tabla auth.users directamente
             const { data, error } = await supabase.rpc('check_user_exists', { lookup_email: email });
-            
+
             if (error) {
                 console.error("RPC check_user_exists error:", error);
                 return null; // Indica que la función no existe o falló
@@ -92,7 +92,7 @@ export const authController = {
                 .eq('email', email)
                 .single();
             if (data && data.state_data) return data.state_data;
-        } catch (e) {}
+        } catch (e) { }
         return null;
     },
 
