@@ -1,14 +1,17 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>NeuroSpark — Neuroeducación Inteligente para TDAH</title>
-    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🧠</text></svg>">
+    <link rel="icon"
+        href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🧠</text></svg>">
     <!-- Google Fonts: Outfit -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
     <!-- FontAwesome for icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <!-- Supabase JS -->
@@ -16,6 +19,7 @@
     <!-- Custom CSS -->
     <link rel="stylesheet" href="index.css">
 </head>
+
 <body class="dark-theme">
     <!-- Background dynamic space nebula (can be disabled) -->
     <div id="dynamic-bg" class="dynamic-bg">
@@ -32,11 +36,13 @@
                 <img src="insignia.png" alt="Insignia Inmaculada de la Merced" class="school-insignia">
                 <div class="logo-divider"></div>
                 <!-- Brain icon: solid blue box matching reference image -->
-                <div style="width: 42px; height: 42px; border-radius: 12px; background: #38bdf8; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 16px rgba(56, 189, 248, 0.4); flex-shrink: 0;">
+                <div
+                    style="width: 42px; height: 42px; border-radius: 12px; background: #38bdf8; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 16px rgba(56, 189, 248, 0.4); flex-shrink: 0;">
                     <i class="fa-solid fa-brain" style="color: white; font-size: 1.25rem;"></i>
                 </div>
                 <!-- NEUROSPARK uppercase white text, no subtitle -->
-                <span style="color: white; font-size: 1.35rem; font-weight: 900; letter-spacing: 2px; text-transform: uppercase;">NEUROSPARK</span>
+                <span
+                    style="color: white; font-size: 1.35rem; font-weight: 900; letter-spacing: 2px; text-transform: uppercase;">NEUROSPARK</span>
                 <!-- Hidden span to prevent JS null reference error -->
                 <span id="logo-sub-text" style="display:none;"></span>
             </div>
@@ -47,15 +53,20 @@
                     <i class="fa-solid fa-coins gold-text"></i>
                     <span id="player-coins">100</span>
                 </div>
-                <div class="status-item level" title="Nivel del perfil" style="flex-direction:column; align-items:flex-start; gap:4px;">
+                <div class="status-item level" title="Nivel del perfil"
+                    style="flex-direction:column; align-items:flex-start; gap:4px;">
                     <div style="display:flex; align-items:center; gap:8px;">
                         <i class="fa-solid fa-circle-up purple-text"></i>
                         <span>Nivel <strong id="player-level">1</strong></span>
                     </div>
-                    <div style="width:100%; min-width:100px; height:5px; background:rgba(255,255,255,0.1); border-radius:99px; overflow:hidden;">
-                        <div id="xp-bar-fill" style="height:100%; width:0%; background:linear-gradient(90deg,var(--primary-blue),var(--primary-purple)); border-radius:99px; transition:width 0.6s cubic-bezier(0.4,0,0.2,1);"></div>
+                    <div
+                        style="width:100%; min-width:100px; height:5px; background:rgba(255,255,255,0.1); border-radius:99px; overflow:hidden;">
+                        <div id="xp-bar-fill"
+                            style="height:100%; width:0%; background:linear-gradient(90deg,var(--primary-blue),var(--primary-purple)); border-radius:99px; transition:width 0.6s cubic-bezier(0.4,0,0.2,1);">
+                        </div>
                     </div>
-                    <span id="xp-bar-label" style="font-size:0.65rem; color:var(--text-muted); font-weight:500;">0 / 500</span>
+                    <span id="xp-bar-label" style="font-size:0.65rem; color:var(--text-muted); font-weight:500;">0 /
+                        500</span>
                 </div>
             </div>
 
@@ -67,12 +78,14 @@
                 </button>
 
                 <!-- Admin Panel Button (hidden by default, shown only for admins) -->
-                <button class="control-btn" id="btn-admin-header" title="Panel de Administración" style="display:none; background: linear-gradient(135deg, #7c3aed, #1d4ed8); color: white;">
+                <button class="control-btn" id="btn-admin-header" title="Panel de Administración"
+                    style="display:none; background: linear-gradient(135deg, #7c3aed, #1d4ed8); color: white;">
                     <i class="fa-solid fa-shield-halved"></i>
                 </button>
 
                 <!-- Admin Games Button (hidden by default) -->
-                <button class="control-btn" id="btn-admin-games" title="Modo Juegos" style="display:none; background: linear-gradient(135deg, #10b981, #059669); color: white;">
+                <button class="control-btn" id="btn-admin-games" title="Modo Juegos"
+                    style="display:none; background: linear-gradient(135deg, #10b981, #059669); color: white;">
                     <i class="fa-solid fa-gamepad"></i>
                 </button>
 
@@ -109,20 +122,22 @@
                     <!-- Sparky Animated SVG Face -->
                     <svg viewBox="0 0 100 100" class="sparky-svg">
                         <!-- Head -->
-                        <rect x="20" y="20" width="60" height="55" rx="15" fill="#2d3748" stroke="#a78bfa" stroke-width="3"/>
+                        <rect x="20" y="20" width="60" height="55" rx="15" fill="#2d3748" stroke="#a78bfa"
+                            stroke-width="3" />
                         <!-- Antenna -->
-                        <line x1="50" y1="20" x2="50" y2="8" stroke="#a78bfa" stroke-width="4"/>
-                        <circle cx="50" cy="5" r="5" fill="#facc15" id="sparky-antenna-light" class="pulse-antenna"/>
+                        <line x1="50" y1="20" x2="50" y2="8" stroke="#a78bfa" stroke-width="4" />
+                        <circle cx="50" cy="5" r="5" fill="#facc15" id="sparky-antenna-light" class="pulse-antenna" />
                         <!-- Ears / Bolts -->
-                        <rect x="13" y="40" width="7" height="15" rx="2" fill="#4a5568"/>
-                        <rect x="80" y="40" width="7" height="15" rx="2" fill="#4a5568"/>
+                        <rect x="13" y="40" width="7" height="15" rx="2" fill="#4a5568" />
+                        <rect x="80" y="40" width="7" height="15" rx="2" fill="#4a5568" />
                         <!-- Eyes Screen -->
-                        <rect x="28" y="28" width="44" height="22" rx="6" fill="#1a202c"/>
+                        <rect x="28" y="28" width="44" height="22" rx="6" fill="#1a202c" />
                         <!-- Interactive Eyes -->
-                        <circle cx="40" cy="39" r="5" fill="#38bdf8" id="sparky-eye-left" class="sparky-eye"/>
-                        <circle cx="60" cy="39" r="5" fill="#38bdf8" id="sparky-eye-right" class="sparky-eye"/>
+                        <circle cx="40" cy="39" r="5" fill="#38bdf8" id="sparky-eye-left" class="sparky-eye" />
+                        <circle cx="60" cy="39" r="5" fill="#38bdf8" id="sparky-eye-right" class="sparky-eye" />
                         <!-- Mouth -->
-                        <path d="M 42 58 Q 50 63 58 58" stroke="#38bdf8" stroke-width="3" fill="none" id="sparky-mouth"/>
+                        <path d="M 42 58 Q 50 63 58 58" stroke="#38bdf8" stroke-width="3" fill="none"
+                            id="sparky-mouth" />
                     </svg>
                 </div>
                 <!-- Interactive attention tracking rings -->
@@ -141,13 +156,17 @@
                 </div>
                 <div class="chat-body" id="chat-messages-container">
                     <div class="message system">
-                        <p><strong>Sparky:</strong> ¡Hola, Explorador! Estoy aquí para ayudarte a entrenar tu cerebro, darte consejos y asegurarme de que hagas pausas activas. ¿Qué te gustaría hacer hoy?</p>
+                        <p><strong>Sparky:</strong> ¡Hola, Explorador! Estoy aquí para ayudarte a entrenar tu cerebro,
+                            darte consejos y asegurarme de que hagas pausas activas. ¿Qué te gustaría hacer hoy?</p>
                     </div>
                 </div>
                 <div class="chat-actions">
-                    <button class="chat-action-chip" id="chip-break"><i class="fa-solid fa-hourglass-half"></i> Sugerir Pausa</button>
-                    <button class="chat-action-chip" id="chip-tip"><i class="fa-solid fa-lightbulb"></i> Tip de Estudio</button>
-                    <button class="chat-action-chip" id="chip-report"><i class="fa-solid fa-chart-line"></i> Reporte Rápido</button>
+                    <button class="chat-action-chip" id="chip-break"><i class="fa-solid fa-hourglass-half"></i> Sugerir
+                        Pausa</button>
+                    <button class="chat-action-chip" id="chip-tip"><i class="fa-solid fa-lightbulb"></i> Tip de
+                        Estudio</button>
+                    <button class="chat-action-chip" id="chip-report"><i class="fa-solid fa-chart-line"></i> Reporte
+                        Rápido</button>
                 </div>
                 <div class="chat-input-area">
                     <input type="text" id="chat-user-input" placeholder="Pregúntale a Sparky..." />
@@ -159,983 +178,1202 @@
 
     <style>
         @keyframes pageEntrance {
-            from { opacity: 0; transform: translateY(30px) scale(0.98); filter: blur(10px); }
-            to { opacity: 1; transform: translateY(0) scale(1); filter: blur(0); }
+            from {
+                opacity: 0;
+                transform: translateY(30px) scale(0.98);
+                filter: blur(10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+                filter: blur(0);
+            }
         }
+
         /* Slide-in keyframes for login panel within auth overlay */
         @keyframes slideTrackToLogin {
-            from { transform: translateX(0); }
-            to   { transform: translateX(-50%); }
+            from {
+                transform: translateX(0);
+            }
+
+            to {
+                transform: translateX(-50%);
+            }
         }
+
         @keyframes slideTrackToLanding {
-            from { transform: translateX(-50%); }
-            to   { transform: translateX(0); }
+            from {
+                transform: translateX(-50%);
+            }
+
+            to {
+                transform: translateX(0);
+            }
         }
     </style>
     <!-- Professional Auth Gateway -->
-    <div id="auth-overlay" style="position: fixed; inset: 0; background: #070a13; z-index: 9999; display: flex; flex-direction: column; transition: opacity 0.6s cubic-bezier(0.22, 1, 0.36, 1), visibility 0.6s; opacity: 0; visibility: visible; overflow-y: auto; overflow-x: hidden; animation: pageEntrance 1.2s cubic-bezier(0.22, 1, 0.36, 1) forwards;">
-        
+    <div id="auth-overlay"
+        style="position: fixed; inset: 0; background: #070a13; z-index: 9999; display: flex; flex-direction: column; transition: opacity 0.6s cubic-bezier(0.22, 1, 0.36, 1), visibility 0.6s; opacity: 0; visibility: visible; overflow-y: auto; overflow-x: hidden; animation: pageEntrance 1.2s cubic-bezier(0.22, 1, 0.36, 1) forwards;">
+
         <!-- Background glows for landing (absolute to overlay) -->
-        <div style="position: absolute; top: -20vh; left: -10vw; width: 60vw; height: 60vw; background: radial-gradient(circle, rgba(167, 139, 250, 0.1) 0%, transparent 60%); pointer-events: none; z-index: 0;"></div>
-        <div style="position: absolute; bottom: -20vh; right: -10vw; width: 50vw; height: 50vw; background: radial-gradient(circle, rgba(56, 189, 248, 0.08) 0%, transparent 60%); pointer-events: none; z-index: 0;"></div>
+        <div
+            style="position: absolute; top: -20vh; left: -10vw; width: 60vw; height: 60vw; background: radial-gradient(circle, rgba(167, 139, 250, 0.1) 0%, transparent 60%); pointer-events: none; z-index: 0;">
+        </div>
+        <div
+            style="position: absolute; bottom: -20vh; right: -10vw; width: 50vw; height: 50vw; background: radial-gradient(circle, rgba(56, 189, 248, 0.08) 0%, transparent 60%); pointer-events: none; z-index: 0;">
+        </div>
 
         <!-- Sliding track: 200% wide, contains Landing (50%) + Login (50%) side by side -->
-        <div id="auth-slide-track" style="display: flex; width: 200%; height: 100%; transition: transform 0.7s cubic-bezier(0.22, 1, 0.36, 1); will-change: transform; flex: 1;">
+        <div id="auth-slide-track"
+            style="display: flex; width: 200%; height: 100%; transition: transform 0.7s cubic-bezier(0.22, 1, 0.36, 1); will-change: transform; flex: 1;">
 
-        <!-- ═══ PANEL 1: Landing Hero (50% = full screen) ═══ -->
-        <div style="width: 50%; flex-shrink: 0; display: flex; flex-direction: column; position: relative;">
+            <!-- ═══ PANEL 1: Landing Hero (50% = full screen) ═══ -->
+            <div style="width: 50%; flex-shrink: 0; display: flex; flex-direction: column; position: relative;">
 
-        <!-- Top Global Navigation Bar (Static flow to push content down) -->
-        <div style="width: 100%; padding: 25px 5vw; display: flex; justify-content: space-between; align-items: center; z-index: 100; flex-shrink: 0;">
-            <!-- Logo & Insignia -->
-            <div style="display: flex; align-items: center; gap: 15px;">
-                <!-- Insignia -->
-                <img src="insignia.png" alt="Insignia Institucional" style="height: 42px; width: auto; object-fit: contain;">
-                
-                <!-- Divider -->
-                <div style="height: 30px; width: 1px; background: rgba(255,255,255,0.2);"></div>
+                <!-- Top Global Navigation Bar (Static flow to push content down) -->
+                <div
+                    style="width: 100%; padding: 25px 5vw; display: flex; justify-content: space-between; align-items: center; z-index: 100; flex-shrink: 0;">
+                    <!-- Logo & Insignia -->
+                    <div style="display: flex; align-items: center; gap: 15px;">
+                        <!-- Insignia -->
+                        <img src="insignia.png" alt="Insignia Institucional"
+                            style="height: 42px; width: auto; object-fit: contain;">
 
-                <!-- NeuroSpark Logo -->
-                <div style="display: flex; align-items: center; gap: 12px; cursor: pointer;" onclick="window.location.reload();">
-                    <div style="width: 42px; height: 42px; border-radius: 12px; background: linear-gradient(135deg, #38bdf8, #a78bfa); display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 15px rgba(56, 189, 248, 0.4);">
-                        <i class="fa-solid fa-brain" style="color: white; font-size: 1.3rem;"></i>
+                        <!-- Divider -->
+                        <div style="height: 30px; width: 1px; background: rgba(255,255,255,0.2);"></div>
+
+                        <!-- NeuroSpark Logo -->
+                        <div style="display: flex; align-items: center; gap: 12px; cursor: pointer;"
+                            onclick="window.location.reload();">
+                            <div
+                                style="width: 42px; height: 42px; border-radius: 12px; background: linear-gradient(135deg, #38bdf8, #a78bfa); display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 15px rgba(56, 189, 248, 0.4);">
+                                <i class="fa-solid fa-brain" style="color: white; font-size: 1.3rem;"></i>
+                            </div>
+                            <span
+                                style="color: white; font-size: 1.3rem; font-weight: 900; letter-spacing: 1px; text-transform: uppercase;">NeuroSpark</span>
+                        </div>
                     </div>
-                    <span style="color: white; font-size: 1.3rem; font-weight: 900; letter-spacing: 1px; text-transform: uppercase;">NeuroSpark</span>
-                </div>
-            </div>
 
-            <!-- Navigation Links (Hidden on small screens) -->
-            <div class="nav-links-desktop" style="display: flex; gap: 30px; align-items: center;">
-                <span style="color: white; font-weight: 800; font-size: 0.85rem; cursor: pointer; transition: color 0.3s; letter-spacing: 0.5px;">LA PLATAFORMA</span>
-                <span onclick="openStatsModal()" onmouseover="this.style.color='white'" onmouseout="this.style.color='rgba(255,255,255,0.6)'" style="color: rgba(255,255,255,0.6); font-weight: 700; font-size: 0.85rem; cursor: pointer; transition: color 0.3s; letter-spacing: 0.5px;">ESTADÍSTICAS</span>
-                <span onclick="openInstitutionsModal()" onmouseover="this.style.color='white'" onmouseout="this.style.color='rgba(255,255,255,0.6)'" style="color: rgba(255,255,255,0.6); font-weight: 700; font-size: 0.85rem; cursor: pointer; transition: color 0.3s; letter-spacing: 0.5px;">INSTITUCIONES</span>
-                <span onclick="openHelpModal()" onmouseover="this.style.color='white'" onmouseout="this.style.color='rgba(255,255,255,0.6)'" style="color: rgba(255,255,255,0.6); font-weight: 700; font-size: 0.85rem; cursor: pointer; transition: color 0.3s; letter-spacing: 0.5px;">CENTRO DE AYUDA</span>
-            </div>
-
-            <style>
-                @media (max-width: 900px) {
-                    .nav-links-desktop { display: none !important; }
-                }
-            </style>
-
-            <!-- Right Actions (Accessibility + Register Button) -->
-            <div style="display: flex; align-items: center; gap: 20px;">
-
-                <!-- Logout Button (Hidden by default, shown if logged in) -->
-                <div id="btn-nav-logout" onclick="logoutFromLanding()" style="display: none; align-items: center; gap: 8px; background: rgba(239, 68, 68, 0.15); border: 1px solid rgba(239, 68, 68, 0.4); padding: 8px 20px; border-radius: 30px; cursor: pointer; transition: all 0.3s; box-shadow: 0 0 15px rgba(239, 68, 68, 0.2);">
-                    <i class="fa-solid fa-right-from-bracket" style="color: #ef4444; font-size: 0.9rem;"></i>
-                    <span style="color: white; font-weight: 800; font-size: 0.9rem; letter-spacing: 0.5px;">Cerrar Sesión</span>
-                </div>
-
-                <!-- Registrarse / Ir a Juegos Button -->
-                <div id="btn-nav-register" onclick="openAuthModal()" style="display: flex; align-items: center; gap: 8px; background: rgba(56, 189, 248, 0.15); border: 1px solid rgba(56, 189, 248, 0.4); padding: 8px 20px; border-radius: 30px; cursor: pointer; transition: all 0.3s; box-shadow: 0 0 15px rgba(56, 189, 248, 0.2);">
-                    <i class="fa-solid fa-user-plus" style="color: #38bdf8; font-size: 0.9rem;"></i>
-                    <span style="color: white; font-weight: 800; font-size: 0.9rem; letter-spacing: 0.5px;">Registrarse</span>
-                </div>
-            </div>
-        </div>
-
-        <script>
-            window.logoutFromLanding = async function() {
-                try {
-                    const { authController } = await import('./js/auth/authController.js');
-                    await authController.logout();
-                    localStorage.removeItem('ns_is_parent');
-                    window.location.reload();
-                } catch(e) {
-                    console.error("Error al cerrar sesión", e);
-                }
-            };
-        </script>
-
-        <!-- Main Split Content Container -->
-        <div style="flex: 1; display: flex; align-items: center; justify-content: center; gap: 5vw; padding: 20px 5vw 40px 5vw; z-index: 2; flex-wrap: wrap;">
-            <!-- Left Content (Text & CTA) -->
-            <div style="flex: 1; min-width: 320px; max-width: 600px; display: flex; flex-direction: column;">
-            
-            <!-- Pill -->
-            <div style="display: inline-flex; align-items: center; gap: 8px; padding: 8px 18px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-radius: 30px; margin-bottom: 24px; width: max-content; backdrop-filter: blur(5px);">
-                <div style="width: 8px; height: 8px; border-radius: 50%; background: #38bdf8; box-shadow: 0 0 10px #38bdf8;"></div>
-                <span style="color: rgba(255,255,255,0.8); font-size: 0.8rem; font-weight: 700; letter-spacing: 1.5px;">IMPULSADO POR IA</span>
-            </div>
-
-            <!-- Huge Title -->
-            <h1 style="color: white; font-size: clamp(2.5rem, 4vw, 4rem); font-weight: 900; line-height: 1.1; margin-bottom: 20px; text-transform: uppercase;">
-                LLEVA TU <span style="background: linear-gradient(90deg, #38bdf8, #a78bfa); -webkit-background-clip: text; background-clip: text; color: transparent;">MENTE</span><br>AL SIGUIENTE NIVEL
-            </h1>
-            
-            <p style="color: rgba(255,255,255,0.65); font-size: 1.15rem; line-height: 1.6; margin-bottom: 45px; max-width: 90%;">
-                Una red neuronal educativa. Entrena la concentración, memoria y lógica de manera <strong style="color: white;">100% interactiva y adaptativa</strong> mediante juegos inmersivos.
-            </p>
-
-            <!-- Call To Action -->
-            <div style="display: flex; gap: 15px; margin-top: 10px;">
-                <button onclick="openAuthModal()" class="premium-btn" style="padding: 18px 35px; background: #38bdf8; color: #0f172a; border: none; border-radius: 14px; font-weight: 900; font-size: 1.1rem; cursor: pointer; display: flex; align-items: center; gap: 10px; box-shadow: 0 10px 25px rgba(56, 189, 248, 0.3); transition: transform 0.2s, box-shadow 0.2s;">
-                    COMENZAR AHORA <i class="fa-solid fa-arrow-right"></i>
-                </button>
-                <button onclick="openInfoModal()" style="padding: 18px 30px; background: rgba(255,255,255,0.05); color: white; border: 1px solid rgba(255,255,255,0.1); border-radius: 14px; font-weight: 700; font-size: 1.1rem; cursor: pointer; transition: background 0.2s;">
-                    Saber más
-                </button>
-            </div>
-        </div>
-
-        <!-- Right Content (Senior Canvas Wrapper with floating cards) -->
-        <div style="flex: 1; max-width: 650px; position: relative; height: 80vh; border-radius: 36px; background: #0d121f; border: 1px solid rgba(255,255,255,0.05); display: flex; align-items: center; justify-content: center; z-index: 2; box-shadow: 0 30px 80px rgba(0,0,0,0.6);">
-            
-            <!-- Canvas container (hidden overflow to clip rounded corners) -->
-            <div style="position: absolute; inset: 0; border-radius: 36px; overflow: hidden;">
-                <canvas id="auth-canvas" style="width: 100%; height: 100%;"></canvas>
-                <!-- Subtle inner shadow to blend edges -->
-                <div style="position: absolute; inset: 0; background: radial-gradient(circle at center, transparent 0%, #070a13 130%);"></div>
-            </div>
-
-            <!-- Floating Glass Card 1 (Top Left Overlapping) -->
-            <div style="position: absolute; top: 8%; left: -5%; background: rgba(15, 23, 42, 0.75); border: 1px solid rgba(255,255,255,0.1); padding: 16px 24px; border-radius: 20px; backdrop-filter: blur(15px); display: flex; align-items: center; gap: 15px; box-shadow: 0 15px 35px rgba(0,0,0,0.5); z-index: 10; transform: translateY(0); animation: floatCard 6s ease-in-out infinite;">
-                <div style="width: 48px; height: 48px; border-radius: 14px; background: rgba(34, 197, 94, 0.15); display: flex; align-items: center; justify-content: center; border: 1px solid rgba(34, 197, 94, 0.3);">
-                    <i class="fa-solid fa-graduation-cap" style="color: #22c55e; font-size: 1.3rem;"></i>
-                </div>
-                <div>
-                    <strong style="color: white; display: block; font-size: 1.15rem; font-weight: 800;">10+ Instituciones</strong>
-                    <span style="color: rgba(255,255,255,0.65); font-size: 0.85rem; font-weight: 500;">Activas a nivel nacional</span>
-                </div>
-            </div>
-
-            <!-- Floating Glass Card 2 (Bottom Right Overlapping) -->
-            <div style="position: absolute; bottom: 12%; right: -5%; background: rgba(15, 23, 42, 0.75); border: 1px solid rgba(255,255,255,0.1); padding: 16px 24px; border-radius: 20px; backdrop-filter: blur(15px); display: flex; align-items: center; gap: 15px; box-shadow: 0 15px 35px rgba(0,0,0,0.5); z-index: 10; animation: floatCard 7s ease-in-out infinite reverse;">
-                <div style="width: 48px; height: 48px; border-radius: 14px; background: rgba(167, 139, 250, 0.15); display: flex; align-items: center; justify-content: center; border: 1px solid rgba(167, 139, 250, 0.3);">
-                    <i class="fa-solid fa-microchip" style="color: #a78bfa; font-size: 1.3rem;"></i>
-                </div>
-                <div>
-                    <strong style="color: white; display: block; font-size: 1.15rem; font-weight: 800;">100% Adaptativo</strong>
-                    <span style="color: rgba(255,255,255,0.65); font-size: 0.85rem; font-weight: 500;">Motor de IA Integrado</span>
-                </div>
-            </div>
-
-            <!-- CSS for floating animation -->
-            <style>
-                @keyframes floatCard {
-                    0% { transform: translateY(0px); }
-                    50% { transform: translateY(-15px); }
-                    100% { transform: translateY(0px); }
-                }
-                #auth-email:focus, #auth-password:focus {
-                    border-color: #38bdf8 !important;
-                    background: rgba(0,0,0,0.6) !important;
-                }
-            </style>
-
-            <!-- JS Canvas Script -->
-            <script>
-                (function() {
-                    setTimeout(() => {
-                        const canvas = document.getElementById('auth-canvas');
-                        if(!canvas) return;
-                        const ctx = canvas.getContext('2d');
-                        let w, h;
-                        let particles = [];
-                        let mouse = { x: -1000, y: -1000 };
-                        
-                        function resize() {
-                            w = canvas.width = canvas.parentElement.offsetWidth;
-                            h = canvas.height = canvas.parentElement.offsetHeight;
-                        }
-                        window.addEventListener('resize', resize);
-                        resize();
-
-                        canvas.addEventListener('mousemove', (e) => {
-                            const rect = canvas.getBoundingClientRect();
-                            mouse.x = e.clientX - rect.left;
-                            mouse.y = e.clientY - rect.top;
-                        });
-                        canvas.addEventListener('mouseleave', () => {
-                            mouse.x = -1000;
-                            mouse.y = -1000;
-                        });
-                        
-                        class Particle {
-                            constructor() {
-                                this.x = Math.random() * w;
-                                this.y = Math.random() * h;
-                                this.vx = (Math.random() - 0.5) * 0.6;
-                                this.vy = (Math.random() - 0.5) * 0.6;
-                                this.baseRadius = Math.random() * 2 + 1;
-                                this.radius = this.baseRadius;
-                                this.color = Math.random() > 0.5 ? '#38bdf8' : '#a78bfa';
-                                this.pulse = Math.random() * Math.PI * 2;
-                                this.pulseSpeed = 0.02 + Math.random() * 0.03;
-                            }
-                            update() {
-                                // Movement
-                                this.x += this.vx;
-                                this.y += this.vy;
-                                
-                                // Bounce off edges gracefully
-                                if(this.x < 0 || this.x > w) this.vx *= -1;
-                                if(this.y < 0 || this.y > h) this.vy *= -1;
-                                
-                                // Mouse interaction (magnetic repel) - Optimized square distance
-                                const dx = mouse.x - this.x;
-                                const dy = mouse.y - this.y;
-                                const sqDist = dx * dx + dy * dy;
-                                
-                                if (sqDist < 22500) { // 150 * 150
-                                    const dist = Math.sqrt(sqDist);
-                                    const force = (150 - dist) / 150;
-                                    this.x -= (dx / dist) * force * 2.5;
-                                    this.y -= (dy / dist) * force * 2.5;
-                                    this.radius = this.baseRadius * 1.5;
-                                } else {
-                                    this.radius = this.baseRadius;
-                                }
-                                
-                                this.pulse += this.pulseSpeed;
-                            }
-                            draw() {
-                                ctx.beginPath();
-                                ctx.arc(this.x, this.y, this.radius + Math.sin(this.pulse)*0.8, 0, Math.PI * 2);
-                                ctx.fillStyle = this.color;
-                                // REMOVED shadowBlur for massive performance gain
-                                ctx.fill();
-                            }
-                        }
-                        
-                        // Increased to 45 with a larger connection radius for a dense web without lag
-                        for(let i = 0; i < 45; i++) particles.push(new Particle());
-                        
-                        let pulses = [];
-                        
-                        function animate() {
-                            ctx.clearRect(0, 0, w, h);
-                            
-                            // Draw particles and lines
-                            for(let i = 0; i < particles.length; i++) {
-                                particles[i].update();
-                                particles[i].draw();
-                                
-                                for(let j = i + 1; j < particles.length; j++) {
-                                    const dx = particles[i].x - particles[j].x;
-                                    const dy = particles[i].y - particles[j].y;
-                                    const sqDist = dx * dx + dy * dy;
-                                    
-                                    // 170 * 170 = 28900 (Much larger connection radius for MORE lines)
-                                    if(sqDist < 28900) {
-                                        const dist = Math.sqrt(sqDist);
-                                        ctx.beginPath();
-                                        ctx.moveTo(particles[i].x, particles[i].y);
-                                        ctx.lineTo(particles[j].x, particles[j].y);
-                                        
-                                        // Mouse proximity for glow - Optimized
-                                        const dxM = mouse.x - particles[i].x;
-                                        const dyM = mouse.y - particles[i].y;
-                                        const sqMDist = dxM * dxM + dyM * dyM;
-                                        
-                                        let alpha = (1 - dist/170) * 0.35; // Lower base opacity since there are many more lines
-                                        if(sqMDist < 25600) alpha += 0.45; // Intense glow near mouse
-                                        
-                                        // Simple stroke
-                                        ctx.strokeStyle = 'rgba(167, 139, 250, ' + alpha + ')';
-                                        ctx.lineWidth = sqMDist < 25600 ? 1.5 : 0.8;
-                                        ctx.stroke();
-                                        
-                                        if (Math.random() < 0.003) {
-                                            pulses.push({
-                                                p1: particles[i],
-                                                p2: particles[j],
-                                                progress: 0,
-                                                speed: 0.015 + Math.random() * 0.02
-                                            });
-                                        }
-                                    }
-                                }
-                            }
-                            
-                            // Draw data pulses
-                            for (let i = pulses.length - 1; i >= 0; i--) {
-                                const p = pulses[i];
-                                p.progress += p.speed;
-                                if (p.progress >= 1) {
-                                    pulses.splice(i, 1);
-                                    continue;
-                                }
-                                
-                                const currentX = p.p1.x + (p.p2.x - p.p1.x) * p.progress;
-                                const currentY = p.p1.y + (p.p2.y - p.p1.y) * p.progress;
-                                
-                                ctx.beginPath();
-                                ctx.arc(currentX, currentY, 2, 0, Math.PI * 2);
-                                ctx.fillStyle = '#ffffff';
-                                // Used a very tiny shadow ONLY on pulses if needed, or none at all. None is best.
-                                ctx.fill();
-                            }
-                            
-                            requestAnimationFrame(animate);
-                        }
-                        animate();
-                    }, 300);
-                })();
-            </script>
-        </div>
-        </div><!-- end landing hero main content -->
-        
-        <!-- Footer / Credits -->
-        <div style="width: 100%; text-align: center; padding-bottom: 25px; z-index: 10;">
-            <span style="color: rgba(255,255,255,0.3); font-size: 0.85rem; font-weight: 600; letter-spacing: 1px; font-family: inherit;">Developer By Neuronova</span>
-        </div>
-        
-        </div><!-- end Panel 1: Landing -->
-
-        <!-- ═══ PANEL 2: Login / Register Form (50% = full screen) ═══ -->
-        <div id="auth-login-panel" style="width: 50%; flex-shrink: 0; display: flex; align-items: center; justify-content: center; padding: 40px; position: relative;">
-
-            <div style="width: 100%; max-width: 420px; display: flex; flex-direction: column; z-index: 2;">
-
-                <!-- Back button -->
-                <div onclick="closeAuthModal()" style="display: flex; align-items: center; gap: 10px; color: rgba(255,255,255,0.6); cursor: pointer; font-weight: 700; margin-bottom: 36px; width: fit-content; transition: color 0.3s;" onmouseover="this.style.color='#38bdf8'" onmouseout="this.style.color='rgba(255,255,255,0.6)'">
-                    <i class="fa-solid fa-arrow-left"></i> Volver al inicio
-                </div>
-
-                <!-- Logo -->
-                <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 36px;">
-                    <div style="width: 36px; height: 36px; border-radius: 10px; background: linear-gradient(135deg, #38bdf8, #a78bfa); display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 15px rgba(56, 189, 248, 0.4);">
-                        <i class="fa-solid fa-brain" style="color: white; font-size: 1.1rem;"></i>
+                    <!-- Navigation Links (Hidden on small screens) -->
+                    <div class="nav-links-desktop" style="display: flex; gap: 30px; align-items: center;">
+                        <span
+                            style="color: white; font-weight: 800; font-size: 0.85rem; cursor: pointer; transition: color 0.3s; letter-spacing: 0.5px;">LA
+                            PLATAFORMA</span>
+                        <span onclick="openStatsModal()" onmouseover="this.style.color='white'"
+                            onmouseout="this.style.color='rgba(255,255,255,0.6)'"
+                            style="color: rgba(255,255,255,0.6); font-weight: 700; font-size: 0.85rem; cursor: pointer; transition: color 0.3s; letter-spacing: 0.5px;">ESTADÍSTICAS</span>
+                        <span onclick="openInstitutionsModal()" onmouseover="this.style.color='white'"
+                            onmouseout="this.style.color='rgba(255,255,255,0.6)'"
+                            style="color: rgba(255,255,255,0.6); font-weight: 700; font-size: 0.85rem; cursor: pointer; transition: color 0.3s; letter-spacing: 0.5px;">INSTITUCIONES</span>
+                        <span onclick="openHelpModal()" onmouseover="this.style.color='white'"
+                            onmouseout="this.style.color='rgba(255,255,255,0.6)'"
+                            style="color: rgba(255,255,255,0.6); font-weight: 700; font-size: 0.85rem; cursor: pointer; transition: color 0.3s; letter-spacing: 0.5px;">CENTRO
+                            DE AYUDA</span>
                     </div>
-                    <span style="color: white; font-size: 1.2rem; font-weight: 900; letter-spacing: 1px; text-transform: uppercase;">NeuroSpark</span>
+
+                    <style>
+                        @media (max-width: 900px) {
+                            .nav-links-desktop {
+                                display: none !important;
+                            }
+                        }
+                    </style>
+
+                    <!-- Right Actions (Accessibility + Register Button) -->
+                    <div style="display: flex; align-items: center; gap: 20px;">
+
+                        <!-- Logout Button (Hidden by default, shown if logged in) -->
+                        <div id="btn-nav-logout" onclick="logoutFromLanding()"
+                            style="display: none; align-items: center; gap: 8px; background: rgba(239, 68, 68, 0.15); border: 1px solid rgba(239, 68, 68, 0.4); padding: 8px 20px; border-radius: 30px; cursor: pointer; transition: all 0.3s; box-shadow: 0 0 15px rgba(239, 68, 68, 0.2);">
+                            <i class="fa-solid fa-right-from-bracket" style="color: #ef4444; font-size: 0.9rem;"></i>
+                            <span
+                                style="color: white; font-weight: 800; font-size: 0.9rem; letter-spacing: 0.5px;">Cerrar
+                                Sesión</span>
+                        </div>
+
+                        <!-- Registrarse / Ir a Juegos Button -->
+                        <div id="btn-nav-register" onclick="openAuthModal()"
+                            style="display: flex; align-items: center; gap: 8px; background: rgba(56, 189, 248, 0.15); border: 1px solid rgba(56, 189, 248, 0.4); padding: 8px 20px; border-radius: 30px; cursor: pointer; transition: all 0.3s; box-shadow: 0 0 15px rgba(56, 189, 248, 0.2);">
+                            <i class="fa-solid fa-user-plus" style="color: #38bdf8; font-size: 0.9rem;"></i>
+                            <span
+                                style="color: white; font-weight: 800; font-size: 0.9rem; letter-spacing: 0.5px;">Registrarse</span>
+                        </div>
+                    </div>
                 </div>
 
-                <!-- Header -->
-                <div style="display: flex; flex-direction: column; margin-bottom: 32px; gap: 8px;">
-                    <h3 style="color: white; font-size: 2.2rem; font-weight: 900; letter-spacing: -1px;" id="auth-title">Iniciar Sesión</h3>
-                    <div id="btn-auth-toggle" style="color: rgba(255,255,255,0.6); font-size: 1rem; font-weight: 500; cursor: pointer; transition: color 0.3s;">¿No tienes una cuenta? <span style="color: #38bdf8; font-weight: 800;">Crear una ahora</span></div>
-                </div>
+                <script>
+                    window.logoutFromLanding = async function () {
+                        try {
+                            const { authController } = await import('./js/auth/authController.js');
+                            await authController.logout();
+                            localStorage.removeItem('ns_is_parent');
+                            window.location.reload();
+                        } catch (e) {
+                            console.error("Error al cerrar sesión", e);
+                        }
+                    };
+                </script>
 
-                <p id="auth-subtitle" style="display:none;"></p>
+                <!-- Main Split Content Container -->
+                <div
+                    style="flex: 1; display: flex; align-items: center; justify-content: center; gap: 5vw; padding: 20px 5vw 40px 5vw; z-index: 2; flex-wrap: wrap;">
+                    <!-- Left Content (Text & CTA) -->
+                    <div style="flex: 1; min-width: 320px; max-width: 600px; display: flex; flex-direction: column;">
 
-                <!-- Inputs -->
-                <div style="display: flex; flex-direction: column; gap: 18px;">
-                    <!-- Register Only Fields -->
-                    <div id="auth-register-fields" style="display: none; flex-direction: column; gap: 18px;">
-                        <div style="display: flex; gap: 12px;">
-                            <div style="position: relative; flex: 1;">
-                                <i class="fa-regular fa-user" style="position: absolute; left: 18px; top: 50%; transform: translateY(-50%); color: rgba(255,255,255,0.4); font-size: 1rem;"></i>
-                                <input class="premium-input" type="text" id="auth-firstname" placeholder="Nombres" style="width: 100%; padding: 16px 18px 16px 48px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.1); background: rgba(255,255,255,0.03); color: white; outline: none; font-family: inherit; font-size: 1rem; transition: all 0.3s;">
+                        <!-- Pill -->
+                        <div
+                            style="display: inline-flex; align-items: center; gap: 8px; padding: 8px 18px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-radius: 30px; margin-bottom: 24px; width: max-content; backdrop-filter: blur(5px);">
+                            <div
+                                style="width: 8px; height: 8px; border-radius: 50%; background: #38bdf8; box-shadow: 0 0 10px #38bdf8;">
                             </div>
-                            <div style="position: relative; flex: 1;">
-                                <input class="premium-input" type="text" id="auth-lastname" placeholder="Apellidos" style="width: 100%; padding: 16px 18px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.1); background: rgba(255,255,255,0.03); color: white; outline: none; font-family: inherit; font-size: 1rem; transition: all 0.3s;">
-                            </div>
+                            <span
+                                style="color: rgba(255,255,255,0.8); font-size: 0.8rem; font-weight: 700; letter-spacing: 1.5px;">IMPULSADO
+                                POR IA</span>
                         </div>
-                        <div style="position: relative;">
-                            <i class="fa-solid fa-user-ninja" style="position: absolute; left: 18px; top: 50%; transform: translateY(-50%); color: rgba(255,255,255,0.4); font-size: 1rem;"></i>
-                            <input class="premium-input" type="text" id="auth-alias" placeholder="Alias (Nombre de usuario)" style="width: 100%; padding: 16px 18px 16px 48px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.1); background: rgba(255,255,255,0.03); color: white; outline: none; font-family: inherit; font-size: 1rem; transition: all 0.3s;" required>
+
+                        <!-- Huge Title -->
+                        <h1
+                            style="color: white; font-size: clamp(2.5rem, 4vw, 4rem); font-weight: 900; line-height: 1.1; margin-bottom: 20px; text-transform: uppercase;">
+                            LLEVA TU <span
+                                style="background: linear-gradient(90deg, #38bdf8, #a78bfa); -webkit-background-clip: text; background-clip: text; color: transparent;">MENTE</span><br>AL
+                            SIGUIENTE NIVEL
+                        </h1>
+
+                        <p
+                            style="color: rgba(255,255,255,0.65); font-size: 1.15rem; line-height: 1.6; margin-bottom: 45px; max-width: 90%;">
+                            Una red neuronal educativa. Entrena la concentración, memoria y lógica de manera <strong
+                                style="color: white;">100% interactiva y adaptativa</strong> mediante juegos inmersivos.
+                        </p>
+
+                        <!-- Call To Action -->
+                        <div style="display: flex; gap: 15px; margin-top: 10px;">
+                            <button onclick="openAuthModal()" class="premium-btn"
+                                style="padding: 18px 35px; background: #38bdf8; color: #0f172a; border: none; border-radius: 14px; font-weight: 900; font-size: 1.1rem; cursor: pointer; display: flex; align-items: center; gap: 10px; box-shadow: 0 10px 25px rgba(56, 189, 248, 0.3); transition: transform 0.2s, box-shadow 0.2s;">
+                                COMENZAR AHORA <i class="fa-solid fa-arrow-right"></i>
+                            </button>
+                            <button onclick="openInfoModal()"
+                                style="padding: 18px 30px; background: rgba(255,255,255,0.05); color: white; border: 1px solid rgba(255,255,255,0.1); border-radius: 14px; font-weight: 700; font-size: 1.1rem; cursor: pointer; transition: background 0.2s;">
+                                Saber más
+                            </button>
                         </div>
-                        <div style="display: flex; flex-direction: column; gap: 8px;" id="avatar-builder-container">
-                            <label style="color: rgba(255,255,255,0.7); font-size: 0.85rem; font-weight: 600; display:flex; justify-content:space-between; align-items:center;">
-                                <span>Crea tu Avatar:</span>
-                                <span style="font-size:0.75rem; color:#38bdf8; cursor:pointer;" onclick="randomizeAvatar()"><i class="fa-solid fa-dice"></i> Aleatorio</span>
-                            </label>
-                            <div style="display: flex; gap: 16px; background: rgba(0,0,0,0.2); border: 1px solid rgba(255,255,255,0.1); border-radius: 14px; padding: 12px; align-items: center;">
-                                <div style="flex-shrink: 0; position: relative;">
-                                    <div style="width: 80px; height: 80px; border-radius: 50%; background: linear-gradient(135deg, #38bdf8, #a78bfa); display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 15px rgba(0,0,0,0.3);">
-                                        <img id="avatar-preview-img" style="width: 100%; height: 100%; border-radius: 50%;">
-                                    </div>
-                                </div>
-                                <div style="flex: 1; display: flex; flex-direction: column; gap: 8px;">
-                                    <div style="display:flex; justify-content:space-between; align-items:center; background:rgba(255,255,255,0.05); border-radius:6px; padding:4px 8px;">
-                                        <span style="font-size:0.75rem; color:rgba(255,255,255,0.8);"><i class="fa-solid fa-hand"></i> Piel</span>
-                                        <div style="display:flex; gap:8px; align-items:center;">
-                                            <i class="fa-solid fa-chevron-left builder-arrow" onclick="change3DFeature('skin', -1)"></i>
-                                            <i class="fa-solid fa-chevron-right builder-arrow" onclick="change3DFeature('skin', 1)"></i>
-                                        </div>
-                                    </div>
-                                    <!-- Pelo Estilo -->
-                                    <div style="display:flex; justify-content:space-between; align-items:center; background:rgba(255,255,255,0.05); border-radius:6px; padding:4px 8px;">
-                                        <span style="font-size:0.75rem; color:rgba(255,255,255,0.8);"><i class="fa-solid fa-scissors"></i> Pelo</span>
-                                        <div style="display:flex; gap:8px; align-items:center;">
-                                            <i class="fa-solid fa-chevron-left builder-arrow" onclick="change3DFeature('hairStyle', -1)"></i>
-                                            <i class="fa-solid fa-chevron-right builder-arrow" onclick="change3DFeature('hairStyle', 1)"></i>
-                                        </div>
-                                    </div>
-                                    <!-- Color Pelo -->
-                                    <div style="display:flex; justify-content:space-between; align-items:center; background:rgba(255,255,255,0.05); border-radius:6px; padding:4px 8px;">
-                                        <span style="font-size:0.75rem; color:rgba(255,255,255,0.8);"><i class="fa-solid fa-palette"></i> C. Pelo</span>
-                                        <div style="display:flex; gap:8px; align-items:center;">
-                                            <i class="fa-solid fa-chevron-left builder-arrow" onclick="change3DFeature('hairColor', -1)"></i>
-                                            <i class="fa-solid fa-chevron-right builder-arrow" onclick="change3DFeature('hairColor', 1)"></i>
-                                        </div>
-                                    </div>
-                                    <!-- Camisa -->
-                                    <div style="display:flex; justify-content:space-between; align-items:center; background:rgba(255,255,255,0.05); border-radius:6px; padding:4px 8px;">
-                                        <span style="font-size:0.75rem; color:rgba(255,255,255,0.8);"><i class="fa-solid fa-shirt"></i> Camisa</span>
-                                        <div style="display:flex; gap:8px; align-items:center;">
-                                            <i class="fa-solid fa-chevron-left builder-arrow" onclick="change3DFeature('shirt', -1)"></i>
-                                            <i class="fa-solid fa-chevron-right builder-arrow" onclick="change3DFeature('shirt', 1)"></i>
-                                        </div>
-                                    </div>
-                                    <!-- Pantalón -->
-                                    <div style="display:flex; justify-content:space-between; align-items:center; background:rgba(255,255,255,0.05); border-radius:6px; padding:4px 8px;">
-                                        <span style="font-size:0.75rem; color:rgba(255,255,255,0.8);"><i class="fa-solid fa-socks"></i> Pantalón</span>
-                                        <div style="display:flex; gap:8px; align-items:center;">
-                                            <i class="fa-solid fa-chevron-left builder-arrow" onclick="change3DFeature('pants', -1)"></i>
-                                            <i class="fa-solid fa-chevron-right builder-arrow" onclick="change3DFeature('pants', 1)"></i>
-                                        </div>
-                                    </div>
-                                    <!-- Género / Estilo -->
-                                    <div style="display:flex; justify-content:space-between; align-items:center; background:rgba(255,255,255,0.05); border-radius:6px; padding:4px 8px;">
-                                        <span style="font-size:0.75rem; color:rgba(255,255,255,0.8);"><i class="fa-solid fa-venus-mars"></i> Cuerpo</span>
-                                        <div style="display:flex; gap:8px; align-items:center;">
-                                            <i class="fa-solid fa-chevron-left builder-arrow" onclick="toggle3DGender()"></i>
-                                            <span id="gender-label" style="font-size:0.75rem; font-weight:600; width:30px; text-align:center;">Block</span>
-                                            <i class="fa-solid fa-chevron-right builder-arrow" onclick="toggle3DGender()"></i>
-                                        </div>
-                                    </div>
-                                </div>
+                    </div>
+
+                    <!-- Right Content (Senior Canvas Wrapper with floating cards) -->
+                    <div
+                        style="flex: 1; max-width: 650px; position: relative; height: 80vh; border-radius: 36px; background: #0d121f; border: 1px solid rgba(255,255,255,0.05); display: flex; align-items: center; justify-content: center; z-index: 2; box-shadow: 0 30px 80px rgba(0,0,0,0.6);">
+
+                        <!-- Canvas container (hidden overflow to clip rounded corners) -->
+                        <div style="position: absolute; inset: 0; border-radius: 36px; overflow: hidden;">
+                            <canvas id="auth-canvas" style="width: 100%; height: 100%;"></canvas>
+                            <!-- Subtle inner shadow to blend edges -->
+                            <div
+                                style="position: absolute; inset: 0; background: radial-gradient(circle at center, transparent 0%, #070a13 130%);">
                             </div>
                         </div>
+
+                        <!-- Floating Glass Card 1 (Top Left Overlapping) -->
+                        <div
+                            style="position: absolute; top: 8%; left: -5%; background: rgba(15, 23, 42, 0.75); border: 1px solid rgba(255,255,255,0.1); padding: 16px 24px; border-radius: 20px; backdrop-filter: blur(15px); display: flex; align-items: center; gap: 15px; box-shadow: 0 15px 35px rgba(0,0,0,0.5); z-index: 10; transform: translateY(0); animation: floatCard 6s ease-in-out infinite;">
+                            <div
+                                style="width: 48px; height: 48px; border-radius: 14px; background: rgba(34, 197, 94, 0.15); display: flex; align-items: center; justify-content: center; border: 1px solid rgba(34, 197, 94, 0.3);">
+                                <i class="fa-solid fa-graduation-cap" style="color: #22c55e; font-size: 1.3rem;"></i>
+                            </div>
+                            <div>
+                                <strong style="color: white; display: block; font-size: 1.15rem; font-weight: 800;">10+
+                                    Instituciones</strong>
+                                <span
+                                    style="color: rgba(255,255,255,0.65); font-size: 0.85rem; font-weight: 500;">Activas
+                                    a nivel nacional</span>
+                            </div>
+                        </div>
+
+                        <!-- Floating Glass Card 2 (Bottom Right Overlapping) -->
+                        <div
+                            style="position: absolute; bottom: 12%; right: -5%; background: rgba(15, 23, 42, 0.75); border: 1px solid rgba(255,255,255,0.1); padding: 16px 24px; border-radius: 20px; backdrop-filter: blur(15px); display: flex; align-items: center; gap: 15px; box-shadow: 0 15px 35px rgba(0,0,0,0.5); z-index: 10; animation: floatCard 7s ease-in-out infinite reverse;">
+                            <div
+                                style="width: 48px; height: 48px; border-radius: 14px; background: rgba(167, 139, 250, 0.15); display: flex; align-items: center; justify-content: center; border: 1px solid rgba(167, 139, 250, 0.3);">
+                                <i class="fa-solid fa-microchip" style="color: #a78bfa; font-size: 1.3rem;"></i>
+                            </div>
+                            <div>
+                                <strong style="color: white; display: block; font-size: 1.15rem; font-weight: 800;">100%
+                                    Adaptativo</strong>
+                                <span style="color: rgba(255,255,255,0.65); font-size: 0.85rem; font-weight: 500;">Motor
+                                    de IA Integrado</span>
+                            </div>
+                        </div>
+
+                        <!-- CSS for floating animation -->
                         <style>
-                            .builder-arrow {
-                                cursor: pointer;
-                                color: #38bdf8;
-                                font-size: 0.8rem;
-                                padding: 4px;
-                                border-radius: 4px;
-                                transition: background 0.2s, transform 0.2s;
+                            @keyframes floatCard {
+                                0% {
+                                    transform: translateY(0px);
+                                }
+
+                                50% {
+                                    transform: translateY(-15px);
+                                }
+
+                                100% {
+                                    transform: translateY(0px);
+                                }
                             }
-                            .builder-arrow:hover {
-                                background: rgba(56,189,248,0.2);
-                                transform: scale(1.1);
-                            }
-                            .builder-arrow:active {
-                                transform: scale(0.9);
+
+                            #auth-email:focus,
+                            #auth-password:focus {
+                                border-color: #38bdf8 !important;
+                                background: rgba(0, 0, 0, 0.6) !important;
                             }
                         </style>
-                        <div style="position: relative;">
-                            <i class="fa-solid fa-cake-candles" style="position: absolute; left: 18px; top: 50%; transform: translateY(-50%); color: rgba(255,255,255,0.4); font-size: 1rem;"></i>
-                            <select class="premium-input" id="auth-age" style="width: 100%; padding: 16px 18px 16px 48px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.1); background: rgba(255,255,255,0.03); color: white; outline: none; font-family: inherit; font-size: 1rem; transition: all 0.3s; cursor: pointer; appearance: none;">
-                                <option value="" disabled selected style="background: #1e293b; color: rgba(255,255,255,0.5);">Selecciona tu edad (6 a 17 años)...</option>
-                                <option value="6" style="background: #1e293b; color: white;">6 años (Perfil Niños)</option>
-                                <option value="7" style="background: #1e293b; color: white;">7 años (Perfil Niños)</option>
-                                <option value="8" style="background: #1e293b; color: white;">8 años (Perfil Niños)</option>
-                                <option value="9" style="background: #1e293b; color: white;">9 años (Perfil Niños)</option>
-                                <option value="10" style="background: #1e293b; color: white;">10 años (Perfil Niños)</option>
-                                <option value="11" style="background: #1e293b; color: white;">11 años (Perfil Niños)</option>
-                                <option value="12" style="background: #1e293b; color: white;">12 años (Perfil Adolescentes)</option>
-                                <option value="13" style="background: #1e293b; color: white;">13 años (Perfil Adolescentes)</option>
-                                <option value="14" style="background: #1e293b; color: white;">14 años (Perfil Adolescentes)</option>
-                                <option value="15" style="background: #1e293b; color: white;">15 años (Perfil Adolescentes)</option>
-                                <option value="16" style="background: #1e293b; color: white;">16 años (Perfil Adolescentes)</option>
-                                <option value="17" style="background: #1e293b; color: white;">17 años (Perfil Adolescentes)</option>
-                            </select>
-                            <i class="fa-solid fa-chevron-down" style="position: absolute; right: 18px; top: 50%; transform: translateY(-50%); color: rgba(255,255,255,0.4); font-size: 0.9rem; pointer-events: none;"></i>
-                        </div>
-                        <div style="position: relative;">
-                            <i class="fa-solid fa-envelope-open-text" style="position: absolute; left: 18px; top: 50%; transform: translateY(-50%); color: rgba(255,255,255,0.4); font-size: 1rem;"></i>
-                            <input class="premium-input" type="email" id="auth-parent-email" placeholder="Correo de tus padres (Obligatorio)" style="width: 100%; padding: 16px 18px 16px 48px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.1); background: rgba(255,255,255,0.03); color: white; outline: none; font-family: inherit; font-size: 1rem; transition: all 0.3s;" required>
-                        </div>
+
+                        <!-- JS Canvas Script -->
+                        <script>
+                            (function () {
+                                setTimeout(() => {
+                                    const canvas = document.getElementById('auth-canvas');
+                                    if (!canvas) return;
+                                    const ctx = canvas.getContext('2d');
+                                    let w, h;
+                                    let particles = [];
+                                    let mouse = { x: -1000, y: -1000 };
+
+                                    function resize() {
+                                        w = canvas.width = canvas.parentElement.offsetWidth;
+                                        h = canvas.height = canvas.parentElement.offsetHeight;
+                                    }
+                                    window.addEventListener('resize', resize);
+                                    resize();
+
+                                    canvas.addEventListener('mousemove', (e) => {
+                                        const rect = canvas.getBoundingClientRect();
+                                        mouse.x = e.clientX - rect.left;
+                                        mouse.y = e.clientY - rect.top;
+                                    });
+                                    canvas.addEventListener('mouseleave', () => {
+                                        mouse.x = -1000;
+                                        mouse.y = -1000;
+                                    });
+
+                                    class Particle {
+                                        constructor() {
+                                            this.x = Math.random() * w;
+                                            this.y = Math.random() * h;
+                                            this.vx = (Math.random() - 0.5) * 0.6;
+                                            this.vy = (Math.random() - 0.5) * 0.6;
+                                            this.baseRadius = Math.random() * 2 + 1;
+                                            this.radius = this.baseRadius;
+                                            this.color = Math.random() > 0.5 ? '#38bdf8' : '#a78bfa';
+                                            this.pulse = Math.random() * Math.PI * 2;
+                                            this.pulseSpeed = 0.02 + Math.random() * 0.03;
+                                        }
+                                        update() {
+                                            // Movement
+                                            this.x += this.vx;
+                                            this.y += this.vy;
+
+                                            // Bounce off edges gracefully
+                                            if (this.x < 0 || this.x > w) this.vx *= -1;
+                                            if (this.y < 0 || this.y > h) this.vy *= -1;
+
+                                            // Mouse interaction (magnetic repel) - Optimized square distance
+                                            const dx = mouse.x - this.x;
+                                            const dy = mouse.y - this.y;
+                                            const sqDist = dx * dx + dy * dy;
+
+                                            if (sqDist < 22500) { // 150 * 150
+                                                const dist = Math.sqrt(sqDist);
+                                                const force = (150 - dist) / 150;
+                                                this.x -= (dx / dist) * force * 2.5;
+                                                this.y -= (dy / dist) * force * 2.5;
+                                                this.radius = this.baseRadius * 1.5;
+                                            } else {
+                                                this.radius = this.baseRadius;
+                                            }
+
+                                            this.pulse += this.pulseSpeed;
+                                        }
+                                        draw() {
+                                            ctx.beginPath();
+                                            ctx.arc(this.x, this.y, this.radius + Math.sin(this.pulse) * 0.8, 0, Math.PI * 2);
+                                            ctx.fillStyle = this.color;
+                                            // REMOVED shadowBlur for massive performance gain
+                                            ctx.fill();
+                                        }
+                                    }
+
+                                    // Increased to 45 with a larger connection radius for a dense web without lag
+                                    for (let i = 0; i < 45; i++) particles.push(new Particle());
+
+                                    let pulses = [];
+
+                                    function animate() {
+                                        ctx.clearRect(0, 0, w, h);
+
+                                        // Draw particles and lines
+                                        for (let i = 0; i < particles.length; i++) {
+                                            particles[i].update();
+                                            particles[i].draw();
+
+                                            for (let j = i + 1; j < particles.length; j++) {
+                                                const dx = particles[i].x - particles[j].x;
+                                                const dy = particles[i].y - particles[j].y;
+                                                const sqDist = dx * dx + dy * dy;
+
+                                                // 170 * 170 = 28900 (Much larger connection radius for MORE lines)
+                                                if (sqDist < 28900) {
+                                                    const dist = Math.sqrt(sqDist);
+                                                    ctx.beginPath();
+                                                    ctx.moveTo(particles[i].x, particles[i].y);
+                                                    ctx.lineTo(particles[j].x, particles[j].y);
+
+                                                    // Mouse proximity for glow - Optimized
+                                                    const dxM = mouse.x - particles[i].x;
+                                                    const dyM = mouse.y - particles[i].y;
+                                                    const sqMDist = dxM * dxM + dyM * dyM;
+
+                                                    let alpha = (1 - dist / 170) * 0.35; // Lower base opacity since there are many more lines
+                                                    if (sqMDist < 25600) alpha += 0.45; // Intense glow near mouse
+
+                                                    // Simple stroke
+                                                    ctx.strokeStyle = 'rgba(167, 139, 250, ' + alpha + ')';
+                                                    ctx.lineWidth = sqMDist < 25600 ? 1.5 : 0.8;
+                                                    ctx.stroke();
+
+                                                    if (Math.random() < 0.003) {
+                                                        pulses.push({
+                                                            p1: particles[i],
+                                                            p2: particles[j],
+                                                            progress: 0,
+                                                            speed: 0.015 + Math.random() * 0.02
+                                                        });
+                                                    }
+                                                }
+                                            }
+                                        }
+
+                                        // Draw data pulses
+                                        for (let i = pulses.length - 1; i >= 0; i--) {
+                                            const p = pulses[i];
+                                            p.progress += p.speed;
+                                            if (p.progress >= 1) {
+                                                pulses.splice(i, 1);
+                                                continue;
+                                            }
+
+                                            const currentX = p.p1.x + (p.p2.x - p.p1.x) * p.progress;
+                                            const currentY = p.p1.y + (p.p2.y - p.p1.y) * p.progress;
+
+                                            ctx.beginPath();
+                                            ctx.arc(currentX, currentY, 2, 0, Math.PI * 2);
+                                            ctx.fillStyle = '#ffffff';
+                                            // Used a very tiny shadow ONLY on pulses if needed, or none at all. None is best.
+                                            ctx.fill();
+                                        }
+
+                                        requestAnimationFrame(animate);
+                                    }
+                                    animate();
+                                }, 300);
+                            })();
+                        </script>
                     </div>
-                    <div style="position: relative;">
-                        <i class="fa-regular fa-envelope" style="position: absolute; left: 18px; top: 50%; transform: translateY(-50%); color: rgba(255,255,255,0.4); font-size: 1rem;"></i>
-                        <input class="premium-input" type="email" id="auth-email" placeholder="Correo electrónico" style="width: 100%; padding: 16px 18px 16px 48px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.1); background: rgba(255,255,255,0.03); color: white; outline: none; font-family: inherit; font-size: 1rem; transition: all 0.3s;">
-                    </div>
-                    <div style="position: relative;">
-                        <i class="fa-solid fa-lock" style="position: absolute; left: 18px; top: 50%; transform: translateY(-50%); color: rgba(255,255,255,0.4); font-size: 1rem;"></i>
-                        <input class="premium-input" type="password" id="auth-password" placeholder="Contraseña" style="width: 100%; padding: 16px 48px 16px 48px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.1); background: rgba(255,255,255,0.03); color: white; outline: none; font-family: inherit; font-size: 1rem; transition: all 0.3s;">
-                        <i class="fa-solid fa-eye" style="position: absolute; right: 18px; top: 50%; transform: translateY(-50%); color: rgba(255,255,255,0.4); font-size: 1rem; cursor: pointer; transition: color 0.3s;" onmouseover="this.style.color='rgba(255,255,255,0.8)'" onmouseout="this.style.color='rgba(255,255,255,0.4)'" onclick="const input = document.getElementById('auth-password'); const isPwd = input.type === 'password'; input.type = isPwd ? 'text' : 'password'; this.classList.toggle('fa-eye'); this.classList.toggle('fa-eye-slash');"></i>
-                    </div>
-                    
-                    <div id="auth-parent-toggle-container" style="display: flex; align-items: center; gap: 10px; margin-top: 10px; background: rgba(56,189,248,0.05); padding: 12px 16px; border-radius: 12px; border: 1px solid rgba(56,189,248,0.1); transition: all 0.3s;">
-                        <i class="fa-solid fa-user-shield" style="color: #38bdf8; font-size: 1.2rem; flex-shrink: 0;"></i>
-                        <p style="color: rgba(255,255,255,0.65); font-size: 0.82rem; margin: 0; line-height: 1.4;">
-                            <strong style="color: rgba(255,255,255,0.9);">¿Eres padre o apoderado?</strong> Ingresa con el correo que tu hijo(a) registró como "correo de los padres" y usa la misma contraseña.
-                        </p>
-                    </div>
+                </div><!-- end landing hero main content -->
+
+                <!-- Footer / Credits -->
+                <div style="width: 100%; text-align: center; padding-bottom: 25px; z-index: 10;">
+                    <span
+                        style="color: rgba(255,255,255,0.3); font-size: 0.85rem; font-weight: 600; letter-spacing: 1px; font-family: inherit;">Developer
+                        By Neuronova</span>
                 </div>
 
-                <button class="premium-btn" id="btn-auth-submit" style="width: 100%; margin-top: 28px; padding: 18px; background: #38bdf8; color: #0f172a; border: none; border-radius: 12px; font-weight: 900; font-size: 1.05rem; letter-spacing: 0.5px; cursor: pointer; display: flex; justify-content: center; align-items: center; gap: 10px; transition: all 0.3s; box-shadow: 0 10px 25px rgba(56, 189, 248, 0.3);">
-                    INGRESAR AL PORTAL <i class="fa-solid fa-arrow-right"></i>
-                </button>
-            </div>
-            
-            <!-- Hidden Canvas for Avatar Generation -->
-            <canvas id="avatar-canvas-generator" width="200" height="200" style="display:none;"></canvas>
+            </div><!-- end Panel 1: Landing -->
 
-        <script>
-            // 3D Canvas Avatar Builder Logic
-            const avatarColors = {
-                skin: ['#fcd0a1', '#e5a07e', '#d68863', '#a56a4b', '#7c4a35', '#f8d25c', '#ffb6c1'],
-                shirt: ['#38bdf8', '#ef4444', '#22c55e', '#a78bfa', '#facc15', '#f472b6', '#ffffff', '#1e293b'],
-                pants: ['#1e3a8a', '#334155', '#450a0a', '#14532d', '#4c1d95', '#000000', '#f3f4f6'],
-                hairColor: ['#2c1b18', '#b58143', '#d6b370', '#724133', '#111111', '#f59797', '#ecdcbf', '#c93305', '#6c3ce0'],
-                hairStyle: ['None', 'Short', 'Spike', 'Long', 'Bob', 'Ponytail']
-            };
+            <!-- ═══ PANEL 2: Login / Register Form (50% = full screen) ═══ -->
+            <div id="auth-login-panel"
+                style="width: 50%; flex-shrink: 0; display: flex; align-items: center; justify-content: center; padding: 40px; position: relative;">
 
-            const state3D = {
-                skin: 0,
-                shirt: 0,
-                pants: 0,
-                hairStyle: 1,
-                hairColor: 0,
-                gender: 'Block'
-            };
+                <div style="width: 100%; max-width: 420px; display: flex; flex-direction: column; z-index: 2;">
 
-            function draw3DAvatar() {
-                const canvas = document.getElementById('avatar-canvas-generator');
-                const ctx = canvas.getContext('2d');
-                
-                const skinColor = avatarColors.skin[state3D.skin];
-                const shirtColor = avatarColors.shirt[state3D.shirt];
-                const pantsColor = avatarColors.pants[state3D.pants];
-                const hairCol = avatarColors.hairColor[state3D.hairColor];
-                const hairName = avatarColors.hairStyle[state3D.hairStyle];
-                const isBlock = state3D.gender === 'Block';
-                
-                ctx.clearRect(0, 0, 200, 200);
-                
-                // Gradient background circle
-                const grad = ctx.createLinearGradient(0, 0, 200, 200);
-                grad.addColorStop(0, '#38bdf8');
-                grad.addColorStop(1, '#a78bfa');
-                ctx.fillStyle = grad;
-                ctx.beginPath();
-                ctx.arc(100, 100, 100, 0, Math.PI * 2);
-                ctx.fill();
+                    <!-- Back button -->
+                    <div onclick="closeAuthModal()"
+                        style="display: flex; align-items: center; gap: 10px; color: rgba(255,255,255,0.6); cursor: pointer; font-weight: 700; margin-bottom: 36px; width: fit-content; transition: color 0.3s;"
+                        onmouseover="this.style.color='#38bdf8'" onmouseout="this.style.color='rgba(255,255,255,0.6)'">
+                        <i class="fa-solid fa-arrow-left"></i> Volver al inicio
+                    </div>
 
-                // Shadow
-                ctx.fillStyle = 'rgba(0,0,0,0.2)';
-                ctx.beginPath();
-                ctx.ellipse(100, 180, 40, 10, 0, 0, Math.PI * 2);
-                ctx.fill();
+                    <!-- Logo -->
+                    <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 36px;">
+                        <div
+                            style="width: 36px; height: 36px; border-radius: 10px; background: linear-gradient(135deg, #38bdf8, #a78bfa); display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 15px rgba(56, 189, 248, 0.4);">
+                            <i class="fa-solid fa-brain" style="color: white; font-size: 1.1rem;"></i>
+                        </div>
+                        <span
+                            style="color: white; font-size: 1.2rem; font-weight: 900; letter-spacing: 1px; text-transform: uppercase;">NeuroSpark</span>
+                    </div>
 
-                // Legs
-                ctx.fillStyle = pantsColor;
-                if (isBlock) {
-                    ctx.fillRect(70, 130, 26, 45);
-                    ctx.fillRect(104, 130, 26, 45);
-                } else {
-                    ctx.beginPath(); ctx.roundRect(70, 130, 26, 45, 10); ctx.fill();
-                    ctx.beginPath(); ctx.roundRect(104, 130, 26, 45, 10); ctx.fill();
-                }
+                    <!-- Header -->
+                    <div style="display: flex; flex-direction: column; margin-bottom: 32px; gap: 8px;">
+                        <h3 style="color: white; font-size: 2.2rem; font-weight: 900; letter-spacing: -1px;"
+                            id="auth-title">Iniciar Sesión</h3>
+                        <div id="btn-auth-toggle"
+                            style="color: rgba(255,255,255,0.6); font-size: 1rem; font-weight: 500; cursor: pointer; transition: color 0.3s;">
+                            ¿No tienes una cuenta? <span style="color: #38bdf8; font-weight: 800;">Crear una
+                                ahora</span></div>
+                    </div>
 
-                // Arms (skin)
-                ctx.fillStyle = skinColor;
-                if (isBlock) {
-                    ctx.fillRect(40, 70, 24, 60);
-                    ctx.fillRect(136, 70, 24, 60);
-                } else {
-                    ctx.beginPath(); ctx.roundRect(40, 70, 24, 60, 12); ctx.fill();
-                    ctx.beginPath(); ctx.roundRect(136, 70, 24, 60, 12); ctx.fill();
-                }
+                    <p id="auth-subtitle" style="display:none;"></p>
 
-                // Shirt sleeves
-                ctx.fillStyle = shirtColor;
-                if (isBlock) {
-                    ctx.fillRect(40, 70, 24, 25);
-                    ctx.fillRect(136, 70, 24, 25);
-                } else {
-                    ctx.beginPath(); ctx.roundRect(40, 70, 24, 25, [12, 12, 0, 0]); ctx.fill();
-                    ctx.beginPath(); ctx.roundRect(136, 70, 24, 25, [12, 12, 0, 0]); ctx.fill();
-                }
+                    <!-- Inputs -->
+                    <div style="display: flex; flex-direction: column; gap: 18px;">
+                        <!-- Register Only Fields -->
+                        <div id="auth-register-fields" style="display: none; flex-direction: column; gap: 18px;">
+                            <div style="display: flex; gap: 12px;">
+                                <div style="position: relative; flex: 1;">
+                                    <i class="fa-regular fa-user"
+                                        style="position: absolute; left: 18px; top: 50%; transform: translateY(-50%); color: rgba(255,255,255,0.4); font-size: 1rem;"></i>
+                                    <input class="premium-input" type="text" id="auth-firstname" placeholder="Nombres"
+                                        style="width: 100%; padding: 16px 18px 16px 48px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.1); background: rgba(255,255,255,0.03); color: white; outline: none; font-family: inherit; font-size: 1rem; transition: all 0.3s;">
+                                </div>
+                                <div style="position: relative; flex: 1;">
+                                    <input class="premium-input" type="text" id="auth-lastname" placeholder="Apellidos"
+                                        style="width: 100%; padding: 16px 18px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.1); background: rgba(255,255,255,0.03); color: white; outline: none; font-family: inherit; font-size: 1rem; transition: all 0.3s;">
+                                </div>
+                            </div>
+                            <div style="position: relative;">
+                                <i class="fa-solid fa-user-ninja"
+                                    style="position: absolute; left: 18px; top: 50%; transform: translateY(-50%); color: rgba(255,255,255,0.4); font-size: 1rem;"></i>
+                                <input class="premium-input" type="text" id="auth-alias"
+                                    placeholder="Alias (Nombre de usuario)"
+                                    style="width: 100%; padding: 16px 18px 16px 48px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.1); background: rgba(255,255,255,0.03); color: white; outline: none; font-family: inherit; font-size: 1rem; transition: all 0.3s;"
+                                    required>
+                            </div>
+                            <div style="display: flex; flex-direction: column; gap: 8px;" id="avatar-builder-container">
+                                <label
+                                    style="color: rgba(255,255,255,0.7); font-size: 0.85rem; font-weight: 600; display:flex; justify-content:space-between; align-items:center;">
+                                    <span>Crea tu Avatar:</span>
+                                    <span style="font-size:0.75rem; color:#38bdf8; cursor:pointer;"
+                                        onclick="randomizeAvatar()"><i class="fa-solid fa-dice"></i> Aleatorio</span>
+                                </label>
+                                <div
+                                    style="display: flex; gap: 16px; background: rgba(0,0,0,0.2); border: 1px solid rgba(255,255,255,0.1); border-radius: 14px; padding: 12px; align-items: center;">
+                                    <div style="flex-shrink: 0; position: relative;">
+                                        <div
+                                            style="width: 80px; height: 80px; border-radius: 50%; background: linear-gradient(135deg, #38bdf8, #a78bfa); display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 15px rgba(0,0,0,0.3);">
+                                            <img id="avatar-preview-img"
+                                                style="width: 100%; height: 100%; border-radius: 50%;">
+                                        </div>
+                                    </div>
+                                    <div style="flex: 1; display: flex; flex-direction: column; gap: 8px;">
+                                        <div
+                                            style="display:flex; justify-content:space-between; align-items:center; background:rgba(255,255,255,0.05); border-radius:6px; padding:4px 8px;">
+                                            <span style="font-size:0.75rem; color:rgba(255,255,255,0.8);"><i
+                                                    class="fa-solid fa-hand"></i> Piel</span>
+                                            <div style="display:flex; gap:8px; align-items:center;">
+                                                <i class="fa-solid fa-chevron-left builder-arrow"
+                                                    onclick="change3DFeature('skin', -1)"></i>
+                                                <i class="fa-solid fa-chevron-right builder-arrow"
+                                                    onclick="change3DFeature('skin', 1)"></i>
+                                            </div>
+                                        </div>
+                                        <!-- Pelo Estilo -->
+                                        <div
+                                            style="display:flex; justify-content:space-between; align-items:center; background:rgba(255,255,255,0.05); border-radius:6px; padding:4px 8px;">
+                                            <span style="font-size:0.75rem; color:rgba(255,255,255,0.8);"><i
+                                                    class="fa-solid fa-scissors"></i> Pelo</span>
+                                            <div style="display:flex; gap:8px; align-items:center;">
+                                                <i class="fa-solid fa-chevron-left builder-arrow"
+                                                    onclick="change3DFeature('hairStyle', -1)"></i>
+                                                <i class="fa-solid fa-chevron-right builder-arrow"
+                                                    onclick="change3DFeature('hairStyle', 1)"></i>
+                                            </div>
+                                        </div>
+                                        <!-- Color Pelo -->
+                                        <div
+                                            style="display:flex; justify-content:space-between; align-items:center; background:rgba(255,255,255,0.05); border-radius:6px; padding:4px 8px;">
+                                            <span style="font-size:0.75rem; color:rgba(255,255,255,0.8);"><i
+                                                    class="fa-solid fa-palette"></i> C. Pelo</span>
+                                            <div style="display:flex; gap:8px; align-items:center;">
+                                                <i class="fa-solid fa-chevron-left builder-arrow"
+                                                    onclick="change3DFeature('hairColor', -1)"></i>
+                                                <i class="fa-solid fa-chevron-right builder-arrow"
+                                                    onclick="change3DFeature('hairColor', 1)"></i>
+                                            </div>
+                                        </div>
+                                        <!-- Camisa -->
+                                        <div
+                                            style="display:flex; justify-content:space-between; align-items:center; background:rgba(255,255,255,0.05); border-radius:6px; padding:4px 8px;">
+                                            <span style="font-size:0.75rem; color:rgba(255,255,255,0.8);"><i
+                                                    class="fa-solid fa-shirt"></i> Camisa</span>
+                                            <div style="display:flex; gap:8px; align-items:center;">
+                                                <i class="fa-solid fa-chevron-left builder-arrow"
+                                                    onclick="change3DFeature('shirt', -1)"></i>
+                                                <i class="fa-solid fa-chevron-right builder-arrow"
+                                                    onclick="change3DFeature('shirt', 1)"></i>
+                                            </div>
+                                        </div>
+                                        <!-- Pantalón -->
+                                        <div
+                                            style="display:flex; justify-content:space-between; align-items:center; background:rgba(255,255,255,0.05); border-radius:6px; padding:4px 8px;">
+                                            <span style="font-size:0.75rem; color:rgba(255,255,255,0.8);"><i
+                                                    class="fa-solid fa-socks"></i> Pantalón</span>
+                                            <div style="display:flex; gap:8px; align-items:center;">
+                                                <i class="fa-solid fa-chevron-left builder-arrow"
+                                                    onclick="change3DFeature('pants', -1)"></i>
+                                                <i class="fa-solid fa-chevron-right builder-arrow"
+                                                    onclick="change3DFeature('pants', 1)"></i>
+                                            </div>
+                                        </div>
+                                        <!-- Género / Estilo -->
+                                        <div
+                                            style="display:flex; justify-content:space-between; align-items:center; background:rgba(255,255,255,0.05); border-radius:6px; padding:4px 8px;">
+                                            <span style="font-size:0.75rem; color:rgba(255,255,255,0.8);"><i
+                                                    class="fa-solid fa-venus-mars"></i> Cuerpo</span>
+                                            <div style="display:flex; gap:8px; align-items:center;">
+                                                <i class="fa-solid fa-chevron-left builder-arrow"
+                                                    onclick="toggle3DGender()"></i>
+                                                <span id="gender-label"
+                                                    style="font-size:0.75rem; font-weight:600; width:30px; text-align:center;">Block</span>
+                                                <i class="fa-solid fa-chevron-right builder-arrow"
+                                                    onclick="toggle3DGender()"></i>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <style>
+                                .builder-arrow {
+                                    cursor: pointer;
+                                    color: #38bdf8;
+                                    font-size: 0.8rem;
+                                    padding: 4px;
+                                    border-radius: 4px;
+                                    transition: background 0.2s, transform 0.2s;
+                                }
 
-                // Torso
-                ctx.fillStyle = shirtColor;
-                if (isBlock) {
-                    ctx.fillRect(68, 70, 64, 60);
-                } else {
-                    ctx.beginPath(); ctx.roundRect(68, 70, 64, 60, 8); ctx.fill();
-                }
+                                .builder-arrow:hover {
+                                    background: rgba(56, 189, 248, 0.2);
+                                    transform: scale(1.1);
+                                }
 
-                // Head
-                ctx.fillStyle = skinColor;
-                if (isBlock) {
-                    ctx.fillRect(65, 15, 70, 55);
-                } else {
-                    ctx.beginPath(); ctx.roundRect(65, 15, 70, 55, 20); ctx.fill();
-                }
+                                .builder-arrow:active {
+                                    transform: scale(0.9);
+                                }
+                            </style>
+                            <div style="position: relative;">
+                                <i class="fa-solid fa-cake-candles"
+                                    style="position: absolute; left: 18px; top: 50%; transform: translateY(-50%); color: rgba(255,255,255,0.4); font-size: 1rem;"></i>
+                                <select class="premium-input" id="auth-age"
+                                    style="width: 100%; padding: 16px 18px 16px 48px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.1); background: rgba(255,255,255,0.03); color: white; outline: none; font-family: inherit; font-size: 1rem; transition: all 0.3s; cursor: pointer; appearance: none;">
+                                    <option value="" disabled selected
+                                        style="background: #1e293b; color: rgba(255,255,255,0.5);">Selecciona tu edad (6
+                                        a 17 años)...</option>
+                                    <option value="6" style="background: #1e293b; color: white;">6 años (Perfil Niños)
+                                    </option>
+                                    <option value="7" style="background: #1e293b; color: white;">7 años (Perfil Niños)
+                                    </option>
+                                    <option value="8" style="background: #1e293b; color: white;">8 años (Perfil Niños)
+                                    </option>
+                                    <option value="9" style="background: #1e293b; color: white;">9 años (Perfil Niños)
+                                    </option>
+                                    <option value="10" style="background: #1e293b; color: white;">10 años (Perfil Niños)
+                                    </option>
+                                    <option value="11" style="background: #1e293b; color: white;">11 años (Perfil Niños)
+                                    </option>
+                                    <option value="12" style="background: #1e293b; color: white;">12 años (Perfil
+                                        Adolescentes)</option>
+                                    <option value="13" style="background: #1e293b; color: white;">13 años (Perfil
+                                        Adolescentes)</option>
+                                    <option value="14" style="background: #1e293b; color: white;">14 años (Perfil
+                                        Adolescentes)</option>
+                                    <option value="15" style="background: #1e293b; color: white;">15 años (Perfil
+                                        Adolescentes)</option>
+                                    <option value="16" style="background: #1e293b; color: white;">16 años (Perfil
+                                        Adolescentes)</option>
+                                    <option value="17" style="background: #1e293b; color: white;">17 años (Perfil
+                                        Adolescentes)</option>
+                                </select>
+                                <i class="fa-solid fa-chevron-down"
+                                    style="position: absolute; right: 18px; top: 50%; transform: translateY(-50%); color: rgba(255,255,255,0.4); font-size: 0.9rem; pointer-events: none;"></i>
+                            </div>
+                            <div style="position: relative;">
+                                <i class="fa-solid fa-envelope-open-text"
+                                    style="position: absolute; left: 18px; top: 50%; transform: translateY(-50%); color: rgba(255,255,255,0.4); font-size: 1rem;"></i>
+                                <input class="premium-input" type="email" id="auth-parent-email"
+                                    placeholder="Correo de tus padres (Obligatorio)"
+                                    style="width: 100%; padding: 16px 18px 16px 48px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.1); background: rgba(255,255,255,0.03); color: white; outline: none; font-family: inherit; font-size: 1rem; transition: all 0.3s;"
+                                    required>
+                            </div>
+                        </div>
+                        <div style="position: relative;">
+                            <i class="fa-regular fa-envelope"
+                                style="position: absolute; left: 18px; top: 50%; transform: translateY(-50%); color: rgba(255,255,255,0.4); font-size: 1rem;"></i>
+                            <input class="premium-input" type="email" id="auth-email" placeholder="Correo electrónico"
+                                style="width: 100%; padding: 16px 18px 16px 48px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.1); background: rgba(255,255,255,0.03); color: white; outline: none; font-family: inherit; font-size: 1rem; transition: all 0.3s;">
+                        </div>
+                        <div style="position: relative;">
+                            <i class="fa-solid fa-lock"
+                                style="position: absolute; left: 18px; top: 50%; transform: translateY(-50%); color: rgba(255,255,255,0.4); font-size: 1rem;"></i>
+                            <input class="premium-input" type="password" id="auth-password" placeholder="Contraseña"
+                                style="width: 100%; padding: 16px 48px 16px 48px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.1); background: rgba(255,255,255,0.03); color: white; outline: none; font-family: inherit; font-size: 1rem; transition: all 0.3s;">
+                            <i class="fa-solid fa-eye"
+                                style="position: absolute; right: 18px; top: 50%; transform: translateY(-50%); color: rgba(255,255,255,0.4); font-size: 1rem; cursor: pointer; transition: color 0.3s;"
+                                onmouseover="this.style.color='rgba(255,255,255,0.8)'"
+                                onmouseout="this.style.color='rgba(255,255,255,0.4)'"
+                                onclick="const input = document.getElementById('auth-password'); const isPwd = input.type === 'password'; input.type = isPwd ? 'text' : 'password'; this.classList.toggle('fa-eye'); this.classList.toggle('fa-eye-slash');"></i>
+                        </div>
 
-                // ---- HAIR ----
-                ctx.fillStyle = hairCol;
-                if (hairName === 'Short') {
-                    if (isBlock) {
-                        ctx.fillRect(63, 10, 74, 15);
-                        ctx.fillRect(60, 15, 10, 22);
-                        ctx.fillRect(130, 15, 10, 22);
-                    } else {
-                        ctx.beginPath(); ctx.roundRect(60, 8, 80, 18, [12, 12, 0, 0]); ctx.fill();
-                        ctx.beginPath(); ctx.roundRect(58, 15, 12, 22, 6); ctx.fill();
-                        ctx.beginPath(); ctx.roundRect(130, 15, 12, 22, 6); ctx.fill();
-                    }
-                } else if (hairName === 'Spike') {
-                    ctx.beginPath();
-                    ctx.moveTo(63, 25); ctx.lineTo(73, 2); ctx.lineTo(85, 20);
-                    ctx.lineTo(100, -2); ctx.lineTo(115, 20);
-                    ctx.lineTo(127, 2); ctx.lineTo(137, 25);
-                    ctx.closePath(); ctx.fill();
-                    if (isBlock) { ctx.fillRect(63, 15, 74, 10); }
-                    else { ctx.beginPath(); ctx.roundRect(63, 15, 74, 10, 4); ctx.fill(); }
-                } else if (hairName === 'Long') {
-                    if (isBlock) {
-                        ctx.fillRect(58, 8, 84, 18);
-                        ctx.fillRect(58, 26, 14, 50);
-                        ctx.fillRect(128, 26, 14, 50);
-                    } else {
-                        ctx.beginPath(); ctx.roundRect(55, 6, 90, 20, [14, 14, 0, 0]); ctx.fill();
-                        ctx.beginPath(); ctx.roundRect(55, 20, 16, 55, [0, 0, 8, 8]); ctx.fill();
-                        ctx.beginPath(); ctx.roundRect(129, 20, 16, 55, [0, 0, 8, 8]); ctx.fill();
-                    }
-                } else if (hairName === 'Bob') {
-                    if (isBlock) {
-                        ctx.fillRect(55, 8, 90, 22);
-                        ctx.fillRect(55, 30, 14, 28);
-                        ctx.fillRect(131, 30, 14, 28);
-                    } else {
-                        ctx.beginPath(); ctx.roundRect(52, 5, 96, 55, 18); ctx.fill();
-                        // Re-draw face on top of bob
+                        <div id="auth-parent-toggle-container"
+                            style="display: flex; align-items: center; gap: 10px; margin-top: 10px; background: rgba(56,189,248,0.05); padding: 12px 16px; border-radius: 12px; border: 1px solid rgba(56,189,248,0.1); transition: all 0.3s;">
+                            <i class="fa-solid fa-user-shield"
+                                style="color: #38bdf8; font-size: 1.2rem; flex-shrink: 0;"></i>
+                            <p style="color: rgba(255,255,255,0.65); font-size: 0.82rem; margin: 0; line-height: 1.4;">
+                                <strong style="color: rgba(255,255,255,0.9);">¿Eres padre o apoderado?</strong> Ingresa
+                                con el correo que tu hijo(a) registró como "correo de los padres" y usa la misma
+                                contraseña.
+                            </p>
+                        </div>
+                    </div>
+
+                    <button class="premium-btn" id="btn-auth-submit"
+                        style="width: 100%; margin-top: 28px; padding: 18px; background: #38bdf8; color: #0f172a; border: none; border-radius: 12px; font-weight: 900; font-size: 1.05rem; letter-spacing: 0.5px; cursor: pointer; display: flex; justify-content: center; align-items: center; gap: 10px; transition: all 0.3s; box-shadow: 0 10px 25px rgba(56, 189, 248, 0.3);">
+                        INGRESAR AL PORTAL <i class="fa-solid fa-arrow-right"></i>
+                    </button>
+                </div>
+
+                <!-- Hidden Canvas for Avatar Generation -->
+                <canvas id="avatar-canvas-generator" width="200" height="200" style="display:none;"></canvas>
+
+                <script>
+                    // 3D Canvas Avatar Builder Logic
+                    const avatarColors = {
+                        skin: ['#fcd0a1', '#e5a07e', '#d68863', '#a56a4b', '#7c4a35', '#f8d25c', '#ffb6c1'],
+                        shirt: ['#38bdf8', '#ef4444', '#22c55e', '#a78bfa', '#facc15', '#f472b6', '#ffffff', '#1e293b'],
+                        pants: ['#1e3a8a', '#334155', '#450a0a', '#14532d', '#4c1d95', '#000000', '#f3f4f6'],
+                        hairColor: ['#2c1b18', '#b58143', '#d6b370', '#724133', '#111111', '#f59797', '#ecdcbf', '#c93305', '#6c3ce0'],
+                        hairStyle: ['None', 'Short', 'Spike', 'Long', 'Bob', 'Ponytail']
+                    };
+
+                    const state3D = {
+                        skin: 0,
+                        shirt: 0,
+                        pants: 0,
+                        hairStyle: 1,
+                        hairColor: 0,
+                        gender: 'Block'
+                    };
+
+                    function draw3DAvatar() {
+                        const canvas = document.getElementById('avatar-canvas-generator');
+                        const ctx = canvas.getContext('2d');
+
+                        const skinColor = avatarColors.skin[state3D.skin];
+                        const shirtColor = avatarColors.shirt[state3D.shirt];
+                        const pantsColor = avatarColors.pants[state3D.pants];
+                        const hairCol = avatarColors.hairColor[state3D.hairColor];
+                        const hairName = avatarColors.hairStyle[state3D.hairStyle];
+                        const isBlock = state3D.gender === 'Block';
+
+                        ctx.clearRect(0, 0, 200, 200);
+
+                        // Gradient background circle
+                        const grad = ctx.createLinearGradient(0, 0, 200, 200);
+                        grad.addColorStop(0, '#38bdf8');
+                        grad.addColorStop(1, '#a78bfa');
+                        ctx.fillStyle = grad;
+                        ctx.beginPath();
+                        ctx.arc(100, 100, 100, 0, Math.PI * 2);
+                        ctx.fill();
+
+                        // Shadow
+                        ctx.fillStyle = 'rgba(0,0,0,0.2)';
+                        ctx.beginPath();
+                        ctx.ellipse(100, 180, 40, 10, 0, 0, Math.PI * 2);
+                        ctx.fill();
+
+                        // Legs
+                        ctx.fillStyle = pantsColor;
+                        if (isBlock) {
+                            ctx.fillRect(70, 130, 26, 45);
+                            ctx.fillRect(104, 130, 26, 45);
+                        } else {
+                            ctx.beginPath(); ctx.roundRect(70, 130, 26, 45, 10); ctx.fill();
+                            ctx.beginPath(); ctx.roundRect(104, 130, 26, 45, 10); ctx.fill();
+                        }
+
+                        // Arms (skin)
                         ctx.fillStyle = skinColor;
-                        ctx.beginPath(); ctx.roundRect(68, 20, 64, 48, 14); ctx.fill();
+                        if (isBlock) {
+                            ctx.fillRect(40, 70, 24, 60);
+                            ctx.fillRect(136, 70, 24, 60);
+                        } else {
+                            ctx.beginPath(); ctx.roundRect(40, 70, 24, 60, 12); ctx.fill();
+                            ctx.beginPath(); ctx.roundRect(136, 70, 24, 60, 12); ctx.fill();
+                        }
+
+                        // Shirt sleeves
+                        ctx.fillStyle = shirtColor;
+                        if (isBlock) {
+                            ctx.fillRect(40, 70, 24, 25);
+                            ctx.fillRect(136, 70, 24, 25);
+                        } else {
+                            ctx.beginPath(); ctx.roundRect(40, 70, 24, 25, [12, 12, 0, 0]); ctx.fill();
+                            ctx.beginPath(); ctx.roundRect(136, 70, 24, 25, [12, 12, 0, 0]); ctx.fill();
+                        }
+
+                        // Torso
+                        ctx.fillStyle = shirtColor;
+                        if (isBlock) {
+                            ctx.fillRect(68, 70, 64, 60);
+                        } else {
+                            ctx.beginPath(); ctx.roundRect(68, 70, 64, 60, 8); ctx.fill();
+                        }
+
+                        // Head
+                        ctx.fillStyle = skinColor;
+                        if (isBlock) {
+                            ctx.fillRect(65, 15, 70, 55);
+                        } else {
+                            ctx.beginPath(); ctx.roundRect(65, 15, 70, 55, 20); ctx.fill();
+                        }
+
+                        // ---- HAIR ----
                         ctx.fillStyle = hairCol;
+                        if (hairName === 'Short') {
+                            if (isBlock) {
+                                ctx.fillRect(63, 10, 74, 15);
+                                ctx.fillRect(60, 15, 10, 22);
+                                ctx.fillRect(130, 15, 10, 22);
+                            } else {
+                                ctx.beginPath(); ctx.roundRect(60, 8, 80, 18, [12, 12, 0, 0]); ctx.fill();
+                                ctx.beginPath(); ctx.roundRect(58, 15, 12, 22, 6); ctx.fill();
+                                ctx.beginPath(); ctx.roundRect(130, 15, 12, 22, 6); ctx.fill();
+                            }
+                        } else if (hairName === 'Spike') {
+                            ctx.beginPath();
+                            ctx.moveTo(63, 25); ctx.lineTo(73, 2); ctx.lineTo(85, 20);
+                            ctx.lineTo(100, -2); ctx.lineTo(115, 20);
+                            ctx.lineTo(127, 2); ctx.lineTo(137, 25);
+                            ctx.closePath(); ctx.fill();
+                            if (isBlock) { ctx.fillRect(63, 15, 74, 10); }
+                            else { ctx.beginPath(); ctx.roundRect(63, 15, 74, 10, 4); ctx.fill(); }
+                        } else if (hairName === 'Long') {
+                            if (isBlock) {
+                                ctx.fillRect(58, 8, 84, 18);
+                                ctx.fillRect(58, 26, 14, 50);
+                                ctx.fillRect(128, 26, 14, 50);
+                            } else {
+                                ctx.beginPath(); ctx.roundRect(55, 6, 90, 20, [14, 14, 0, 0]); ctx.fill();
+                                ctx.beginPath(); ctx.roundRect(55, 20, 16, 55, [0, 0, 8, 8]); ctx.fill();
+                                ctx.beginPath(); ctx.roundRect(129, 20, 16, 55, [0, 0, 8, 8]); ctx.fill();
+                            }
+                        } else if (hairName === 'Bob') {
+                            if (isBlock) {
+                                ctx.fillRect(55, 8, 90, 22);
+                                ctx.fillRect(55, 30, 14, 28);
+                                ctx.fillRect(131, 30, 14, 28);
+                            } else {
+                                ctx.beginPath(); ctx.roundRect(52, 5, 96, 55, 18); ctx.fill();
+                                // Re-draw face on top of bob
+                                ctx.fillStyle = skinColor;
+                                ctx.beginPath(); ctx.roundRect(68, 20, 64, 48, 14); ctx.fill();
+                                ctx.fillStyle = hairCol;
+                            }
+                        } else if (hairName === 'Ponytail') {
+                            if (isBlock) {
+                                ctx.fillRect(63, 8, 74, 16);
+                                ctx.fillRect(120, 6, 12, 40);
+                            } else {
+                                ctx.beginPath(); ctx.roundRect(60, 6, 80, 18, [12, 12, 0, 0]); ctx.fill();
+                                ctx.beginPath(); ctx.roundRect(120, 4, 14, 42, 7); ctx.fill();
+                            }
+                            // Bun
+                            ctx.beginPath(); ctx.arc(133, 8, 10, 0, Math.PI * 2); ctx.fill();
+                        }
+
+                        // ---- FACE ----
+                        ctx.fillStyle = '#1e293b';
+                        // Eyes (white part)
+                        ctx.fillStyle = '#ffffff';
+                        ctx.fillRect(79, 34, 12, 10);
+                        ctx.fillRect(109, 34, 12, 10);
+                        // Pupils
+                        ctx.fillStyle = '#1e293b';
+                        ctx.fillRect(83, 36, 6, 6);
+                        ctx.fillRect(113, 36, 6, 6);
+
+                        // Smile
+                        ctx.strokeStyle = '#1e293b';
+                        ctx.lineWidth = 3;
+                        ctx.lineCap = 'round';
+                        ctx.beginPath();
+                        ctx.arc(100, 50, 10, 0.15 * Math.PI, 0.85 * Math.PI, false);
+                        ctx.stroke();
+
+                        // Apply to preview
+                        const dataUrl = canvas.toDataURL('image/png');
+                        const imgEl = document.getElementById('avatar-preview-img');
+                        if (imgEl) {
+                            imgEl.src = dataUrl;
+                            imgEl.setAttribute('data-avatar', dataUrl);
+                        }
                     }
-                } else if (hairName === 'Ponytail') {
-                    if (isBlock) {
-                        ctx.fillRect(63, 8, 74, 16);
-                        ctx.fillRect(120, 6, 12, 40);
-                    } else {
-                        ctx.beginPath(); ctx.roundRect(60, 6, 80, 18, [12, 12, 0, 0]); ctx.fill();
-                        ctx.beginPath(); ctx.roundRect(120, 4, 14, 42, 7); ctx.fill();
+
+                    function change3DFeature(feature, direction) {
+                        const arr = avatarColors[feature];
+                        state3D[feature] += direction;
+                        if (state3D[feature] < 0) state3D[feature] = arr.length - 1;
+                        if (state3D[feature] >= arr.length) state3D[feature] = 0;
+                        draw3DAvatar();
                     }
-                    // Bun
-                    ctx.beginPath(); ctx.arc(133, 8, 10, 0, Math.PI * 2); ctx.fill();
-                }
 
-                // ---- FACE ----
-                ctx.fillStyle = '#1e293b';
-                // Eyes (white part)
-                ctx.fillStyle = '#ffffff';
-                ctx.fillRect(79, 34, 12, 10);
-                ctx.fillRect(109, 34, 12, 10);
-                // Pupils
-                ctx.fillStyle = '#1e293b';
-                ctx.fillRect(83, 36, 6, 6);
-                ctx.fillRect(113, 36, 6, 6);
-                
-                // Smile
-                ctx.strokeStyle = '#1e293b';
-                ctx.lineWidth = 3;
-                ctx.lineCap = 'round';
-                ctx.beginPath();
-                ctx.arc(100, 50, 10, 0.15 * Math.PI, 0.85 * Math.PI, false);
-                ctx.stroke();
+                    function toggle3DGender() {
+                        state3D.gender = state3D.gender === 'Block' ? 'Round' : 'Block';
+                        document.getElementById('gender-label').innerText = state3D.gender;
+                        draw3DAvatar();
+                    }
 
-                // Apply to preview
-                const dataUrl = canvas.toDataURL('image/png');
-                const imgEl = document.getElementById('avatar-preview-img');
-                if (imgEl) {
-                    imgEl.src = dataUrl;
-                    imgEl.setAttribute('data-avatar', dataUrl);
-                }
-            }
+                    function randomizeAvatar() {
+                        state3D.skin = Math.floor(Math.random() * avatarColors.skin.length);
+                        state3D.shirt = Math.floor(Math.random() * avatarColors.shirt.length);
+                        state3D.pants = Math.floor(Math.random() * avatarColors.pants.length);
+                        state3D.hairStyle = Math.floor(Math.random() * avatarColors.hairStyle.length);
+                        state3D.hairColor = Math.floor(Math.random() * avatarColors.hairColor.length);
+                        state3D.gender = Math.random() > 0.5 ? 'Block' : 'Round';
+                        document.getElementById('gender-label').innerText = state3D.gender;
+                        draw3DAvatar();
+                    }
 
-            function change3DFeature(feature, direction) {
-                const arr = avatarColors[feature];
-                state3D[feature] += direction;
-                if (state3D[feature] < 0) state3D[feature] = arr.length - 1;
-                if (state3D[feature] >= arr.length) state3D[feature] = 0;
-                draw3DAvatar();
-            }
+                    // Animate breathing
+                    let breathFrame = 0;
+                    function animatePreview() {
+                        breathFrame += 0.05;
+                        const offset = Math.sin(breathFrame) * 3;
+                        const img = document.getElementById('avatar-preview-img');
+                        if (img) { img.style.transform = `translateY(${offset}px)`; }
+                        requestAnimationFrame(animatePreview);
+                    }
 
-            function toggle3DGender() {
-                state3D.gender = state3D.gender === 'Block' ? 'Round' : 'Block';
-                document.getElementById('gender-label').innerText = state3D.gender;
-                draw3DAvatar();
-            }
-
-            function randomizeAvatar() {
-                state3D.skin = Math.floor(Math.random() * avatarColors.skin.length);
-                state3D.shirt = Math.floor(Math.random() * avatarColors.shirt.length);
-                state3D.pants = Math.floor(Math.random() * avatarColors.pants.length);
-                state3D.hairStyle = Math.floor(Math.random() * avatarColors.hairStyle.length);
-                state3D.hairColor = Math.floor(Math.random() * avatarColors.hairColor.length);
-                state3D.gender = Math.random() > 0.5 ? 'Block' : 'Round';
-                document.getElementById('gender-label').innerText = state3D.gender;
-                draw3DAvatar();
-            }
-
-            // Animate breathing
-            let breathFrame = 0;
-            function animatePreview() {
-                breathFrame += 0.05;
-                const offset = Math.sin(breathFrame) * 3;
-                const img = document.getElementById('avatar-preview-img');
-                if (img) { img.style.transform = `translateY(${offset}px)`; }
-                requestAnimationFrame(animatePreview);
-            }
-
-            setTimeout(() => {
-                draw3DAvatar();
-                animatePreview();
-            }, 100);
-        </script>
-        </div><!-- end Panel 2: Login -->
+                    setTimeout(() => {
+                        draw3DAvatar();
+                        animatePreview();
+                    }, 100);
+                </script>
+            </div><!-- end Panel 2: Login -->
 
         </div><!-- end auth-slide-track -->
 
-            <style>
-                @keyframes slideInUp {
-                    from { opacity: 0; transform: translateY(40px); }
-                    to { opacity: 1; transform: translateY(0); }
+        <style>
+            @keyframes slideInUp {
+                from {
+                    opacity: 0;
+                    transform: translateY(40px);
                 }
-            </style>
+
+                to {
+                    opacity: 1;
+                    transform: translateY(0);
+                }
+            }
+        </style>
 
 
-        </div>
+    </div>
 
-        <!-- Info Modal Overlay -->
-        <div id="info-modal" style="display: none; position: fixed; inset: 0; background: rgba(7, 10, 19, 0.85); backdrop-filter: blur(15px); z-index: 10000; align-items: center; justify-content: center; opacity: 0; transition: opacity 0.3s; padding: 20px;">
-            <div style="position: relative; width: 100%; max-width: 600px; background: rgba(15, 23, 42, 0.8); border: 1px solid rgba(255, 255, 255, 0.1); padding: 40px; border-radius: 24px; box-shadow: 0 30px 60px rgba(0,0,0,0.8); animation: slideInUp 0.5s cubic-bezier(0.22, 1, 0.36, 1) forwards;">
-                <!-- Close Button -->
-                <div onclick="closeInfoModal()" style="position: absolute; top: 20px; right: 20px; color: rgba(255,255,255,0.5); cursor: pointer; font-size: 1.5rem; transition: color 0.2s; z-index: 10001;">
-                    <i class="fa-solid fa-xmark"></i>
-                </div>
-                
-                <!-- Info Content -->
-                <div style="display: flex; align-items: center; gap: 15px; margin-bottom: 25px;">
-                    <div style="width: 50px; height: 50px; border-radius: 14px; background: linear-gradient(135deg, #38bdf8, #a78bfa); display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 15px rgba(56, 189, 248, 0.4);">
-                        <i class="fa-solid fa-brain" style="color: white; font-size: 1.5rem;"></i>
-                    </div>
-                    <h3 style="color: white; font-size: 1.8rem; font-weight: 900; letter-spacing: -0.5px;">¿Qué es NeuroSpark?</h3>
-                </div>
-                
-                <div style="color: rgba(255,255,255,0.75); font-size: 1.1rem; line-height: 1.7; display: flex; flex-direction: column; gap: 15px;">
-                    <p>
-                        <strong style="color: white;">NeuroSpark</strong> es un entorno virtual educativo diseñado para entrenar tu cerebro de forma interactiva. Utilizamos <span style="color: #38bdf8; font-weight: 700;">inteligencia artificial</span> para adaptar dinámicamente la dificultad de los retos según tu rendimiento en tiempo real.
-                    </p>
-                    <p>
-                        A través de minijuegos inmersivos y mecánicas avanzadas, entrenarás habilidades clave como:
-                    </p>
-                    <ul style="list-style-type: none; padding-left: 10px; margin: 0; display: flex; flex-direction: column; gap: 10px;">
-                        <li><i class="fa-solid fa-bolt" style="color: #facc15; width: 25px;"></i> <strong style="color: white;">Concentración profunda</strong></li>
-                        <li><i class="fa-solid fa-microchip" style="color: #a78bfa; width: 25px;"></i> <strong style="color: white;">Memoria de trabajo</strong></li>
-                        <li><i class="fa-solid fa-code-branch" style="color: #38bdf8; width: 25px;"></i> <strong style="color: white;">Lógica y resolución de problemas</strong></li>
-                    </ul>
-                    <p style="margin-top: 10px;">
-                        ¿Listo para llevar tu mente al siguiente nivel? ¡Crea una cuenta y comienza tu entrenamiento!
-                    </p>
-                </div>
-                
-                <button onclick="closeInfoModal(); openAuthModal();" class="premium-btn" style="width: 100%; margin-top: 30px; padding: 18px; background: rgba(56, 189, 248, 0.15); color: #38bdf8; border: 1px solid rgba(56, 189, 248, 0.3); border-radius: 12px; font-weight: 800; font-size: 1.05rem; cursor: pointer; transition: all 0.3s;">
-                    Comenzar Entrenamiento <i class="fa-solid fa-arrow-right" style="margin-left: 8px;"></i>
-                </button>
+    <!-- Info Modal Overlay -->
+    <div id="info-modal"
+        style="display: none; position: fixed; inset: 0; background: rgba(7, 10, 19, 0.85); backdrop-filter: blur(15px); z-index: 10000; align-items: center; justify-content: center; opacity: 0; transition: opacity 0.3s; padding: 20px;">
+        <div
+            style="position: relative; width: 100%; max-width: 600px; background: rgba(15, 23, 42, 0.8); border: 1px solid rgba(255, 255, 255, 0.1); padding: 40px; border-radius: 24px; box-shadow: 0 30px 60px rgba(0,0,0,0.8); animation: slideInUp 0.5s cubic-bezier(0.22, 1, 0.36, 1) forwards;">
+            <!-- Close Button -->
+            <div onclick="closeInfoModal()"
+                style="position: absolute; top: 20px; right: 20px; color: rgba(255,255,255,0.5); cursor: pointer; font-size: 1.5rem; transition: color 0.2s; z-index: 10001;">
+                <i class="fa-solid fa-xmark"></i>
             </div>
-        </div>
 
-        <!-- Stats Modal Overlay -->
-        <div id="stats-modal" style="display: none; position: fixed; inset: 0; background: rgba(7, 10, 19, 0.85); backdrop-filter: blur(15px); z-index: 10000; align-items: center; justify-content: center; opacity: 0; transition: opacity 0.3s; padding: 20px;">
-            <div style="position: relative; width: 100%; max-width: 600px; background: rgba(15, 23, 42, 0.8); border: 1px solid rgba(255, 255, 255, 0.1); padding: 40px; border-radius: 24px; box-shadow: 0 30px 60px rgba(0,0,0,0.8);">
-                <!-- Close Button -->
-                <div onclick="closeStatsModal()" style="position: absolute; top: 20px; right: 20px; color: rgba(255,255,255,0.5); cursor: pointer; font-size: 1.5rem; transition: color 0.2s; z-index: 10001;">
-                    <i class="fa-solid fa-xmark"></i>
+            <!-- Info Content -->
+            <div style="display: flex; align-items: center; gap: 15px; margin-bottom: 25px;">
+                <div
+                    style="width: 50px; height: 50px; border-radius: 14px; background: linear-gradient(135deg, #38bdf8, #a78bfa); display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 15px rgba(56, 189, 248, 0.4);">
+                    <i class="fa-solid fa-brain" style="color: white; font-size: 1.5rem;"></i>
                 </div>
-                
-                <!-- Header -->
-                <div style="display: flex; align-items: center; gap: 15px; margin-bottom: 30px;">
-                    <div style="width: 50px; height: 50px; border-radius: 14px; background: linear-gradient(135deg, #facc15, #f59e0b); display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 15px rgba(250, 204, 21, 0.4);">
-                        <i class="fa-solid fa-chart-line" style="color: white; font-size: 1.5rem;"></i>
-                    </div>
-                    <div>
-                        <h3 style="color: white; font-size: 1.8rem; font-weight: 900; letter-spacing: -0.5px; margin: 0;">Impacto NeuroSpark</h3>
-                        <span style="color: rgba(255,255,255,0.6); font-size: 0.9rem;">Métricas de rendimiento global</span>
-                    </div>
-                </div>
-                
-                <!-- Grid of Stats -->
-                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 30px;">
-                    <div style="background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.05); border-radius: 16px; padding: 20px; display: flex; flex-direction: column; gap: 8px;">
-                        <i class="fa-solid fa-users" style="color: #38bdf8; font-size: 1.5rem;"></i>
-                        <span style="color: white; font-size: 2rem; font-weight: 900;">+10,000</span>
-                        <span style="color: rgba(255,255,255,0.6); font-size: 0.9rem;">Estudiantes activos</span>
-                    </div>
-                    <div style="background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.05); border-radius: 16px; padding: 20px; display: flex; flex-direction: column; gap: 8px;">
-                        <i class="fa-solid fa-brain" style="color: #a78bfa; font-size: 1.5rem;"></i>
-                        <span style="color: white; font-size: 2rem; font-weight: 900;">45%</span>
-                        <span style="color: rgba(255,255,255,0.6); font-size: 0.9rem;">Mejora en concentración</span>
-                    </div>
-                    <div style="background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.05); border-radius: 16px; padding: 20px; display: flex; flex-direction: column; gap: 8px;">
-                        <i class="fa-solid fa-clock" style="color: #22c55e; font-size: 1.5rem;"></i>
-                        <span style="color: white; font-size: 2rem; font-weight: 900;">1M+</span>
-                        <span style="color: rgba(255,255,255,0.6); font-size: 0.9rem;">Minutos de entrenamiento</span>
-                    </div>
-                    <div style="background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.05); border-radius: 16px; padding: 20px; display: flex; flex-direction: column; gap: 8px;">
-                        <i class="fa-solid fa-school" style="color: #f43f5e; font-size: 1.5rem;"></i>
-                        <span style="color: white; font-size: 2rem; font-weight: 900;">50+</span>
-                        <span style="color: rgba(255,255,255,0.6); font-size: 0.9rem;">Instituciones asociadas</span>
-                    </div>
-                </div>
-                
-                <div style="text-align: center;">
-                    <span style="color: rgba(255,255,255,0.5); font-size: 0.85rem;">Datos actualizados automáticamente desde la base de datos central de NeuroSpark IA.</span>
-                </div>
+                <h3 style="color: white; font-size: 1.8rem; font-weight: 900; letter-spacing: -0.5px;">¿Qué es
+                    NeuroSpark?</h3>
             </div>
-        </div>
 
-        <!-- Institutions Modal Overlay -->
-        <div id="institutions-modal" style="display: none; position: fixed; inset: 0; background: rgba(7, 10, 19, 0.85); backdrop-filter: blur(15px); z-index: 10000; align-items: center; justify-content: center; opacity: 0; transition: opacity 0.3s; padding: 20px;">
-            <div style="position: relative; width: 100%; max-width: 500px; background: rgba(15, 23, 42, 0.8); border: 1px solid rgba(255, 255, 255, 0.1); padding: 50px 40px; border-radius: 24px; box-shadow: 0 30px 60px rgba(0,0,0,0.8); display: flex; flex-direction: column; align-items: center; text-align: center;">
-                <!-- Close Button -->
-                <div onclick="closeInstitutionsModal()" style="position: absolute; top: 20px; right: 20px; color: rgba(255,255,255,0.5); cursor: pointer; font-size: 1.5rem; transition: color 0.2s; z-index: 10001;">
-                    <i class="fa-solid fa-xmark"></i>
-                </div>
-                
-                <!-- Content -->
-                <div style="width: 120px; height: 120px; border-radius: 50%; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); display: flex; align-items: center; justify-content: center; margin-bottom: 30px; box-shadow: 0 10px 30px rgba(0,0,0,0.3);">
-                    <img src="insignia.png" alt="Insignia Inmaculada de la Merced" style="width: 80%; height: 80%; object-fit: contain;">
-                </div>
-                
-                <h3 style="color: white; font-size: 2rem; font-weight: 900; letter-spacing: -0.5px; margin: 0 0 10px 0; line-height: 1.2;">I.E.E Inmaculada de la Merced</h3>
-                <span style="color: #38bdf8; font-weight: 700; font-size: 1.1rem; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 20px;">Institución Asociada</span>
-                
-                <p style="color: rgba(255,255,255,0.7); font-size: 1.05rem; line-height: 1.6; margin: 0;">
-                    Formando parte de la red de innovación NeuroSpark, impulsando el desarrollo cognitivo y la neuroeducación del futuro.
+            <div
+                style="color: rgba(255,255,255,0.75); font-size: 1.1rem; line-height: 1.7; display: flex; flex-direction: column; gap: 15px;">
+                <p>
+                    <strong style="color: white;">NeuroSpark</strong> es un entorno virtual educativo diseñado para
+                    entrenar tu cerebro de forma interactiva. Utilizamos <span
+                        style="color: #38bdf8; font-weight: 700;">inteligencia artificial</span> para adaptar
+                    dinámicamente la dificultad de los retos según tu rendimiento en tiempo real.
+                </p>
+                <p>
+                    A través de minijuegos inmersivos y mecánicas avanzadas, entrenarás habilidades clave como:
+                </p>
+                <ul
+                    style="list-style-type: none; padding-left: 10px; margin: 0; display: flex; flex-direction: column; gap: 10px;">
+                    <li><i class="fa-solid fa-bolt" style="color: #facc15; width: 25px;"></i> <strong
+                            style="color: white;">Concentración profunda</strong></li>
+                    <li><i class="fa-solid fa-microchip" style="color: #a78bfa; width: 25px;"></i> <strong
+                            style="color: white;">Memoria de trabajo</strong></li>
+                    <li><i class="fa-solid fa-code-branch" style="color: #38bdf8; width: 25px;"></i> <strong
+                            style="color: white;">Lógica y resolución de problemas</strong></li>
+                </ul>
+                <p style="margin-top: 10px;">
+                    ¿Listo para llevar tu mente al siguiente nivel? ¡Crea una cuenta y comienza tu entrenamiento!
                 </p>
             </div>
+
+            <button onclick="closeInfoModal(); openAuthModal();" class="premium-btn"
+                style="width: 100%; margin-top: 30px; padding: 18px; background: rgba(56, 189, 248, 0.15); color: #38bdf8; border: 1px solid rgba(56, 189, 248, 0.3); border-radius: 12px; font-weight: 800; font-size: 1.05rem; cursor: pointer; transition: all 0.3s;">
+                Comenzar Entrenamiento <i class="fa-solid fa-arrow-right" style="margin-left: 8px;"></i>
+            </button>
         </div>
+    </div>
 
-        <!-- Help Modal Overlay -->
-        <div id="help-modal" style="display: none; position: fixed; inset: 0; background: rgba(7, 10, 19, 0.85); backdrop-filter: blur(15px); z-index: 10000; align-items: center; justify-content: center; opacity: 0; transition: opacity 0.3s; padding: 20px;">
-            <div style="position: relative; width: 100%; max-width: 600px; background: rgba(15, 23, 42, 0.8); border: 1px solid rgba(255, 255, 255, 0.1); padding: 40px; border-radius: 24px; box-shadow: 0 30px 60px rgba(0,0,0,0.8);">
-                <!-- Close Button -->
-                <div onclick="closeHelpModal()" style="position: absolute; top: 20px; right: 20px; color: rgba(255,255,255,0.5); cursor: pointer; font-size: 1.5rem; transition: color 0.2s; z-index: 10001;">
-                    <i class="fa-solid fa-xmark"></i>
-                </div>
-                
-                <!-- Header -->
-                <div style="display: flex; align-items: center; gap: 15px; margin-bottom: 25px;">
-                    <div style="width: 50px; height: 50px; border-radius: 14px; background: linear-gradient(135deg, #10b981, #059669); display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 15px rgba(16, 185, 129, 0.4);">
-                        <i class="fa-solid fa-circle-question" style="color: white; font-size: 1.5rem;"></i>
-                    </div>
-                    <h3 style="color: white; font-size: 1.8rem; font-weight: 900; letter-spacing: -0.5px;">Centro de Ayuda</h3>
-                </div>
-                
-                <div style="color: rgba(255,255,255,0.75); font-size: 1.05rem; line-height: 1.6; display: flex; flex-direction: column; gap: 20px;">
-                    <p style="margin: 0;">
-                        ¿Tienes problemas para ingresar o crear tu cuenta en NeuroSpark? Sigue estos sencillos pasos:
-                    </p>
-                    
-                    <div style="background: rgba(255,255,255,0.03); border-radius: 12px; padding: 20px; border: 1px solid rgba(255,255,255,0.05);">
-                        <h4 style="color: #38bdf8; margin: 0 0 10px 0; font-size: 1.1rem;"><i class="fa-solid fa-user-plus" style="margin-right: 8px;"></i>Cómo crear una cuenta nueva</h4>
-                        <ol style="margin: 0; padding-left: 20px; display: flex; flex-direction: column; gap: 8px;">
-                            <li>Haz clic en el botón <strong style="color: white;">"Registrarse"</strong> (arriba a la derecha).</li>
-                            <li>En la ventana, haz clic en <strong style="color: #38bdf8;">"Crear una ahora"</strong>.</li>
-                            <li>Ingresa tus Nombres, Apellidos y <strong style="color: white;">tu Edad exacta</strong> (esto configurará la dificultad de los juegos).</li>
-                            <li>Coloca un correo electrónico válido y una contraseña segura.</li>
-                            <li>Haz clic en "Registrarse". ¡Tu entorno estará listo de inmediato!</li>
-                        </ol>
-                    </div>
+    <!-- Stats Modal Overlay -->
+    <div id="stats-modal"
+        style="display: none; position: fixed; inset: 0; background: rgba(7, 10, 19, 0.85); backdrop-filter: blur(15px); z-index: 10000; align-items: center; justify-content: center; opacity: 0; transition: opacity 0.3s; padding: 20px;">
+        <div
+            style="position: relative; width: 100%; max-width: 600px; background: rgba(15, 23, 42, 0.8); border: 1px solid rgba(255, 255, 255, 0.1); padding: 40px; border-radius: 24px; box-shadow: 0 30px 60px rgba(0,0,0,0.8);">
+            <!-- Close Button -->
+            <div onclick="closeStatsModal()"
+                style="position: absolute; top: 20px; right: 20px; color: rgba(255,255,255,0.5); cursor: pointer; font-size: 1.5rem; transition: color 0.2s; z-index: 10001;">
+                <i class="fa-solid fa-xmark"></i>
+            </div>
 
-                    <p style="margin: 0; font-size: 0.95rem; color: rgba(255,255,255,0.5); text-align: center;">
-                        Si experimentas errores técnicos, por favor contacta al administrador de la institución.
-                    </p>
+            <!-- Header -->
+            <div style="display: flex; align-items: center; gap: 15px; margin-bottom: 30px;">
+                <div
+                    style="width: 50px; height: 50px; border-radius: 14px; background: linear-gradient(135deg, #facc15, #f59e0b); display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 15px rgba(250, 204, 21, 0.4);">
+                    <i class="fa-solid fa-chart-line" style="color: white; font-size: 1.5rem;"></i>
                 </div>
-                
-                <button onclick="closeHelpModal(); openAuthModal();" class="premium-btn" style="width: 100%; margin-top: 25px; padding: 18px; background: rgba(16, 185, 129, 0.15); color: #10b981; border: 1px solid rgba(16, 185, 129, 0.3); border-radius: 12px; font-weight: 800; font-size: 1.05rem; cursor: pointer; transition: all 0.3s;">
-                    Ir a Registrarse <i class="fa-solid fa-arrow-right" style="margin-left: 8px;"></i>
-                </button>
+                <div>
+                    <h3 style="color: white; font-size: 1.8rem; font-weight: 900; letter-spacing: -0.5px; margin: 0;">
+                        Impacto NeuroSpark</h3>
+                    <span style="color: rgba(255,255,255,0.6); font-size: 0.9rem;">Métricas de rendimiento global</span>
+                </div>
+            </div>
+
+            <!-- Grid of Stats -->
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 30px;">
+                <div
+                    style="background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.05); border-radius: 16px; padding: 20px; display: flex; flex-direction: column; gap: 8px;">
+                    <i class="fa-solid fa-users" style="color: #38bdf8; font-size: 1.5rem;"></i>
+                    <span style="color: white; font-size: 2rem; font-weight: 900;">+10,000</span>
+                    <span style="color: rgba(255,255,255,0.6); font-size: 0.9rem;">Estudiantes activos</span>
+                </div>
+                <div
+                    style="background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.05); border-radius: 16px; padding: 20px; display: flex; flex-direction: column; gap: 8px;">
+                    <i class="fa-solid fa-brain" style="color: #a78bfa; font-size: 1.5rem;"></i>
+                    <span style="color: white; font-size: 2rem; font-weight: 900;">45%</span>
+                    <span style="color: rgba(255,255,255,0.6); font-size: 0.9rem;">Mejora en concentración</span>
+                </div>
+                <div
+                    style="background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.05); border-radius: 16px; padding: 20px; display: flex; flex-direction: column; gap: 8px;">
+                    <i class="fa-solid fa-clock" style="color: #22c55e; font-size: 1.5rem;"></i>
+                    <span style="color: white; font-size: 2rem; font-weight: 900;">1M+</span>
+                    <span style="color: rgba(255,255,255,0.6); font-size: 0.9rem;">Minutos de entrenamiento</span>
+                </div>
+                <div
+                    style="background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.05); border-radius: 16px; padding: 20px; display: flex; flex-direction: column; gap: 8px;">
+                    <i class="fa-solid fa-school" style="color: #f43f5e; font-size: 1.5rem;"></i>
+                    <span style="color: white; font-size: 2rem; font-weight: 900;">50+</span>
+                    <span style="color: rgba(255,255,255,0.6); font-size: 0.9rem;">Instituciones asociadas</span>
+                </div>
+            </div>
+
+            <div style="text-align: center;">
+                <span style="color: rgba(255,255,255,0.5); font-size: 0.85rem;">Datos actualizados automáticamente desde
+                    la base de datos central de NeuroSpark IA.</span>
             </div>
         </div>
+    </div>
 
-        <script>
-            window.dismissAuthOverlay = function() {
-                const overlay = document.getElementById('auth-overlay');
-                if (!overlay) return;
-                // Premium Slide UP effect to reveal games
-                overlay.style.transition = 'transform 0.8s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.8s';
-                overlay.style.transform = 'translateY(-100%)';
-                overlay.style.opacity = '0';
-                setTimeout(() => {
-                    overlay.classList.remove('open');
-                    overlay.style.visibility = 'hidden';
-                    overlay.style.display = 'none';
-                    document.body.style.overflow = '';
-                }, 800);
-            };
+    <!-- Institutions Modal Overlay -->
+    <div id="institutions-modal"
+        style="display: none; position: fixed; inset: 0; background: rgba(7, 10, 19, 0.85); backdrop-filter: blur(15px); z-index: 10000; align-items: center; justify-content: center; opacity: 0; transition: opacity 0.3s; padding: 20px;">
+        <div
+            style="position: relative; width: 100%; max-width: 500px; background: rgba(15, 23, 42, 0.8); border: 1px solid rgba(255, 255, 255, 0.1); padding: 50px 40px; border-radius: 24px; box-shadow: 0 30px 60px rgba(0,0,0,0.8); display: flex; flex-direction: column; align-items: center; text-align: center;">
+            <!-- Close Button -->
+            <div onclick="closeInstitutionsModal()"
+                style="position: absolute; top: 20px; right: 20px; color: rgba(255,255,255,0.5); cursor: pointer; font-size: 1.5rem; transition: color 0.2s; z-index: 10001;">
+                <i class="fa-solid fa-xmark"></i>
+            </div>
 
-            function openAuthModal() {
-                if (window.isUserLoggedIn) {
-                    window.dismissAuthOverlay();
-                    return;
-                }
-                const track = document.getElementById('auth-slide-track');
-                if (!track) return;
-                track.style.transition = 'transform 0.7s cubic-bezier(0.22, 1, 0.36, 1)';
-                track.style.transform = 'translateX(-50%)';
-                // Focus email after slide
-                setTimeout(() => {
-                    const emailEl = document.getElementById('auth-email');
-                    if (emailEl) emailEl.focus();
-                }, 720);
-            }
-            function closeAuthModal() {
-                const track = document.getElementById('auth-slide-track');
-                if (!track) return;
-                track.style.transition = 'transform 0.7s cubic-bezier(0.22, 1, 0.36, 1)';
-                track.style.transform = 'translateX(0)';
-            }
+            <!-- Content -->
+            <div
+                style="width: 120px; height: 120px; border-radius: 50%; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); display: flex; align-items: center; justify-content: center; margin-bottom: 30px; box-shadow: 0 10px 30px rgba(0,0,0,0.3);">
+                <img src="insignia.png" alt="Insignia Inmaculada de la Merced"
+                    style="width: 80%; height: 80%; object-fit: contain;">
+            </div>
 
-            function openInfoModal() {
-                const modal = document.getElementById('info-modal');
-                modal.style.display = 'flex';
-                void modal.offsetWidth;
-                modal.style.opacity = '1';
-            }
-            function closeInfoModal() {
-                const modal = document.getElementById('info-modal');
-                modal.style.opacity = '0';
-                setTimeout(() => {
-                    modal.style.display = 'none';
-                }, 300);
-            }
+            <h3
+                style="color: white; font-size: 2rem; font-weight: 900; letter-spacing: -0.5px; margin: 0 0 10px 0; line-height: 1.2;">
+                I.E.E Inmaculada de la Merced</h3>
+            <span
+                style="color: #38bdf8; font-weight: 700; font-size: 1.1rem; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 20px;">Institución
+                Asociada</span>
 
-            function openStatsModal() {
-                const modal = document.getElementById('stats-modal');
-                modal.style.display = 'flex';
-                void modal.offsetWidth;
-                modal.style.opacity = '1';
-            }
-            
-            function closeStatsModal() {
-                const modal = document.getElementById('stats-modal');
-                modal.style.opacity = '0';
-                setTimeout(() => {
-                    modal.style.display = 'none';
-                }, 300);
-            }
+            <p style="color: rgba(255,255,255,0.7); font-size: 1.05rem; line-height: 1.6; margin: 0;">
+                Formando parte de la red de innovación NeuroSpark, impulsando el desarrollo cognitivo y la
+                neuroeducación del futuro.
+            </p>
+        </div>
+    </div>
 
-            function openInstitutionsModal() {
-                const modal = document.getElementById('institutions-modal');
-                modal.style.display = 'flex';
-                void modal.offsetWidth;
-                modal.style.opacity = '1';
-            }
-            
-            function closeInstitutionsModal() {
-                const modal = document.getElementById('institutions-modal');
-                modal.style.opacity = '0';
-                setTimeout(() => {
-                    modal.style.display = 'none';
-                }, 300);
-            }
+    <!-- Help Modal Overlay -->
+    <div id="help-modal"
+        style="display: none; position: fixed; inset: 0; background: rgba(7, 10, 19, 0.85); backdrop-filter: blur(15px); z-index: 10000; align-items: center; justify-content: center; opacity: 0; transition: opacity 0.3s; padding: 20px;">
+        <div
+            style="position: relative; width: 100%; max-width: 600px; background: rgba(15, 23, 42, 0.8); border: 1px solid rgba(255, 255, 255, 0.1); padding: 40px; border-radius: 24px; box-shadow: 0 30px 60px rgba(0,0,0,0.8);">
+            <!-- Close Button -->
+            <div onclick="closeHelpModal()"
+                style="position: absolute; top: 20px; right: 20px; color: rgba(255,255,255,0.5); cursor: pointer; font-size: 1.5rem; transition: color 0.2s; z-index: 10001;">
+                <i class="fa-solid fa-xmark"></i>
+            </div>
 
-            function openHelpModal() {
-                const modal = document.getElementById('help-modal');
-                modal.style.display = 'flex';
-                void modal.offsetWidth;
-                modal.style.opacity = '1';
+            <!-- Header -->
+            <div style="display: flex; align-items: center; gap: 15px; margin-bottom: 25px;">
+                <div
+                    style="width: 50px; height: 50px; border-radius: 14px; background: linear-gradient(135deg, #10b981, #059669); display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 15px rgba(16, 185, 129, 0.4);">
+                    <i class="fa-solid fa-circle-question" style="color: white; font-size: 1.5rem;"></i>
+                </div>
+                <h3 style="color: white; font-size: 1.8rem; font-weight: 900; letter-spacing: -0.5px;">Centro de Ayuda
+                </h3>
+            </div>
+
+            <div
+                style="color: rgba(255,255,255,0.75); font-size: 1.05rem; line-height: 1.6; display: flex; flex-direction: column; gap: 20px;">
+                <p style="margin: 0;">
+                    ¿Tienes problemas para ingresar o crear tu cuenta en NeuroSpark? Sigue estos sencillos pasos:
+                </p>
+
+                <div
+                    style="background: rgba(255,255,255,0.03); border-radius: 12px; padding: 20px; border: 1px solid rgba(255,255,255,0.05);">
+                    <h4 style="color: #38bdf8; margin: 0 0 10px 0; font-size: 1.1rem;"><i class="fa-solid fa-user-plus"
+                            style="margin-right: 8px;"></i>Cómo crear una cuenta nueva</h4>
+                    <ol style="margin: 0; padding-left: 20px; display: flex; flex-direction: column; gap: 8px;">
+                        <li>Haz clic en el botón <strong style="color: white;">"Registrarse"</strong> (arriba a la
+                            derecha).</li>
+                        <li>En la ventana, haz clic en <strong style="color: #38bdf8;">"Crear una ahora"</strong>.</li>
+                        <li>Ingresa tus Nombres, Apellidos y <strong style="color: white;">tu Edad exacta</strong> (esto
+                            configurará la dificultad de los juegos).</li>
+                        <li>Coloca un correo electrónico válido y una contraseña segura.</li>
+                        <li>Haz clic en "Registrarse". ¡Tu entorno estará listo de inmediato!</li>
+                    </ol>
+                </div>
+
+                <p style="margin: 0; font-size: 0.95rem; color: rgba(255,255,255,0.5); text-align: center;">
+                    Si experimentas errores técnicos, por favor contacta al administrador de la institución.
+                </p>
+            </div>
+
+            <button onclick="closeHelpModal(); openAuthModal();" class="premium-btn"
+                style="width: 100%; margin-top: 25px; padding: 18px; background: rgba(16, 185, 129, 0.15); color: #10b981; border: 1px solid rgba(16, 185, 129, 0.3); border-radius: 12px; font-weight: 800; font-size: 1.05rem; cursor: pointer; transition: all 0.3s;">
+                Ir a Registrarse <i class="fa-solid fa-arrow-right" style="margin-left: 8px;"></i>
+            </button>
+        </div>
+    </div>
+
+    <script>
+        window.dismissAuthOverlay = function () {
+            const overlay = document.getElementById('auth-overlay');
+            if (!overlay) return;
+            // Premium Slide UP effect to reveal games
+            overlay.style.transition = 'transform 0.8s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.8s';
+            overlay.style.transform = 'translateY(-100%)';
+            overlay.style.opacity = '0';
+            setTimeout(() => {
+                overlay.classList.remove('open');
+                overlay.style.visibility = 'hidden';
+                overlay.style.display = 'none';
+                document.body.style.overflow = '';
+            }, 800);
+        };
+
+        function openAuthModal() {
+            if (window.isUserLoggedIn) {
+                window.dismissAuthOverlay();
+                return;
             }
-            
-            function closeHelpModal() {
-                const modal = document.getElementById('help-modal');
-                modal.style.opacity = '0';
-                setTimeout(() => {
-                    modal.style.display = 'none';
-                }, 300);
-            }
-        </script>
+            const track = document.getElementById('auth-slide-track');
+            if (!track) return;
+            track.style.transition = 'transform 0.7s cubic-bezier(0.22, 1, 0.36, 1)';
+            track.style.transform = 'translateX(-50%)';
+            // Focus email after slide
+            setTimeout(() => {
+                const emailEl = document.getElementById('auth-email');
+                if (emailEl) emailEl.focus();
+            }, 720);
+        }
+        function closeAuthModal() {
+            const track = document.getElementById('auth-slide-track');
+            if (!track) return;
+            track.style.transition = 'transform 0.7s cubic-bezier(0.22, 1, 0.36, 1)';
+            track.style.transform = 'translateX(0)';
+        }
+
+        function openInfoModal() {
+            const modal = document.getElementById('info-modal');
+            modal.style.display = 'flex';
+            void modal.offsetWidth;
+            modal.style.opacity = '1';
+        }
+        function closeInfoModal() {
+            const modal = document.getElementById('info-modal');
+            modal.style.opacity = '0';
+            setTimeout(() => {
+                modal.style.display = 'none';
+            }, 300);
+        }
+
+        function openStatsModal() {
+            const modal = document.getElementById('stats-modal');
+            modal.style.display = 'flex';
+            void modal.offsetWidth;
+            modal.style.opacity = '1';
+        }
+
+        function closeStatsModal() {
+            const modal = document.getElementById('stats-modal');
+            modal.style.opacity = '0';
+            setTimeout(() => {
+                modal.style.display = 'none';
+            }, 300);
+        }
+
+        function openInstitutionsModal() {
+            const modal = document.getElementById('institutions-modal');
+            modal.style.display = 'flex';
+            void modal.offsetWidth;
+            modal.style.opacity = '1';
+        }
+
+        function closeInstitutionsModal() {
+            const modal = document.getElementById('institutions-modal');
+            modal.style.opacity = '0';
+            setTimeout(() => {
+                modal.style.display = 'none';
+            }, 300);
+        }
+
+        function openHelpModal() {
+            const modal = document.getElementById('help-modal');
+            modal.style.display = 'flex';
+            void modal.offsetWidth;
+            modal.style.opacity = '1';
+        }
+
+        function closeHelpModal() {
+            const modal = document.getElementById('help-modal');
+            modal.style.opacity = '0';
+            setTimeout(() => {
+                modal.style.display = 'none';
+            }, 300);
+        }
+    </script>
     </div>
 
     <!-- Notification Toast System -->
@@ -1149,4 +1387,5 @@
     <!-- Premium Animation Engine -->
     <script src="js/animations.js" defer></script>
 </body>
+
 </html>

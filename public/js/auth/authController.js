@@ -47,7 +47,7 @@ export const authController = {
                 .from('correos')
                 .select('user_email')
                 .eq('parent_email', parentEmail)
-                .maybeSingle();
+                .limit(1);
             
             console.log('[Parent Lookup] Specific query for:', parentEmail, '→ data:', data, 'error:', error);
             
@@ -55,7 +55,7 @@ export const authController = {
                 console.warn('[Parent Lookup] Supabase error:', error.message);
                 return null;
             }
-            if (data && data.user_email) return data.user_email;
+            if (data && data.length > 0 && data[0].user_email) return data[0].user_email;
         } catch (e) {
             console.error("[Parent Lookup] Exception:", e);
         }
