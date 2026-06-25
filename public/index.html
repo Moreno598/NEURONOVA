@@ -214,13 +214,13 @@
     </style>
     <!-- Professional Auth Gateway -->
     <div id="auth-overlay"
-        style="position: fixed; inset: 0; background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 50%, #064e3b 100%); z-index: 9999; display: flex; flex-direction: column; transition: opacity 0.6s cubic-bezier(0.22, 1, 0.36, 1), visibility 0.6s; opacity: 0; visibility: visible; overflow-y: auto; overflow-x: hidden; animation: pageEntrance 1.2s cubic-bezier(0.22, 1, 0.36, 1) forwards;">
+        style="position: fixed; inset: 0; background: linear-gradient(135deg, #e0f2fe 0%, #fef3c7 50%, #dcfce7 100%); z-index: 9999; display: flex; flex-direction: column; transition: opacity 0.6s cubic-bezier(0.22, 1, 0.36, 1), visibility 0.6s; opacity: 0; visibility: visible; overflow-y: auto; overflow-x: hidden; animation: pageEntrance 1.2s cubic-bezier(0.22, 1, 0.36, 1) forwards; color: #1e293b;">
 
         <!-- Background glows for landing (absolute to overlay) -->
-        <div style="position: absolute; top: -20vh; left: -10vw; width: 60vw; height: 60vw; background: radial-gradient(circle, rgba(167, 139, 250, 0.15) 0%, transparent 60%); pointer-events: none; z-index: 0;"></div>
-        <div style="position: absolute; bottom: -20vh; right: -10vw; width: 50vw; height: 50vw; background: radial-gradient(circle, rgba(56, 189, 248, 0.12) 0%, transparent 60%); pointer-events: none; z-index: 0;"></div>
-        <div style="position: absolute; top: 20vh; right: 20vw; width: 45vw; height: 45vw; background: radial-gradient(circle, rgba(34, 197, 94, 0.1) 0%, transparent 60%); pointer-events: none; z-index: 0;"></div>
-        <div style="position: absolute; bottom: 10vh; left: 20vw; width: 35vw; height: 35vw; background: radial-gradient(circle, rgba(250, 204, 21, 0.08) 0%, transparent 60%); pointer-events: none; z-index: 0;"></div>
+        <div style="position: absolute; top: -20vh; left: -10vw; width: 60vw; height: 60vw; background: radial-gradient(circle, rgba(167, 139, 250, 0.25) 0%, transparent 60%); pointer-events: none; z-index: 0;"></div>
+        <div style="position: absolute; bottom: -20vh; right: -10vw; width: 50vw; height: 50vw; background: radial-gradient(circle, rgba(56, 189, 248, 0.2) 0%, transparent 60%); pointer-events: none; z-index: 0;"></div>
+        <div style="position: absolute; top: 20vh; right: 20vw; width: 45vw; height: 45vw; background: radial-gradient(circle, rgba(34, 197, 94, 0.18) 0%, transparent 60%); pointer-events: none; z-index: 0;"></div>
+        <div style="position: absolute; bottom: 10vh; left: 20vw; width: 35vw; height: 35vw; background: radial-gradient(circle, rgba(250, 204, 21, 0.15) 0%, transparent 60%); pointer-events: none; z-index: 0;"></div>
 
         <!-- Sliding track: 200% wide, contains Landing (50%) + Login (50%) side by side -->
         <div id="auth-slide-track"
@@ -239,7 +239,7 @@
                             style="height: 42px; width: auto; object-fit: contain;">
 
                         <!-- Divider -->
-                        <div style="height: 30px; width: 1px; background: rgba(255,255,255,0.2);"></div>
+                        <div style="height: 30px; width: 1px; background: rgba(0,0,0,0.15);"></div>
 
                         <!-- NeuroSpark Logo -->
                         <div style="display: flex; align-items: center; gap: 12px; cursor: pointer;"
@@ -249,24 +249,24 @@
                                 <i class="fa-solid fa-brain" style="color: white; font-size: 1.3rem;"></i>
                             </div>
                             <span
-                                style="color: white; font-size: 1.3rem; font-weight: 900; letter-spacing: 1px; text-transform: uppercase;">NeuroSpark</span>
+                                style="color: #1e293b; font-size: 1.3rem; font-weight: 900; letter-spacing: 1px; text-transform: uppercase;">NeuroSpark</span>
                         </div>
                     </div>
 
                     <!-- Navigation Links (Hidden on small screens) -->
                     <div class="nav-links-desktop" style="display: flex; gap: 30px; align-items: center;">
                         <span
-                            style="color: white; font-weight: 800; font-size: 0.85rem; cursor: pointer; transition: color 0.3s; letter-spacing: 0.5px;">LA
+                            style="color: #1e293b; font-weight: 800; font-size: 0.85rem; cursor: pointer; transition: color 0.3s; letter-spacing: 0.5px;">LA
                             PLATAFORMA</span>
-                        <span onclick="openStatsModal()" onmouseover="this.style.color='white'"
-                            onmouseout="this.style.color='rgba(255,255,255,0.6)'"
-                            style="color: rgba(255,255,255,0.6); font-weight: 700; font-size: 0.85rem; cursor: pointer; transition: color 0.3s; letter-spacing: 0.5px;">ESTADÍSTICAS</span>
-                        <span onclick="openInstitutionsModal()" onmouseover="this.style.color='white'"
-                            onmouseout="this.style.color='rgba(255,255,255,0.6)'"
-                            style="color: rgba(255,255,255,0.6); font-weight: 700; font-size: 0.85rem; cursor: pointer; transition: color 0.3s; letter-spacing: 0.5px;">INSTITUCIONES</span>
-                        <span onclick="openHelpModal()" onmouseover="this.style.color='white'"
-                            onmouseout="this.style.color='rgba(255,255,255,0.6)'"
-                            style="color: rgba(255,255,255,0.6); font-weight: 700; font-size: 0.85rem; cursor: pointer; transition: color 0.3s; letter-spacing: 0.5px;">CENTRO
+                        <span onclick="openStatsModal()" onmouseover="this.style.color='#38bdf8'"
+                            onmouseout="this.style.color='#64748b'"
+                            style="color: #64748b; font-weight: 700; font-size: 0.85rem; cursor: pointer; transition: color 0.3s; letter-spacing: 0.5px;">ESTADÍSTICAS</span>
+                        <span onclick="openInstitutionsModal()" onmouseover="this.style.color='#38bdf8'"
+                            onmouseout="this.style.color='#64748b'"
+                            style="color: #64748b; font-weight: 700; font-size: 0.85rem; cursor: pointer; transition: color 0.3s; letter-spacing: 0.5px;">INSTITUCIONES</span>
+                        <span onclick="openHelpModal()" onmouseover="this.style.color='#38bdf8'"
+                            onmouseout="this.style.color='#64748b'"
+                            style="color: #64748b; font-weight: 700; font-size: 0.85rem; cursor: pointer; transition: color 0.3s; letter-spacing: 0.5px;">CENTRO
                             DE AYUDA</span>
                     </div>
 
@@ -283,17 +283,17 @@
 
                         <!-- Logout Button (Hidden by default, shown if logged in) -->
                         <div id="btn-nav-logout" onclick="logoutFromLanding()"
-                            style="display: none; align-items: center; gap: 8px; background: rgba(239, 68, 68, 0.15); border: 1px solid rgba(239, 68, 68, 0.4); padding: 8px 20px; border-radius: 30px; cursor: pointer; transition: all 0.3s; box-shadow: 0 0 15px rgba(239, 68, 68, 0.2);">
+                            style="display: none; align-items: center; gap: 8px; background: rgba(239, 68, 68, 0.1); border: 1px solid rgba(239, 68, 68, 0.3); padding: 8px 20px; border-radius: 30px; cursor: pointer; transition: all 0.3s; box-shadow: 0 0 15px rgba(239, 68, 68, 0.1);">
                             <i class="fa-solid fa-right-from-bracket" style="color: #ef4444; font-size: 0.9rem;"></i>
                             <span
-                                style="color: white; font-weight: 800; font-size: 0.9rem; letter-spacing: 0.5px;">Cerrar
+                                style="color: #1e293b; font-weight: 800; font-size: 0.9rem; letter-spacing: 0.5px;">Cerrar
                                 Sesión</span>
                         </div>
 
                         <!-- Registrarse / Ir a Juegos Button -->
                         <div id="btn-nav-register" onclick="openAuthModal()"
-                            style="display: flex; align-items: center; gap: 8px; background: rgba(56, 189, 248, 0.15); border: 1px solid rgba(56, 189, 248, 0.4); padding: 8px 20px; border-radius: 30px; cursor: pointer; transition: all 0.3s; box-shadow: 0 0 15px rgba(56, 189, 248, 0.2);">
-                            <i class="fa-solid fa-user-plus" style="color: #38bdf8; font-size: 0.9rem;"></i>
+                            style="display: flex; align-items: center; gap: 8px; background: linear-gradient(135deg, #38bdf8, #a78bfa); padding: 8px 20px; border-radius: 30px; cursor: pointer; transition: all 0.3s; box-shadow: 0 4px 15px rgba(56, 189, 248, 0.3);">
+                            <i class="fa-solid fa-user-plus" style="color: white; font-size: 0.9rem;"></i>
                             <span
                                 style="color: white; font-weight: 800; font-size: 0.9rem; letter-spacing: 0.5px;">Registrarse</span>
                         </div>
@@ -321,27 +321,27 @@
 
                         <!-- Pill -->
                         <div
-                            style="display: inline-flex; align-items: center; gap: 8px; padding: 8px 18px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-radius: 30px; margin-bottom: 24px; width: max-content; backdrop-filter: blur(5px);">
+                            style="display: inline-flex; align-items: center; gap: 8px; padding: 8px 18px; background: rgba(56,189,248,0.1); border: 1px solid rgba(56,189,248,0.25); border-radius: 30px; margin-bottom: 24px; width: max-content; backdrop-filter: blur(5px);">
                             <div
                                 style="width: 8px; height: 8px; border-radius: 50%; background: #38bdf8; box-shadow: 0 0 10px #38bdf8;">
                             </div>
                             <span
-                                style="color: rgba(255,255,255,0.8); font-size: 0.8rem; font-weight: 700; letter-spacing: 1.5px;">IMPULSADO
+                                style="color: #334155; font-size: 0.8rem; font-weight: 700; letter-spacing: 1.5px;">IMPULSADO
                                 POR IA</span>
                         </div>
 
                         <!-- Huge Title -->
                         <h1
-                            style="color: white; font-size: clamp(2.5rem, 4vw, 4rem); font-weight: 900; line-height: 1.1; margin-bottom: 20px; text-transform: uppercase;">
+                            style="color: #1e293b; font-size: clamp(2.5rem, 4vw, 4rem); font-weight: 900; line-height: 1.1; margin-bottom: 20px; text-transform: uppercase;">
                             LLEVA TU <span
                                 style="background: linear-gradient(90deg, #38bdf8, #a78bfa, #facc15, #22c55e); -webkit-background-clip: text; background-clip: text; color: transparent;">MENTE</span><br>AL
                             SIGUIENTE NIVEL
                         </h1>
 
                         <p
-                            style="color: rgba(255,255,255,0.65); font-size: 1.15rem; line-height: 1.6; margin-bottom: 45px; max-width: 90%;">
+                            style="color: #64748b; font-size: 1.15rem; line-height: 1.6; margin-bottom: 45px; max-width: 90%;">
                             Una red neuronal educativa. Entrena la concentración, memoria y lógica de manera <strong
-                                style="color: white;">100% interactiva y adaptativa</strong> mediante juegos inmersivos.
+                                style="color: #1e293b;">100% interactiva y adaptativa</strong> mediante juegos inmersivos.
                         </p>
 
                         <!-- Call To Action -->
@@ -351,7 +351,7 @@
                                 COMENZAR AHORA <i class="fa-solid fa-arrow-right"></i>
                             </button>
                             <button onclick="openInfoModal()"
-                                style="padding: 18px 30px; background: rgba(255,255,255,0.05); color: white; border: 1px solid rgba(255,255,255,0.1); border-radius: 14px; font-weight: 700; font-size: 1.1rem; cursor: pointer; transition: background 0.2s;">
+                                style="padding: 18px 30px; background: rgba(255,255,255,0.8); color: #1e293b; border: 1px solid rgba(0,0,0,0.1); border-radius: 14px; font-weight: 700; font-size: 1.1rem; cursor: pointer; transition: background 0.2s;">
                                 Saber más
                             </button>
                         </div>
@@ -359,44 +359,44 @@
 
                     <!-- Right Content (Senior Canvas Wrapper with floating cards) -->
                     <div
-                        style="flex: 1; max-width: 650px; position: relative; height: 80vh; border-radius: 36px; background: linear-gradient(135deg, rgba(56,189,248,0.05), rgba(167,139,250,0.05), rgba(34,197,94,0.05)); border: 1px solid rgba(255,255,255,0.1); display: flex; align-items: center; justify-content: center; z-index: 2; box-shadow: 0 30px 80px rgba(0,0,0,0.6); backdrop-filter: blur(10px);">
+                        style="flex: 1; max-width: 650px; position: relative; height: 80vh; border-radius: 40px; background: linear-gradient(135deg, rgba(255,255,255,0.7), rgba(255,255,255,0.4)); border: 2px solid white; display: flex; align-items: center; justify-content: center; z-index: 2; box-shadow: 0 20px 60px rgba(56,189,248,0.2); backdrop-filter: blur(10px);">
 
                         <!-- Canvas container (hidden overflow to clip rounded corners) -->
                         <div style="position: absolute; inset: 0; border-radius: 36px; overflow: hidden;">
                             <canvas id="auth-canvas" style="width: 100%; height: 100%;"></canvas>
                             <!-- Subtle inner shadow to blend edges -->
                             <div
-                                style="position: absolute; inset: 0; background: radial-gradient(circle at center, transparent 0%, #070a13 130%);">
+                                style="position: absolute; inset: 0; background: radial-gradient(circle at center, transparent 0%, rgba(224,242,254,0.8) 130%);">
                             </div>
                         </div>
 
                         <!-- Floating Glass Card 1 (Top Left Overlapping) -->
                         <div
-                            style="position: absolute; top: 8%; left: -5%; background: rgba(15, 23, 42, 0.75); border: 1px solid rgba(255,255,255,0.1); padding: 16px 24px; border-radius: 20px; backdrop-filter: blur(15px); display: flex; align-items: center; gap: 15px; box-shadow: 0 15px 35px rgba(0,0,0,0.5); z-index: 10; transform: translateY(0); animation: floatCard 6s ease-in-out infinite;">
+                            style="position: absolute; top: 8%; left: -5%; background: rgba(255,255,255,0.9); border: 1px solid rgba(56,189,248,0.2); padding: 16px 24px; border-radius: 20px; backdrop-filter: blur(15px); display: flex; align-items: center; gap: 15px; box-shadow: 0 15px 35px rgba(56,189,248,0.15); z-index: 10; transform: translateY(0); animation: floatCard 6s ease-in-out infinite;">
                             <div
-                                style="width: 48px; height: 48px; border-radius: 14px; background: rgba(34, 197, 94, 0.15); display: flex; align-items: center; justify-content: center; border: 1px solid rgba(34, 197, 94, 0.3);">
+                                style="width: 48px; height: 48px; border-radius: 14px; background: rgba(34, 197, 94, 0.12); display: flex; align-items: center; justify-content: center; border: 1px solid rgba(34, 197, 94, 0.25);">
                                 <i class="fa-solid fa-graduation-cap" style="color: #22c55e; font-size: 1.3rem;"></i>
                             </div>
                             <div>
-                                <strong style="color: white; display: block; font-size: 1.15rem; font-weight: 800;">10+
+                                <strong style="color: #1e293b; display: block; font-size: 1.15rem; font-weight: 800;">10+
                                     Instituciones</strong>
                                 <span
-                                    style="color: rgba(255,255,255,0.65); font-size: 0.85rem; font-weight: 500;">Activas
+                                    style="color: #64748b; font-size: 0.85rem; font-weight: 500;">Activas
                                     a nivel nacional</span>
                             </div>
                         </div>
 
                         <!-- Floating Glass Card 2 (Bottom Right Overlapping) -->
                         <div
-                            style="position: absolute; bottom: 12%; right: -5%; background: rgba(15, 23, 42, 0.75); border: 1px solid rgba(255,255,255,0.1); padding: 16px 24px; border-radius: 20px; backdrop-filter: blur(15px); display: flex; align-items: center; gap: 15px; box-shadow: 0 15px 35px rgba(0,0,0,0.5); z-index: 10; animation: floatCard 7s ease-in-out infinite reverse;">
+                            style="position: absolute; bottom: 12%; right: -5%; background: rgba(255,255,255,0.9); border: 1px solid rgba(167,139,250,0.2); padding: 16px 24px; border-radius: 20px; backdrop-filter: blur(15px); display: flex; align-items: center; gap: 15px; box-shadow: 0 15px 35px rgba(167,139,250,0.15); z-index: 10; animation: floatCard 7s ease-in-out infinite reverse;">
                             <div
-                                style="width: 48px; height: 48px; border-radius: 14px; background: rgba(167, 139, 250, 0.15); display: flex; align-items: center; justify-content: center; border: 1px solid rgba(167, 139, 250, 0.3);">
+                                style="width: 48px; height: 48px; border-radius: 14px; background: rgba(167, 139, 250, 0.12); display: flex; align-items: center; justify-content: center; border: 1px solid rgba(167, 139, 250, 0.25);">
                                 <i class="fa-solid fa-microchip" style="color: #a78bfa; font-size: 1.3rem;"></i>
                             </div>
                             <div>
-                                <strong style="color: white; display: block; font-size: 1.15rem; font-weight: 800;">100%
+                                <strong style="color: #1e293b; display: block; font-size: 1.15rem; font-weight: 800;">100%
                                     Adaptativo</strong>
-                                <span style="color: rgba(255,255,255,0.65); font-size: 0.85rem; font-weight: 500;">Motor
+                                <span style="color: #64748b; font-size: 0.85rem; font-weight: 500;">Motor
                                     de IA Integrado</span>
                             </div>
                         </div>
@@ -534,7 +534,7 @@
                                                     if (sqMDist < 25600) alpha += 0.45; // Intense glow near mouse
 
                                                     // Simple stroke
-                                                    ctx.strokeStyle = 'rgba(167, 139, 250, ' + alpha + ')';
+                                                    ctx.strokeStyle = 'rgba(56, 189, 248, ' + alpha + ')';
                                                     ctx.lineWidth = sqMDist < 25600 ? 1.5 : 0.8;
                                                     ctx.stroke();
 
@@ -564,7 +564,7 @@
 
                                             ctx.beginPath();
                                             ctx.arc(currentX, currentY, 2, 0, Math.PI * 2);
-                                            ctx.fillStyle = '#ffffff';
+                                            ctx.fillStyle = '#a78bfa';
                                             // Used a very tiny shadow ONLY on pulses if needed, or none at all. None is best.
                                             ctx.fill();
                                         }
@@ -591,12 +591,12 @@
             <div id="auth-login-panel"
                 style="width: 50%; flex-shrink: 0; display: flex; align-items: center; justify-content: center; padding: 40px; position: relative; background: radial-gradient(circle at center, rgba(167,139,250,0.08) 0%, rgba(56,189,248,0.05) 50%, transparent 100%);">
 
-                <div style="width: 100%; max-width: 460px; display: flex; flex-direction: column; z-index: 2; background: rgba(15, 23, 42, 0.6); padding: 40px; border-radius: 24px; border: 1px solid rgba(255,255,255,0.1); backdrop-filter: blur(20px); box-shadow: 0 20px 50px rgba(0,0,0,0.5);">
+                <div style="width: 100%; max-width: 460px; display: flex; flex-direction: column; z-index: 2; background: rgba(255, 255, 255, 0.9); padding: 40px; border-radius: 32px; border: 2px solid white; backdrop-filter: blur(20px); box-shadow: 0 20px 50px rgba(56,189,248,0.15);">
 
                     <!-- Back button -->
                     <div onclick="closeAuthModal()"
-                        style="display: flex; align-items: center; gap: 10px; color: rgba(255,255,255,0.6); cursor: pointer; font-weight: 700; margin-bottom: 36px; width: fit-content; transition: color 0.3s;"
-                        onmouseover="this.style.color='#38bdf8'" onmouseout="this.style.color='rgba(255,255,255,0.6)'">
+                        style="display: flex; align-items: center; gap: 10px; color: #64748b; cursor: pointer; font-weight: 700; margin-bottom: 36px; width: fit-content; transition: color 0.3s;"
+                        onmouseover="this.style.color='#38bdf8'" onmouseout="this.style.color='#64748b'">
                         <i class="fa-solid fa-arrow-left"></i> Volver al inicio
                     </div>
 
@@ -607,15 +607,15 @@
                             <i class="fa-solid fa-brain" style="color: white; font-size: 1.1rem;"></i>
                         </div>
                         <span
-                            style="color: white; font-size: 1.2rem; font-weight: 900; letter-spacing: 1px; text-transform: uppercase;">NeuroSpark</span>
+                            style="color: #1e293b; font-size: 1.2rem; font-weight: 900; letter-spacing: 1px; text-transform: uppercase;">NeuroSpark</span>
                     </div>
 
                     <!-- Header -->
                     <div style="display: flex; flex-direction: column; margin-bottom: 32px; gap: 8px;">
-                        <h3 style="color: white; font-size: 2.2rem; font-weight: 900; letter-spacing: -1px;"
+                        <h3 style="color: #1e293b; font-size: 2.2rem; font-weight: 900; letter-spacing: -1px;"
                             id="auth-title">Iniciar Sesión</h3>
                         <div id="btn-auth-toggle"
-                            style="color: rgba(255,255,255,0.6); font-size: 1rem; font-weight: 500; cursor: pointer; transition: color 0.3s;">
+                            style="color: #64748b; font-size: 1rem; font-weight: 500; cursor: pointer; transition: color 0.3s;">
                             ¿No tienes una cuenta? <span style="color: #38bdf8; font-weight: 800;">Crear una
                                 ahora</span></div>
                     </div>
@@ -629,32 +629,32 @@
                             <div style="display: flex; gap: 12px;">
                                 <div style="position: relative; flex: 1;">
                                     <i class="fa-regular fa-user"
-                                        style="position: absolute; left: 18px; top: 50%; transform: translateY(-50%); color: rgba(255,255,255,0.4); font-size: 1rem;"></i>
-                                    <input class="premium-input" type="text" id="auth-firstname" placeholder="Nombres"
-                                        style="width: 100%; padding: 16px 18px 16px 48px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.1); background: rgba(255,255,255,0.03); color: white; outline: none; font-family: inherit; font-size: 1rem; transition: all 0.3s;">
+                                        style="position: absolute; left: 18px; top: 50%; transform: translateY(-50%); color: #94a3b8; font-size: 1rem;"></i>
+                                    <input class="premium-input light-input" type="text" id="auth-firstname" placeholder="Nombres"
+                                        style="width: 100%; padding: 16px 18px 16px 48px; border-radius: 12px; border: 1px solid rgba(0,0,0,0.1); background: rgba(255,255,255,0.9); color: #1e293b; outline: none; font-family: inherit; font-size: 1rem; transition: all 0.3s;">
                                 </div>
                                 <div style="position: relative; flex: 1;">
-                                    <input class="premium-input" type="text" id="auth-lastname" placeholder="Apellidos"
-                                        style="width: 100%; padding: 16px 18px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.1); background: rgba(255,255,255,0.03); color: white; outline: none; font-family: inherit; font-size: 1rem; transition: all 0.3s;">
+                                    <input class="premium-input light-input" type="text" id="auth-lastname" placeholder="Apellidos"
+                                        style="width: 100%; padding: 16px 18px; border-radius: 12px; border: 1px solid rgba(0,0,0,0.1); background: rgba(255,255,255,0.9); color: #1e293b; outline: none; font-family: inherit; font-size: 1rem; transition: all 0.3s;">
                                 </div>
                             </div>
                             <div style="position: relative;">
                                 <i class="fa-solid fa-user-ninja"
-                                    style="position: absolute; left: 18px; top: 50%; transform: translateY(-50%); color: rgba(255,255,255,0.4); font-size: 1rem;"></i>
-                                <input class="premium-input" type="text" id="auth-alias"
+                                    style="position: absolute; left: 18px; top: 50%; transform: translateY(-50%); color: #94a3b8; font-size: 1rem;"></i>
+                                <input class="premium-input light-input" type="text" id="auth-alias"
                                     placeholder="Alias (Nombre de usuario)"
-                                    style="width: 100%; padding: 16px 18px 16px 48px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.1); background: rgba(255,255,255,0.03); color: white; outline: none; font-family: inherit; font-size: 1rem; transition: all 0.3s;"
+                                    style="width: 100%; padding: 16px 18px 16px 48px; border-radius: 12px; border: 1px solid rgba(0,0,0,0.1); background: rgba(255,255,255,0.9); color: #1e293b; outline: none; font-family: inherit; font-size: 1rem; transition: all 0.3s;"
                                     required>
                             </div>
                             <div style="display: flex; flex-direction: column; gap: 8px;" id="avatar-builder-container">
                                 <label
-                                    style="color: rgba(255,255,255,0.7); font-size: 0.85rem; font-weight: 600; display:flex; justify-content:space-between; align-items:center;">
+                                    style="color: #475569; font-size: 0.85rem; font-weight: 600; display:flex; justify-content:space-between; align-items:center;">
                                     <span>Crea tu Avatar:</span>
                                     <span style="font-size:0.75rem; color:#38bdf8; cursor:pointer;"
                                         onclick="randomizeAvatar()"><i class="fa-solid fa-dice"></i> Aleatorio</span>
                                 </label>
                                 <div
-                                    style="display: flex; gap: 16px; background: rgba(0,0,0,0.2); border: 1px solid rgba(255,255,255,0.1); border-radius: 14px; padding: 12px; align-items: center;">
+                                    style="display: flex; gap: 16px; background: rgba(56,189,248,0.05); border: 1px solid rgba(56,189,248,0.15); border-radius: 14px; padding: 12px; align-items: center;">
                                     <div style="flex-shrink: 0; position: relative;">
                                         <div
                                             style="width: 80px; height: 80px; border-radius: 50%; background: linear-gradient(135deg, #38bdf8, #a78bfa, #facc15, #22c55e); display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 15px rgba(0,0,0,0.3);">
@@ -664,8 +664,8 @@
                                     </div>
                                     <div style="flex: 1; display: flex; flex-direction: column; gap: 8px;">
                                         <div
-                                            style="display:flex; justify-content:space-between; align-items:center; background:rgba(255,255,255,0.05); border-radius:6px; padding:4px 8px;">
-                                            <span style="font-size:0.75rem; color:rgba(255,255,255,0.8);"><i
+                                            style="display:flex; justify-content:space-between; align-items:center; background:rgba(56,189,248,0.08); border-radius:6px; padding:4px 8px;">
+                                            <span style="font-size:0.75rem; color:#475569;"><i
                                                     class="fa-solid fa-hand"></i> Piel</span>
                                             <div style="display:flex; gap:8px; align-items:center;">
                                                 <i class="fa-solid fa-chevron-left builder-arrow"
@@ -676,8 +676,8 @@
                                         </div>
                                         <!-- Pelo Estilo -->
                                         <div
-                                            style="display:flex; justify-content:space-between; align-items:center; background:rgba(255,255,255,0.05); border-radius:6px; padding:4px 8px;">
-                                            <span style="font-size:0.75rem; color:rgba(255,255,255,0.8);"><i
+                                            style="display:flex; justify-content:space-between; align-items:center; background:rgba(56,189,248,0.08); border-radius:6px; padding:4px 8px;">
+                                            <span style="font-size:0.75rem; color:#475569;"><i
                                                     class="fa-solid fa-scissors"></i> Pelo</span>
                                             <div style="display:flex; gap:8px; align-items:center;">
                                                 <i class="fa-solid fa-chevron-left builder-arrow"
@@ -688,8 +688,8 @@
                                         </div>
                                         <!-- Color Pelo -->
                                         <div
-                                            style="display:flex; justify-content:space-between; align-items:center; background:rgba(255,255,255,0.05); border-radius:6px; padding:4px 8px;">
-                                            <span style="font-size:0.75rem; color:rgba(255,255,255,0.8);"><i
+                                            style="display:flex; justify-content:space-between; align-items:center; background:rgba(56,189,248,0.08); border-radius:6px; padding:4px 8px;">
+                                            <span style="font-size:0.75rem; color:#475569;"><i
                                                     class="fa-solid fa-palette"></i> C. Pelo</span>
                                             <div style="display:flex; gap:8px; align-items:center;">
                                                 <i class="fa-solid fa-chevron-left builder-arrow"
@@ -700,8 +700,8 @@
                                         </div>
                                         <!-- Camisa -->
                                         <div
-                                            style="display:flex; justify-content:space-between; align-items:center; background:rgba(255,255,255,0.05); border-radius:6px; padding:4px 8px;">
-                                            <span style="font-size:0.75rem; color:rgba(255,255,255,0.8);"><i
+                                            style="display:flex; justify-content:space-between; align-items:center; background:rgba(56,189,248,0.08); border-radius:6px; padding:4px 8px;">
+                                            <span style="font-size:0.75rem; color:#475569;"><i
                                                     class="fa-solid fa-shirt"></i> Camisa</span>
                                             <div style="display:flex; gap:8px; align-items:center;">
                                                 <i class="fa-solid fa-chevron-left builder-arrow"
@@ -712,8 +712,8 @@
                                         </div>
                                         <!-- Pantalón -->
                                         <div
-                                            style="display:flex; justify-content:space-between; align-items:center; background:rgba(255,255,255,0.05); border-radius:6px; padding:4px 8px;">
-                                            <span style="font-size:0.75rem; color:rgba(255,255,255,0.8);"><i
+                                            style="display:flex; justify-content:space-between; align-items:center; background:rgba(56,189,248,0.08); border-radius:6px; padding:4px 8px;">
+                                            <span style="font-size:0.75rem; color:#475569;"><i
                                                     class="fa-solid fa-socks"></i> Pantalón</span>
                                             <div style="display:flex; gap:8px; align-items:center;">
                                                 <i class="fa-solid fa-chevron-left builder-arrow"
@@ -724,8 +724,8 @@
                                         </div>
                                         <!-- Género / Estilo -->
                                         <div
-                                            style="display:flex; justify-content:space-between; align-items:center; background:rgba(255,255,255,0.05); border-radius:6px; padding:4px 8px;">
-                                            <span style="font-size:0.75rem; color:rgba(255,255,255,0.8);"><i
+                                            style="display:flex; justify-content:space-between; align-items:center; background:rgba(56,189,248,0.08); border-radius:6px; padding:4px 8px;">
+                                            <span style="font-size:0.75rem; color:#475569;"><i
                                                     class="fa-solid fa-venus-mars"></i> Cuerpo</span>
                                             <div style="display:flex; gap:8px; align-items:center;">
                                                 <i class="fa-solid fa-chevron-left builder-arrow"
@@ -760,73 +760,73 @@
                             </style>
                             <div style="position: relative;">
                                 <i class="fa-solid fa-cake-candles"
-                                    style="position: absolute; left: 18px; top: 50%; transform: translateY(-50%); color: rgba(255,255,255,0.4); font-size: 1rem;"></i>
-                                <select class="premium-input" id="auth-age"
-                                    style="width: 100%; padding: 16px 18px 16px 48px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.1); background: rgba(255,255,255,0.03); color: white; outline: none; font-family: inherit; font-size: 1rem; transition: all 0.3s; cursor: pointer; appearance: none;">
+                                    style="position: absolute; left: 18px; top: 50%; transform: translateY(-50%); color: #94a3b8; font-size: 1rem;"></i>
+                                <select class="premium-input light-input" id="auth-age"
+                                    style="width: 100%; padding: 16px 18px 16px 48px; border-radius: 12px; border: 1px solid rgba(0,0,0,0.1); background: rgba(255,255,255,0.9); color: #1e293b; outline: none; font-family: inherit; font-size: 1rem; transition: all 0.3s; cursor: pointer; appearance: none;">
                                     <option value="" disabled selected
-                                        style="background: #1e293b; color: rgba(255,255,255,0.5);">Selecciona tu edad (6
+                                        style="background: white; color: #94a3b8;">Selecciona tu edad (6
                                         a 17 años)...</option>
-                                    <option value="6" style="background: #1e293b; color: white;">6 años (Perfil Niños)
+                                    <option value="6" style="background: white; color: #1e293b;">6 años (Perfil Niños)
                                     </option>
-                                    <option value="7" style="background: #1e293b; color: white;">7 años (Perfil Niños)
+                                    <option value="7" style="background: white; color: #1e293b;">7 años (Perfil Niños)
                                     </option>
-                                    <option value="8" style="background: #1e293b; color: white;">8 años (Perfil Niños)
+                                    <option value="8" style="background: white; color: #1e293b;">8 años (Perfil Niños)
                                     </option>
-                                    <option value="9" style="background: #1e293b; color: white;">9 años (Perfil Niños)
+                                    <option value="9" style="background: white; color: #1e293b;">9 años (Perfil Niños)
                                     </option>
-                                    <option value="10" style="background: #1e293b; color: white;">10 años (Perfil Niños)
+                                    <option value="10" style="background: white; color: #1e293b;">10 años (Perfil Niños)
                                     </option>
-                                    <option value="11" style="background: #1e293b; color: white;">11 años (Perfil Niños)
+                                    <option value="11" style="background: white; color: #1e293b;">11 años (Perfil Niños)
                                     </option>
-                                    <option value="12" style="background: #1e293b; color: white;">12 años (Perfil
+                                    <option value="12" style="background: white; color: #1e293b;">12 años (Perfil
                                         Adolescentes)</option>
-                                    <option value="13" style="background: #1e293b; color: white;">13 años (Perfil
+                                    <option value="13" style="background: white; color: #1e293b;">13 años (Perfil
                                         Adolescentes)</option>
-                                    <option value="14" style="background: #1e293b; color: white;">14 años (Perfil
+                                    <option value="14" style="background: white; color: #1e293b;">14 años (Perfil
                                         Adolescentes)</option>
-                                    <option value="15" style="background: #1e293b; color: white;">15 años (Perfil
+                                    <option value="15" style="background: white; color: #1e293b;">15 años (Perfil
                                         Adolescentes)</option>
-                                    <option value="16" style="background: #1e293b; color: white;">16 años (Perfil
+                                    <option value="16" style="background: white; color: #1e293b;">16 años (Perfil
                                         Adolescentes)</option>
-                                    <option value="17" style="background: #1e293b; color: white;">17 años (Perfil
+                                    <option value="17" style="background: white; color: #1e293b;">17 años (Perfil
                                         Adolescentes)</option>
                                 </select>
                                 <i class="fa-solid fa-chevron-down"
-                                    style="position: absolute; right: 18px; top: 50%; transform: translateY(-50%); color: rgba(255,255,255,0.4); font-size: 0.9rem; pointer-events: none;"></i>
+                                    style="position: absolute; right: 18px; top: 50%; transform: translateY(-50%); color: #94a3b8; font-size: 0.9rem; pointer-events: none;"></i>
                             </div>
                             <div style="position: relative;">
                                 <i class="fa-solid fa-envelope-open-text"
-                                    style="position: absolute; left: 18px; top: 50%; transform: translateY(-50%); color: rgba(255,255,255,0.4); font-size: 1rem;"></i>
-                                <input class="premium-input" type="email" id="auth-parent-email"
+                                    style="position: absolute; left: 18px; top: 50%; transform: translateY(-50%); color: #94a3b8; font-size: 1rem;"></i>
+                                <input class="premium-input light-input" type="email" id="auth-parent-email"
                                     placeholder="Correo de tus padres (Obligatorio)"
-                                    style="width: 100%; padding: 16px 18px 16px 48px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.1); background: rgba(255,255,255,0.03); color: white; outline: none; font-family: inherit; font-size: 1rem; transition: all 0.3s;"
+                                    style="width: 100%; padding: 16px 18px 16px 48px; border-radius: 12px; border: 1px solid rgba(0,0,0,0.1); background: rgba(255,255,255,0.9); color: #1e293b; outline: none; font-family: inherit; font-size: 1rem; transition: all 0.3s;"
                                     required>
                             </div>
                         </div>
                         <div style="position: relative;">
                             <i class="fa-regular fa-envelope"
-                                style="position: absolute; left: 18px; top: 50%; transform: translateY(-50%); color: rgba(255,255,255,0.4); font-size: 1rem;"></i>
-                            <input class="premium-input" type="email" id="auth-email" placeholder="Correo electrónico"
-                                style="width: 100%; padding: 16px 18px 16px 48px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.1); background: rgba(255,255,255,0.03); color: white; outline: none; font-family: inherit; font-size: 1rem; transition: all 0.3s;">
+                                style="position: absolute; left: 18px; top: 50%; transform: translateY(-50%); color: #94a3b8; font-size: 1rem;"></i>
+                            <input class="premium-input light-input" type="email" id="auth-email" placeholder="Correo electrónico"
+                                style="width: 100%; padding: 16px 18px 16px 48px; border-radius: 12px; border: 1px solid rgba(0,0,0,0.1); background: rgba(255,255,255,0.9); color: #1e293b; outline: none; font-family: inherit; font-size: 1rem; transition: all 0.3s;">
                         </div>
                         <div style="position: relative;">
                             <i class="fa-solid fa-lock"
-                                style="position: absolute; left: 18px; top: 50%; transform: translateY(-50%); color: rgba(255,255,255,0.4); font-size: 1rem;"></i>
-                            <input class="premium-input" type="password" id="auth-password" placeholder="Contraseña"
-                                style="width: 100%; padding: 16px 48px 16px 48px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.1); background: rgba(255,255,255,0.03); color: white; outline: none; font-family: inherit; font-size: 1rem; transition: all 0.3s;">
+                                style="position: absolute; left: 18px; top: 50%; transform: translateY(-50%); color: #94a3b8; font-size: 1rem;"></i>
+                            <input class="premium-input light-input" type="password" id="auth-password" placeholder="Contraseña"
+                                style="width: 100%; padding: 16px 48px 16px 48px; border-radius: 12px; border: 1px solid rgba(0,0,0,0.1); background: rgba(255,255,255,0.9); color: #1e293b; outline: none; font-family: inherit; font-size: 1rem; transition: all 0.3s;">
                             <i class="fa-solid fa-eye"
-                                style="position: absolute; right: 18px; top: 50%; transform: translateY(-50%); color: rgba(255,255,255,0.4); font-size: 1rem; cursor: pointer; transition: color 0.3s;"
-                                onmouseover="this.style.color='rgba(255,255,255,0.8)'"
-                                onmouseout="this.style.color='rgba(255,255,255,0.4)'"
+                                style="position: absolute; right: 18px; top: 50%; transform: translateY(-50%); color: #94a3b8; font-size: 1rem; cursor: pointer; transition: color 0.3s;"
+                                onmouseover="this.style.color='#38bdf8'"
+                                onmouseout="this.style.color='#94a3b8'"
                                 onclick="const input = document.getElementById('auth-password'); const isPwd = input.type === 'password'; input.type = isPwd ? 'text' : 'password'; this.classList.toggle('fa-eye'); this.classList.toggle('fa-eye-slash');"></i>
                         </div>
 
                         <div id="auth-parent-toggle-container"
-                            style="display: flex; align-items: center; gap: 10px; margin-top: 10px; background: rgba(56,189,248,0.05); padding: 12px 16px; border-radius: 12px; border: 1px solid rgba(56,189,248,0.1); transition: all 0.3s;">
+                            style="display: flex; align-items: center; gap: 10px; margin-top: 10px; background: rgba(56,189,248,0.08); padding: 12px 16px; border-radius: 12px; border: 1px solid rgba(56,189,248,0.2); transition: all 0.3s;">
                             <i class="fa-solid fa-user-shield"
                                 style="color: #38bdf8; font-size: 1.2rem; flex-shrink: 0;"></i>
-                            <p style="color: rgba(255,255,255,0.65); font-size: 0.82rem; margin: 0; line-height: 1.4;">
-                                <strong style="color: rgba(255,255,255,0.9);">¿Eres padre o apoderado?</strong> Ingresa
+                            <p style="color: #64748b; font-size: 0.82rem; margin: 0; line-height: 1.4;">
+                                <strong style="color: #1e293b;">¿Eres padre o apoderado?</strong> Ingresa
                                 con el correo que tu hijo(a) registró como "correo de los padres" y usa la misma
                                 contraseña.
                             </p>
