@@ -318,6 +318,15 @@ const translations = {
         parentPrefix: 'Apoderado de',
         parentProfileKids: 'Perfil Niños (6-11)',
         parentProfileTeens: 'Perfil Adolescentes (12-17)',
+        parentDownloadPdf: 'Descargar Reporte (PDF)',
+        pdfTitle: 'Reporte de Progreso - NeuroSpark',
+        pdfCoins: 'NeuroCoins Acumulados:',
+        pdfLevel: 'Nivel Actual:',
+        pdfAge: 'Edad del Estudiante:',
+        pdfAdviceTitle: 'Consejos de Estilo de Vida:',
+        pdfAdvice1: '- Mantén horarios regulares de sueño (8-10 horas) para consolidar el aprendizaje.',
+        pdfAdvice2: '- Fomenta la actividad física diaria para mejorar el flujo de oxígeno al cerebro.',
+        pdfAdvice3: '- Combina los juegos cognitivos con pausas activas cada 20 minutos.'
     },
 
     en: {
@@ -634,6 +643,15 @@ const translations = {
         parentPrefix: 'Guardian of',
         parentProfileKids: 'Kids Profile (6-11)',
         parentProfileTeens: 'Teen Profile (12-17)',
+        parentDownloadPdf: 'Download Report (PDF)',
+        pdfTitle: 'Progress Report - NeuroSpark',
+        pdfCoins: 'Accumulated NeuroCoins:',
+        pdfLevel: 'Current Level:',
+        pdfAge: 'Student Age:',
+        pdfAdviceTitle: 'Lifestyle Advice:',
+        pdfAdvice1: '- Maintain regular sleep schedules (8-10 hours) to consolidate learning.',
+        pdfAdvice2: '- Encourage daily physical activity to improve oxygen flow to the brain.',
+        pdfAdvice3: '- Combine cognitive games with active breaks every 20 minutes.'
     }
 };
 
@@ -889,7 +907,16 @@ translations.qu = {
     parentTip4: 'Ama puñunapaqña pukllachiychu, manachayqa puñuynintam pakinman.',
     parentPrefix: 'Qhawaq',
     parentProfileKids: 'Wawakuna (6-11)',
-    parentProfileTeens: 'Waynakuna (12-17)'
+    parentProfileTeens: 'Waynakuna (12-17)',
+    parentDownloadPdf: 'Reporte Uraykuchiy (PDF)',
+    pdfTitle: 'Qhaway Reporte - NeuroSpark',
+    pdfCoins: 'Tarikusqan NeuroCoins:',
+    pdfLevel: 'Kunan Patan:',
+    pdfAge: 'Watankuna:',
+    pdfAdviceTitle: 'Kawsay Yachaykuna:',
+    pdfAdvice1: '- Allinta puñuy (8-10 uras) yachayta allinchanapaq.',
+    pdfAdvice2: '- Sapa p\'unchaw puriy otaq pukllay umaman wayra chayananpaq.',
+    pdfAdvice3: '- Yuyay pukllaykunata 20 minutumanta samariykunawan tupachiy.'
 };
 
 class I18n {

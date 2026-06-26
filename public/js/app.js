@@ -1077,14 +1077,17 @@ class NeuroSparkApp {
         mount.innerHTML = `
             <div class="teens-home-view parent-panel-view" style="gap:28px;">
                 <!-- Parent Welcome Banner -->
-                <div class="kids-welcome-banner" style="background: linear-gradient(135deg, var(--primary-green), var(--primary-blue)); border: 1px solid var(--border-color); box-shadow: 0 8px 30px var(--glow-color);">
-                    <div class="kids-welcome-info" style="display:flex;align-items:center;gap:20px;width:100%;">
+                <div class="kids-welcome-banner" style="background: linear-gradient(135deg, var(--primary-green), var(--primary-blue)); border: 1px solid var(--border-color); box-shadow: 0 8px 30px var(--glow-color); display:flex; justify-content:space-between; align-items:center;">
+                    <div class="kids-welcome-info" style="display:flex;align-items:center;gap:20px;">
                         <img src="${avatarUrl}" style="width:64px;height:64px;border-radius:50%;background:rgba(255,255,255,0.3);border:3px solid rgba(255,255,255,0.5);flex-shrink:0;">
                         <div>
                             <h2 style="display:flex;align-items:center;gap:10px;color:#1e293b;margin:0 0 6px;font-size:1.4rem;"><i class="fa-solid fa-user-shield"></i> ${i18n.t('parentPortalTitle')}</h2>
                             <p style="color:#1e293b;margin:0;font-size:0.95rem;">${i18n.t('parentPortalDesc', { name: studentName })}</p>
                         </div>
                     </div>
+                    <button id="btn-download-pdf" class="play-btn" style="background: #1e293b; color: white; padding: 10px 16px; border-radius: 8px; font-size: 0.9rem; border: none; cursor: pointer; flex-shrink: 0; box-shadow: 0 4px 12px rgba(0,0,0,0.15);">
+                        <i class="fa-solid fa-file-pdf" style="color: #ef4444; margin-right: 6px;"></i> ${i18n.t('parentDownloadPdf')}
+                    </button>
                 </div>
 
                 <!-- STATS CARDS -->
@@ -1149,6 +1152,93 @@ class NeuroSparkApp {
                     </ul>
                 </div>
             </div>`;
+
+        // Wire up PDF download button
+        const btnPdf = mount.querySelector('#btn-download-pdf');
+        if (btnPdf) {
+            btnPdf.addEventListener('click', () => {
+                this._downloadParentPdf(studentName, coins, level, userAge, profileType);
+            });
+        }
+    }
+
+    _downloadParentPdf(studentName, coins, level, userAge, profileType) {
+        if (!window.jspdf) {
+            this.showToast('El generador de PDF aún está cargando.', 'warning');
+            return;
+        }
+        
+        const { jsPDF } = window.jspdf;
+        const doc = new jsPDF();
+
+        const lang = i18n.currentLang;
+        
+        // Settings
+        const margin = 20;
+        let y = margin;
+
+        // Title
+        doc.setFontSize(22);
+        doc.setTextColor(30, 41, 59); // dark text
+        doc.text(i18n.t('pdfTitle'), margin, y);
+        y += 15;
+
+        // Subtitle / Student Name
+        doc.setFontSize(16);
+        doc.setTextColor(56, 189, 248); // blue
+        doc.text(studentName, margin, y);
+        y += 15;
+
+        // Separator
+        doc.setDrawColor(200, 200, 200);
+        doc.line(margin, y, 190, y);
+        y += 15;
+
+        // Stats
+        doc.setFontSize(12);
+        doc.setTextColor(50, 50, 50);
+        
+        const stats = [
+            `${i18n.t('pdfCoins')} ${coins}`,
+            `${i18n.t('pdfLevel')} ${level}`,
+            `${i18n.t('pdfAge')} ${userAge} (${profileType})`
+        ];
+
+        stats.forEach(stat => {
+            doc.text(stat, margin, y);
+            y += 10;
+        });
+
+        y += 10;
+        doc.line(margin, y, 190, y);
+        y += 15;
+
+        // Advice
+        doc.setFontSize(14);
+        doc.setTextColor(30, 41, 59);
+        doc.text(i18n.t('pdfAdviceTitle'), margin, y);
+        y += 10;
+
+        doc.setFontSize(11);
+        doc.setTextColor(70, 70, 70);
+
+        const adviceLines = [
+            i18n.t('pdfAdvice1'),
+            i18n.t('pdfAdvice2'),
+            i18n.t('pdfAdvice3')
+        ];
+
+        adviceLines.forEach(line => {
+            // Split text if it's too long
+            const splitLine = doc.splitTextToSize(line, 170);
+            doc.text(splitLine, margin, y);
+            y += splitLine.length * 7;
+        });
+
+        // Save
+        const fileName = `NeuroSpark_Reporte_${studentName.replace(/\s+/g, '_')}_${lang}.pdf`;
+        doc.save(fileName);
+        this.showToast('PDF descargado', 'success');
     }
 
     _getParentGamesList() {
