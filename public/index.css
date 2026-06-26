@@ -823,29 +823,28 @@ body.kids-mode {
    Amarillo suave: energía y optimismo.
    ------------------------------------------------------------- */
 body.teens-mode {
-    /* ── Neutros (blanco, gris claro, beige) ── */
-    --bg-app:         #f5f5dc;   /* Beige */
-    --bg-header:      #ffffff;   /* Blanco */
-    --bg-card:        #ffffff;   /* Blanco */
-    --bg-card-hover:  #f3f4f6;   /* Gris claro */
+    /* Base neutra y calmada */
+    --bg-app:         #f8f9fa;   /* Gris muy claro — base neutra sin distracciones */
+    --bg-header:      #ffffff;
+    --bg-card:        #ffffff;
+    --bg-card-hover:  #f0f7ff;   /* Tinte azul glacial al pasar el cursor */
 
-    /* ── Borders (Gris claro / Azul suave) ── */
-    --border-color:   #d1d5db;   /* Gris claro (Neutro) */
+    /* Bordes en tono azul muy suave */
+    --border-color:   #dbeafe;
 
-    /* ── Text ── */
-    --text-main:      #374151;   /* Gris oscuro para leer bien sobre fondos claros */
-    --text-muted:     #6b7280;
+    /* Tipografía */
+    --text-main:      #1e293b;
+    --text-muted:     #64748b;
 
-    /* ── Exact Palette Match ── */
-    --primary-blue:   #93c5fd;   /* Azul suave / medio */
-    --primary-green:  #86efac;   /* Verde suave */
-    --accent-yellow:  #fef08a;   /* Amarillo suave */
-    --primary-purple: #d8b4fe;   /* Lila / Morado suave */
-    --accent-lilac:   #e9d5ff;   /* Morado extra suave */
+    /* Paleta psicológica como acentos y no fondos */
+    --primary-blue:   #60a5fa;   /* Azul medio (acción, concentración) */
+    --primary-green:  #4ade80;   /* Verde — éxito, calma */
+    --accent-yellow:  #facc15;   /* Amarillo suave — energía moderada */
+    --primary-purple: #a78bfa;   /* Lila — creatividad */
+    --accent-lilac:   #c4b5fd;
 
-    /* ── Effects ── */
-    --glow-color:     rgba(147, 197, 253, 0.3);
-    --card-shadow:    0 6px 16px rgba(0, 0, 0, 0.06);
+    --glow-color:     rgba(96, 165, 250, 0.15);
+    --card-shadow:    0 2px 12px rgba(30, 41, 59, 0.07);
 }
 
 /* ── Teens Dark Theme - Calm & Focused (Not overly dark, still soft) ── */
@@ -875,121 +874,122 @@ body.teens-mode.dark-theme {
     --card-shadow:    0 8px 30px rgba(0, 0, 0, 0.3);
 }
 
-/* ── Teens game cards — limpio, con borde azul suave ── */
+/* ── Teens: Tarjetas de juego — borde azul muy sutil, hover lila ── */
 body.teens-mode .game-card {
-    border: 1px solid #bfdbfe;   /* Azul suave */
-    border-radius: 18px;
-    background: #ffffff;         /* Blanco (Neutro) */
-    box-shadow: var(--card-shadow);
+    border: 1px solid #e0eaff;
+    border-radius: 16px;
+    background: #ffffff;
+    box-shadow: 0 2px 10px rgba(30, 41, 59, 0.06);
 }
 
 body.teens-mode .game-card:hover {
-    transform: translateY(-6px);
-    border-color: #d8b4fe;       /* Lila suave al hover */
-    box-shadow: 0 12px 28px rgba(196, 181, 253, 0.3);
+    transform: translateY(-5px);
+    border-color: #c4b5fd;
+    box-shadow: 0 10px 24px rgba(167, 139, 250, 0.18);
 }
 
-/* ── Teens play button — Azul suave a Lila suave ── */
+/* ── Teens: Botón Jugar — azul sobrio con toque lila ── */
 body.teens-mode .play-btn {
-    background: linear-gradient(135deg, #93c5fd, #d8b4fe); /* Azul → Lila */
-    color: #374151;   /* Texto oscuro legible */
-    box-shadow: 0 4px 14px rgba(147, 197, 253, 0.35);
+    background: linear-gradient(135deg, #60a5fa 0%, #a78bfa 100%);
+    color: #ffffff;
+    box-shadow: 0 4px 12px rgba(96, 165, 250, 0.25);
 }
 
 body.teens-mode .play-btn:hover {
-    box-shadow: 0 6px 18px rgba(196, 181, 253, 0.45);
+    box-shadow: 0 6px 16px rgba(167, 139, 250, 0.35);
+    transform: translateY(-2px);
 }
 
-/* ── Teens section title ── */
+/* ── Teens: Título de secciones ── */
 body.teens-mode .section-title {
-    color: #374151;              /* Neutro oscuro */
+    color: var(--text-main);
 }
 
-/* ── Teens difficulty badges — verdes, amarillos y lilas ── */
+/* ── Teens: Badges de dificultad ── */
 body.teens-mode .diff-easy {
-    background: rgba(134, 239, 172, 0.2); /* Verde */
+    background: rgba(74, 222, 128, 0.12);
     color: #16a34a;
-    border-color: #86efac;
+    border-color: rgba(74, 222, 128, 0.4);
 }
 
 body.teens-mode .diff-medium {
-    background: rgba(254, 240, 138, 0.4); /* Amarillo suave */
-    color: #a16207;
-    border-color: #fef08a;
+    background: rgba(250, 204, 21, 0.12);
+    color: #92400e;
+    border-color: rgba(250, 204, 21, 0.45);
 }
 
 body.teens-mode .diff-hard {
-    background: rgba(216, 180, 254, 0.25); /* Lila suave */
-    color: #7c3aed;
-    border-color: #d8b4fe;
+    background: rgba(167, 139, 250, 0.12);
+    color: #6d28d9;
+    border-color: rgba(167, 139, 250, 0.4);
 }
 
-/* ── Teens welcome banner — Azul suave a Verde suave ── */
+/* ── Teens: Banner de bienvenida — Azul → Lila suave y elegante ── */
 body.teens-mode .kids-welcome-banner {
-    background: linear-gradient(135deg, #93c5fd, #86efac); /* Azul suave → Verde */
-    border: 1px solid #bfdbfe;
-    box-shadow: 0 8px 24px rgba(147, 197, 253, 0.3);
+    background: linear-gradient(135deg, #eff6ff 0%, #f5f3ff 100%);
+    border: 1.5px solid #bfdbfe;
+    box-shadow: 0 6px 20px rgba(96, 165, 250, 0.12);
     color: #1e293b;
 }
 
 body.teens-mode.dark-theme .kids-welcome-banner {
-    background: linear-gradient(135deg, rgba(56, 189, 248, 0.3), rgba(52, 211, 153, 0.3));
-    border: 1px solid #38bdf8;
+    background: linear-gradient(135deg, rgba(56, 189, 248, 0.15) 0%, rgba(167, 139, 250, 0.15) 100%);
+    border: 1px solid rgba(96, 165, 250, 0.3);
     color: #f1f5f9;
 }
 
-/* ── Teens task planner — cream/neutral tone ── */
+/* ── Teens: Planner de tareas ── */
 body.teens-mode .teens-planner {
     background: var(--bg-card);
     border-color: var(--border-color);
 }
 
 body.teens-mode .task-checkbox {
-    border-color: #93c5fd;   /* Azul suave */
+    border-color: #93c5fd;
 }
 
 body.teens-mode .task-item.completed .task-checkbox {
-    background: #86efac;     /* Verde */
-    border-color: #86efac;
+    background: #4ade80;
+    border-color: #4ade80;
 }
 
-/* ── Teens pomodoro — Amarillo suave (energía y optimismo) ── */
+/* ── Teens: Temporizador Pomodoro — Acento amarillo como motivador ── */
 body.teens-mode .timer-circle {
-    border-color: #fef08a;   /* Amarillo suave */
-    color: #a16207;          /* Texto amarillo oscuro */
-    box-shadow: 0 0 30px rgba(254, 240, 138, 0.4),
-                inset 0 0 20px rgba(254, 240, 138, 0.1);
+    border-color: #60a5fa;
+    color: #1e40af;
+    box-shadow: 0 0 20px rgba(96, 165, 250, 0.2),
+                inset 0 0 16px rgba(96, 165, 250, 0.06);
 }
 
 body.teens-mode .timer-btn {
-    background: linear-gradient(135deg, #93c5fd, #d8b4fe); /* Azul → Lila */
-    color: #374151;
+    background: linear-gradient(135deg, #60a5fa, #a78bfa);
+    color: #ffffff;
 }
 
-/* ── Teens store — Beige/Neutro con amarillo suave (Energía + Neutro) ── */
+/* ── Teens: Tienda — Tono cálido muy sutil ── */
 body.teens-mode .store-container {
-    background: linear-gradient(135deg, #fefce8, #fefbf0); /* Amarillo muy suave → Beige */
-    border: 1px solid #fef08a;   /* Borde amarillo suave */
+    background: #fffbeb;
+    border: 1px solid rgba(250, 204, 21, 0.25);
 }
 
 body.teens-mode.dark-theme .store-container {
     background: linear-gradient(135deg, #1e293b, #252d3d);
-    border-color: #fcd34d;
+    border-color: rgba(250, 204, 21, 0.2);
 }
 
 body.teens-mode .store-item {
-    background: #ffffff;           /* Blanco (Neutro) */
-    border-color: #e5e7eb;         /* Gris claro */
+    background: #ffffff;
+    border-color: #e5e7eb;
 }
 
 body.teens-mode .store-item:hover {
-    border-color: #d8b4fe;         /* Lila suave al hover */
-    box-shadow: 0 8px 20px rgba(216, 180, 254, 0.25);
+    border-color: #c4b5fd;
+    box-shadow: 0 6px 18px rgba(167, 139, 250, 0.18);
 }
 
-/* ── Teens game tag — Verde suave (reduce fatiga) ── */
+/* ── Teens: Etiqueta de categoría — verde tranquilizador ── */
 body.teens-mode .game-tag {
-    color: #16a34a;   /* Verde suave */
+    color: #15803d;
 }
 
 /* ---- Admin games view: full-column layout ---- */
@@ -1012,6 +1012,7 @@ body.teens-mode .game-tag {
 }
 
 /* ---- Parent Panel View ---- */
+/* Panel de Padres — Estilo profesional y de confianza */
 .parent-panel-view {
     display: flex !important;
     flex-direction: column !important;
@@ -1023,11 +1024,23 @@ body.teens-mode .game-tag {
 .parent-panel-view .kids-welcome-banner {
     border-radius: var(--radius-lg);
     padding: 28px 32px;
+    /* Banner en gris azulado muy suave — transmite seriedad y confianza */
+    background: linear-gradient(135deg, #eff6ff 0%, #f5f3ff 100%) !important;
+    border: 1.5px solid #dbeafe !important;
+    box-shadow: 0 6px 20px rgba(96, 165, 250, 0.1) !important;
+    color: #1e293b !important;
+}
+
+body.teens-mode.dark-theme .parent-panel-view .kids-welcome-banner {
+    background: linear-gradient(135deg, rgba(30, 58, 138, 0.4) 0%, rgba(88, 28, 135, 0.3) 100%) !important;
+    border: 1px solid rgba(96, 165, 250, 0.25) !important;
+    color: #f1f5f9 !important;
 }
 
 .parent-panel-view .kids-welcome-banner h2 {
     font-size: 1.5rem;
     margin: 0 0 8px;
+    color: #1e40af;
 }
 
 .parent-panel-view .kids-welcome-banner p {
@@ -1038,14 +1051,15 @@ body.teens-mode .game-tag {
 
 .parent-panel-view .game-card {
     background: var(--bg-card);
-    border: 1px solid var(--border-color);
+    border: 1px solid #e0eaff;
     border-radius: var(--radius-lg);
     transition: transform 0.2s, box-shadow 0.2s;
 }
 
 .parent-panel-view .game-card:hover {
     transform: translateY(-4px);
-    box-shadow: 0 12px 30px var(--glow-color);
+    border-color: #c4b5fd;
+    box-shadow: 0 10px 24px rgba(167, 139, 250, 0.15);
 }
 
 .teens-planner {
