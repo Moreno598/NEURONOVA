@@ -878,17 +878,22 @@ body.teens-mode.dark-theme .app-header {
     border-bottom-color: #dbeafe !important;
 }
 
-/* Fuerza texto oscuro en TODOS los elementos del header y la navegación */
+/* Logo NEUROSPARK — color sólido visible sobre fondo blanco */
 body.teens-mode .logo-main,
 body.teens-mode.dark-theme .logo-main {
-    background: linear-gradient(90deg, #3b82f6, #8b5cf6) !important;
-    -webkit-background-clip: text !important;
-    background-clip: text !important;
-    -webkit-text-fill-color: transparent !important;
+    background: none !important;
+    -webkit-background-clip: unset !important;
+    background-clip: unset !important;
+    -webkit-text-fill-color: #3b82f6 !important;
+    color: #3b82f6 !important;
 }
 
 body.teens-mode .logo-sub,
-body.teens-mode.dark-theme .logo-sub,
+body.teens-mode.dark-theme .logo-sub {
+    -webkit-text-fill-color: #64748b !important;
+    color: #64748b !important;
+}
+
 body.teens-mode .header-status,
 body.teens-mode.dark-theme .header-status,
 body.teens-mode .status-item,
@@ -898,6 +903,7 @@ body.teens-mode.dark-theme .gold-text,
 body.teens-mode .glow-text,
 body.teens-mode.dark-theme .glow-text {
     color: #374151 !important;
+    -webkit-text-fill-color: #374151 !important;
     text-shadow: none !important;
 }
 
