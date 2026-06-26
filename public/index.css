@@ -876,7 +876,66 @@ body.teens-mode .app-header,
 body.teens-mode.dark-theme .app-header {
     background-color: #ffffff !important;
     border-bottom-color: #dbeafe !important;
-    color: #1e293b !important;
+}
+
+/* Fuerza texto oscuro en TODOS los elementos del header y la navegación */
+body.teens-mode .logo-main,
+body.teens-mode.dark-theme .logo-main {
+    background: linear-gradient(90deg, #3b82f6, #8b5cf6) !important;
+    -webkit-background-clip: text !important;
+    background-clip: text !important;
+    -webkit-text-fill-color: transparent !important;
+}
+
+body.teens-mode .logo-sub,
+body.teens-mode.dark-theme .logo-sub,
+body.teens-mode .header-status,
+body.teens-mode.dark-theme .header-status,
+body.teens-mode .status-item,
+body.teens-mode.dark-theme .status-item,
+body.teens-mode .gold-text,
+body.teens-mode.dark-theme .gold-text,
+body.teens-mode .glow-text,
+body.teens-mode.dark-theme .glow-text {
+    color: #374151 !important;
+    text-shadow: none !important;
+}
+
+body.teens-mode .header-status,
+body.teens-mode.dark-theme .header-status {
+    background: #f3f4f6 !important;
+    border-color: #dbeafe !important;
+}
+
+body.teens-mode .control-btn,
+body.teens-mode.dark-theme .control-btn {
+    background: #f3f4f6 !important;
+    border-color: #d1d5db !important;
+    color: #374151 !important;
+}
+
+body.teens-mode .control-btn:hover,
+body.teens-mode.dark-theme .control-btn:hover {
+    background: #ede9fe !important;
+    border-color: #a78bfa !important;
+    color: #5b21b6 !important;
+}
+
+body.teens-mode .profile-select-btn,
+body.teens-mode.dark-theme .profile-select-btn {
+    background: linear-gradient(135deg, #60a5fa, #a78bfa) !important;
+    color: #fff !important;
+}
+
+body.teens-mode .dropdown-content,
+body.teens-mode.dark-theme .dropdown-content {
+    background: #ffffff !important;
+    border-color: #dbeafe !important;
+}
+
+body.teens-mode .dropdown-content a,
+body.teens-mode.dark-theme .dropdown-content a {
+    color: #374151 !important;
 }
 
 body.teens-mode .dynamic-bg,
