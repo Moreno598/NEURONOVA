@@ -1032,7 +1032,21 @@ class NeuroSparkApp {
 
     /* ---- PARENT DASHBOARD VIEW ---- */
     renderParentHome(mount) {
-        const studentName = this.state.activeProfileName.replace('Apoderado de ', '');
+        // Ensure studentName is stored clean (no prefix) and persisted in state
+        if (!this.state.studentName) {
+            // Strip any known prefix from activeProfileName as fallback
+            this.state.studentName = this.state.activeProfileName
+                .replace(/^Apoderado de\s*/i, '')
+                .replace(/^Qhawaq\s*/i, '')
+                .replace(/^Guardian of\s*/i, '')
+                .trim();
+        }
+        const studentName = this.state.studentName;
+
+        // Always rebuild activeProfileName in current language (never store prefix)
+        this.state.activeProfileName = i18n.t('parentPrefix') + ' ' + studentName;
+        document.getElementById('current-profile-name').innerText = this.state.activeProfileName;
+
         const coins = this.state.coins || 0;
         const level = this.state.level || 1;
         const coinsPerLevel = 500;
@@ -1043,7 +1057,7 @@ class NeuroSparkApp {
         
         // Determine age group
         const userAge = this.state.userAge || '—';
-        const profileType = (parseInt(userAge) <= 11) ? 'Perfil Niños (6-11)' : 'Perfil Adolescentes (12-17)';
+        const profileType = (parseInt(userAge) <= 11) ? i18n.t('parentProfileKids') : i18n.t('parentProfileTeens');
         const profileColor = (parseInt(userAge) <= 11) ? '#86efac' : '#c4b5fd';
         
         mount.innerHTML = `
@@ -1053,8 +1067,8 @@ class NeuroSparkApp {
                     <div class="kids-welcome-info" style="display:flex;align-items:center;gap:20px;width:100%;">
                         <img src="${avatarUrl}" style="width:64px;height:64px;border-radius:50%;background:rgba(255,255,255,0.3);border:3px solid rgba(255,255,255,0.5);flex-shrink:0;">
                         <div>
-                            <h2 style="display:flex;align-items:center;gap:10px;color:#1e293b;margin:0 0 6px;font-size:1.4rem;"><i class="fa-solid fa-user-shield"></i> Portal para Padres</h2>
-                            <p style="color:#1e293b;margin:0;font-size:0.95rem;">Monitorea el progreso de <strong>${studentName}</strong>. Aquí puedes visualizar su avance cognitivo y logros recientes.</p>
+                            <h2 style="display:flex;align-items:center;gap:10px;color:#1e293b;margin:0 0 6px;font-size:1.4rem;"><i class="fa-solid fa-user-shield"></i> ${i18n.t('parentPortalTitle')}</h2>
+                            <p style="color:#1e293b;margin:0;font-size:0.95rem;">${i18n.t('parentPortalDesc', { name: studentName })}</p>
                         </div>
                     </div>
                 </div>
@@ -1063,22 +1077,22 @@ class NeuroSparkApp {
                 <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px;">
                     <div class="game-card" style="padding: 24px; text-align: center;">
                         <i class="fa-solid fa-coins" style="font-size: 2.2rem; color: #f59e0b; margin-bottom: 10px;"></i>
-                        <h3 style="color: var(--text-main); margin: 0; font-size: 1.05rem;">NeuroCoins</h3>
+                        <h3 style="color: var(--text-main); margin: 0; font-size: 1.05rem;">${i18n.t('parentCoins')}</h3>
                         <p style="color: var(--text-muted); font-size: 2rem; font-weight: 900; margin: 6px 0 0;">${coins}</p>
                     </div>
                     <div class="game-card" style="padding: 24px; text-align: center;">
                         <i class="fa-solid fa-star" style="font-size: 2.2rem; color: var(--primary-blue); margin-bottom: 10px;"></i>
-                        <h3 style="color: var(--text-main); margin: 0; font-size: 1.05rem;">Nivel Actual</h3>
+                        <h3 style="color: var(--text-main); margin: 0; font-size: 1.05rem;">${i18n.t('parentLevel')}</h3>
                         <p style="color: var(--text-muted); font-size: 2rem; font-weight: 900; margin: 6px 0 0;">${level}</p>
                     </div>
                     <div class="game-card" style="padding: 24px; text-align: center;">
                         <i class="fa-solid fa-child" style="font-size: 2.2rem; color: ${profileColor}; margin-bottom: 10px;"></i>
-                        <h3 style="color: var(--text-main); margin: 0; font-size: 1.05rem;">Edad</h3>
+                        <h3 style="color: var(--text-main); margin: 0; font-size: 1.05rem;">${i18n.t('parentAge')}</h3>
                         <p style="color: var(--text-muted); font-size: 2rem; font-weight: 900; margin: 6px 0 0;">${userAge}</p>
                     </div>
                     <div class="game-card" style="padding: 24px; text-align: center;">
                         <i class="fa-solid fa-brain" style="font-size: 2.2rem; color: var(--primary-purple); margin-bottom: 10px;"></i>
-                        <h3 style="color: var(--text-main); margin: 0; font-size: 1.05rem;">Perfil</h3>
+                        <h3 style="color: var(--text-main); margin: 0; font-size: 1.05rem;">${i18n.t('parentProfile')}</h3>
                         <p style="color: ${profileColor}; font-size: 1.1rem; font-weight: 800; margin: 6px 0 0;">${profileType}</p>
                     </div>
                 </div>
@@ -1086,7 +1100,7 @@ class NeuroSparkApp {
                 <!-- LEVEL PROGRESS -->
                 <div style="background:var(--bg-card);border:1px solid var(--border-color);border-radius:14px;padding:24px;">
                     <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;">
-                        <h3 style="color:var(--text-main);margin:0;font-size:1.1rem;font-weight:800;"><i class="fa-solid fa-chart-line" style="color:var(--primary-blue);margin-right:8px;"></i> Progreso al Nivel ${level + 1}</h3>
+                        <h3 style="color:var(--text-main);margin:0;font-size:1.1rem;font-weight:800;"><i class="fa-solid fa-chart-line" style="color:var(--primary-blue);margin-right:8px;"></i> ${i18n.t('parentProgress', { level: level + 1 })}</h3>
                         <span style="color:var(--text-muted);font-size:0.85rem;font-weight:700;">${coinsIntoLevel} / ${coinsPerLevel} coins</span>
                     </div>
                     <div style="width:100%;height:14px;background:rgba(255,255,255,0.06);border-radius:10px;overflow:hidden;border:1px solid var(--border-color);">
@@ -1099,8 +1113,8 @@ class NeuroSparkApp {
                     <div style="display:flex;align-items:center;gap:12px;padding:14px 20px;background:var(--bg-card);border:1px solid var(--border-color);border-radius:14px;">
                         <i class="fa-solid fa-gamepad" style="color:var(--primary-green);font-size:1.3rem;"></i>
                         <div>
-                            <h3 style="color:var(--text-main);margin:0;font-size:1.15rem;font-weight:800;">Módulos de Entrenamiento</h3>
-                            <p style="color:var(--text-muted);margin:0;font-size:0.8rem;">Juegos cognitivos disponibles para ${studentName}</p>
+                            <h3 style="color:var(--text-main);margin:0;font-size:1.15rem;font-weight:800;">${i18n.t('parentModulesTitle')}</h3>
+                            <p style="color:var(--text-muted);margin:0;font-size:0.8rem;">${i18n.t('parentModulesDesc', { name: studentName })}</p>
                         </div>
                     </div>
                     <div style="background:var(--bg-card);border-radius:14px;border:1px solid var(--border-color);padding:24px;">
@@ -1112,12 +1126,12 @@ class NeuroSparkApp {
                 
                 <!-- PARENT TIPS -->
                 <div style="background:rgba(56,189,248,0.05);border:1px solid rgba(56,189,248,0.12);border-radius:14px;padding:24px;">
-                    <h3 style="color:var(--text-main);margin:0 0 12px;font-size:1.05rem;font-weight:800;"><i class="fa-solid fa-lightbulb" style="color:#f59e0b;margin-right:8px;"></i> Consejos para Padres</h3>
+                    <h3 style="color:var(--text-main);margin:0 0 12px;font-size:1.05rem;font-weight:800;"><i class="fa-solid fa-lightbulb" style="color:#f59e0b;margin-right:8px;"></i> ${i18n.t('parentTipsTitle')}</h3>
                     <ul style="color:var(--text-muted);margin:0;padding-left:20px;line-height:1.8;font-size:0.9rem;">
-                        <li>Sesiones de <strong>15-20 minutos</strong> son ideales para mantener la concentración.</li>
-                        <li>Anima a tu hijo(a) a completar módulos de <strong>diferentes áreas cognitivas</strong>.</li>
-                        <li>Los <strong>NeuroCoins</strong> que gana pueden ser canjeados en la tienda por personalizaciones.</li>
-                        <li>Evita sesiones de juego antes de dormir para no alterar el ciclo de sueño.</li>
+                        <li>${i18n.t('parentTip1')}</li>
+                        <li>${i18n.t('parentTip2')}</li>
+                        <li>${i18n.t('parentTip3')}</li>
+                        <li>${i18n.t('parentTip4')}</li>
                     </ul>
                 </div>
             </div>`;
@@ -1447,13 +1461,11 @@ class NeuroSparkApp {
     setLanguage(lang) {
         this.state.lang = lang;
         i18n.setLang(lang);
-        // Re-seed default profile names in the new language
-        if (this.state.profile !== 'admin') {
-            // Keep user name
-        }
-        this.saveState();
+        // renderHome first (may set state.studentName for parent profiles)
         this.updateHeaderHUD();
         this.renderHome();
+        // Save AFTER render so studentName is persisted cleanly
+        this.saveState();
         // Re-open settings in new language
         setTimeout(() => this.openSettingsModal(), 350);
         this.showToast(i18n.t('toastLangChanged'), 'success');

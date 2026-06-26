@@ -299,6 +299,25 @@ const translations = {
         gameName15: 'Secuencias de Radar',
         gameName16: 'Desencriptación Visual',
         gameNameDefault: 'Entrenamiento Cognitivo',
+
+        // --- PARENT PANEL ---
+        parentPortalTitle: 'Portal para Padres',
+        parentPortalDesc: 'Monitorea el progreso de <strong>{name}</strong>. Aquí puedes visualizar su avance cognitivo y logros recientes.',
+        parentCoins: 'NeuroCoins',
+        parentLevel: 'Nivel Actual',
+        parentAge: 'Edad',
+        parentProfile: 'Perfil',
+        parentProgress: 'Progreso al Nivel {level}',
+        parentModulesTitle: 'Módulos de Entrenamiento',
+        parentModulesDesc: 'Juegos cognitivos disponibles para {name}',
+        parentTipsTitle: 'Consejos para Padres',
+        parentTip1: 'Sesiones de <strong>15-20 minutos</strong> son ideales para mantener la concentración.',
+        parentTip2: 'Anima a tu hijo(a) a completar módulos de <strong>diferentes áreas cognitivas</strong>.',
+        parentTip3: 'Los <strong>NeuroCoins</strong> que gana pueden ser canjeados en la tienda por personalizaciones.',
+        parentTip4: 'Evita sesiones de juego antes de dormir para no alterar el ciclo de sueño.',
+        parentPrefix: 'Apoderado de',
+        parentProfileKids: 'Perfil Niños (6-11)',
+        parentProfileTeens: 'Perfil Adolescentes (12-17)',
     },
 
     en: {
@@ -596,6 +615,25 @@ const translations = {
         gameName15: 'Radar Sequences',
         gameName16: 'Visual Decryption',
         gameNameDefault: 'Cognitive Training',
+
+        // --- PARENT PANEL ---
+        parentPortalTitle: 'Parent Portal',
+        parentPortalDesc: 'Monitor the progress of <strong>{name}</strong>. Here you can visualize their cognitive advancement and recent achievements.',
+        parentCoins: 'NeuroCoins',
+        parentLevel: 'Current Level',
+        parentAge: 'Age',
+        parentProfile: 'Profile',
+        parentProgress: 'Progress to Level {level}',
+        parentModulesTitle: 'Training Modules',
+        parentModulesDesc: 'Cognitive games available for {name}',
+        parentTipsTitle: 'Tips for Parents',
+        parentTip1: 'Sessions of <strong>15-20 minutes</strong> are ideal to maintain concentration.',
+        parentTip2: 'Encourage your child to complete modules from <strong>different cognitive areas</strong>.',
+        parentTip3: 'The <strong>NeuroCoins</strong> earned can be exchanged in the store for customizations.',
+        parentTip4: 'Avoid gaming sessions before bedtime to prevent sleep cycle disruption.',
+        parentPrefix: 'Guardian of',
+        parentProfileKids: 'Kids Profile (6-11)',
+        parentProfileTeens: 'Teen Profile (12-17)',
     }
 };
 
@@ -833,7 +871,25 @@ translations.qu = {
     gameName14: 'Kallpa',
     gameName15: 'Takikuna',
     gameName16: 'Karta maskaq',
-    gameNameDefault: 'Yuyay Pukllay'
+    gameNameDefault: 'Yuyay Pukllay',
+
+    parentPortalTitle: 'Tayta Mamapaq Punkun',
+    parentPortalDesc: 'Qhaway <strong>{name}</strong>pa ñawpaqman puriyninta. Kaypi yachaynin qhawayta atinki.',
+    parentCoins: 'NeuroCoins',
+    parentLevel: 'Kunan Patan',
+    parentAge: 'Watankuna',
+    parentProfile: 'Rikchaynin',
+    parentProgress: 'Pataman ñawpariy {level}',
+    parentModulesTitle: 'Pukllaykuna',
+    parentModulesDesc: 'Yuyay pukllaykuna {name}paq',
+    parentTipsTitle: 'Tayta mamapaq yachaykuna',
+    parentTip1: '<strong>15-20 minutulla</strong> pukllayqa allinmi yuyayta japʼinapaq.',
+    parentTip2: 'Wawaykita kallpanchay <strong>tukuy rikchaq pukllaykunata</strong> ruwananpaq.',
+    parentTip3: 'Tarikusqan <strong>NeuroCoins</strong> qullqiwanqa musuq pachakuna rantiyta atin.',
+    parentTip4: 'Ama puñunapaqña pukllachiychu, manachayqa puñuynintam pakinman.',
+    parentPrefix: 'Qhawaq',
+    parentProfileKids: 'Wawakuna (6-11)',
+    parentProfileTeens: 'Waynakuna (12-17)'
 };
 
 class I18n {

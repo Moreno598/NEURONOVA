@@ -145,7 +145,8 @@ export class AuthUI {
                     // Set Game Mode by Age or Role
                     if (isParent) {
                         app.state.profile = 'parent';
-                        app.state.activeProfileName = 'Apoderado de ' + app.state.activeProfileName;
+                        // Store the student name cleanly (no hardcoded prefix)
+                        app.state.studentName = app.state.activeProfileName;
                     } else if (age) {
                         const userAge = parseInt(age, 10);
                         if (userAge <= 11) {
