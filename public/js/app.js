@@ -963,7 +963,7 @@ class NeuroSparkApp {
 
         return `
             <div class="game-card">
-                <div class="game-thumbnail" style="background-image: url('assets/games/${imgName}');">
+                <div class="game-thumbnail" style="--bg-image: url('assets/games/${imgName}');">
                     <i class="fa-solid ${icon}" style="display:none;"></i>
                 </div>
                 <div class="game-info">
