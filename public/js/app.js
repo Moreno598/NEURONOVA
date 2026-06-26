@@ -784,6 +784,8 @@ class NeuroSparkApp {
     /* ---- KIDS HOME ---- */
     renderKidsHome(mount) {
         const name = this.state.activeProfileName;
+        const avatar = this.state.avatar || 'sparky';
+        const avatarUrl = avatar.startsWith('http') ? avatar : `https://api.dicebear.com/7.x/bottts/svg?seed=${avatar.charAt(0).toUpperCase() + avatar.slice(1)}`;
         mount.innerHTML = `
             <div class="kids-home-view">
                 <div class="kids-welcome-banner">
@@ -792,7 +794,11 @@ class NeuroSparkApp {
                         <p>${i18n.t('kidsWelcomeSub')}</p>
                     </div>
                     <div class="sparky-mascot-img">
-                        <svg viewBox="0 0 100 100" style="width:110px;height:110px;">
+                        <img src="${avatarUrl}"
+                             alt="${name}"
+                             style="width:110px;height:110px;border-radius:50%;background:rgba(255,255,255,0.15);border:3px solid rgba(255,255,255,0.5);object-fit:cover;box-shadow:0 0 20px rgba(167,139,250,0.4);"
+                             onerror="this.style.display='none';this.nextElementSibling.style.display='block'">
+                        <svg viewBox="0 0 100 100" style="width:110px;height:110px;display:none;">
                             <rect x="20" y="20" width="60" height="55" rx="15" fill="#a78bfa" stroke="#ffffff" stroke-width="4"/>
                             <circle cx="50" cy="5" r="5" fill="#facc15"/>
                             <line x1="50" y1="20" x2="50" y2="8" stroke="#ffffff" stroke-width="3"/>
@@ -905,6 +911,8 @@ class NeuroSparkApp {
     /* ---- TEENS HOME ---- */
     renderTeensHome(mount) {
         const name = this.state.activeProfileName;
+        const avatar = this.state.avatar || 'sparky';
+        const avatarUrl = avatar.startsWith('http') ? avatar : `https://api.dicebear.com/7.x/bottts/svg?seed=${avatar.charAt(0).toUpperCase() + avatar.slice(1)}`;
         mount.innerHTML = `
             <div class="teens-home-view">
                 <div class="teens-main-panel" style="display:flex;flex-direction:column;gap:24px;">
@@ -912,6 +920,12 @@ class NeuroSparkApp {
                         <div class="kids-welcome-info">
                             <h2>${i18n.t('teensWelcome', { name })}</h2>
                             <p>${i18n.t('teensWelcomeSub')}</p>
+                        </div>
+                        <div style="flex-shrink:0;">
+                            <img src="${avatarUrl}"
+                                 alt="${name}"
+                                 style="width:90px;height:90px;border-radius:50%;background:rgba(255,255,255,0.1);border:3px solid rgba(167,139,250,0.6);object-fit:cover;box-shadow:0 0 20px rgba(167,139,250,0.35);"
+                                 onerror="this.style.display='none'">
                         </div>
                     </div>
                     <h3 class="section-title"><i class="fa-solid fa-brain text-blue"></i> ${i18n.t('teensGamesTitle')}</h3>
