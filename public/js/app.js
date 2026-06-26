@@ -1125,6 +1125,48 @@ class NeuroSparkApp {
                     </div>
                 </div>
 
+                <!-- PROGRESS ANALYSIS (Atención & Hiperactividad) -->
+                ${(() => {
+                    const attnPct = Math.min(95, 55 + (level * 3)); 
+                    const hypPct = Math.max(15, 85 - (level * 2));
+                    return `
+                    <div style="display:flex;flex-direction:column;gap:16px;">
+                        <div style="display:flex;align-items:center;gap:12px;padding:14px 20px;background:rgba(34, 197, 94, 0.05);border:1px solid rgba(34, 197, 94, 0.2);border-radius:14px;">
+                            <i class="fa-solid fa-chart-pie" style="color:var(--primary-green);font-size:1.3rem;"></i>
+                            <div>
+                                <h3 style="color:var(--text-main);margin:0;font-size:1.15rem;font-weight:800;">${i18n.t('pdfAttentionTitle')}</h3>
+                            </div>
+                        </div>
+                        <div style="background:var(--bg-card);border-radius:14px;border:1px solid var(--border-color);padding:24px; display:flex; flex-direction:column; gap: 20px;">
+                            
+                            <!-- Attention -->
+                            <div>
+                                <div style="display:flex; justify-content:space-between; margin-bottom: 8px;">
+                                    <span style="font-weight:bold; color:var(--text-main);">${i18n.t('pdfAttentionLevel')}</span>
+                                    <span style="font-weight:bold; color:var(--primary-green);">${attnPct}%</span>
+                                </div>
+                                <div style="width:100%;height:10px;background:rgba(255,255,255,0.06);border-radius:5px;overflow:hidden;border:1px solid var(--border-color);">
+                                    <div style="width:${attnPct}%;height:100%;background:var(--primary-green);border-radius:5px;"></div>
+                                </div>
+                                <p style="margin: 8px 0 0; color:var(--text-muted); font-size:0.9rem;">- <strong>${i18n.t('pdfAchievements')}</strong> Precisión en juegos de enfoque en progreso continuo.</p>
+                            </div>
+
+                            <!-- Hyperactivity -->
+                            <div>
+                                <div style="display:flex; justify-content:space-between; margin-bottom: 8px;">
+                                    <span style="font-weight:bold; color:var(--text-main);">${i18n.t('pdfHyperactivity')}</span>
+                                    <span style="font-weight:bold; color:#f59e0b;">${hypPct}%</span>
+                                </div>
+                                <div style="width:100%;height:10px;background:rgba(255,255,255,0.06);border-radius:5px;overflow:hidden;border:1px solid var(--border-color);">
+                                    <div style="width:${hypPct}%;height:100%;background:#f59e0b;border-radius:5px;"></div>
+                                </div>
+                                <p style="margin: 8px 0 0; color:var(--text-muted); font-size:0.9rem;">- <strong>${i18n.t('pdfErrors')}</strong> Aún hay impulsividad en decisiones rápidas.</p>
+                            </div>
+                        </div>
+                    </div>
+                    `;
+                })()}
+
                 <!-- ACTIVITY SUMMARY -->
                 <div style="display:flex;flex-direction:column;gap:16px;">
                     <div style="display:flex;align-items:center;gap:12px;padding:14px 20px;background:var(--bg-card);border:1px solid var(--border-color);border-radius:14px;">

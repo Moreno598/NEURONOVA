@@ -822,87 +822,120 @@ body.kids-mode {
    Lila/Morado suave: creatividad.
    Amarillo suave: energía y optimismo.
    ------------------------------------------------------------- */
-body.teens-mode,
-body.teens-mode.dark-theme {
-    /* ── Base & Layout (Neutros) ── */
-    --bg-app:         #f8fafc;   /* Gris claro / Blanco roto (Neutro) */
-    --bg-header:      #ffffff;   /* Blanco puro (Neutro) */
-    --bg-card:        #ffffff;   /* Blanco puro (Neutro) */
-    --bg-card-hover:  #f4f4f5;   /* Gris pastel muy suave (Neutro) */
+body.teens-mode {
+    /* ── Neutros (blanco, gris claro, beige) ── */
+    --bg-app:         #f5f5dc;   /* Beige */
+    --bg-header:      #ffffff;   /* Blanco */
+    --bg-card:        #ffffff;   /* Blanco */
+    --bg-card-hover:  #f3f4f6;   /* Gris claro */
 
-    /* ── Borders ── */
-    --border-color:   #e2e8f0;   /* Gris claro estructural */
+    /* ── Borders (Gris claro / Azul suave) ── */
+    --border-color:   #d1d5db;   /* Gris claro (Neutro) */
 
     /* ── Text ── */
-    --text-main:      #334155;   /* Gris pizarra oscuro (legibilidad sin fatiga) */
-    --text-muted:     #64748b;
+    --text-main:      #374151;   /* Gris oscuro para leer bien sobre fondos claros */
+    --text-muted:     #6b7280;
 
-    /* ── Sophisticated Soft Palette ── */
-    --primary-blue:   #7dd3fc;   /* Azul medio/suave (Concentración) */
-    --primary-green:  #86efac;   /* Verde suave (Reduce fatiga visual) */
-    --accent-yellow:  #fde047;   /* Amarillo suave (Energía moderada) */
-    --primary-purple: #c4b5fd;   /* Lila/Morado suave (Creatividad) */
-    --accent-lilac:   #ddd6fe;   /* Lila muy pastel */
+    /* ── Exact Palette Match ── */
+    --primary-blue:   #93c5fd;   /* Azul suave / medio */
+    --primary-green:  #86efac;   /* Verde suave */
+    --accent-yellow:  #fef08a;   /* Amarillo suave */
+    --primary-purple: #d8b4fe;   /* Lila / Morado suave */
+    --accent-lilac:   #e9d5ff;   /* Morado extra suave */
 
     /* ── Effects ── */
-    --glow-color:     rgba(125, 211, 252, 0.25);
-    --card-shadow:    0 6px 20px rgba(100, 116, 139, 0.1);
+    --glow-color:     rgba(147, 197, 253, 0.3);
+    --card-shadow:    0 6px 16px rgba(0, 0, 0, 0.06);
 }
 
-/* ── Teens game cards — clean, refined, no playful bouncing ── */
+/* ── Teens Dark Theme - Calm & Focused (Not overly dark, still soft) ── */
+body.teens-mode.dark-theme {
+    /* ── Base & Layout (Neutros en oscuro) ── */
+    --bg-app:         #1e293b;   /* Gris oscuro azulado (Neutro oscuro) */
+    --bg-header:      #0f172a;
+    --bg-card:        #0f172a;
+    --bg-card-hover:  #334155;
+
+    /* ── Borders ── */
+    --border-color:   #38bdf8;   /* Azul suave para contraste en oscuro */
+
+    /* ── Text ── */
+    --text-main:      #f8fafc;   /* Gris muy claro (Neutro) */
+    --text-muted:     #cbd5e1;
+
+    /* ── Sophisticated Soft Palette (Adaptada a oscuro) ── */
+    --primary-blue:   #38bdf8;   /* Azul medio vibrante pero suave */
+    --primary-green:  #34d399;   /* Verde calmante */
+    --accent-yellow:  #fcd34d;   /* Amarillo suave para destacar */
+    --primary-purple: #a78bfa;   /* Lila suave para la creatividad */
+    --accent-lilac:   #c4b5fd;
+
+    /* ── Effects ── */
+    --glow-color:     rgba(56, 189, 248, 0.25);
+    --card-shadow:    0 8px 30px rgba(0, 0, 0, 0.3);
+}
+
+/* ── Teens game cards — limpio, con borde azul suave ── */
 body.teens-mode .game-card {
-    border-color: rgba(126, 184, 212, 0.35);
+    border: 1px solid #bfdbfe;   /* Azul suave */
     border-radius: 18px;
+    background: #ffffff;         /* Blanco (Neutro) */
     box-shadow: var(--card-shadow);
 }
 
 body.teens-mode .game-card:hover {
     transform: translateY(-6px);
-    border-color: var(--primary-purple);
-    box-shadow: 0 12px 30px rgba(176, 160, 208, 0.25);
+    border-color: #d8b4fe;       /* Lila suave al hover */
+    box-shadow: 0 12px 28px rgba(196, 181, 253, 0.3);
 }
 
-/* ── Teens play button — soft blue-to-lilac gradient ── */
+/* ── Teens play button — Azul suave a Lila suave ── */
 body.teens-mode .play-btn {
-    background: linear-gradient(135deg, var(--primary-blue), var(--primary-purple));
-    box-shadow: 0 4px 14px rgba(126, 184, 212, 0.30);
+    background: linear-gradient(135deg, #93c5fd, #d8b4fe); /* Azul → Lila */
+    color: #374151;   /* Texto oscuro legible */
+    box-shadow: 0 4px 14px rgba(147, 197, 253, 0.35);
 }
 
 body.teens-mode .play-btn:hover {
-    box-shadow: 0 6px 18px rgba(176, 160, 208, 0.35);
+    box-shadow: 0 6px 18px rgba(196, 181, 253, 0.45);
 }
 
-/* ── Teens section header badges ── */
+/* ── Teens section title ── */
 body.teens-mode .section-title {
-    color: var(--text-main);
+    color: #374151;              /* Neutro oscuro */
 }
 
-/* ── Teens difficulty badges — muted, non-alarming colors ── */
+/* ── Teens difficulty badges — verdes, amarillos y lilas ── */
 body.teens-mode .diff-easy {
-    background: rgba(134, 176, 154, 0.18);
-    color: var(--primary-green);
-    border-color: var(--primary-green);
+    background: rgba(134, 239, 172, 0.2); /* Verde */
+    color: #16a34a;
+    border-color: #86efac;
 }
 
 body.teens-mode .diff-medium {
-    background: rgba(232, 213, 138, 0.18);
-    color: #c9a63a;
-    border-color: #c9a63a;
+    background: rgba(254, 240, 138, 0.4); /* Amarillo suave */
+    color: #a16207;
+    border-color: #fef08a;
 }
 
 body.teens-mode .diff-hard {
-    background: rgba(176, 160, 208, 0.18); /* Lila suave en vez de rojo */
-    color: var(--primary-purple);
-    border-color: var(--primary-purple);
+    background: rgba(216, 180, 254, 0.25); /* Lila suave */
+    color: #7c3aed;
+    border-color: #d8b4fe;
 }
 
-/* ── Teens welcome banner — azul suave a lila suave ── */
-body.teens-mode .kids-welcome-banner,
+/* ── Teens welcome banner — Azul suave a Verde suave ── */
+body.teens-mode .kids-welcome-banner {
+    background: linear-gradient(135deg, #93c5fd, #86efac); /* Azul suave → Verde */
+    border: 1px solid #bfdbfe;
+    box-shadow: 0 8px 24px rgba(147, 197, 253, 0.3);
+    color: #1e293b;
+}
+
 body.teens-mode.dark-theme .kids-welcome-banner {
-    background: linear-gradient(135deg, var(--primary-blue), var(--primary-purple));
-    border: 1px solid var(--border-color);
-    box-shadow: 0 8px 24px var(--glow-color);
-    color: #1e293b; /* Mantener oscuro para máxima legibilidad sobre pasteles */
+    background: linear-gradient(135deg, rgba(56, 189, 248, 0.3), rgba(52, 211, 153, 0.3));
+    border: 1px solid #38bdf8;
+    color: #f1f5f9;
 }
 
 /* ── Teens task planner — cream/neutral tone ── */
@@ -912,46 +945,51 @@ body.teens-mode .teens-planner {
 }
 
 body.teens-mode .task-checkbox {
-    border-color: var(--primary-blue);
+    border-color: #93c5fd;   /* Azul suave */
 }
 
 body.teens-mode .task-item.completed .task-checkbox {
-    background: var(--primary-green);
-    border-color: var(--primary-green);
+    background: #86efac;     /* Verde */
+    border-color: #86efac;
 }
 
-/* ── Teens pomodoro — lilac accent ring ── */
+/* ── Teens pomodoro — Amarillo suave (energía y optimismo) ── */
 body.teens-mode .timer-circle {
-    border-color: var(--primary-blue);
-    color: var(--primary-blue);
-    box-shadow: 0 0 30px var(--glow-color),
-                inset 0 0 20px rgba(160, 236, 255, 0.08);
+    border-color: #fef08a;   /* Amarillo suave */
+    color: #a16207;          /* Texto amarillo oscuro */
+    box-shadow: 0 0 30px rgba(254, 240, 138, 0.4),
+                inset 0 0 20px rgba(254, 240, 138, 0.1);
 }
 
 body.teens-mode .timer-btn {
-    background: linear-gradient(135deg, var(--primary-blue), var(--primary-purple));
+    background: linear-gradient(135deg, #93c5fd, #d8b4fe); /* Azul → Lila */
+    color: #374151;
 }
 
-/* ── Teens store — warm beige items ── */
-body.teens-mode .store-container,
+/* ── Teens store — Beige/Neutro con amarillo suave (Energía + Neutro) ── */
+body.teens-mode .store-container {
+    background: linear-gradient(135deg, #fefce8, #fefbf0); /* Amarillo muy suave → Beige */
+    border: 1px solid #fef08a;   /* Borde amarillo suave */
+}
+
 body.teens-mode.dark-theme .store-container {
-    background: linear-gradient(135deg, #fefce8, #fdf8f6); /* Beige/Cream muy claro (Neutro) */
-    border-color: #fef08a; /* Borde amarillo suave */
+    background: linear-gradient(135deg, #1e293b, #252d3d);
+    border-color: #fcd34d;
 }
 
 body.teens-mode .store-item {
-    background: var(--bg-card);
-    border-color: var(--border-color);
+    background: #ffffff;           /* Blanco (Neutro) */
+    border-color: #e5e7eb;         /* Gris claro */
 }
 
 body.teens-mode .store-item:hover {
-    border-color: var(--accent-lilac);
-    box-shadow: 0 8px 24px rgba(184, 168, 216, 0.22);
+    border-color: #d8b4fe;         /* Lila suave al hover */
+    box-shadow: 0 8px 20px rgba(216, 180, 254, 0.25);
 }
 
-/* ── Teens game tag color ── */
+/* ── Teens game tag — Verde suave (reduce fatiga) ── */
 body.teens-mode .game-tag {
-    color: var(--primary-blue);
+    color: #16a34a;   /* Verde suave */
 }
 
 /* ---- Admin games view: full-column layout ---- */
