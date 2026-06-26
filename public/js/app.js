@@ -965,7 +965,7 @@ class NeuroSparkApp {
             <div class="game-card">
                 <div class="game-thumbnail anim-bg-${id}">
                     <!-- The CSS will handle the 100% animated background -->
-                    <i class="fa-solid ${icon}" style="font-size:3.5rem; color:rgba(255,255,255,0.9); z-index:2; filter:drop-shadow(0 0 10px rgba(0,0,0,0.5)); position:absolute;"></i>
+                    <i class="fa-solid ${icon}" style="font-size:4rem; color:#ffffff; z-index:2; filter:drop-shadow(0 0 15px rgba(255,255,255,0.9)) drop-shadow(0 0 30px rgba(255,255,255,0.6)); position:absolute;"></i>
                 </div>
                 <div class="game-info">
                     <span class="game-tag">${i18n.t(tagKey)}</span>
