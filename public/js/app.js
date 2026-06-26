@@ -120,7 +120,7 @@ class NeuroSparkApp {
                 profileBtn.insertBefore(imgEl, document.getElementById('current-profile-name'));
             }
             const avState = this.state.avatar;
-            imgEl.src = avState.startsWith('http') ? avState : `https://api.dicebear.com/7.x/bottts/svg?seed=${avState.charAt(0).toUpperCase() + avState.slice(1)}`;
+            imgEl.src = (avState.startsWith('http') || avState.startsWith('data:')) ? avState : `https://api.dicebear.com/7.x/bottts/svg?seed=${avState.charAt(0).toUpperCase() + avState.slice(1)}`;
             imgEl.style.display = 'block';
         }
         document.getElementById('logo-sub-text').innerText        = i18n.t('logoSub');
@@ -785,7 +785,7 @@ class NeuroSparkApp {
     renderKidsHome(mount) {
         const name = this.state.activeProfileName;
         const avatar = this.state.avatar || 'sparky';
-        const avatarUrl = avatar.startsWith('http') ? avatar : `https://api.dicebear.com/7.x/bottts/svg?seed=${avatar.charAt(0).toUpperCase() + avatar.slice(1)}`;
+        const avatarUrl = (avatar.startsWith('http') || avatar.startsWith('data:')) ? avatar : `https://api.dicebear.com/7.x/bottts/svg?seed=${avatar.charAt(0).toUpperCase() + avatar.slice(1)}`;
         mount.innerHTML = `
             <div class="kids-home-view">
                 <div class="kids-welcome-banner">
@@ -912,7 +912,7 @@ class NeuroSparkApp {
     renderTeensHome(mount) {
         const name = this.state.activeProfileName;
         const avatar = this.state.avatar || 'sparky';
-        const avatarUrl = avatar.startsWith('http') ? avatar : `https://api.dicebear.com/7.x/bottts/svg?seed=${avatar.charAt(0).toUpperCase() + avatar.slice(1)}`;
+        const avatarUrl = (avatar.startsWith('http') || avatar.startsWith('data:')) ? avatar : `https://api.dicebear.com/7.x/bottts/svg?seed=${avatar.charAt(0).toUpperCase() + avatar.slice(1)}`;
         mount.innerHTML = `
             <div class="teens-home-view">
                 <div class="teens-main-panel" style="display:flex;flex-direction:column;gap:24px;">
@@ -1067,7 +1067,7 @@ class NeuroSparkApp {
         const coinsIntoLevel = coins % coinsPerLevel;
         const pct = Math.min(100, Math.round((coinsIntoLevel / coinsPerLevel) * 100));
         const avatar = this.state.avatar || 'sparky';
-        const avatarUrl = avatar.startsWith('http') ? avatar : `https://api.dicebear.com/7.x/bottts/svg?seed=${avatar.charAt(0).toUpperCase() + avatar.slice(1)}`;
+        const avatarUrl = (avatar.startsWith('http') || avatar.startsWith('data:')) ? avatar : `https://api.dicebear.com/7.x/bottts/svg?seed=${avatar.charAt(0).toUpperCase() + avatar.slice(1)}`;
         
         // Determine age group
         const userAge = this.state.userAge || '—';
