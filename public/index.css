@@ -848,45 +848,75 @@ body.teens-mode {
 }
 
 /* ── Teens Dark Theme - Calm & Focused (Not overly dark, still soft) ── */
-/* teens-mode ALWAYS stays light — ignora el modo oscuro global */
-body.teens-mode.dark-theme {
-    --bg-app:         #f8f9fa;
-    --bg-header:      #ffffff;
-    --bg-card:        #ffffff;
-    --bg-card-hover:  #f0f7ff;
-    --border-color:   #dbeafe;
-    --text-main:      #1e293b;
-    --text-muted:     #64748b;
-    --primary-blue:   #60a5fa;
-    --primary-green:  #4ade80;
-    --accent-yellow:  #facc15;
-    --primary-purple: #a78bfa;
-    --accent-lilac:   #c4b5fd;
-    --glow-color:     rgba(96, 165, 250, 0.15);
-    --card-shadow:    0 2px 12px rgba(30, 41, 59, 0.07);
-}
+/* teens-mode nunca recibe dark-theme desde JS — estas reglas no son necesarias */
 
-/* Fuerza fondo y header claros en teens aunque dark-theme esté activo */
-body.teens-mode,
-body.teens-mode.dark-theme {
+/* Fuerza fondo claro en teens */
+body.teens-mode {
     background-color: #f8f9fa !important;
 }
 
-body.teens-mode .app-header,
-body.teens-mode.dark-theme .app-header {
+body.teens-mode .app-header {
     background-color: #ffffff !important;
     border-bottom-color: #dbeafe !important;
 }
 
-/* Logo NEUROSPARK — color sólido visible sobre fondo blanco */
-body.teens-mode .logo-main,
-body.teens-mode.dark-theme .logo-main {
+/* Logo NEUROSPARK — visible en fondo blanco */
+body.teens-mode .logo-main {
     background: none !important;
     -webkit-background-clip: unset !important;
     background-clip: unset !important;
     -webkit-text-fill-color: #3b82f6 !important;
     color: #3b82f6 !important;
 }
+
+body.teens-mode .logo-sub {
+    -webkit-text-fill-color: #64748b !important;
+    color: #64748b !important;
+}
+
+body.teens-mode .header-status {
+    background: #f3f4f6 !important;
+    border-color: #dbeafe !important;
+}
+
+body.teens-mode .status-item,
+body.teens-mode .gold-text,
+body.teens-mode .glow-text {
+    color: #374151 !important;
+    -webkit-text-fill-color: #374151 !important;
+    text-shadow: none !important;
+}
+
+body.teens-mode .control-btn {
+    background: #f3f4f6 !important;
+    border-color: #d1d5db !important;
+    color: #374151 !important;
+}
+
+body.teens-mode .control-btn:hover {
+    background: #ede9fe !important;
+    border-color: #a78bfa !important;
+    color: #5b21b6 !important;
+}
+
+body.teens-mode .profile-select-btn {
+    background: linear-gradient(135deg, #60a5fa, #a78bfa) !important;
+    color: #fff !important;
+}
+
+body.teens-mode .dropdown-content {
+    background: #ffffff !important;
+    border-color: #dbeafe !important;
+}
+
+body.teens-mode .dropdown-content a {
+    color: #374151 !important;
+}
+
+body.teens-mode .dynamic-bg {
+    opacity: 0.04;
+}
+
 
 body.teens-mode .logo-sub,
 body.teens-mode.dark-theme .logo-sub {
@@ -907,47 +937,7 @@ body.teens-mode.dark-theme .glow-text {
     text-shadow: none !important;
 }
 
-body.teens-mode .header-status,
-body.teens-mode.dark-theme .header-status {
-    background: #f3f4f6 !important;
-    border-color: #dbeafe !important;
-}
 
-body.teens-mode .control-btn,
-body.teens-mode.dark-theme .control-btn {
-    background: #f3f4f6 !important;
-    border-color: #d1d5db !important;
-    color: #374151 !important;
-}
-
-body.teens-mode .control-btn:hover,
-body.teens-mode.dark-theme .control-btn:hover {
-    background: #ede9fe !important;
-    border-color: #a78bfa !important;
-    color: #5b21b6 !important;
-}
-
-body.teens-mode .profile-select-btn,
-body.teens-mode.dark-theme .profile-select-btn {
-    background: linear-gradient(135deg, #60a5fa, #a78bfa) !important;
-    color: #fff !important;
-}
-
-body.teens-mode .dropdown-content,
-body.teens-mode.dark-theme .dropdown-content {
-    background: #ffffff !important;
-    border-color: #dbeafe !important;
-}
-
-body.teens-mode .dropdown-content a,
-body.teens-mode.dark-theme .dropdown-content a {
-    color: #374151 !important;
-}
-
-body.teens-mode .dynamic-bg,
-body.teens-mode.dark-theme .dynamic-bg {
-    opacity: 0.04;
-}
 
 /* ── Teens: Tarjetas de juego — borde azul muy sutil, hover lila ── */
 body.teens-mode .game-card {

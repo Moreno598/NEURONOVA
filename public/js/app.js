@@ -289,13 +289,15 @@ class NeuroSparkApp {
             document.body.className = 'teens-mode admin-games-mode' + themeClass + lowStim;
             this.renderAdminGamesHome(mount);
         } else if (this.state.profile === 'parent') {
-            document.body.className = 'teens-mode parent-panel-mode' + themeClass + lowStim;
+            // Parent panel always uses light theme for professional appearance
+            document.body.className = 'teens-mode parent-panel-mode' + lowStim;
             this.renderParentHome(mount);
         } else if (this.state.profile === 'kids') {
             document.body.className = 'kids-mode' + themeClass + lowStim;
             this.renderKidsHome(mount);
         } else if (this.state.profile === 'teens') {
-            document.body.className = 'teens-mode' + themeClass + lowStim;
+            // Teens mode always uses light palette — ignores dark-theme toggle
+            document.body.className = 'teens-mode' + lowStim;
             this.renderTeensHome(mount);
         } else {
             document.body.className = 'adults-mode' + themeClass + lowStim;
