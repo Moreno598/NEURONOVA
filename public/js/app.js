@@ -1341,6 +1341,9 @@ class NeuroSparkApp {
                         <button class="lang-btn ${lang === 'en' ? 'active' : ''}" data-lang="en" id="btn-lang-en">
                             🇺🇸 English
                         </button>
+                        <button class="lang-btn ${lang === 'qu' ? 'active' : ''}" data-lang="qu" id="btn-lang-qu">
+                            🇵🇪 Quechua - Perú
+                        </button>
                     </div>
                 </div>
 
