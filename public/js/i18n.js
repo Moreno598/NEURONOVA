@@ -326,7 +326,12 @@ const translations = {
         pdfAdviceTitle: 'Consejos de Estilo de Vida:',
         pdfAdvice1: '- Mantén horarios regulares de sueño (8-10 horas) para consolidar el aprendizaje.',
         pdfAdvice2: '- Fomenta la actividad física diaria para mejorar el flujo de oxígeno al cerebro.',
-        pdfAdvice3: '- Combina los juegos cognitivos con pausas activas cada 20 minutos.'
+        pdfAdvice3: '- Combina los juegos cognitivos con pausas activas cada 20 minutos.',
+        pdfAttentionTitle: 'Análisis de Atención e Hiperactividad:',
+        pdfAttentionLevel: 'Atención Sostenida:',
+        pdfHyperactivity: 'Control de Impulsos:',
+        pdfAchievements: 'Logros Destacados:',
+        pdfErrors: 'Áreas de Mejora (Errores):'
     },
 
     en: {
@@ -651,7 +656,12 @@ const translations = {
         pdfAdviceTitle: 'Lifestyle Advice:',
         pdfAdvice1: '- Maintain regular sleep schedules (8-10 hours) to consolidate learning.',
         pdfAdvice2: '- Encourage daily physical activity to improve oxygen flow to the brain.',
-        pdfAdvice3: '- Combine cognitive games with active breaks every 20 minutes.'
+        pdfAdvice3: '- Combine cognitive games with active breaks every 20 minutes.',
+        pdfAttentionTitle: 'Attention & Hyperactivity Analysis:',
+        pdfAttentionLevel: 'Sustained Attention:',
+        pdfHyperactivity: 'Impulse Control:',
+        pdfAchievements: 'Key Achievements:',
+        pdfErrors: 'Areas for Improvement (Errors):'
     }
 };
 
@@ -916,7 +926,12 @@ translations.qu = {
     pdfAdviceTitle: 'Kawsay Yachaykuna:',
     pdfAdvice1: '- Allinta puñuy (8-10 uras) yachayta allinchanapaq.',
     pdfAdvice2: '- Sapa p\'unchaw puriy otaq pukllay umaman wayra chayananpaq.',
-    pdfAdvice3: '- Yuyay pukllaykunata 20 minutumanta samariykunawan tupachiy.'
+    pdfAdvice3: '- Yuyay pukllaykunata 20 minutumanta samariykunawan tupachiy.',
+    pdfAttentionTitle: 'Yuyay T\'ikray Análisis:',
+    pdfAttentionLevel: 'Sumaq Yuyay:',
+    pdfHyperactivity: 'Usqhay Kay (Control):',
+    pdfAchievements: 'Allin Ruwasqankuna:',
+    pdfErrors: 'Allinchanapaq (Pantaykuna):'
 };
 
 class I18n {

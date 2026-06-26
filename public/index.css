@@ -67,6 +67,16 @@ body {
     transition: background-color 0.5s ease, color 0.3s ease;
 }
 
+/* Fix Browser Autofill dark background styling */
+input:-webkit-autofill,
+input:-webkit-autofill:hover, 
+input:-webkit-autofill:focus, 
+input:-webkit-autofill:active {
+    -webkit-box-shadow: 0 0 0 30px #ffffff inset !important;
+    -webkit-text-fill-color: #1e293b !important;
+    transition: background-color 5000s ease-in-out 0s;
+}
+
 /* Scrollbar customization */
 ::-webkit-scrollbar {
     width: 8px;
@@ -807,55 +817,36 @@ body.kids-mode {
 /* -------------------------------------------------------------
    TEENS MODE (MODO ADOLESCENTES) — CALM FOCUS, SOFT PALETTE
    Azul suave: concentración y tranquilidad.
-   Verde salvia: reduce estrés y fatiga visual.
-   Neutros cálidos (crema/beige): base sin sobreestimulación.
-   Lila suave: creatividad y atractivo para adolescentes.
-   Amarillo suave: energía y optimismo moderado.
+   Verde: reduce estrés y fatiga visual.
+   Neutros (blanco, gris claro, beige): evitan sobreestimulación.
+   Lila/Morado suave: creatividad.
+   Amarillo suave: energía y optimismo.
    ------------------------------------------------------------- */
-body.teens-mode {
-    /* ── Base & Layout ── */
-    --bg-app:         #f3f8fc;   /* Neutro azul-grisáceo pastel muy suave (calmante) */
-    --bg-header:      #ffffff;
-    --bg-card:        #ffffff;
-    --bg-card-hover:  #f0fdfa;   /* Verde menta pastel ultra suave al posar el cursor */
+body.teens-mode,
+body.teens-mode.dark-theme {
+    /* ── Base & Layout (Neutros) ── */
+    --bg-app:         #f8fafc;   /* Gris claro / Blanco roto (Neutro) */
+    --bg-header:      #ffffff;   /* Blanco puro (Neutro) */
+    --bg-card:        #ffffff;   /* Blanco puro (Neutro) */
+    --bg-card-hover:  #f4f4f5;   /* Gris pastel muy suave (Neutro) */
 
     /* ── Borders ── */
-    --border-color:   #bae6fd;   /* Azul cielo pastel para estructurar */
+    --border-color:   #e2e8f0;   /* Gris claro estructural */
 
     /* ── Text ── */
-    --text-main:      #334155;   /* Slate oscuro para excelente contraste y legibilidad */
+    --text-main:      #334155;   /* Gris pizarra oscuro (legibilidad sin fatiga) */
     --text-muted:     #64748b;
 
-    /* ── Sophisticated Pastel Palette ── */
-    --primary-blue:   #a0ecff;   /* Azul pastel celeste claro */
-    --primary-green:  #a7f3d0;   /* Verde menta pastel */
-    --accent-yellow:  #fef08a;   /* Amarillo pastel suave */
-    --primary-purple: #d8b4fe;   /* Lila/Lavanda pastel (Creatividad y Modernidad Teen) */
-    --accent-lilac:   #e9d5ff;   /* Lila pastel de acento */
+    /* ── Sophisticated Soft Palette ── */
+    --primary-blue:   #7dd3fc;   /* Azul medio/suave (Concentración) */
+    --primary-green:  #86efac;   /* Verde suave (Reduce fatiga visual) */
+    --accent-yellow:  #fde047;   /* Amarillo suave (Energía moderada) */
+    --primary-purple: #c4b5fd;   /* Lila/Morado suave (Creatividad) */
+    --accent-lilac:   #ddd6fe;   /* Lila muy pastel */
 
     /* ── Effects ── */
-    --glow-color:     rgba(160, 236, 255, 0.3);
-    --card-shadow:    0 8px 30px rgba(148, 163, 184, 0.12);
-}
-
-/* ── Teens Dark Theme - Dark Pastel Tech Fusion ── */
-body.teens-mode.dark-theme {
-    --bg-app:        #0f172a;   /* Slate oscuro profundo */
-    --bg-header:     #1e293b;
-    --bg-card:       #1e293b;
-    --bg-card-hover: #334155;   /* Slate medio */
-    --border-color:  #38bdf8;   /* Azul neón pastel para contraste de enfoque */
-    --text-main:     #f8fafc;
-    --text-muted:    #94a3b8;
-
-    --primary-blue:   #38bdf8;   /* Sky 400 (Azul pastel brillante) */
-    --primary-green:  #34d399;   /* Emerald 400 (Verde esmeralda suave) */
-    --accent-yellow:  #fbbf24;   /* Amber 400 (Amarillo cálido suave) */
-    --primary-purple: #c084fc;   /* Purple 400 (Lila pastel eléctrico) */
-    --accent-lilac:   #e9d5ff;
-
-    --glow-color:    rgba(56, 189, 248, 0.25);
-    --card-shadow:   0 10px 30px rgba(0, 0, 0, 0.4);
+    --glow-color:     rgba(125, 211, 252, 0.25);
+    --card-shadow:    0 6px 20px rgba(100, 116, 139, 0.1);
 }
 
 /* ── Teens game cards — clean, refined, no playful bouncing ── */
@@ -905,18 +896,13 @@ body.teens-mode .diff-hard {
     border-color: var(--primary-purple);
 }
 
-/* ── Teens welcome banner — azul suave a verde salvia ── */
-body.teens-mode .kids-welcome-banner {
-    background: linear-gradient(135deg, var(--primary-blue), var(--primary-green));
-    border: 1px solid var(--border-color);
-    box-shadow: 0 8px 30px var(--glow-color);
-    color: #1e293b; /* Mantener oscuro para máxima legibilidad sobre pasteles */
-}
-
+/* ── Teens welcome banner — azul suave a lila suave ── */
+body.teens-mode .kids-welcome-banner,
 body.teens-mode.dark-theme .kids-welcome-banner {
-    background: linear-gradient(135deg, rgba(56, 189, 248, 0.2), rgba(52, 211, 153, 0.2));
+    background: linear-gradient(135deg, var(--primary-blue), var(--primary-purple));
     border: 1px solid var(--border-color);
-    color: var(--text-main);
+    box-shadow: 0 8px 24px var(--glow-color);
+    color: #1e293b; /* Mantener oscuro para máxima legibilidad sobre pasteles */
 }
 
 /* ── Teens task planner — cream/neutral tone ── */
@@ -947,13 +933,10 @@ body.teens-mode .timer-btn {
 }
 
 /* ── Teens store — warm beige items ── */
-body.teens-mode .store-container {
-    background: linear-gradient(135deg, #f0f4f8, #f4f0f8);
-    border-color: var(--border-color);
-}
-
+body.teens-mode .store-container,
 body.teens-mode.dark-theme .store-container {
-    background: linear-gradient(135deg, #252d3d, #2a2d3d);
+    background: linear-gradient(135deg, #fefce8, #fdf8f6); /* Beige/Cream muy claro (Neutro) */
+    border-color: #fef08a; /* Borde amarillo suave */
 }
 
 body.teens-mode .store-item {

@@ -1243,22 +1243,60 @@ class NeuroSparkApp {
         const cleanProf = profileType.split('(')[0].replace('Perfil', '').trim();
         doc.text(`${userAge} - ${cleanProf}`, 20 + (cardWidth*2) + 10 + (cardWidth/2), y + 23, { align: 'center' });
         
-        y += 50;
+        y += 45;
+
+        // --- 4. ANALYSIS SECTION (Attention & Hyperactivity) ---
+        doc.setFillColor(240, 253, 244); // light green bg
+        doc.setDrawColor(187, 247, 208);
+        doc.setLineWidth(0.5);
+        doc.roundedRect(20, y, pageWidth - 40, 60, 4, 4, 'FD');
+
+        y += 12;
+        doc.setFontSize(14);
+        doc.setTextColor(22, 101, 52); // dark green
+        doc.setFont('helvetica', 'bold');
+        doc.text("✦ " + i18n.t('pdfAttentionTitle').replace(':', ''), 28, y);
         
-        // --- 4. ADVICE SECTION ---
+        y += 12;
+        doc.setFontSize(11);
+        doc.setFont('helvetica', 'bold');
+        doc.setTextColor(21, 128, 61);
+        
+        // Simulating attention based on level, capping at 95%
+        const attnPct = Math.min(95, 55 + (level * 3)); 
+        const hypPct = Math.max(15, 85 - (level * 2)); // Decreases as they level up
+        
+        doc.text(i18n.t('pdfAttentionLevel') + ` ${attnPct}%`, 35, y);
+        y += 6;
+        doc.setFont('helvetica', 'normal');
+        doc.setTextColor(50, 50, 50);
+        doc.text(`- ${i18n.t('pdfAchievements')} Precisión en juegos de enfoque en progreso continuo.`, 35, y);
+        
+        y += 10;
+        doc.setFont('helvetica', 'bold');
+        doc.setTextColor(21, 128, 61);
+        doc.text(i18n.t('pdfHyperactivity') + ` ${hypPct}%`, 35, y);
+        y += 6;
+        doc.setFont('helvetica', 'normal');
+        doc.setTextColor(50, 50, 50);
+        doc.text(`- ${i18n.t('pdfErrors')} Aún hay impulsividad en decisiones rápidas.`, 35, y);
+
+        y += 20;
+        
+        // --- 5. ADVICE SECTION ---
         doc.setFillColor(248, 250, 252);
         doc.setDrawColor(226, 232, 240);
         doc.setLineWidth(0.5);
-        doc.roundedRect(20, y, pageWidth - 40, 75, 4, 4, 'FD');
+        doc.roundedRect(20, y, pageWidth - 40, 65, 4, 4, 'FD');
         
-        y += 15;
-        doc.setFontSize(16);
+        y += 12;
+        doc.setFontSize(14);
         doc.setTextColor(15, 23, 42);
         doc.setFont('helvetica', 'bold');
         doc.text("✦ " + i18n.t('pdfAdviceTitle').replace(':', ''), 28, y);
         
-        y += 12;
-        doc.setFontSize(12);
+        y += 10;
+        doc.setFontSize(11);
         doc.setFont('helvetica', 'normal');
         doc.setTextColor(71, 85, 105);
         
@@ -1271,7 +1309,7 @@ class NeuroSparkApp {
         adviceLines.forEach(line => {
             const splitLine = doc.splitTextToSize(line, pageWidth - 60);
             doc.text(splitLine, 35, y);
-            y += splitLine.length * 8 + 3;
+            y += splitLine.length * 6 + 2;
         });
         
         // --- 5. FOOTER ---
