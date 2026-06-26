@@ -332,7 +332,7 @@ class NeuroSparkApp {
         // Fix NEUROSPARK logo text (uses -webkit-text-fill-color: transparent originally)
         const logoMain = document.querySelector('.logo-main');
         if (logoMain) {
-            logoMain.style.cssText += ';background:none!important;-webkit-text-fill-color:#3b82f6!important;color:#3b82f6!important;';
+            logoMain.style.cssText += ';background:none!important;-webkit-text-fill-color:#1e293b!important;color:#1e293b!important;';
         }
         const logoSub = document.querySelector('.logo-sub');
         if (logoSub) {
@@ -986,15 +986,15 @@ class NeuroSparkApp {
         mount.innerHTML = `
             <div class="teens-home-view">
                 <div class="teens-main-panel" style="display:flex;flex-direction:column;gap:24px;">
-                    <div class="kids-welcome-banner" style="background:linear-gradient(135deg,hsla(270,85%,20%,0.8),hsla(210,100%,25%,0.8));">
+                    <div class="kids-welcome-banner" style="background:linear-gradient(135deg, #dbeafe, #dcfce7); border: 1px solid #7dd3fc; box-shadow: 0 8px 32px rgba(125, 211, 252, 0.25); color: #1e293b;">
                         <div class="kids-welcome-info">
-                            <h2>${i18n.t('teensWelcome', { name })}</h2>
-                            <p>${i18n.t('teensWelcomeSub')}</p>
+                            <h2 style="color: #1e293b;">${i18n.t('teensWelcome', { name })}</h2>
+                            <p style="color: #334155;">${i18n.t('teensWelcomeSub')}</p>
                         </div>
-                        <div style="flex-shrink:0;">
+                        <div style="flex-shrink:0; position:relative;">
                             <img src="${avatarUrl}"
                                  alt="${name}"
-                                 style="width:90px;height:90px;border-radius:50%;background:rgba(255,255,255,0.1);border:3px solid rgba(167,139,250,0.6);object-fit:cover;box-shadow:0 0 20px rgba(167,139,250,0.35);"
+                                 style="width:100px;height:100px;border-radius:50%;background:rgba(255,255,255,0.6);border:4px solid #c4b5fd;object-fit:cover;box-shadow:0 0 20px rgba(196,181,253,0.5);"
                                  onerror="this.style.display='none'">
                         </div>
                     </div>

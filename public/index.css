@@ -860,15 +860,17 @@ body.teens-mode .app-header {
     border-bottom-color: #dbeafe !important;
 }
 
-/* Logo NEUROSPARK — visible en fondo blanco */
+/* Logo NEUROSPARK — color gris oscuro sólido solicitado para Niños y Adolescentes */
+body.kids-mode .logo-main,
 body.teens-mode .logo-main {
     background: none !important;
     -webkit-background-clip: unset !important;
     background-clip: unset !important;
-    -webkit-text-fill-color: #3b82f6 !important;
-    color: #3b82f6 !important;
+    -webkit-text-fill-color: #1e293b !important;
+    color: #1e293b !important;
 }
 
+body.kids-mode .logo-sub,
 body.teens-mode .logo-sub {
     -webkit-text-fill-color: #64748b !important;
     color: #64748b !important;
