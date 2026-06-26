@@ -671,56 +671,105 @@ body.kids-mode {
     box-shadow: 0 16px 32px rgba(251, 191, 36, 0.25);
 }
 
+/* --- 100% PURE CSS ANIMATED BACKGROUNDS (NO STATIC IMAGES) --- */
 .game-thumbnail {
-    height: 180px;
     position: relative;
+    overflow: hidden;
+    height: 180px;
     display: flex;
     align-items: center;
     justify-content: center;
-    overflow: hidden; /* Necessary so the animated background doesn't bleed out */
+    background: #0f172a;
 }
 
 .game-thumbnail::before {
     content: '';
     position: absolute;
-    inset: -15%; /* Make it larger to allow room for panning */
-    background-image: var(--bg-image);
-    background-size: cover;
-    background-position: center;
-    transition: transform 0.6s cubic-bezier(0.25, 1, 0.5, 1);
-    animation: pan-thumbnail 20s infinite alternate ease-in-out;
+    inset: -60%;
     z-index: 0;
-}
-
-/* Continuously animate the thumbnails to look "alive" */
-@keyframes pan-thumbnail {
-    0% { transform: scale(1) translate(0, 0); }
-    33% { transform: scale(1.05) translate(2%, -2%); }
-    66% { transform: scale(1.03) translate(-2%, 2%); }
-    100% { transform: scale(1.08) translate(-1%, -1%); }
-}
-
-/* Premium zoom effect on hover */
-.game-card:hover .game-thumbnail::before {
-    transform: scale(1.15) !important;
-    animation-play-state: paused;
+    transition: transform 0.4s ease, filter 0.4s ease;
 }
 
 .game-thumbnail::after {
     content: '';
     position: absolute;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    height: 60px;
+    bottom: 0; left: 0; right: 0; height: 60px;
     background: linear-gradient(to top, var(--bg-card), transparent);
+    z-index: 1;
 }
 
-.game-thumbnail i {
-    font-size: 3rem;
-    color: rgba(255, 255, 255, 0.9);
-    text-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
-    z-index: 1;
+/* 1. Distraction / Speed */
+.anim-bg-distraction_hunter::before, .anim-bg-teens_distraction::before {
+    background: repeating-linear-gradient(45deg, #1e293b, #1e293b 15px, #38bdf8 15px, #38bdf8 17px, #1e293b 17px, #1e293b 30px);
+    background-size: 200% 200%;
+    animation: animStripes 20s linear infinite;
+}
+
+/* 2. Stoplight / Emotions */
+.anim-bg-emotional_stoplight::before, .anim-bg-teens_stoplight::before {
+    background: linear-gradient(135deg, #ef4444 0%, #facc15 50%, #22c55e 100%);
+    background-size: 400% 400%;
+    animation: animGradient 6s ease infinite;
+}
+
+/* 3. Musical / Sound */
+.anim-bg-musical_memory::before, .anim-bg-teens_sound::before {
+    background: repeating-radial-gradient(circle at center, #a78bfa 0, #a78bfa 10px, #2e1065 10px, #2e1065 20px);
+    animation: animRipple 4s linear infinite;
+}
+
+/* 4. Cards / Memory Grid */
+.anim-bg-memory_cards::before, .anim-bg-teens_cards::before {
+    background-image: linear-gradient(rgba(56, 189, 248, 0.4) 2px, transparent 2px), linear-gradient(90deg, rgba(56, 189, 248, 0.4) 2px, transparent 2px);
+    background-size: 40px 40px;
+    background-color: #082f49;
+    animation: animGrid 8s linear infinite;
+    transform-origin: center top;
+}
+
+/* 5. Spatial / Stars */
+.anim-bg-kids_spatial::before, .anim-bg-spatial_focus::before {
+    background: radial-gradient(circle, #e879f9 2px, transparent 3px), radial-gradient(circle, #38bdf8 2px, transparent 3px);
+    background-size: 60px 60px;
+    background-position: 0 0, 30px 30px;
+    background-color: #1e1b4b;
+    animation: animStars 15s linear infinite;
+}
+
+/* 6. Routine / Circuits */
+.anim-bg-kids_routine::before, .anim-bg-routine_builder::before {
+    background: repeating-linear-gradient(0deg, #10b981 0px, transparent 2px, transparent 20px), repeating-linear-gradient(90deg, #10b981 0px, transparent 2px, transparent 20px);
+    background-color: #064e3b;
+    background-size: 40px 40px;
+    animation: animCircuit 3s ease-in-out infinite alternate;
+}
+
+/* 7. Pattern / Matrix */
+.anim-bg-kids_pattern::before, .anim-bg-pattern_matcher::before {
+    background: linear-gradient(180deg, rgba(34,197,94,0) 0%, rgba(34,197,94,0.6) 50%, rgba(34,197,94,0) 100%);
+    background-size: 100% 50%;
+    background-color: #022c22;
+    animation: animMatrix 3s linear infinite;
+}
+
+/* 8. Math / Data */
+.anim-bg-kids_math::before, .anim-bg-speed_math::before {
+    background: conic-gradient(from 0deg, #6366f1, #a855f7, #ec4899, #6366f1);
+    animation: animSpin 8s linear infinite;
+}
+
+/* KEYFRAMES */
+@keyframes animStripes { 0% { transform: translate(0,0); } 100% { transform: translate(-50px, -50px); } }
+@keyframes animGradient { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
+@keyframes animRipple { 0% { transform: scale(0.8); } 100% { transform: scale(1.5); } }
+@keyframes animGrid { 0% { background-position: 0 0; transform: perspective(500px) rotateX(45deg) scale(1.5); } 100% { background-position: 0 100px; transform: perspective(500px) rotateX(45deg) scale(1.5); } }
+@keyframes animStars { 0% { background-position: 0 0, 30px 30px; } 100% { background-position: 600px 600px, 630px 630px; } }
+@keyframes animCircuit { 0% { filter: hue-rotate(0deg) brightness(1); transform: scale(1); } 100% { filter: hue-rotate(90deg) brightness(1.5); transform: scale(1.1); } }
+@keyframes animMatrix { 0% { background-position: 0 -200px; } 100% { background-position: 0 400px; } }
+@keyframes animSpin { 0% { transform: rotate(0deg) scale(1); } 50% { transform: rotate(180deg) scale(1.2); } 100% { transform: rotate(360deg) scale(1); } }
+
+.game-card:hover .game-thumbnail::before {
+    filter: brightness(1.4) contrast(1.2) !important;
 }
 
 .game-info {

@@ -960,12 +960,12 @@ class NeuroSparkApp {
         const diffMapQu = { 'diff-easy': 'ALLILLAN', 'diff-medium': 'CHAWPI', 'diff-hard': 'SASA' };
         const map = isQu ? diffMapQu : (isEn ? diffMapEn : diffMapEs);
         const diffLabel = map[diffClass] || diffClass.replace('diff-', '').toUpperCase();
-        const bgUrl = imgName.startsWith('http') ? imgName : `assets/games/${imgName}`;
 
         return `
             <div class="game-card">
-                <div class="game-thumbnail" style="--bg-image: url('${bgUrl}');">
-                    <i class="fa-solid ${icon}" style="display:none;"></i>
+                <div class="game-thumbnail anim-bg-${id}">
+                    <!-- The CSS will handle the 100% animated background -->
+                    <i class="fa-solid ${icon}" style="font-size:3.5rem; color:rgba(255,255,255,0.9); z-index:2; filter:drop-shadow(0 0 10px rgba(0,0,0,0.5)); position:absolute;"></i>
                 </div>
                 <div class="game-info">
                     <span class="game-tag">${i18n.t(tagKey)}</span>
