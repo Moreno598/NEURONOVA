@@ -848,30 +848,40 @@ body.teens-mode {
 }
 
 /* ── Teens Dark Theme - Calm & Focused (Not overly dark, still soft) ── */
+/* teens-mode ALWAYS stays light — ignora el modo oscuro global */
 body.teens-mode.dark-theme {
-    /* ── Base & Layout (Neutros en oscuro) ── */
-    --bg-app:         #1e293b;   /* Gris oscuro azulado (Neutro oscuro) */
-    --bg-header:      #0f172a;
-    --bg-card:        #0f172a;
-    --bg-card-hover:  #334155;
-
-    /* ── Borders ── */
-    --border-color:   #38bdf8;   /* Azul suave para contraste en oscuro */
-
-    /* ── Text ── */
-    --text-main:      #f8fafc;   /* Gris muy claro (Neutro) */
-    --text-muted:     #cbd5e1;
-
-    /* ── Sophisticated Soft Palette (Adaptada a oscuro) ── */
-    --primary-blue:   #38bdf8;   /* Azul medio vibrante pero suave */
-    --primary-green:  #34d399;   /* Verde calmante */
-    --accent-yellow:  #fcd34d;   /* Amarillo suave para destacar */
-    --primary-purple: #a78bfa;   /* Lila suave para la creatividad */
+    --bg-app:         #f8f9fa;
+    --bg-header:      #ffffff;
+    --bg-card:        #ffffff;
+    --bg-card-hover:  #f0f7ff;
+    --border-color:   #dbeafe;
+    --text-main:      #1e293b;
+    --text-muted:     #64748b;
+    --primary-blue:   #60a5fa;
+    --primary-green:  #4ade80;
+    --accent-yellow:  #facc15;
+    --primary-purple: #a78bfa;
     --accent-lilac:   #c4b5fd;
+    --glow-color:     rgba(96, 165, 250, 0.15);
+    --card-shadow:    0 2px 12px rgba(30, 41, 59, 0.07);
+}
 
-    /* ── Effects ── */
-    --glow-color:     rgba(56, 189, 248, 0.25);
-    --card-shadow:    0 8px 30px rgba(0, 0, 0, 0.3);
+/* Fuerza fondo y header claros en teens aunque dark-theme esté activo */
+body.teens-mode,
+body.teens-mode.dark-theme {
+    background-color: #f8f9fa !important;
+}
+
+body.teens-mode .app-header,
+body.teens-mode.dark-theme .app-header {
+    background-color: #ffffff !important;
+    border-bottom-color: #dbeafe !important;
+    color: #1e293b !important;
+}
+
+body.teens-mode .dynamic-bg,
+body.teens-mode.dark-theme .dynamic-bg {
+    opacity: 0.04;
 }
 
 /* ── Teens: Tarjetas de juego — borde azul muy sutil, hover lila ── */
