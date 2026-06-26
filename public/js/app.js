@@ -287,20 +287,23 @@ class NeuroSparkApp {
 
         if (this.state.profile === 'admin') {
             document.body.className = 'teens-mode admin-games-mode' + themeClass + lowStim;
+            this._clearLightTheme();
             this.renderAdminGamesHome(mount);
         } else if (this.state.profile === 'parent') {
-            // Parent panel always uses light theme for professional appearance
             document.body.className = 'teens-mode parent-panel-mode' + lowStim;
+            this._applyLightTheme();
             this.renderParentHome(mount);
         } else if (this.state.profile === 'kids') {
             document.body.className = 'kids-mode' + themeClass + lowStim;
+            this._clearLightTheme();
             this.renderKidsHome(mount);
         } else if (this.state.profile === 'teens') {
-            // Teens mode always uses light palette — ignores dark-theme toggle
             document.body.className = 'teens-mode' + lowStim;
+            this._applyLightTheme();
             this.renderTeensHome(mount);
         } else {
             document.body.className = 'adults-mode' + themeClass + lowStim;
+            this._clearLightTheme();
             dashboard.render(mount, this.state);
         }
 
@@ -313,6 +316,71 @@ class NeuroSparkApp {
         if (this.state.isAdmin) {
             this._injectAdminCard(mount);
         }
+    }
+
+    /* Fuerza la UI de adolescentes/padres a tema claro via inline styles */
+    _applyLightTheme() {
+        document.body.style.backgroundColor = '#f8f9fa';
+        document.body.style.color = '#1e293b';
+
+        const header = document.querySelector('.app-header');
+        if (header) {
+            header.style.backgroundColor = '#ffffff';
+            header.style.borderBottomColor = '#dbeafe';
+        }
+
+        // Fix NEUROSPARK logo text (uses -webkit-text-fill-color: transparent originally)
+        const logoMain = document.querySelector('.logo-main');
+        if (logoMain) {
+            logoMain.style.cssText += ';background:none!important;-webkit-text-fill-color:#3b82f6!important;color:#3b82f6!important;';
+        }
+        const logoSub = document.querySelector('.logo-sub');
+        if (logoSub) {
+            logoSub.style.cssText += ';-webkit-text-fill-color:#64748b!important;color:#64748b!important;';
+        }
+
+        const headerStatus = document.querySelector('.header-status');
+        if (headerStatus) {
+            headerStatus.style.backgroundColor = '#f3f4f6';
+            headerStatus.style.borderColor = '#dbeafe';
+        }
+
+        document.querySelectorAll('.status-item, .gold-text, .glow-text').forEach(el => {
+            el.style.cssText += ';color:#374151!important;-webkit-text-fill-color:#374151!important;text-shadow:none!important;';
+        });
+
+        document.querySelectorAll('.control-btn').forEach(el => {
+            el.style.backgroundColor = '#f3f4f6';
+            el.style.borderColor = '#d1d5db';
+            el.style.color = '#374151';
+        });
+
+        const dynBg = document.querySelector('.dynamic-bg');
+        if (dynBg) dynBg.style.opacity = '0.03';
+    }
+
+    /* Limpia los inline styles de luz al salir de teens/parent */
+    _clearLightTheme() {
+        document.body.style.backgroundColor = '';
+        document.body.style.color = '';
+
+        const header = document.querySelector('.app-header');
+        if (header) { header.style.backgroundColor = ''; header.style.borderBottomColor = ''; }
+
+        const logoMain = document.querySelector('.logo-main');
+        if (logoMain) logoMain.style.cssText = '';
+
+        const logoSub = document.querySelector('.logo-sub');
+        if (logoSub) logoSub.style.cssText = '';
+
+        const headerStatus = document.querySelector('.header-status');
+        if (headerStatus) { headerStatus.style.backgroundColor = ''; headerStatus.style.borderColor = ''; }
+
+        document.querySelectorAll('.status-item, .gold-text, .glow-text').forEach(el => { el.style.cssText = ''; });
+        document.querySelectorAll('.control-btn').forEach(el => { el.style.backgroundColor = ''; el.style.borderColor = ''; el.style.color = ''; });
+
+        const dynBg = document.querySelector('.dynamic-bg');
+        if (dynBg) dynBg.style.opacity = '';
     }
 
     /* ---- ADMIN CARD INJECTION ---- */
