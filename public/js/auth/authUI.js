@@ -68,7 +68,7 @@ export class AuthUI {
         let isAlreadyAuthenticated = false;
 
         // Listen to auth state changes
-        authController.onAuthStateChange((event, session) => {
+        authController.onAuthStateChange(async (event, session) => {
             window.isUserLoggedIn = !!session;
 
             if (session) {
@@ -116,7 +116,7 @@ export class AuthUI {
                 const email = session.user?.email;
 
                 // Load specific user state
-                app.loadState(email);
+                await app.loadState(email);
 
                 // Mark admin and redirect directly to games view
                 app.state.isAdmin = (email === 'sparkneuro64@gmail.com');
