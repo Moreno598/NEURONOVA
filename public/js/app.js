@@ -878,9 +878,11 @@ class NeuroSparkApp {
 
     _gameCard(id, nameKey, descKey, diffClass, tagKey, icon, imgName) {
         const isEn = typeof i18n !== 'undefined' && i18n.currentLang === 'en';
+        const isQu = typeof i18n !== 'undefined' && i18n.currentLang === 'qu';
         const diffMapEs = { 'diff-easy': 'FÁCIL', 'diff-medium': 'MEDIO', 'diff-hard': 'DIFÍCIL' };
         const diffMapEn = { 'diff-easy': 'EASY', 'diff-medium': 'MEDIUM', 'diff-hard': 'HARD' };
-        const map = isEn ? diffMapEn : diffMapEs;
+        const diffMapQu = { 'diff-easy': 'ALLILLAN', 'diff-medium': 'CHAWPI', 'diff-hard': 'SASA' };
+        const map = isQu ? diffMapQu : (isEn ? diffMapEn : diffMapEs);
         const diffLabel = map[diffClass] || diffClass.replace('diff-','').toUpperCase();
         
         return `
