@@ -35,12 +35,12 @@ class NeuroSparkApp {
         };
 
         this.storeItems = [
-            { id: 'cyber_neon',   nameKey: 'skinCyber',  cost: 100, icon: 'fa-robot',        color: '#38bdf8', image: 'assets/store_cyber_neon.png' },
+            { id: 'cyber_neon', nameKey: 'skinCyber', cost: 100, icon: 'fa-robot', color: '#38bdf8', image: 'assets/store_cyber_neon.png' },
             { id: 'green_shield', nameKey: 'skinShield', cost: 180, icon: 'fa-shield-halved', color: '#22c55e' },
-            { id: 'golden_crown', nameKey: 'skinCrown',  cost: 250, icon: 'fa-crown',         color: '#fbbf24' },
-            { id: 'jetpack',      nameKey: 'skinJetpack',cost: 350, icon: 'fa-rocket',        color: '#a855f7' },
-            { id: 'stellar_aura', nameKey: 'skinAura',   cost: 500, icon: 'fa-star',          color: '#f472b6' },
-            { id: 'holo_pet',     nameKey: 'skinHolopet',cost: 800, icon: 'fa-dog',           color: '#06b6d4' }
+            { id: 'golden_crown', nameKey: 'skinCrown', cost: 250, icon: 'fa-crown', color: '#fbbf24' },
+            { id: 'jetpack', nameKey: 'skinJetpack', cost: 350, icon: 'fa-rocket', color: '#a855f7' },
+            { id: 'stellar_aura', nameKey: 'skinAura', cost: 500, icon: 'fa-star', color: '#f472b6' },
+            { id: 'holo_pet', nameKey: 'skinHolopet', cost: 800, icon: 'fa-dog', color: '#06b6d4' }
         ];
     }
 
@@ -62,14 +62,14 @@ class NeuroSparkApp {
     async loadState(email = null) {
         if (email) this.state.currentUserEmail = email.toLowerCase();
         const key = this.state.currentUserEmail ? 'neurospark_state_' + this.state.currentUserEmail : 'neurospark_state';
-        
+
         // 1. Cargar estado local inmediato
         const saved = localStorage.getItem(key);
         if (saved) {
             try {
                 const parsed = JSON.parse(saved);
                 this.state = { ...this.state, ...parsed, settings: { ...this.state.settings, ...(parsed.settings || {}) } };
-            } catch (e) {}
+            } catch (e) { }
         }
 
         // 2. Cargar estado remoto de Supabase (Sincronización)
@@ -85,14 +85,14 @@ class NeuroSparkApp {
         sound.setVolume(this.state.settings.volume / 100);
         coach.voiceEnabled = this.state.settings.voiceOn;
         if (this.state.settings.lowStimulus) document.body.classList.add('low-stimulus');
-        
+
         this.updateHeaderHUD();
     }
 
     async saveState() {
         const key = this.state.currentUserEmail ? 'neurospark_state_' + this.state.currentUserEmail : 'neurospark_state';
         localStorage.setItem(key, JSON.stringify(this.state));
-        
+
         if (this.state.currentUserEmail) {
             await authController.saveUserState(this.state.currentUserEmail, this.state);
         }
@@ -100,10 +100,10 @@ class NeuroSparkApp {
 
     /* ---- HEADER HUD ---- */
     updateHeaderHUD() {
-        document.getElementById('player-coins').innerText         = this.state.coins.toLocaleString();
-        document.getElementById('player-level').innerText         = this.state.level;
+        document.getElementById('player-coins').innerText = this.state.coins.toLocaleString();
+        document.getElementById('player-level').innerText = this.state.level;
         document.getElementById('current-profile-name').innerText = this.state.activeProfileName;
-        
+
         // Render custom avatar in header
         const avatarIcon = document.querySelector('.profile-select-btn i.fa-user-astronaut');
         if (this.state.avatar && document.querySelector('.profile-select-btn')) {
@@ -116,14 +116,14 @@ class NeuroSparkApp {
                 imgEl.style.height = '24px';
                 imgEl.style.borderRadius = '50%';
                 imgEl.style.background = 'rgba(255,255,255,0.1)';
-                if(avatarIcon) avatarIcon.style.display = 'none';
+                if (avatarIcon) avatarIcon.style.display = 'none';
                 profileBtn.insertBefore(imgEl, document.getElementById('current-profile-name'));
             }
             const avState = this.state.avatar;
             imgEl.src = (avState.startsWith('http') || avState.startsWith('data:')) ? avState : `https://api.dicebear.com/7.x/bottts/svg?seed=${avState.charAt(0).toUpperCase() + avState.slice(1)}`;
             imgEl.style.display = 'block';
         }
-        document.getElementById('logo-sub-text').innerText        = i18n.t('logoSub');
+        document.getElementById('logo-sub-text').innerText = i18n.t('logoSub');
 
         // XP progress bar: every 500 coins = 1 level
         const coinsPerLevel = 500;
@@ -155,11 +155,11 @@ class NeuroSparkApp {
         // Update Sparky chat welcome placeholder & chips
         const chatInput = document.getElementById('chat-user-input');
         if (chatInput) chatInput.placeholder = i18n.t('chatPlaceholder');
-        const chipBreak  = document.getElementById('chip-break');
-        const chipTip    = document.getElementById('chip-tip');
+        const chipBreak = document.getElementById('chip-break');
+        const chipTip = document.getElementById('chip-tip');
         const chipReport = document.getElementById('chip-report');
-        if (chipBreak)  chipBreak.innerHTML  = `<i class="fa-solid fa-hourglass-half"></i> ${i18n.t('chatBreakChip')}`;
-        if (chipTip)    chipTip.innerHTML    = `<i class="fa-solid fa-lightbulb"></i> ${i18n.t('chatTipChip')}`;
+        if (chipBreak) chipBreak.innerHTML = `<i class="fa-solid fa-hourglass-half"></i> ${i18n.t('chatBreakChip')}`;
+        if (chipTip) chipTip.innerHTML = `<i class="fa-solid fa-lightbulb"></i> ${i18n.t('chatTipChip')}`;
         if (chipReport) chipReport.innerHTML = `<i class="fa-solid fa-chart-line"></i> ${i18n.t('chatReportChip')}`;
     }
 
@@ -202,7 +202,7 @@ class NeuroSparkApp {
         document.getElementById('btn-settings').addEventListener('click', () => this.openSettingsModal());
 
         // Sparky widget
-        const trigger   = document.getElementById('coach-trigger');
+        const trigger = document.getElementById('coach-trigger');
         const chatPanel = document.getElementById('coach-chat-panel');
         trigger.addEventListener('click', () => {
             chatPanel.classList.toggle('hidden');
@@ -236,13 +236,13 @@ class NeuroSparkApp {
 
         // Chat input
         const chatInput = document.getElementById('chat-user-input');
-        const btnSend   = document.getElementById('chat-send-btn');
+        const btnSend = document.getElementById('chat-send-btn');
         const sendMsg = async () => {
             const val = chatInput.value.trim();
             if (!val) return;
             chatInput.value = '';
             this.addChatMessage('user', val);
-            
+
             const msgId = this.addChatMessage('system', '', true);
             try {
                 const response = await coach.processChatQuery(val, this.state);
@@ -282,7 +282,7 @@ class NeuroSparkApp {
     renderHome() {
         const mount = document.getElementById('app-view-mount');
         mount.innerHTML = '';
-        const lowStim   = this.state.settings.lowStimulus ? ' low-stimulus' : '';
+        const lowStim = this.state.settings.lowStimulus ? ' low-stimulus' : '';
         const themeClass = document.body.classList.contains('light-theme') ? ' light-theme' : ' dark-theme';
 
         if (this.state.profile === 'admin') {
@@ -334,7 +334,7 @@ class NeuroSparkApp {
             btnGames.style.display = '';
             const freshGames = btnGames.cloneNode(true);
             btnGames.parentNode.replaceChild(freshGames, btnGames);
-            
+
             // Set initial state based on current profile
             if (this.state.isAdmin) {
                 freshGames.innerHTML = '<i class="fa-solid fa-shield-halved"></i>';
@@ -495,14 +495,14 @@ class NeuroSparkApp {
             }
             tbody.innerHTML = users.map((u, idx) => {
                 const s = u.state_data || {};
-                const name  = s.activeProfileName || '—';
-                const age   = s.age || '—';
-                const prof  = s.profile || 'kids';
+                const name = s.activeProfileName || '—';
+                const age = s.age || '—';
+                const prof = s.profile || 'kids';
                 const coins = (s.coins ?? 0).toLocaleString();
                 const level = s.level || 1;
                 const color = profileColor[prof] || '#38bdf8';
                 const label = profileLabel[prof] || prof;
-                const initials = name !== '—' ? name.split(' ').map(w => w[0]).join('').slice(0,2).toUpperCase() : '?';
+                const initials = name !== '—' ? name.split(' ').map(w => w[0]).join('').slice(0, 2).toUpperCase() : '?';
                 return `<tr style="border-bottom: 1px solid var(--border-color); transition: background 0.2s;" 
                     onmouseover="this.style.background='var(--bg-hover)'" 
                     onmouseout="this.style.background='transparent'">
@@ -561,7 +561,7 @@ class NeuroSparkApp {
 
         document.getElementById('btn-refresh-users')?.addEventListener('click', loadUsers);
 
-        document.getElementById('admin-user-search')?.addEventListener('input', function() {
+        document.getElementById('admin-user-search')?.addEventListener('input', function () {
             const q = this.value.trim().toLowerCase();
             if (!q) { renderUsersTable(allUsers); return; }
             const filtered = allUsers.filter(u => {
@@ -574,13 +574,13 @@ class NeuroSparkApp {
         // Focus styles for search
         const userSearch = document.getElementById('admin-user-search');
         if (userSearch) {
-            userSearch.addEventListener('focus', function() { this.style.borderColor = '#38bdf8'; });
-            userSearch.addEventListener('blur', function() { this.style.borderColor = 'var(--border-color)'; });
+            userSearch.addEventListener('focus', function () { this.style.borderColor = '#38bdf8'; });
+            userSearch.addEventListener('blur', function () { this.style.borderColor = 'var(--border-color)'; });
         }
 
         const emailInput = document.getElementById('admin-search-email');
-        emailInput.addEventListener('focus', function() { this.style.borderColor = '#7c3aed'; });
-        emailInput.addEventListener('blur', function() { this.style.borderColor = 'var(--border-color)'; });
+        emailInput.addEventListener('focus', function () { this.style.borderColor = '#7c3aed'; });
+        emailInput.addEventListener('blur', function () { this.style.borderColor = 'var(--border-color)'; });
 
         document.getElementById('btn-assign-role').addEventListener('click', async () => {
             const email = emailInput.value.trim().toLowerCase();
@@ -617,7 +617,7 @@ class NeuroSparkApp {
             const item = document.createElement('div');
             item.style.cssText = 'padding: 16px 20px; background: rgba(124,58,237,0.08); border-radius: 10px; border: 1px solid rgba(124,58,237,0.25); display: flex; justify-content: space-between; align-items: center; opacity: 0; transform: translateY(-8px); transition: all 0.35s ease;';
             item.innerHTML = '<span style="font-size: 0.95rem;"><i class="fa-solid fa-user-check" style="color:#7c3aed; margin-right: 8px;"></i>' + email + '</span>' +
-                             '<span style="background: rgba(124,58,237,0.2); color: #a78bfa; padding: 4px 12px; border-radius: 20px; font-size: 0.8rem; font-weight: 600;">' + roleText + '</span>';
+                '<span style="background: rgba(124,58,237,0.2); color: #a78bfa; padding: 4px 12px; border-radius: 20px; font-size: 0.8rem; font-weight: 600;">' + roleText + '</span>';
             logList.prepend(item);
             setTimeout(() => { item.style.opacity = '1'; item.style.transform = 'translateY(0)'; }, 10);
             this.showToast('Rol "' + roleText + '" asignado a ' + email, 'success');
@@ -662,18 +662,18 @@ class NeuroSparkApp {
             const item = document.createElement('div');
             item.style.cssText = 'padding: 16px 20px; background: rgba(245,158,11,0.08); border-radius: 10px; border: 1px solid rgba(245,158,11,0.25); display: flex; justify-content: space-between; align-items: center; opacity: 0; transform: translateY(-8px); transition: all 0.35s ease;';
             item.innerHTML = '<span style="font-size: 0.95rem;"><i class="fa-solid fa-user-plus" style="color:#f59e0b; margin-right: 8px;"></i>' + email + '</span>' +
-                             '<span style="background: rgba(245,158,11,0.2); color: #fbbf24; padding: 4px 12px; border-radius: 20px; font-size: 0.8rem; font-weight: 600;">+' + amount + ' Coins</span>';
+                '<span style="background: rgba(245,158,11,0.2); color: #fbbf24; padding: 4px 12px; border-radius: 20px; font-size: 0.8rem; font-weight: 600;">+' + amount + ' Coins</span>';
             logList.prepend(item);
             setTimeout(() => { item.style.opacity = '1'; item.style.transform = 'translateY(0)'; }, 10);
             this.showToast('Se otorgaron ' + amount + ' NeuroCoins a ' + email, 'success');
-            
+
             // Add coins to target user's state
             const targetEmail = email;
             const targetKey = 'neurospark_state_' + targetEmail;
-            
+
             // Try to load from Supabase first
             let targetState = await authController.loadUserState(targetEmail);
-            
+
             if (!targetState) {
                 let targetStateStr = localStorage.getItem(targetKey);
                 targetState = targetStateStr ? JSON.parse(targetStateStr) : {
@@ -689,11 +689,11 @@ class NeuroSparkApp {
                     settings: { musicOn: false, voiceOn: false, lowStimulus: false, volume: 50 }
                 };
             }
-            
+
             targetState.coins = (targetState.coins || 0) + amount;
             // Prevent injecting the admin's email into the target's state
             targetState.currentUserEmail = targetEmail;
-            
+
             // Save to Local and Supabase DB
             localStorage.setItem(targetKey, JSON.stringify(targetState));
             await authController.saveUserState(targetEmail, targetState);
@@ -747,10 +747,10 @@ class NeuroSparkApp {
             </div>
         `;
 
-        document.getElementById('admin-search-email').addEventListener('focus', function() {
+        document.getElementById('admin-search-email').addEventListener('focus', function () {
             this.style.borderColor = '#38bdf8';
         });
-        document.getElementById('admin-search-email').addEventListener('blur', function() {
+        document.getElementById('admin-search-email').addEventListener('blur', function () {
             this.style.borderColor = 'var(--border-color)';
         });
 
@@ -758,24 +758,24 @@ class NeuroSparkApp {
             const email = document.getElementById('admin-search-email').value;
             const roleSelect = document.getElementById('admin-role-select');
             const roleText = roleSelect.options[roleSelect.selectedIndex].text;
-            
+
             if (!email || !email.includes('@')) {
                 this.showToast('Por favor, ingresa un correo electrónico válido.', 'warning');
                 return;
             }
-            
+
             const logList = document.getElementById('admin-log-list');
             const div = document.createElement('div');
             div.style.cssText = "padding: 20px; background: rgba(56, 189, 248, 0.05); border-radius: 12px; border: 1px solid rgba(56, 189, 248, 0.2); display: flex; justify-content: space-between; align-items: center; opacity: 0; transform: translateY(-10px); transition: all 0.4s ease;";
             div.innerHTML = '<span style="font-size: 1.05rem;"><i class="fa-solid fa-user-check text-blue" style="margin-right: 10px;"></i> ' + email + '</span>' +
                 '<span class="difficulty-badge diff-medium" style="padding: 6px 12px; font-size: 0.85rem;">' + roleText.split(':')[1].trim() + '</span>';
             logList.prepend(div);
-            
+
             setTimeout(() => {
                 div.style.opacity = '1';
                 div.style.transform = 'translateY(0)';
             }, 10);
-            
+
             this.showToast('Rol asignado exitosamente a ' + email, 'success');
             document.getElementById('admin-search-email').value = '';
         });
@@ -813,14 +813,14 @@ class NeuroSparkApp {
                 <div class="kids-game-section">
                     <h3 class="section-title"><i class="fa-solid fa-gamepad text-accent"></i> ${i18n.t('kidsGamesTitle')}</h3>
                     <div class="games-grid">
-                        ${this._gameCard('distraction_hunter', 'g1Name', 'g1Desc', 'diff-easy',   'g1Tag', 'fa-meteor', 'distraction.png')}
-                        ${this._gameCard('emotional_stoplight','g4Name', 'g4Desc', 'diff-easy',   'g4Tag', 'fa-traffic-light', 'stoplight.png')}
-                        ${this._gameCard('musical_memory',     'g5Name', 'g5Desc', 'diff-medium', 'g5Tag', 'fa-music', 'memory.png')}
-                        ${this._gameCard('memory_cards',       'g6Name', 'g6Desc', 'diff-easy',   'g6Tag', 'fa-layer-group', 'spatial.png')}
-                        ${this._gameCard('kids_spatial',       'k_spatialName', 'k_spatialDesc', 'diff-medium', 'g2Tag', 'fa-star', 'spatial.png')}
-                        ${this._gameCard('kids_routine',       'k_routineName', 'k_routineDesc', 'diff-medium', 'g3Tag', 'fa-rocket', 'routine.png')}
-                        ${this._gameCard('kids_pattern',       'k_patternName', 'k_patternDesc', 'diff-medium', 'g7Tag', 'fa-shapes', 'distraction.png')}
-                        ${this._gameCard('kids_math',          'k_mathName', 'k_mathDesc', 'diff-hard',   'g8Tag', 'fa-calculator', 'memory.png')}
+                        ${this._gameCard('distraction_hunter', 'g1Name', 'g1Desc', 'diff-easy', 'g1Tag', 'fa-meteor', 'distraction.png')}
+                        ${this._gameCard('emotional_stoplight', 'g4Name', 'g4Desc', 'diff-easy', 'g4Tag', 'fa-traffic-light', 'stoplight.png')}
+                        ${this._gameCard('musical_memory', 'g5Name', 'g5Desc', 'diff-medium', 'g5Tag', 'fa-music', 'memory.png')}
+                        ${this._gameCard('memory_cards', 'g6Name', 'g6Desc', 'diff-easy', 'g6Tag', 'fa-layer-group', 'spatial.png')}
+                        ${this._gameCard('kids_spatial', 'k_spatialName', 'k_spatialDesc', 'diff-medium', 'g2Tag', 'fa-star', 'spatial.png')}
+                        ${this._gameCard('kids_routine', 'k_routineName', 'k_routineDesc', 'diff-medium', 'g3Tag', 'fa-rocket', 'routine.png')}
+                        ${this._gameCard('kids_pattern', 'k_patternName', 'k_patternDesc', 'diff-medium', 'g7Tag', 'fa-shapes', 'distraction.png')}
+                        ${this._gameCard('kids_math', 'k_mathName', 'k_mathDesc', 'diff-hard', 'g8Tag', 'fa-calculator', 'memory.png')}
                     </div>
                 </div>
 
@@ -829,23 +829,23 @@ class NeuroSparkApp {
                     <p style="color:var(--text-muted);font-size:0.9rem;">${i18n.t('storeSub')}</p>
                     <div class="store-grid">
                         ${this.storeItems.map(item => {
-                            const bought  = this.state.unlockedItems.includes(item.id);
-                            const active  = this.state.activeSkin === item.id;
-                            const btnHTML = active
-                                ? `<span class="difficulty-badge diff-easy">${i18n.t('equipped')}</span>`
-                                : bought
-                                    ? `<button class="equip-btn" style="background:#7c3aed;color:white;border:none;padding:4px 10px;border-radius:4px;cursor:pointer;">${i18n.t('equip')}</button>`
-                                    : `<span style="color:#fbbf24;font-weight:700;"><i class="fa-solid fa-coins"></i> ${item.cost}</span>`;
-                            const imgOrIcon = item.image 
-                                ? `<img src="${item.image}" alt="${i18n.t(item.nameKey)}" style="height: 60px; width: 60px; object-fit: contain; margin-bottom: 12px; filter: drop-shadow(0 0 10px ${item.color});" />`
-                                : `<i class="fa-solid ${item.icon}" style="font-size:2.5rem;color:${item.color};display:block;margin:10px 0;text-shadow: 0 0 10px ${item.color};"></i>`;
-                            return `
+            const bought = this.state.unlockedItems.includes(item.id);
+            const active = this.state.activeSkin === item.id;
+            const btnHTML = active
+                ? `<span class="difficulty-badge diff-easy">${i18n.t('equipped')}</span>`
+                : bought
+                    ? `<button class="equip-btn" style="background:#7c3aed;color:white;border:none;padding:4px 10px;border-radius:4px;cursor:pointer;">${i18n.t('equip')}</button>`
+                    : `<span style="color:#fbbf24;font-weight:700;"><i class="fa-solid fa-coins"></i> ${item.cost}</span>`;
+            const imgOrIcon = item.image
+                ? `<img src="${item.image}" alt="${i18n.t(item.nameKey)}" style="height: 60px; width: 60px; object-fit: contain; margin-bottom: 12px; filter: drop-shadow(0 0 10px ${item.color});" />`
+                : `<i class="fa-solid ${item.icon}" style="font-size:2.5rem;color:${item.color};display:block;margin:10px 0;text-shadow: 0 0 10px ${item.color};"></i>`;
+            return `
                                 <div class="store-item ${bought ? 'purchased' : ''} ${active ? 'active-skin' : ''}" data-id="${item.id}">
                                     ${imgOrIcon}
                                     <strong>${i18n.t(item.nameKey)}</strong>
                                     <div style="margin-top:10px;">${btnHTML}</div>
                                 </div>`;
-                        }).join('')}
+        }).join('')}
                     </div>
                 </div>
             </div>`;
@@ -856,7 +856,7 @@ class NeuroSparkApp {
 
         mount.querySelectorAll('.store-item').forEach(item => {
             item.addEventListener('click', e => {
-                const itemId   = item.getAttribute('data-id');
+                const itemId = item.getAttribute('data-id');
                 const itemData = this.storeItems.find(i => i.id === itemId);
 
                 if (e.target.closest('.equip-btn')) {
@@ -889,8 +889,8 @@ class NeuroSparkApp {
         const diffMapEn = { 'diff-easy': 'EASY', 'diff-medium': 'MEDIUM', 'diff-hard': 'HARD' };
         const diffMapQu = { 'diff-easy': 'ALLILLAN', 'diff-medium': 'CHAWPI', 'diff-hard': 'SASA' };
         const map = isQu ? diffMapQu : (isEn ? diffMapEn : diffMapEs);
-        const diffLabel = map[diffClass] || diffClass.replace('diff-','').toUpperCase();
-        
+        const diffLabel = map[diffClass] || diffClass.replace('diff-', '').toUpperCase();
+
         return `
             <div class="game-card">
                 <div class="game-thumbnail" style="background-image: url('assets/games/${imgName}');">
@@ -930,14 +930,14 @@ class NeuroSparkApp {
                     </div>
                     <h3 class="section-title"><i class="fa-solid fa-brain text-blue"></i> ${i18n.t('teensGamesTitle')}</h3>
                     <div class="games-grid" style="grid-template-columns:1fr 1fr;">
-                        ${this._gameCard('spatial_focus',      'g2Name', 'g2Desc', 'diff-medium', 'g2Tag', 'fa-star-half-stroke', 'spatial.png')}
-                        ${this._gameCard('routine_builder',    'g3Name', 'g3Desc', 'diff-hard',   'g3Tag', 'fa-puzzle-piece', 'routine.png')}
-                        ${this._gameCard('pattern_matcher',    'g7Name', 'g7Desc', 'diff-medium', 'g7Tag', 'fa-shapes', 'distraction.png')}
-                        ${this._gameCard('speed_math',         'g8Name', 'g8Desc', 'diff-hard',   'g8Tag', 'fa-calculator', 'memory.png')}
-                        ${this._gameCard('teens_distraction',  't_distName', 't_distDesc', 'diff-medium', 'g1Tag', 'fa-shield-halved', 'distraction.png')}
-                        ${this._gameCard('teens_stoplight',    't_stopName', 't_stopDesc', 'diff-hard', 'g4Tag', 'fa-bolt', 'stoplight.png')}
-                        ${this._gameCard('teens_sound',        't_soundName', 't_soundDesc', 'diff-hard', 'g5Tag', 'fa-wave-square', 'memory.png')}
-                        ${this._gameCard('teens_cards',        't_cardsName', 't_cardsDesc', 'diff-medium', 'g6Tag', 'fa-unlock-keyhole', 'spatial.png')}
+                        ${this._gameCard('spatial_focus', 'g2Name', 'g2Desc', 'diff-medium', 'g2Tag', 'fa-star-half-stroke', 'spatial.png')}
+                        ${this._gameCard('routine_builder', 'g3Name', 'g3Desc', 'diff-hard', 'g3Tag', 'fa-puzzle-piece', 'routine.png')}
+                        ${this._gameCard('pattern_matcher', 'g7Name', 'g7Desc', 'diff-medium', 'g7Tag', 'fa-shapes', 'distraction.png')}
+                        ${this._gameCard('speed_math', 'g8Name', 'g8Desc', 'diff-hard', 'g8Tag', 'fa-calculator', 'memory.png')}
+                        ${this._gameCard('teens_distraction', 't_distName', 't_distDesc', 'diff-medium', 'g1Tag', 'fa-shield-halved', 'distraction.png')}
+                        ${this._gameCard('teens_stoplight', 't_stopName', 't_stopDesc', 'diff-hard', 'g4Tag', 'fa-bolt', 'stoplight.png')}
+                        ${this._gameCard('teens_sound', 't_soundName', 't_soundDesc', 'diff-hard', 'g5Tag', 'fa-wave-square', 'memory.png')}
+                        ${this._gameCard('teens_cards', 't_cardsName', 't_cardsDesc', 'diff-medium', 'g6Tag', 'fa-unlock-keyhole', 'spatial.png')}
                     </div>
                 </div>
 
@@ -1004,7 +1004,7 @@ class NeuroSparkApp {
                 overlay.className = 'settings-overlay';
                 document.body.appendChild(overlay);
             }
-            
+
             overlay.innerHTML = `
                 <div class="settings-modal" style="max-width: 400px; text-align: center; padding: 30px;">
                     <h3 style="margin-bottom: 20px; font-size: 1.4rem;">${i18n.t('plannerAdd')}</h3>
@@ -1015,7 +1015,7 @@ class NeuroSparkApp {
                     </div>
                 </div>
             `;
-            
+
             overlay.classList.add('open');
             const input = document.getElementById('custom-task-input');
             setTimeout(() => input.focus(), 100);
@@ -1035,7 +1035,7 @@ class NeuroSparkApp {
 
             document.getElementById('btn-task-cancel').addEventListener('click', closeTaskPrompt);
             document.getElementById('btn-task-add').addEventListener('click', addTask);
-            input.addEventListener('keydown', e => { 
+            input.addEventListener('keydown', e => {
                 if (e.key === 'Enter') addTask();
                 if (e.key === 'Escape') closeTaskPrompt();
             });
@@ -1068,12 +1068,12 @@ class NeuroSparkApp {
         const pct = Math.min(100, Math.round((coinsIntoLevel / coinsPerLevel) * 100));
         const avatar = this.state.avatar || 'sparky';
         const avatarUrl = (avatar.startsWith('http') || avatar.startsWith('data:')) ? avatar : `https://api.dicebear.com/7.x/bottts/svg?seed=${avatar.charAt(0).toUpperCase() + avatar.slice(1)}`;
-        
+
         // Determine age group
         const userAge = this.state.userAge || '—';
         const profileType = (parseInt(userAge) <= 11) ? i18n.t('parentProfileKids') : i18n.t('parentProfileTeens');
         const profileColor = (parseInt(userAge) <= 11) ? '#86efac' : '#c4b5fd';
-        
+
         mount.innerHTML = `
             <div class="teens-home-view parent-panel-view" style="gap:28px;">
                 <!-- Parent Welcome Banner -->
@@ -1167,78 +1167,122 @@ class NeuroSparkApp {
             this.showToast('El generador de PDF aún está cargando.', 'warning');
             return;
         }
-        
+
         const { jsPDF } = window.jspdf;
         const doc = new jsPDF();
-
         const lang = i18n.currentLang;
+        const pageWidth = doc.internal.pageSize.getWidth();
+        const pageHeight = doc.internal.pageSize.getHeight();
         
-        // Settings
-        const margin = 20;
-        let y = margin;
-
+        // --- 1. HEADER (Dark Slate) ---
+        doc.setFillColor(15, 23, 42); // #0f172a
+        doc.rect(0, 0, pageWidth, 40, 'F');
+        
+        // Brand/Logo Text
+        doc.setFontSize(24);
+        doc.setFont('helvetica', 'bold');
+        doc.setTextColor(56, 189, 248); // #38bdf8
+        doc.text("NEUROSPARK", 20, 26);
+        
         // Title
-        doc.setFontSize(22);
-        doc.setTextColor(30, 41, 59); // dark text
-        doc.text(i18n.t('pdfTitle'), margin, y);
-        y += 15;
-
-        // Subtitle / Student Name
-        doc.setFontSize(16);
-        doc.setTextColor(56, 189, 248); // blue
-        doc.text(studentName, margin, y);
-        y += 15;
-
-        // Separator
-        doc.setDrawColor(200, 200, 200);
-        doc.line(margin, y, 190, y);
-        y += 15;
-
-        // Stats
-        doc.setFontSize(12);
-        doc.setTextColor(50, 50, 50);
-        
-        const stats = [
-            `${i18n.t('pdfCoins')} ${coins}`,
-            `${i18n.t('pdfLevel')} ${level}`,
-            `${i18n.t('pdfAge')} ${userAge} (${profileType})`
-        ];
-
-        stats.forEach(stat => {
-            doc.text(stat, margin, y);
-            y += 10;
-        });
-
-        y += 10;
-        doc.line(margin, y, 190, y);
-        y += 15;
-
-        // Advice
         doc.setFontSize(14);
+        doc.setFont('helvetica', 'normal');
+        doc.setTextColor(255, 255, 255);
+        doc.text(i18n.t('pdfTitle'), pageWidth - 20, 26, { align: 'right' });
+        
+        let y = 60;
+        
+        // --- 2. STUDENT INFO SECTION ---
+        doc.setFontSize(22);
+        doc.setFont('helvetica', 'bold');
         doc.setTextColor(30, 41, 59);
-        doc.text(i18n.t('pdfAdviceTitle'), margin, y);
-        y += 10;
+        doc.text(studentName.toUpperCase(), 20, y);
+        
+        // Colored Line under name
+        doc.setDrawColor(56, 189, 248);
+        doc.setLineWidth(1.5);
+        doc.line(20, y + 4, 80, y + 4);
+        
+        y += 20;
 
-        doc.setFontSize(11);
-        doc.setTextColor(70, 70, 70);
-
+        // --- 3. STATS CARDS ---
+        const cardWidth = (pageWidth - 50) / 3;
+        
+        // Box 1: Coins (Gold/Orange)
+        doc.setFillColor(254, 243, 199);
+        doc.roundedRect(20, y, cardWidth, 30, 3, 3, 'F');
+        doc.setFontSize(10);
+        doc.setTextColor(217, 119, 6);
+        doc.text(i18n.t('pdfCoins').replace(':', ''), 20 + (cardWidth/2), y + 12, { align: 'center' });
+        doc.setFontSize(18);
+        doc.setFont('helvetica', 'bold');
+        doc.text(String(coins), 20 + (cardWidth/2), y + 23, { align: 'center' });
+        
+        // Box 2: Level (Blue)
+        doc.setFillColor(224, 242, 254);
+        doc.roundedRect(20 + cardWidth + 5, y, cardWidth, 30, 3, 3, 'F');
+        doc.setFontSize(10);
+        doc.setTextColor(2, 132, 199); 
+        doc.setFont('helvetica', 'normal');
+        doc.text(i18n.t('pdfLevel').replace(':', ''), 20 + cardWidth + 5 + (cardWidth/2), y + 12, { align: 'center' });
+        doc.setFontSize(18);
+        doc.setFont('helvetica', 'bold');
+        doc.text(String(level), 20 + cardWidth + 5 + (cardWidth/2), y + 23, { align: 'center' });
+        
+        // Box 3: Age/Profile (Purple)
+        doc.setFillColor(243, 232, 255);
+        doc.roundedRect(20 + (cardWidth*2) + 10, y, cardWidth, 30, 3, 3, 'F');
+        doc.setFontSize(10);
+        doc.setTextColor(147, 51, 234); 
+        doc.setFont('helvetica', 'normal');
+        doc.text(i18n.t('pdfAge').replace(':', ''), 20 + (cardWidth*2) + 10 + (cardWidth/2), y + 12, { align: 'center' });
+        doc.setFontSize(13);
+        doc.setFont('helvetica', 'bold');
+        
+        // Extract basic age from string to display nicely
+        const cleanProf = profileType.split('(')[0].replace('Perfil', '').trim();
+        doc.text(`${userAge} - ${cleanProf}`, 20 + (cardWidth*2) + 10 + (cardWidth/2), y + 23, { align: 'center' });
+        
+        y += 50;
+        
+        // --- 4. ADVICE SECTION ---
+        doc.setFillColor(248, 250, 252);
+        doc.setDrawColor(226, 232, 240);
+        doc.setLineWidth(0.5);
+        doc.roundedRect(20, y, pageWidth - 40, 75, 4, 4, 'FD');
+        
+        y += 15;
+        doc.setFontSize(16);
+        doc.setTextColor(15, 23, 42);
+        doc.setFont('helvetica', 'bold');
+        doc.text("✦ " + i18n.t('pdfAdviceTitle').replace(':', ''), 28, y);
+        
+        y += 12;
+        doc.setFontSize(12);
+        doc.setFont('helvetica', 'normal');
+        doc.setTextColor(71, 85, 105);
+        
         const adviceLines = [
             i18n.t('pdfAdvice1'),
             i18n.t('pdfAdvice2'),
             i18n.t('pdfAdvice3')
         ];
-
+        
         adviceLines.forEach(line => {
-            // Split text if it's too long
-            const splitLine = doc.splitTextToSize(line, 170);
-            doc.text(splitLine, margin, y);
-            y += splitLine.length * 7;
+            const splitLine = doc.splitTextToSize(line, pageWidth - 60);
+            doc.text(splitLine, 35, y);
+            y += splitLine.length * 8 + 3;
         });
+        
+        // --- 5. FOOTER ---
+        doc.setFontSize(10);
+        doc.setTextColor(148, 163, 184);
+        doc.text(`NeuroSpark Platform © ${new Date().getFullYear()} - Generado el ${new Date().toLocaleDateString()}`, pageWidth / 2, pageHeight - 15, { align: 'center' });
 
         // Save
         const fileName = `NeuroSpark_Reporte_${studentName.replace(/\s+/g, '_')}_${lang}.pdf`;
         doc.save(fileName);
-        this.showToast('PDF descargado', 'success');
+        this.showToast('PDF descargado con éxito', 'success');
     }
 
     _getParentGamesList() {
@@ -1303,14 +1347,14 @@ class NeuroSparkApp {
                         <span style="margin-left:auto;background:rgba(186,230,253,0.15);border:1px solid rgba(186,230,253,0.3);color:#bae6fd;padding:4px 14px;border-radius:20px;font-size:0.8rem;font-weight:700;">8 JUEGOS</span>
                     </div>
                     <div class="games-grid">
-                        ${this._gameCard('distraction_hunter', 'g1Name', 'g1Desc', 'diff-easy',   'g1Tag', 'fa-meteor', 'distraction.png')}
-                        ${this._gameCard('emotional_stoplight','g4Name', 'g4Desc', 'diff-easy',   'g4Tag', 'fa-traffic-light', 'stoplight.png')}
-                        ${this._gameCard('musical_memory',     'g5Name', 'g5Desc', 'diff-medium', 'g5Tag', 'fa-music', 'memory.png')}
-                        ${this._gameCard('memory_cards',       'g6Name', 'g6Desc', 'diff-easy',   'g6Tag', 'fa-layer-group', 'spatial.png')}
-                        ${this._gameCard('kids_spatial',       'k_spatialName', 'k_spatialDesc', 'diff-medium', 'g2Tag', 'fa-star', 'spatial.png')}
-                        ${this._gameCard('kids_routine',       'k_routineName', 'k_routineDesc', 'diff-medium', 'g3Tag', 'fa-rocket', 'routine.png')}
-                        ${this._gameCard('kids_pattern',       'k_patternName', 'k_patternDesc', 'diff-medium', 'g7Tag', 'fa-shapes', 'distraction.png')}
-                        ${this._gameCard('kids_math',          'k_mathName', 'k_mathDesc', 'diff-hard',   'g8Tag', 'fa-calculator', 'memory.png')}
+                        ${this._gameCard('distraction_hunter', 'g1Name', 'g1Desc', 'diff-easy', 'g1Tag', 'fa-meteor', 'distraction.png')}
+                        ${this._gameCard('emotional_stoplight', 'g4Name', 'g4Desc', 'diff-easy', 'g4Tag', 'fa-traffic-light', 'stoplight.png')}
+                        ${this._gameCard('musical_memory', 'g5Name', 'g5Desc', 'diff-medium', 'g5Tag', 'fa-music', 'memory.png')}
+                        ${this._gameCard('memory_cards', 'g6Name', 'g6Desc', 'diff-easy', 'g6Tag', 'fa-layer-group', 'spatial.png')}
+                        ${this._gameCard('kids_spatial', 'k_spatialName', 'k_spatialDesc', 'diff-medium', 'g2Tag', 'fa-star', 'spatial.png')}
+                        ${this._gameCard('kids_routine', 'k_routineName', 'k_routineDesc', 'diff-medium', 'g3Tag', 'fa-rocket', 'routine.png')}
+                        ${this._gameCard('kids_pattern', 'k_patternName', 'k_patternDesc', 'diff-medium', 'g7Tag', 'fa-shapes', 'distraction.png')}
+                        ${this._gameCard('kids_math', 'k_mathName', 'k_mathDesc', 'diff-hard', 'g8Tag', 'fa-calculator', 'memory.png')}
                     </div>
                 </div>
 
@@ -1328,14 +1372,14 @@ class NeuroSparkApp {
                         <span style="margin-left:auto;background:rgba(167,139,250,0.15);border:1px solid rgba(167,139,250,0.3);color:#a78bfa;padding:4px 14px;border-radius:20px;font-size:0.8rem;font-weight:700;">8 JUEGOS</span>
                     </div>
                     <div class="games-grid" style="grid-template-columns:1fr 1fr;">
-                        ${this._gameCard('spatial_focus',      'g2Name', 'g2Desc', 'diff-medium', 'g2Tag', 'fa-star-half-stroke', 'spatial.png')}
-                        ${this._gameCard('routine_builder',    'g3Name', 'g3Desc', 'diff-hard',   'g3Tag', 'fa-puzzle-piece', 'routine.png')}
-                        ${this._gameCard('pattern_matcher',    'g7Name', 'g7Desc', 'diff-medium', 'g7Tag', 'fa-shapes', 'distraction.png')}
-                        ${this._gameCard('speed_math',         'g8Name', 'g8Desc', 'diff-hard',   'g8Tag', 'fa-calculator', 'memory.png')}
-                        ${this._gameCard('teens_distraction',  't_distName', 't_distDesc', 'diff-medium', 'g1Tag', 'fa-shield-halved', 'distraction.png')}
-                        ${this._gameCard('teens_stoplight',    't_stopName', 't_stopDesc', 'diff-hard', 'g4Tag', 'fa-bolt', 'stoplight.png')}
-                        ${this._gameCard('teens_sound',        't_soundName', 't_soundDesc', 'diff-hard', 'g5Tag', 'fa-wave-square', 'memory.png')}
-                        ${this._gameCard('teens_cards',        't_cardsName', 't_cardsDesc', 'diff-medium', 'g6Tag', 'fa-unlock-keyhole', 'spatial.png')}
+                        ${this._gameCard('spatial_focus', 'g2Name', 'g2Desc', 'diff-medium', 'g2Tag', 'fa-star-half-stroke', 'spatial.png')}
+                        ${this._gameCard('routine_builder', 'g3Name', 'g3Desc', 'diff-hard', 'g3Tag', 'fa-puzzle-piece', 'routine.png')}
+                        ${this._gameCard('pattern_matcher', 'g7Name', 'g7Desc', 'diff-medium', 'g7Tag', 'fa-shapes', 'distraction.png')}
+                        ${this._gameCard('speed_math', 'g8Name', 'g8Desc', 'diff-hard', 'g8Tag', 'fa-calculator', 'memory.png')}
+                        ${this._gameCard('teens_distraction', 't_distName', 't_distDesc', 'diff-medium', 'g1Tag', 'fa-shield-halved', 'distraction.png')}
+                        ${this._gameCard('teens_stoplight', 't_stopName', 't_stopDesc', 'diff-hard', 'g4Tag', 'fa-bolt', 'stoplight.png')}
+                        ${this._gameCard('teens_sound', 't_soundName', 't_soundDesc', 'diff-hard', 'g5Tag', 'fa-wave-square', 'memory.png')}
+                        ${this._gameCard('teens_cards', 't_cardsName', 't_cardsDesc', 'diff-medium', 'g6Tag', 'fa-unlock-keyhole', 'spatial.png')}
                     </div>
                 </div>
             </div>`;
@@ -1357,9 +1401,9 @@ class NeuroSparkApp {
     setupPomodoro() {
 
         let timer = null, timeRemaining = 20 * 60, running = false;
-        const display   = document.getElementById('timer-display');
-        const startBtn  = document.getElementById('btn-timer-start');
-        const resetBtn  = document.getElementById('btn-timer-reset');
+        const display = document.getElementById('timer-display');
+        const startBtn = document.getElementById('btn-timer-start');
+        const resetBtn = document.getElementById('btn-timer-reset');
         const fmt = () => {
             const m = Math.floor(timeRemaining / 60).toString().padStart(2, '0');
             const s = (timeRemaining % 60).toString().padStart(2, '0');
@@ -1592,11 +1636,11 @@ class NeuroSparkApp {
     addChatMessage(sender, text, isTyping = false) {
         const container = document.getElementById('chat-messages-container');
         if (!container) return;
-        const msgId = 'msg-' + Date.now() + Math.floor(Math.random()*1000);
+        const msgId = 'msg-' + Date.now() + Math.floor(Math.random() * 1000);
         const div = document.createElement('div');
         div.id = msgId;
         div.className = `message ${sender} ${isTyping ? 'typing' : ''}`;
-        
+
         let contentHtml = '';
         if (isTyping) {
             contentHtml = `<div class="typing-indicator"><span></span><span></span><span></span></div>`;
@@ -1607,7 +1651,7 @@ class NeuroSparkApp {
                 .replace(/\n/g, '<br>');
             contentHtml = `<p>${fmt}</p>`;
         }
-        
+
         div.innerHTML = contentHtml;
         container.appendChild(div);
         container.scrollTop = container.scrollHeight;
@@ -1625,7 +1669,7 @@ class NeuroSparkApp {
             .replace(/\n/g, '<br>');
         div.innerHTML = `<p>${fmt}</p>`;
         const container = document.getElementById('chat-messages-container');
-        if(container) container.scrollTop = container.scrollHeight;
+        if (container) container.scrollTop = container.scrollHeight;
         coach.speak(newText);
     }
 
@@ -1651,7 +1695,7 @@ export const app = new NeuroSparkApp();
 window.addEventListener('DOMContentLoaded', () => {
     // roundRect polyfill
     if (!CanvasRenderingContext2D.prototype.roundRect) {
-        CanvasRenderingContext2D.prototype.roundRect = function(x, y, w, h, r) {
+        CanvasRenderingContext2D.prototype.roundRect = function (x, y, w, h, r) {
             const R = Math.min(r, w / 2, h / 2);
             this.beginPath();
             this.moveTo(x + R, y);
