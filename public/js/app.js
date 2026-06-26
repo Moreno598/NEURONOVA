@@ -887,10 +887,10 @@ class NeuroSparkApp {
                         ${this._gameCard('emotional_stoplight', 'g4Name', 'g4Desc', 'diff-easy', 'g4Tag', 'fa-traffic-light', 'stoplight.png')}
                         ${this._gameCard('musical_memory', 'g5Name', 'g5Desc', 'diff-medium', 'g5Tag', 'fa-music', 'memory.png')}
                         ${this._gameCard('memory_cards', 'g6Name', 'g6Desc', 'diff-easy', 'g6Tag', 'fa-layer-group', 'spatial.png')}
-                        ${this._gameCard('kids_spatial', 'k_spatialName', 'k_spatialDesc', 'diff-medium', 'g2Tag', 'fa-star', 'spatial.png')}
+                        ${this._gameCard('kids_spatial', 'k_spatialName', 'k_spatialDesc', 'diff-medium', 'g2Tag', 'fa-star', 'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=600&q=80')}
                         ${this._gameCard('kids_routine', 'k_routineName', 'k_routineDesc', 'diff-medium', 'g3Tag', 'fa-rocket', 'routine.png')}
-                        ${this._gameCard('kids_pattern', 'k_patternName', 'k_patternDesc', 'diff-medium', 'g7Tag', 'fa-shapes', 'distraction.png')}
-                        ${this._gameCard('kids_math', 'k_mathName', 'k_mathDesc', 'diff-hard', 'g8Tag', 'fa-calculator', 'memory.png')}
+                        ${this._gameCard('kids_pattern', 'k_patternName', 'k_patternDesc', 'diff-medium', 'g7Tag', 'fa-shapes', 'https://images.unsplash.com/photo-1614729939124-032f0b56c9ce?auto=format&fit=crop&w=600&q=80')}
+                        ${this._gameCard('kids_math', 'k_mathName', 'k_mathDesc', 'diff-hard', 'g8Tag', 'fa-calculator', 'https://images.unsplash.com/photo-1550751827-4bd374c3f58b?auto=format&fit=crop&w=600&q=80')}
                     </div>
                 </div>
 
@@ -960,10 +960,11 @@ class NeuroSparkApp {
         const diffMapQu = { 'diff-easy': 'ALLILLAN', 'diff-medium': 'CHAWPI', 'diff-hard': 'SASA' };
         const map = isQu ? diffMapQu : (isEn ? diffMapEn : diffMapEs);
         const diffLabel = map[diffClass] || diffClass.replace('diff-', '').toUpperCase();
+        const bgUrl = imgName.startsWith('http') ? imgName : `assets/games/${imgName}`;
 
         return `
             <div class="game-card">
-                <div class="game-thumbnail" style="--bg-image: url('assets/games/${imgName}');">
+                <div class="game-thumbnail" style="--bg-image: url('${bgUrl}');">
                     <i class="fa-solid ${icon}" style="display:none;"></i>
                 </div>
                 <div class="game-info">
@@ -1000,14 +1001,14 @@ class NeuroSparkApp {
                     </div>
                     <h3 class="section-title"><i class="fa-solid fa-brain text-blue"></i> ${i18n.t('teensGamesTitle')}</h3>
                     <div class="games-grid" style="grid-template-columns:1fr 1fr;">
-                        ${this._gameCard('spatial_focus', 'g2Name', 'g2Desc', 'diff-medium', 'g2Tag', 'fa-star-half-stroke', 'spatial.png')}
+                        ${this._gameCard('spatial_focus', 'g2Name', 'g2Desc', 'diff-medium', 'g2Tag', 'fa-star-half-stroke', 'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=600&q=80')}
                         ${this._gameCard('routine_builder', 'g3Name', 'g3Desc', 'diff-hard', 'g3Tag', 'fa-puzzle-piece', 'routine.png')}
-                        ${this._gameCard('pattern_matcher', 'g7Name', 'g7Desc', 'diff-medium', 'g7Tag', 'fa-shapes', 'distraction.png')}
-                        ${this._gameCard('speed_math', 'g8Name', 'g8Desc', 'diff-hard', 'g8Tag', 'fa-calculator', 'memory.png')}
+                        ${this._gameCard('pattern_matcher', 'g7Name', 'g7Desc', 'diff-medium', 'g7Tag', 'fa-shapes', 'https://images.unsplash.com/photo-1614729939124-032f0b56c9ce?auto=format&fit=crop&w=600&q=80')}
+                        ${this._gameCard('speed_math', 'g8Name', 'g8Desc', 'diff-hard', 'g8Tag', 'fa-calculator', 'https://images.unsplash.com/photo-1550751827-4bd374c3f58b?auto=format&fit=crop&w=600&q=80')}
                         ${this._gameCard('teens_distraction', 't_distName', 't_distDesc', 'diff-medium', 'g1Tag', 'fa-shield-halved', 'distraction.png')}
                         ${this._gameCard('teens_stoplight', 't_stopName', 't_stopDesc', 'diff-hard', 'g4Tag', 'fa-bolt', 'stoplight.png')}
-                        ${this._gameCard('teens_sound', 't_soundName', 't_soundDesc', 'diff-hard', 'g5Tag', 'fa-wave-square', 'memory.png')}
-                        ${this._gameCard('teens_cards', 't_cardsName', 't_cardsDesc', 'diff-medium', 'g6Tag', 'fa-unlock-keyhole', 'spatial.png')}
+                        ${this._gameCard('teens_sound', 't_soundName', 't_soundDesc', 'diff-hard', 'g5Tag', 'fa-wave-square', 'https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?auto=format&fit=crop&w=600&q=80')}
+                        ${this._gameCard('teens_cards', 't_cardsName', 't_cardsDesc', 'diff-medium', 'g6Tag', 'fa-unlock-keyhole', 'https://images.unsplash.com/photo-1635313073808-0a0667b5791c?auto=format&fit=crop&w=600&q=80')}
                     </div>
                 </div>
 
