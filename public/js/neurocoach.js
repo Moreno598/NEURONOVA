@@ -105,106 +105,102 @@ class NeuroCoachAI {
         const text = query.toLowerCase().trim();
         const mode = appState.profile;
         const lang = i18n.currentLang;
+        const isEs = lang !== 'en';
         let response = '';
 
-        // Mantenemos las keywords originales y añadimos nuevas capacidades NLP (Senior Pattern)
-        const kw = {
-            help: lang === 'en' ? ['help', 'how to play', 'how do i'] : ['ayuda', 'jugar', 'cómo juego', 'como juego'],
-            tired: lang === 'en' ? ['tired', 'sleepy', 'bored', 'exhausted'] : ['cansado', 'sueño', 'fatiga', 'aburrido'],
-            focus: lang === 'en' ? ['focus', 'distract', 'can\'t', 'concentrate'] : ['concentra', 'distra', 'no puedo'],
-            coins: lang === 'en' ? ['neurocoin', 'coin', 'points'] : ['neurocoin', 'moneda', 'puntos'],
-            sparky: lang === 'en' ? ['who are you', 'sparky', 'what are you'] : ['quien eres', 'quién eres', 'sparky'],
-            report: lang === 'en' ? ['report', 'how am i', 'teacher', 'parent'] : ['reporte', 'docente', 'padre', 'cómo voy'],
-            // --- NUEVAS INTENCIONES ---
-            greeting: lang === 'en' ? ['hello', 'hi', 'hey', 'good morning'] : ['hola', 'buenos días', 'buenas tardes', 'buenas noches', 'saludos', 'que tal'],
-            thanks: lang === 'en' ? ['thank', 'thanks', 'appreciate'] : ['gracias', 'te agradezco', 'muy amable', 'genial'],
-            adhd: lang === 'en' ? ['what is adhd', 'adhd', 'hyperactive'] : ['qué es tdah', 'que es tdah', 'tdah', 'hiperactividad', 'déficit de atención'],
-            emotion: lang === 'en' ? ['sad', 'angry', 'frustrated', 'happy', 'anxious'] : ['triste', 'enojado', 'frustrado', 'feliz', 'ansioso', 'estrés', 'estresado'],
-            tips: lang === 'en' ? ['tip', 'advice', 'study'] : ['tip', 'consejo', 'estudiar', 'recomendación']
-        };
-
         const has = (arr) => arr.some(k => text.includes(k));
+        const rand = (arr) => arr[Math.floor(Math.random() * arr.length)];
 
-        // Helper para respuestas dinámicas (evita que la IA suene repetitiva)
-        const getRandomRes = (arr) => arr[Math.floor(Math.random() * arr.length)];
+        // ── Intent map (bilingual) ─────────────────────────────────────────
+        const intents = [
+            {
+                keys: isEs ? ['hola','buenos','buenas','saludos','que tal','hey'] : ['hello','hi','hey','good morning','sup'],
+                res: () => rand(isEs
+                    ? ['¡Hola! 🌟 Aquí Sparky. ¿En qué te ayudo hoy?', '¡Hola! ¿Qué tienes en mente?', '¡Qué tal! ¿Listo para potenciar tu cerebro? 🧠']
+                    : ['Hello! 🌟 Sparky here. How can I help you today?', 'Hi! What is on your mind?', 'Hey there! Ready to boost your brain? 🧠'])
+            },
+            {
+                keys: isEs ? ['gracias','te agradezco','muy amable'] : ['thank','thanks','appreciate','cheers'],
+                res: () => rand(isEs
+                    ? ['¡De nada! Estoy aquí para apoyarte. 💪', '¡Para eso estoy! Recuerda hacer tus pausas. ✨']
+                    : ['You are welcome! I am here to support you. 💪', 'Anytime! Remember to take your breaks. ✨'])
+            },
+            {
+                keys: isEs ? ['tdah','hiperactividad','déficit de atención','deficit de atencion','tda '] : ['adhd','hyperactive','attention deficit','add '],
+                res: () => isEs
+                    ? '🧠 **¿Qué es el TDAH?**\n\nEl Trastorno por Déficit de Atención e Hiperactividad es una condición neurológica donde el cerebro regula la atención y los impulsos de manera diferente.\n\n**No es pereza ni falta de voluntad.** Es química cerebral.\n\nCon entrenamiento y estrategias correctas, el cerebro TDAH puede convertirse en un superpoder. ⚡\n\nNeuroSpark fue diseñado exactamente para esto.'
+                    : '🧠 **What is ADHD?**\n\nAttention Deficit Hyperactivity Disorder is a neurological condition where the brain regulates attention and impulses differently.\n\n**It is not laziness or lack of willpower.** It is brain chemistry.\n\nWith the right training and strategies, the ADHD brain can become a superpower. ⚡\n\nNeuroSpark was designed exactly for this.'
+            },
+            {
+                keys: isEs ? ['triste','enojado','frustrado','ansioso','estrés','estresado','agobiad','nervioso'] : ['sad','angry','frustrated','anxious','stressed','overwhelmed','nervous','worried'],
+                res: () => isEs
+                    ? '💙 Te entiendo. Las emociones intensas son señales de que algo necesita atención.\n\n**Técnica 5-4-3-2-1** (ancla al presente):\n- 5 cosas que *ves*\n- 4 que *tocas*\n- 3 que *escuchas*\n- 2 que *hueles*\n- 1 que *saboreas*\n\nRespiración: inhala 4 seg → aguanta 4 → exhala 6. Repite 3 veces. \n\n¡Estoy aquí para ti! 🌟'
+                    : '💙 I hear you. Intense emotions are signals that something needs attention.\n\n**5-4-3-2-1 Technique** (anchors to the present):\n- 5 things you *see*\n- 4 you *touch*\n- 3 you *hear*\n- 2 you *smell*\n- 1 you *taste*\n\nBreathing: inhale 4s → hold 4s → exhale 6s. Repeat 3 times.\n\nI am here for you! 🌟'
+            },
+            {
+                keys: isEs ? ['consejo','tip ','estrategia','estudiar','recomendación','recomendacion'] : ['tip ','advice','strategy','study','recommendation'],
+                res: () => (isEs ? '💡 Aquí tienes una estrategia cognitiva:\n\n' : '💡 Here is a cognitive strategy:\n\n') + this.getTip(mode)
+            },
+            {
+                keys: isEs ? ['cansado','fatiga','aburrido','no tengo ganas','agotado','sin energía'] : ['tired','exhausted','bored','no energy','sleepy','drained'],
+                res: () => (isEs ? '😴 La fatiga mental nos pasa a todos. Pausa activa ahora:\n\n' : '😴 Mental fatigue happens to all of us. Active break right now:\n\n') + this.getBreak()
+            },
+            {
+                keys: isEs ? ['concentra','distra','no puedo','me cuesta','perder el foco','focus'] : ['focus','distract','can not','concentrate','lose focus','hard to'],
+                res: () => (isEs ? '🎯 Concentrarse no es forzar la mente, es darle espacio. Tip:\n\n' : '🎯 Focusing is not about forcing your mind, it is about giving it space. Tip:\n\n') + this.getTip(mode)
+            },
+            {
+                keys: isEs ? ['neurocoin','moneda','puntos','tienda','shop','comprar'] : ['neurocoin','coin','points','shop','buy','store'],
+                res: () => isEs
+                    ? '💎 **NeuroCoins** son tu moneda de progreso.\n\n- Ganas NeuroCoins al **completar juegos** con buen desempeño.\n- Más precisión y control de impulsos = más monedas.\n- Canjéalas en la **Tienda de Sparky** por skins y personalizaciones.\n- 500 NeuroCoins = subir de nivel. ¡Sigue entrenando!'
+                    : '💎 **NeuroCoins** are your progress currency.\n\n- Earn NeuroCoins by **completing games** with good performance.\n- More accuracy and impulse control = more coins.\n- Redeem them at **Sparky\'s Shop** for skins and customizations.\n- 500 NeuroCoins = level up. Keep training!'
+            },
+            {
+                keys: isEs ? ['quien eres','qué eres','que eres','sparky','quién eres'] : ['who are you','what are you','sparky','your name','your purpose'],
+                res: () => isEs
+                    ? '⚡ **¡Soy Sparky!** Tu asistente IA y NeuroCoach personal.\n\n**Lo que puedo hacer por ti:**\n- 🎯 Darte estrategias de concentración y estudio\n- 😴 Sugerirte pausas activas personalizadas\n- 🧠 Explicarte qué es el TDAH y la neurodiversidad\n- 📊 Generarte un reporte cognitivo rápido\n- 💬 Escucharte cuando lo necesitas\n\nMi misión: recordarte que tu cerebro es único y poderoso. 🌟'
+                    : '⚡ **I am Sparky!** Your AI assistant and personal NeuroCoach.\n\n**What I can do for you:**\n- 🎯 Give you focus and study strategies\n- 😴 Suggest personalized active breaks\n- 🧠 Explain ADHD and neurodiversity\n- 📊 Generate a quick cognitive report\n- 💬 Listen when you need it\n\nMy mission: remind you that your brain is unique and powerful. 🌟'
+            },
+            {
+                keys: isEs ? ['reporte','cómo voy','como voy','mi progreso','estadísticas','mi avance'] : ['report','how am i','my progress','statistics','my stats'],
+                res: () => this.generateQuickReport(appState)
+            },
+            {
+                keys: isEs ? ['ayuda','cómo juego','como juego','cómo funciona','como funciona','qué hago'] : ['help','how to play','how do i','how does','what do i do'],
+                res: () => mode === 'kids'
+                    ? (isEs ? '🏆 ¡Es súper fácil! Elige un juego, completa la misión y gana NeuroCoins. Cada juego entrena un superpoder de tu cerebro. ¿Empezamos?' : '🏆 Super easy! Choose a game, complete the mission and earn NeuroCoins. Each game trains a brain superpower. Shall we start?')
+                    : (isEs ? '📊 Tienes 8 simuladores neurocognitivos. Cada uno mide atención, control de impulsos, memoria o planificación. Juega, gana NeuroCoins y revisa tu reporte.' : '📊 You have 8 neurocognitive simulators. Each measures attention, impulse control, memory or planning. Play, earn NeuroCoins and check your report.')
+            }
+        ];
 
-        // Evaluamos las nuevas intenciones primero
-        if (has(kw.greeting)) {
-            response = getRandomRes(
-                lang === 'en' 
-                ? ["Hello! 🌟 Sparky here. Ready to train?", "Hi! What's on your mind today?", "Hey there! Ready to boost your brain? 🧠"]
-                : ["¡Hola! 🌟 Aquí Sparky. ¿Listo para entrenar?", "¡Hola! ¿Qué tienes en mente hoy?", "¡Qué tal! ¿Listo para potenciar tu cerebro? 🧠"]
-            );
-        } else if (has(kw.thanks)) {
-            response = getRandomRes(
-                lang === 'en'
-                ? ["You're welcome! I'm here to support you. 💪", "Anytime! Remember to take your breaks. ✨"]
-                : ["¡De nada! Estoy aquí para apoyarte. 💪", "¡Para eso estoy! Recuerda hacer tus pausas. ✨"]
-            );
-        } else if (has(kw.adhd)) {
-            response = lang === 'en'
-                ? "ADHD means your brain works a little differently, like a race car engine. With the right training, it becomes a superpower! 🚀"
-                : "El TDAH significa que tu cerebro funciona un poco diferente, ¡como el motor de un auto de carreras! Con el entrenamiento adecuado, se convierte en un superpoder. 🚀";
-        } else if (has(kw.emotion)) {
-            response = lang === 'en'
-                ? "I hear you. Emotions can be overwhelming sometimes. Try closing your eyes and taking 3 deep breaths. I'm here for you. 💙"
-                : "Te entiendo. Las emociones pueden ser abrumadoras a veces. Intenta cerrar los ojos y respirar profundo 3 veces. Estoy aquí para ti. 💙";
-        } else if (has(kw.tips)) {
-            response = (lang === 'en' ? "Here is a great strategy for you:\n\n" : "Aquí tienes una excelente estrategia:\n\n") + this.getTip(mode);
-        } 
-        // LÍNEAS DE CÓDIGO ANTERIORES INTACTAS:
-        else if (has(kw.help)) {
-            response = mode === 'kids'
-                ? (lang === 'en'
-                    ? "It's super easy! Choose a game from the home screen. Each game trains a brain superpower like attention or memory. You earn NeuroCoins! 🏆"
-                    : "¡Es súper fácil! Elige un juego de la pantalla principal. Cada juego entrena un superpoder de tu cerebro. ¡Y ganas NeuroCoins! 🏆")
-                : (lang === 'en'
-                    ? "You can train your executive functions with the 5 interactive simulators. Each one tracks inattention or impulsivity metrics. 📊"
-                    : "Puedes entrenar tus funciones ejecutivas con los 5 simuladores. Cada uno rastrea métricas de inatención o impulsividad. 📊");
-        } else if (has(kw.tired)) {
-            response = (lang === 'en'
-                ? "I totally understand. Mental fatigue happens to everyone. Take an active break right now:\n\n"
-                : "Entiendo perfectamente. La fatiga mental nos pasa a todos. Aquí tienes una pausa activa:\n\n") + this.getBreak();
-        } else if (has(kw.focus)) {
-            response = (lang === 'en'
-                ? "Don't worry, focus isn't about forcing your mind, it's about giving it space. Here's a tip:\n\n"
-                : "No te preocupes, concentrarse no es forzar la mente, sino darle espacio. Mira este tip:\n\n") + this.getTip(mode);
-        } else if (has(kw.coins)) {
-            response = mode === 'kids'
-                ? (lang === 'en'
-                    ? "NeuroCoins are cognitive energy gems! Earn them by playing and completing missions. Use them in Sparky's shop! 💎"
-                    : "¡Las NeuroCoins son gemas de energía cognitiva! Las ganas jugando y completando misiones. ¡Úsalas en la tienda de Sparky! 💎")
-                : (lang === 'en'
-                    ? "NeuroCoins represent your training consistency. They're based on your accuracy and impulse control. 🚀"
-                    : "Las NeuroCoins representan tu constancia de entrenamiento. Se calculan basadas en tu precisión y control de impulsos. 🚀");
-        } else if (has(kw.sparky)) {
-            response = lang === 'en'
-                ? "I'm Sparky! Your AI assistant and NeuroCoach. My mission is to help you train your brain and remind you that neurodiversity is a superpower! ⚡"
-                : "¡Soy Sparky! Tu asistente IA y NeuroCoach. Mi misión es ayudarte a entrenar tu cerebro y recordarte que la neurodiversidad es un superpoder. ⚡";
-        } else if (has(kw.report)) {
-            response = this.generateQuickReport(appState);
-        } else {
-            // Advanced ChatGPT fallback via API
+        // ── Match intent ───────────────────────────────────────────────────
+        for (const intent of intents) {
+            if (has(intent.keys)) {
+                response = intent.res();
+                break;
+            }
+        }
+
+        // ── Fallback: call server API (with lang context) ──────────────────
+        if (!response) {
             try {
                 const res = await fetch('/api/chat', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ query: text, mode })
+                    body: JSON.stringify({ query: text, mode, lang })
                 });
                 if (res.ok) {
                     const data = await res.json();
                     response = data.response;
-                } else {
-                    throw new Error("API fail");
-                }
-            } catch (err) {
-                response = mode === 'kids'
-                    ? (lang === 'en'
-                        ? "Wow, great question! Training your brain is like building a rocket: it takes patience and consistency. Want to play Distraction Hunters? 🚀"
-                        : "¡Wow, qué gran pregunta! Recuerda que entrenar tu cerebro requiere paciencia y constancia. ¿Quieres jugar a Cazadores de Distracciones? 🚀")
-                    : (lang === 'en'
-                        ? "Interesting. To optimize hyperfocus and regulate inattention, alternate structured work with kinesthetic breaks. Try a Pomodoro session?"
-                        : "Interesante. Para optimizar el hiperfoco, alterna trabajo estructurado con pausas kinestésicas. ¿Probamos una sesión de Pomodoro?");
+                } else { throw new Error('API fail'); }
+            } catch {
+                response = isEs
+                    ? (mode === 'kids'
+                        ? '🤔 ¡Buena pregunta! No tengo una respuesta exacta para eso ahora, pero puedes preguntarme sobre: concentración, memoria, estrés, TDAH, juegos, rutinas o tu reporte. ¡Estoy aquí! 🚀'
+                        : '💡 Pregunta interesante. Puedo ayudarte con: estrategias de estudio, control de impulsos, memoria, estrés, motivación, organización o tu reporte cognitivo. ¿Sobre qué profundizamos?')
+                    : (mode === 'kids'
+                        ? '🤔 Great question! I can help with: focus, memory, stress, ADHD, games, routines or your report. I am here! 🚀'
+                        : '💡 Interesting question. I can help with: study strategies, impulse control, memory, stress, motivation, organization or your cognitive report. What shall we explore?');
             }
         }
 
