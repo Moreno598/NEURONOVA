@@ -152,7 +152,7 @@ class NeuroSparkApp {
         if (this.state.settings.voiceOn) btnVoice.classList.add('active');
         else btnVoice.classList.remove('active');
 
-        // Update Sparky chat welcome placeholder & chips
+        // Update Sparky chat welcome message & chips with user's real name
         const chatInput = document.getElementById('chat-user-input');
         if (chatInput) chatInput.placeholder = i18n.t('chatPlaceholder');
         const chipBreak = document.getElementById('chip-break');
@@ -161,6 +161,13 @@ class NeuroSparkApp {
         if (chipBreak) chipBreak.innerHTML = `<i class="fa-solid fa-hourglass-half"></i> ${i18n.t('chatBreakChip')}`;
         if (chipTip) chipTip.innerHTML = `<i class="fa-solid fa-lightbulb"></i> ${i18n.t('chatTipChip')}`;
         if (chipReport) chipReport.innerHTML = `<i class="fa-solid fa-chart-line"></i> ${i18n.t('chatReportChip')}`;
+
+        // Personalize Sparky's initial welcome message with the user's real name
+        const firstMsg = document.querySelector('#chat-messages-container .message.system:first-child p');
+        if (firstMsg) {
+            const userName = this.state.activeProfileName || (i18n.currentLang === 'en' ? 'Explorer' : 'Explorador');
+            firstMsg.innerHTML = `<strong>Sparky:</strong> ${i18n.t('chatWelcome', { name: userName })}`;
+        }
     }
 
     /* ---- EVENT LISTENERS ---- */

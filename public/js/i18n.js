@@ -215,7 +215,7 @@ const translations = {
         settingResetConfirm: '¿Estás seguro de reiniciar todos tus datos de NeuroSpark? Esto borrará tus NeuroCoins y tu historial cognitivo de entrenamiento.',
 
         // --- SPARKY CHAT ---
-        chatWelcome:    '¡Hola, Explorador! Estoy aquí para ayudarte a entrenar tu cerebro, darte consejos y asegurarme de que hagas pausas activas. ¿Qué te gustaría hacer hoy?',
+        chatWelcome:    '¡Hola, {name}! Estoy aquí para ayudarte a entrenar tu cerebro, darte consejos y asegurarme de que hagas pausas activas. ¿Qué te gustaría hacer hoy?',
         chatBreakChip:  'Sugerir Pausa',
         chatTipChip:    'Tip de Estudio',
         chatReportChip: 'Reporte Rápido',
@@ -545,7 +545,7 @@ const translations = {
         settingResetConfirm: 'Are you sure you want to reset all NeuroSpark data? This will erase your NeuroCoins and cognitive training history.',
 
         // --- SPARKY CHAT ---
-        chatWelcome:    "Hello, Explorer! I'm here to help you train your brain, give you advice and make sure you take active breaks. What would you like to do today?",
+        chatWelcome:    "Hello, {name}! I'm here to help you train your brain, give you advice and make sure you take active breaks. What would you like to do today?",
         chatBreakChip:  'Suggest Break',
         chatTipChip:    'Study Tip',
         chatReportChip: 'Quick Report',
