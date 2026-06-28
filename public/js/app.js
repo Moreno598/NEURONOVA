@@ -1816,7 +1816,7 @@ class NeuroSparkApp {
         div.innerHTML = contentHtml;
         container.appendChild(div);
         container.scrollTop = container.scrollHeight;
-        if (sender === 'system' && !isTyping) coach.speak(text);
+        if (sender === 'system' && !isTyping) coach.speak(text, true);
         return msgId;
     }
 
@@ -1831,7 +1831,7 @@ class NeuroSparkApp {
         div.innerHTML = `<p>${fmt}</p>`;
         const container = document.getElementById('chat-messages-container');
         if (container) container.scrollTop = container.scrollHeight;
-        coach.speak(newText);
+        coach.speak(newText, true);
     }
 
     /* ---- TOAST ---- */

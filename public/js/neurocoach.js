@@ -77,7 +77,7 @@ class NeuroCoachAI {
         }
     }
 
-    speak(text) {
+    speak(text, isSparky = false) {
         if (!this.voiceEnabled || !this.synth) return;
         this.synth.cancel();
         const cleanText = text.replace(/[*#_~`\[\]()]/g, '');
@@ -89,28 +89,43 @@ class NeuroCoachAI {
             profile = window.neuroApp.state.profile;
         }
 
-        if (profile === 'kids') {
-            utterance.pitch = 1.5;
-            utterance.rate = 0.95;
-        } else if (profile === 'teens') {
-            utterance.pitch = 1.2;
-            utterance.rate = 1.05;
-        } else {
-            utterance.pitch = 1.0;
+        if (isSparky) {
+            // Restore original Sparky voice config
+            utterance.pitch = 1.1;
             utterance.rate = 1.0;
+        } else {
+            // Narrator (Assistant) voice config based on profile
+            if (profile === 'kids') {
+                utterance.pitch = 1.8;
+                utterance.rate = 0.9;
+            } else if (profile === 'teens') {
+                utterance.pitch = 0.8;
+                utterance.rate = 1.25;
+            } else {
+                utterance.pitch = 1.0;
+                utterance.rate = 1.0;
+            }
         }
 
         const voices = this.synth.getVoices();
         if (voices.length > 0) {
             let targetVoice = null;
-            if (profile === 'kids') {
-                targetVoice = voices.find(v => v.lang.startsWith(utterance.lang.substring(0,2)) && (v.name.toLowerCase().includes('female') || v.name.toLowerCase().includes('soft') || v.name.toLowerCase().includes('mujer') || v.name.toLowerCase().includes('monica')));
-            } else if (profile === 'teens') {
-                targetVoice = voices.find(v => v.lang.startsWith(utterance.lang.substring(0,2)) && (v.name.toLowerCase().includes('young') || v.name.toLowerCase().includes('natural') || v.name.toLowerCase().includes('joven') || v.name.toLowerCase().includes('jorge')));
+            
+            if (!isSparky) {
+                if (profile === 'kids') {
+                    // Try to find a soft/female voice (Sabina, Helena, Laura)
+                    targetVoice = voices.find(v => v.lang.startsWith(utterance.lang.substring(0,2)) && /(helena|sabina|laura|female|mujer)/i.test(v.name));
+                } else if (profile === 'teens') {
+                    // Try to find a male/energetic voice (Raul, Pablo, Diego)
+                    targetVoice = voices.find(v => v.lang.startsWith(utterance.lang.substring(0,2)) && /(raul|pablo|diego|male|hombre)/i.test(v.name));
+                }
             }
+            
+            // Fallback to any matching language voice if specific one not found or if it's Sparky
             if (!targetVoice) {
                 targetVoice = voices.find(v => v.lang === utterance.lang || v.lang.startsWith(utterance.lang.substring(0,2)));
             }
+            
             if (targetVoice) {
                 utterance.voice = targetVoice;
             }
