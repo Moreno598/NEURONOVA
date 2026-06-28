@@ -83,8 +83,39 @@ class NeuroCoachAI {
         const cleanText = text.replace(/[*#_~`\[\]()]/g, '');
         const utterance = new SpeechSynthesisUtterance(cleanText);
         utterance.lang = i18n.currentLang === 'en' ? 'en-US' : 'es-ES';
-        utterance.rate = 1.0;
-        utterance.pitch = 1.1;
+        
+        let profile = 'kids';
+        if (window.neuroApp && window.neuroApp.state) {
+            profile = window.neuroApp.state.profile;
+        }
+
+        if (profile === 'kids') {
+            utterance.pitch = 1.5;
+            utterance.rate = 0.95;
+        } else if (profile === 'teens') {
+            utterance.pitch = 1.2;
+            utterance.rate = 1.05;
+        } else {
+            utterance.pitch = 1.0;
+            utterance.rate = 1.0;
+        }
+
+        const voices = this.synth.getVoices();
+        if (voices.length > 0) {
+            let targetVoice = null;
+            if (profile === 'kids') {
+                targetVoice = voices.find(v => v.lang.startsWith(utterance.lang.substring(0,2)) && (v.name.toLowerCase().includes('female') || v.name.toLowerCase().includes('soft') || v.name.toLowerCase().includes('mujer') || v.name.toLowerCase().includes('monica')));
+            } else if (profile === 'teens') {
+                targetVoice = voices.find(v => v.lang.startsWith(utterance.lang.substring(0,2)) && (v.name.toLowerCase().includes('young') || v.name.toLowerCase().includes('natural') || v.name.toLowerCase().includes('joven') || v.name.toLowerCase().includes('jorge')));
+            }
+            if (!targetVoice) {
+                targetVoice = voices.find(v => v.lang === utterance.lang || v.lang.startsWith(utterance.lang.substring(0,2)));
+            }
+            if (targetVoice) {
+                utterance.voice = targetVoice;
+            }
+        }
+
         this.synth.speak(utterance);
     }
 

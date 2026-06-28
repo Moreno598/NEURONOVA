@@ -2861,3 +2861,84 @@ input:checked+.slider:before {
         opacity: 1;
     }
 }
+
+/* --- MOBILE RESPONSIVENESS OVERRIDES --- */
+@media (max-width: 900px) {
+    .app-main-content {
+        padding: 16px;
+    }
+    .games-grid {
+        grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)) !important;
+    }
+    .header-status {
+        gap: 10px;
+        padding: 6px 12px;
+    }
+}
+
+@media (max-width: 768px) {
+    .header-status {
+        display: none;
+    }
+    .profile-card {
+        padding: 24px 16px;
+    }
+    .profiles-grid {
+        grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    }
+}
+
+@media (max-width: 600px) {
+    .app-header {
+        padding: 10px 12px;
+    }
+    .header-logo {
+        gap: 6px;
+    }
+    .logo-main {
+        font-size: 1.1rem;
+    }
+    .logo-sub {
+        display: none;
+    }
+    .header-controls {
+        gap: 8px;
+    }
+    .control-btn {
+        width: 36px;
+        height: 36px;
+        font-size: 1rem;
+    }
+    .profile-select-btn {
+        padding: 6px 10px;
+        font-size: 0.9rem;
+    }
+    #current-profile-name {
+        display: none; /* Hide text, only keep avatar */
+    }
+    .games-grid {
+        grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)) !important;
+        gap: 16px;
+    }
+    .game-card {
+        height: 320px;
+    }
+    .app-main-content {
+        padding: 12px;
+    }
+    .coach-chat-panel {
+        width: 90vw !important;
+        height: 70vh !important;
+        right: 5vw !important;
+        bottom: 80px !important;
+        max-width: 100vw;
+    }
+    .chat-actions {
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+    .chat-action-chip {
+        font-size: 0.75rem;
+        padding: 6px 10px;
+    }
+}
