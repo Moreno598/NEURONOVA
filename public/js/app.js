@@ -1191,9 +1191,12 @@ class NeuroSparkApp {
                 : bought
                     ? `<button class="equip-btn" style="background:#7c3aed;color:white;border:none;padding:4px 10px;border-radius:4px;cursor:pointer;">${i18n.t('equip')}</button>`
                     : `<span style="color:#fbbf24;font-weight:700;"><i class="fa-solid fa-coins"></i> ${item.cost}</span>`;
-            const imgOrIcon = item.image
+            let imgOrIcon = item.image
                 ? `<img src="${item.image}" alt="${i18n.t(item.nameKey)}" style="height: 60px; width: 60px; object-fit: contain; margin-bottom: 12px; filter: drop-shadow(0 0 10px ${item.color});" />`
                 : `<i class="fa-solid ${item.icon}" style="font-size:2.5rem;color:${item.color};display:block;margin:10px 0;text-shadow: 0 0 10px ${item.color};"></i>`;
+            if (item.id === 'holo_pet') {
+                imgOrIcon = `<img src="assets/mascota_ninos.png" alt="${i18n.t(item.nameKey)}" style="height: 65px; width: 65px; object-fit: contain; margin-bottom: 12px; filter: drop-shadow(0 0 10px ${item.color});" />`;
+            }
             return `
                                 <div class="store-item ${bought ? 'purchased' : ''} ${active ? 'active-skin' : ''}" data-id="${item.id}">
                                     ${imgOrIcon}
@@ -1347,8 +1350,10 @@ class NeuroSparkApp {
     /* ---- TEENS HOME ---- */
     renderTeensHome(mount) {
         const name = this.state.activeProfileName;
-        const avatar = this.state.avatar || 'sparky';
-        const avatarUrl = (avatar.startsWith('http') || avatar.startsWith('data:')) ? avatar : `https://api.dicebear.com/7.x/bottts/svg?seed=${avatar.charAt(0).toUpperCase() + avatar.slice(1)}`;
+        const avatar = this.state.avatar;
+        const avatarUrl = (avatar && (avatar.startsWith('http') || avatar.startsWith('data:'))) 
+            ? avatar 
+            : 'assets/mascota_adolescentes.png';
         mount.innerHTML = `
             <div class="teens-home-view">
                 <div class="teens-main-panel" style="display:flex;flex-direction:column;gap:24px;">
@@ -1413,6 +1418,37 @@ class NeuroSparkApp {
                     </div>
                 </div>
 
+                <div class="store-container" style="margin-top: 40px;">
+                    <h3 class="section-title"><i class="fa-solid fa-shop text-purple"></i> ${i18n.t('storeTitle')}</h3>
+                    <p style="color:var(--text-muted);font-size:0.9rem;">${i18n.t('storeSub')}</p>
+                    <div class="store-grid">
+                        ${this.storeItems.map(item => {
+                            const bought = this.state.unlockedItems.includes(item.id);
+                            const active = this.state.activeSkin === item.id;
+                            const btnHTML = active
+                                ? `<span class="difficulty-badge diff-easy">${i18n.t('equipped')}</span>`
+                                : bought
+                                    ? `<button class="equip-btn" style="background:#7c3aed;color:white;border:none;padding:4px 10px;border-radius:4px;cursor:pointer;">${i18n.t('equip')}</button>`
+                                    : `<span style="color:#fbbf24;font-weight:700;"><i class="fa-solid fa-coins"></i> ${item.cost}</span>`;
+                            let imgOrIcon = item.image
+                                ? `<img src="${item.image}" alt="${i18n.t(item.nameKey)}" style="height: 60px; width: 60px; object-fit: contain; margin-bottom: 12px; filter: drop-shadow(0 0 10px ${item.color});" />`
+                                : `<i class="fa-solid ${item.icon}" style="font-size:2.5rem;color:${item.color};display:block;margin:10px 0;text-shadow: 0 0 10px ${item.color};"></i>`;
+                            
+                            if (item.id === 'holo_pet') {
+                                imgOrIcon = `<img src="assets/mascota_adolescentes.png" alt="${i18n.t(item.nameKey)}" style="height: 65px; width: 65px; object-fit: contain; margin-bottom: 12px; filter: drop-shadow(0 0 10px ${item.color});" />`;
+                            }
+
+                            return `
+                                <div class="store-item ${bought ? 'purchased' : ''} ${active ? 'active-skin' : ''}" data-id="${item.id}">
+                                    ${imgOrIcon}
+                                    <strong>${i18n.t(item.nameKey)}</strong>
+                                    <div style="margin: 6px 0; font-size: 0.75rem; color: ${item.color}; background: ${item.color}22; border: 1px solid ${item.color}55; border-radius: 6px; padding: 3px 8px; display: inline-block;"><i class="fa-solid fa-bolt" style="margin-right:4px;"></i>${item.effectDesc}</div>
+                                    <div style="margin-top:8px;">${btnHTML}</div>
+                                </div>`;
+                        }).join('')}
+                    </div>
+                </div>
+
                 <div style="display:flex;flex-direction:column;gap:24px;">
                     <div class="pomodoro-container">
                         <h3>${i18n.t('pomodoroTitle')}</h3>
@@ -1450,6 +1486,33 @@ class NeuroSparkApp {
         mount.querySelectorAll('.play-btn[data-game]').forEach(btn =>
             btn.addEventListener('click', () => engine.launch(btn.getAttribute('data-game')))
         );
+
+        mount.querySelectorAll('.store-item').forEach(item => {
+            item.addEventListener('click', e => {
+                const itemId = item.getAttribute('data-id');
+                const itemData = this.storeItems.find(i => i.id === itemId);
+
+                if (e.target.closest('.equip-btn')) {
+                    this.state.activeSkin = itemId;
+                    this.saveState(); this.renderHome();
+                    this.showItemUnlockModal(itemData, false);
+                    return;
+                }
+                if (this.state.unlockedItems.includes(itemId)) return;
+
+                if (this.state.coins >= itemData.cost) {
+                    this.state.coins -= itemData.cost;
+                    this.state.unlockedItems.push(itemId);
+                    this.state.activeSkin = itemId;
+                    this.saveState(); this.updateHeaderHUD(); this.renderHome();
+                    sound.playSuccess();
+                    this.showItemUnlockModal(itemData, true);
+                } else {
+                    sound.playError();
+                    this.showToast(i18n.t('notEnoughCoins'), 'warning');
+                }
+            });
+        });
 
         const taskList = document.getElementById('teen-task-list');
         taskList.addEventListener('click', e => {

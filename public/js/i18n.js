@@ -40,7 +40,7 @@ const translations = {
         skinCrown:   '👑 Corona del Campeón',
         skinJetpack: '🚀 Mochila Cohete',
         skinAura:    '✨ Aura Estelar',
-        skinHolopet: '🐶 Mascota Holográfica',
+        skinHolopet: '✨ Mascota Especial',
 
         // --- TEENS HOME ---
         teensWelcome:    'Hola, {name}',
