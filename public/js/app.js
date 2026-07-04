@@ -162,6 +162,18 @@ class NeuroSparkApp {
         if (chipTip) chipTip.innerHTML = `<i class="fa-solid fa-lightbulb"></i> ${i18n.t('chatTipChip')}`;
         if (chipReport) chipReport.innerHTML = `<i class="fa-solid fa-chart-line"></i> ${i18n.t('chatReportChip')}`;
 
+        // Premium check for HUD and Widget
+        const isPremium = localStorage.getItem('ns_is_premium') === 'true';
+        const premiumHubBtn = document.getElementById('btn-premium-hub');
+        const premiumWidget = document.getElementById('premiumWidget');
+        
+        if (isPremium) {
+            if (premiumHubBtn) premiumHubBtn.style.display = 'inline-flex';
+            if (premiumWidget) premiumWidget.style.display = 'none';
+        } else {
+            if (premiumHubBtn) premiumHubBtn.style.display = 'none';
+        }
+
         // Personalize Sparky's initial welcome message with the user's real name
         const firstMsg = document.querySelector('#chat-messages-container .message.system:first-child p');
         if (firstMsg) {
