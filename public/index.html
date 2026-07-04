@@ -74,6 +74,11 @@
 
             <!-- Right Controls -->
             <div class="header-controls">
+                <!-- Biblioteca -->
+                <button class="control-btn" id="btn-biblioteca" title="Biblioteca Educativa" onclick="openBibliotecaModal()" style="display:none; background: linear-gradient(135deg, #38bdf8, #a78bfa); color: white;">
+                    <i class="fa-solid fa-book-open"></i>
+                </button>
+
                 <!-- Music Control -->
                 <button class="control-btn" id="btn-music" title="Música Relajante">
                     <i class="fa-solid fa-music"></i>
@@ -274,12 +279,9 @@
                         <span
                             style="color: #1e293b; font-weight: 800; font-size: 0.85rem; cursor: pointer; transition: color 0.3s; letter-spacing: 0.5px;">LA
                             PLATAFORMA</span>
-                        <span id="nav-biblioteca" onclick="openBibliotecaModal()" onmouseover="this.style.color='#38bdf8'"
+                        <span onclick="openStatsModal()" onmouseover="this.style.color='#38bdf8'"
                             onmouseout="this.style.color='#64748b'"
-                            style="display: none; color: #64748b; font-weight: 700; font-size: 0.85rem; cursor: pointer; transition: color 0.3s; letter-spacing: 0.5px;">BIBLIOTECA</span>
-                        <span id="nav-estadisticas" onclick="openStatsModal()" onmouseover="this.style.color='#38bdf8'"
-                            onmouseout="this.style.color='#64748b'"
-                            style="display: none; color: #64748b; font-weight: 700; font-size: 0.85rem; cursor: pointer; transition: color 0.3s; letter-spacing: 0.5px;">ESTADÍSTICAS</span>
+                            style="color: #64748b; font-weight: 700; font-size: 0.85rem; cursor: pointer; transition: color 0.3s; letter-spacing: 0.5px;">ESTADÍSTICAS</span>
                         <span onclick="openInstitutionsModal()" onmouseover="this.style.color='#38bdf8'"
                             onmouseout="this.style.color='#64748b'"
                             style="color: #64748b; font-weight: 700; font-size: 0.85rem; cursor: pointer; transition: color 0.3s; letter-spacing: 0.5px;">INSTITUCIONES</span>

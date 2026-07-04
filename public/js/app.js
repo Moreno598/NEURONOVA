@@ -105,15 +105,12 @@ class NeuroSparkApp {
         document.getElementById('player-level').innerText = this.state.level;
         document.getElementById('current-profile-name').innerText = this.state.activeProfileName;
 
-        // Mostrar links solo si hay sesión
-        const navBib = document.getElementById('nav-biblioteca');
-        const navEst = document.getElementById('nav-estadisticas');
+        // Mostrar links solo si hay sesión (Dashboard Controls)
+        const btnBib = document.getElementById('btn-biblioteca');
         if (this.state.currentUserEmail) {
-            if (navBib) navBib.style.display = 'inline-block';
-            if (navEst) navEst.style.display = 'inline-block';
+            if (btnBib) btnBib.style.display = 'inline-flex';
         } else {
-            if (navBib) navBib.style.display = 'none';
-            if (navEst) navEst.style.display = 'none';
+            if (btnBib) btnBib.style.display = 'none';
         }
 
         // Render custom avatar in header
