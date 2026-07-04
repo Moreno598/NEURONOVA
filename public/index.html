@@ -1455,6 +1455,7 @@
             tdah: {
                 icon: '🧠',
                 title: '¿Qué es el TDAH?',
+                videoId: 'jhcn1_qsYmg',
                 content: `
                     <p>El Trastorno por Déficit de Atención e Hiperactividad (TDAH) es una condición neurobiológica que afecta la capacidad de una persona para mantener la atención, controlar impulsos y regular su nivel de actividad.</p>
                     <h4 style="color: white; margin: 10px 0 5px 0;">Puntos clave:</h4>
@@ -1468,6 +1469,7 @@
             study: {
                 icon: '🎓',
                 title: 'Técnicas de estudio',
+                videoId: 'CPxSzxylRCI',
                 content: `
                     <p>Para cerebros neurodivergentes, las técnicas tradicionales (como leer por horas) no suelen funcionar. Necesitamos estimulación e interacción.</p>
                     <h4 style="color: white; margin: 10px 0 5px 0;">Técnicas recomendadas:</h4>
@@ -1481,6 +1483,7 @@
             time: {
                 icon: '⏱️',
                 title: 'Organización del tiempo',
+                videoId: 'arj7oStGLkU',
                 content: `
                     <p>La "ceguera del tiempo" es común en el TDAH. Significa que es difícil calcular cuánto tiempo tomará una tarea o sentir el paso del tiempo.</p>
                     <h4 style="color: white; margin: 10px 0 5px 0;">Estrategias prácticas:</h4>
@@ -1494,6 +1497,7 @@
             emotions: {
                 icon: '❤️',
                 title: 'Manejo de emociones',
+                videoId: '81W9wG1d9K4',
                 content: `
                     <p>La desregulación emocional es uno de los síntomas más desafiantes. Las emociones se sienten de forma mucho más intensa y rápida.</p>
                     <h4 style="color: white; margin: 10px 0 5px 0;">Técnicas de autorregulación:</h4>
@@ -1507,6 +1511,7 @@
             habits: {
                 icon: '🍎',
                 title: 'Hábitos saludables',
+                videoId: 'Wsqa8qO6G2s',
                 content: `
                     <p>El cuerpo y el cerebro están conectados. Un cerebro neurodivergente es especialmente sensible a los cambios físicos.</p>
                     <h4 style="color: white; margin: 10px 0 5px 0;">Pilares fundamentales:</h4>
@@ -1529,11 +1534,38 @@
             
             const vid = document.querySelector('#biblioteca-reader-modal .video-mock');
             if(vid) {
-                vid.innerHTML = '<div style="width: 60px; height: 60px; background: rgba(56, 189, 248, 0.8); border-radius: 50%; display: flex; align-items: center; justify-content: center;"><i class="fa-solid fa-play" style="color: white; font-size: 24px; margin-left: 5px;"></i></div>';
+                vid.outerHTML = `
+                    <div class="video-container" style="width: 100%; aspect-ratio: 16/9; background: #0f172a; border-radius: 12px; border: 1px solid rgba(255,255,255,0.1); margin-bottom: 25px; overflow: hidden; position: relative;">
+                        <iframe width="100%" height="100%" src="https://www.youtube.com/embed/${data.videoId}?autoplay=1&rel=0" title="${data.title}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen style="position:absolute; top:0; left:0; width:100%; height:100%;"></iframe>
+                    </div>
+                `;
+            } else {
+                const currentContainer = document.querySelector('#biblioteca-reader-modal .video-container');
+                if (currentContainer) {
+                    currentContainer.innerHTML = `<iframe width="100%" height="100%" src="https://www.youtube.com/embed/${data.videoId}?autoplay=1&rel=0" title="${data.title}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen style="position:absolute; top:0; left:0; width:100%; height:100%;"></iframe>`;
+                }
             }
 
             document.getElementById('biblioteca-modal').style.display = 'none';
             document.getElementById('biblioteca-reader-modal').style.display = 'flex';
+        }
+
+        function stopLibraryVideo() {
+            const currentContainer = document.querySelector('#biblioteca-reader-modal .video-container');
+            if (currentContainer) {
+                currentContainer.innerHTML = '';
+            }
+        }
+
+        function closeLibraryReaderToMain() {
+            stopLibraryVideo();
+            document.getElementById('biblioteca-reader-modal').style.display = 'none';
+            document.getElementById('biblioteca-modal').style.display = 'flex';
+        }
+
+        function closeLibraryReaderFully() {
+            stopLibraryVideo();
+            document.getElementById('biblioteca-reader-modal').style.display = 'none';
         }
     </script>
     </div>
@@ -1596,9 +1628,9 @@
     <!-- Modal Biblioteca Educativa Lector -->
     <div id="biblioteca-reader-modal" style="position: fixed; inset: 0; background: rgba(0,0,0,0.9); z-index: 100001; display: none; align-items: center; justify-content: center; padding: 20px;">
         <div style="background: #1e293b; border: 1px solid rgba(56, 189, 248, 0.3); border-radius: 24px; padding: 40px; position: relative; max-width: 700px; width: 100%; box-shadow: 0 25px 50px rgba(56, 189, 248, 0.2); max-height: 90vh; overflow-y: auto;">
-            <button onclick="document.getElementById('biblioteca-reader-modal').style.display='none'"
+            <button onclick="closeLibraryReaderFully()"
                 style="position: absolute; top: 20px; right: 20px; background: none; border: none; color: white; font-size: 24px; cursor: pointer;">&times;</button>
-            <button onclick="document.getElementById('biblioteca-reader-modal').style.display='none'; document.getElementById('biblioteca-modal').style.display='flex';"
+            <button onclick="closeLibraryReaderToMain()"
                 style="position: absolute; top: 20px; left: 20px; background: none; border: none; color: #cbd5e1; font-size: 16px; cursor: pointer; display: flex; align-items: center; gap: 8px;"><i class="fa-solid fa-arrow-left"></i> Volver</button>
             
             <div style="text-align: center; font-family: 'Outfit', sans-serif; margin-top: 20px;">
