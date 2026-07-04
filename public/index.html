@@ -1815,7 +1815,7 @@
                 <button
                     onclick="document.getElementById('premiumModal').style.display='none'; document.getElementById('paymentModal').style.display='flex';"
                     style="width: 100%; background: linear-gradient(90deg, #f59e0b, #d97706); color: white; font-weight: bold; padding: 15px; border-radius: 14px; border: none; cursor: pointer; text-transform: uppercase; letter-spacing: 1px; box-shadow: 0 10px 20px rgba(245, 158, 11, 0.3);">
-                    Adquirir por S/ 20.00
+                    Adquirir por S/ 22.00
                 </button>
             </div>
         </div>
@@ -1882,7 +1882,7 @@
                             <text x="50%" y="55%" dominant-baseline="middle" text-anchor="middle" font-size="18" font-weight="900" fill="#6d28d9">Y</text>
                         </svg>
                         <span style="color: white; font-size: 1rem; font-weight: 800; letter-spacing: 0.5px;">PAGAR CON YAPE</span>
-                        <span style="color: #c4b5fd; font-size: 0.85rem; font-weight: 600;">S/ 20.00</span>
+                        <span style="color: #c4b5fd; font-size: 0.85rem; font-weight: 600;">S/ 22.00</span>
                     </button>
                 </div>
                 
@@ -1908,7 +1908,7 @@
             </div>
 
             <h2 style="color: white; font-size: 1.5rem; font-weight: 900; margin: 0 0 6px 0;">Pagar con Yape</h2>
-            <p style="color: #a78bfa; font-weight: 700; font-size: 1.1rem; margin-bottom: 20px;">S/ 20.00 &bull; NeuroSpark Premium</p>
+            <p style="color: #a78bfa; font-weight: 700; font-size: 1.1rem; margin-bottom: 20px;">S/ 22.00 &bull; NeuroSpark Premium</p>
 
             <!-- QR Real de Yape -->
             <div style="background: white; border-radius: 16px; padding: 12px; width: 192px; margin: 0 auto 20px auto; box-shadow: 0 0 25px rgba(124,58,237,0.5);">
@@ -1930,8 +1930,8 @@
     </div>
 
     <!-- Script de Integración PayPal -->
-    <!-- Reemplaza el client-id por el de Producción cuando estés listo. Se ha deshabilitado el pago directo con tarjeta para forzar el inicio de sesión. -->
-    <script src="https://www.paypal.com/sdk/js?client-id=BAA-JmTmCnNobQ9zGp0Ow4N_8X2Yi4WW1o-Me6DdzVV20-n_2AcVo_1JNMpV9qj4JjxXJ0Gz7hncHQBE7E&currency=USD&disable-funding=card,credit"></script>
+    <!-- Reemplaza el client-id por el de Producción cuando estés listo. -->
+    <script src="https://www.paypal.com/sdk/js?client-id=BAA-JmTmCnNobQ9zGp0Ow4N_8X2Yi4WW1o-Me6DdzVV20-n_2AcVo_1JNMpV9qj4JjxXJ0Gz7hncHQBE7E&currency=USD"></script>
     <script>
         paypal.Buttons({
             style: {
@@ -1942,13 +1942,13 @@
             },
             createOrder: function(data, actions) {
                 // PayPal no soporta Soles (PEN) nativamente. 
-                // Cobramos el equivalente en Dólares (aprox $5.35 USD) para que el banco del usuario haga el cambio automático a S/ 20.00
+                // Cobramos el equivalente en Dólares (aprox $5.89 USD) para que el banco del usuario haga el cambio automático a S/ 22.00
                 return actions.order.create({
                     purchase_units: [{
                         amount: {
-                            value: '5.35' // 5.35 USD ≈ 20.00 Soles
+                            value: '5.89' // 5.89 USD ≈ 22.00 Soles
                         },
-                        description: 'NeuroSpark Premium (Equivalente a S/ 20.00)'
+                        description: 'NeuroSpark Premium (Equivalente a S/ 22.00)'
                     }]
                 });
             },
