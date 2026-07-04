@@ -1115,8 +1115,8 @@
     <!-- Info Modal Overlay -->
     <div id="info-modal"
         style="display: none; position: fixed; inset: 0; background: rgba(7, 10, 19, 0.85); backdrop-filter: blur(15px); z-index: 10000; align-items: center; justify-content: center; opacity: 0; transition: opacity 0.3s; padding: 20px;">
-        <div
-            style="position: relative; width: 100%; max-width: 600px; background: rgba(15, 23, 42, 0.8); border: 1px solid rgba(255, 255, 255, 0.1); padding: 40px; border-radius: 24px; box-shadow: 0 30px 60px rgba(0,0,0,0.8); animation: slideInUp 0.5s cubic-bezier(0.22, 1, 0.36, 1) forwards;">
+        <div class="modal-scrollable"
+            style="position: relative; width: 100%; max-width: 600px; background: rgba(15, 23, 42, 0.8); border: 1px solid rgba(255, 255, 255, 0.1); padding: 40px; border-radius: 24px; box-shadow: 0 30px 60px rgba(0,0,0,0.8); animation: slideInUp 0.5s cubic-bezier(0.22, 1, 0.36, 1) forwards; max-height: 90vh; overflow-y: auto;">
             <!-- Close Button -->
             <div onclick="closeInfoModal()"
                 style="position: absolute; top: 20px; right: 20px; color: rgba(255,255,255,0.5); cursor: pointer; font-size: 1.5rem; transition: color 0.2s; z-index: 10001;">
@@ -1153,8 +1153,26 @@
                     <li><i class="fa-solid fa-code-branch" style="color: #38bdf8; width: 25px;"></i> <strong
                             style="color: white;">Lógica y resolución de problemas</strong></li>
                 </ul>
-                <p style="margin-top: 10px;">
-                    ¿Listo para llevar tu mente al siguiente nivel? ¡Crea una cuenta y comienza tu entrenamiento!
+                
+                <!-- Biblioteca Educativa (Versión Gratuita) -->
+                <div style="background: rgba(34, 197, 94, 0.05); padding: 20px; border-radius: 14px; border: 1px solid rgba(34, 197, 94, 0.2); margin-top: 10px;">
+                    <strong style="color: #22c55e; font-size: 1.15rem; display: flex; align-items: center; gap: 8px; margin-bottom: 8px;">
+                        <i class="fa-solid fa-book-open-reader"></i> Versión Gratuita: Biblioteca Educativa
+                    </strong>
+                    <p style="color: rgba(255,255,255,0.7); font-size: 0.95rem; margin: 0 0 12px 0;">
+                        Accede sin costo a una colección exclusiva de videos y recursos diseñados para apoyar tu aprendizaje continuo y bienestar:
+                    </p>
+                    <ul style="margin: 0; padding-left: 20px; color: rgba(255,255,255,0.85); font-size: 0.95rem; display: grid; grid-template-columns: 1fr 1fr; gap: 8px;">
+                        <li><i class="fa-solid fa-circle-play" style="color: #22c55e; margin-right: 5px; font-size: 0.8rem;"></i> ¿Qué es el TDAH?</li>
+                        <li><i class="fa-solid fa-circle-play" style="color: #22c55e; margin-right: 5px; font-size: 0.8rem;"></i> Técnicas de estudio</li>
+                        <li><i class="fa-solid fa-circle-play" style="color: #22c55e; margin-right: 5px; font-size: 0.8rem;"></i> Organización del tiempo</li>
+                        <li><i class="fa-solid fa-circle-play" style="color: #22c55e; margin-right: 5px; font-size: 0.8rem;"></i> Manejo de emociones</li>
+                        <li><i class="fa-solid fa-circle-play" style="color: #22c55e; margin-right: 5px; font-size: 0.8rem;"></i> Hábitos saludables</li>
+                    </ul>
+                </div>
+
+                <p style="margin-top: 15px; text-align: center; color: white; font-weight: bold; font-size: 1.1rem;">
+                    ¿Listo para llevar tu mente al siguiente nivel?
                 </p>
             </div>
 
@@ -1445,21 +1463,62 @@
                     potenciar tu entrenamiento cerebral.</p>
 
                 <div
-                    style="text-align: left; display: flex; flex-direction: column; gap: 12px; margin-bottom: 30px; font-size: 14px; color: #f8fafc;">
-                    <div
-                        style="display: flex; align-items: center; gap: 12px; background: rgba(255,255,255,0.05); padding: 12px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.1);">
-                        <span style="color: #4ade80;">✔️</span>
-                        <span>Acceso ilimitado a todos los minijuegos</span>
+                    style="text-align: left; display: flex; flex-direction: column; gap: 15px; margin-bottom: 30px; font-size: 13px; color: #f8fafc; overflow-x: hidden;">
+                    
+                    <!-- 1. Entrenamiento IA -->
+                    <div style="background: rgba(255,255,255,0.05); padding: 15px; border-radius: 14px; border: 1px solid rgba(56, 189, 248, 0.2);">
+                        <strong style="color: #38bdf8; font-size: 15px; display: flex; align-items: center; gap: 8px;"><i class="fa-solid fa-brain"></i> 1. Entrenamiento con IA</strong>
+                        <ul style="margin: 8px 0 0 0; padding-left: 20px; color: #cbd5e1; display: flex; flex-direction: column; gap: 5px;">
+                            <li>Evaluación inicial y adaptación dinámica de dificultad.</li>
+                            <li>Recomendaciones específicas (memoria, concentración).</li>
+                            <li><span style="color: #fcd34d;">⭐ Entrenamiento único por usuario.</span></li>
+                        </ul>
                     </div>
-                    <div
-                        style="display: flex; align-items: center; gap: 12px; background: rgba(255,255,255,0.05); padding: 12px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.1);">
-                        <span style="color: #4ade80;">✔️</span>
-                        <span>Reportes cognitivos avanzados con IA</span>
+
+                    <!-- 2. Reportes -->
+                    <div style="background: rgba(255,255,255,0.05); padding: 15px; border-radius: 14px; border: 1px solid rgba(167, 139, 250, 0.2);">
+                        <strong style="color: #a78bfa; font-size: 15px; display: flex; align-items: center; gap: 8px;"><i class="fa-solid fa-chart-pie"></i> 2. Reportes Detallados</strong>
+                        <ul style="margin: 8px 0 0 0; padding-left: 20px; color: #cbd5e1; display: flex; flex-direction: column; gap: 5px;">
+                            <li>Gráficos de tiempo, memoria y velocidad.</li>
+                            <li>Evolución, logros y áreas de mejora.</li>
+                            <li>Consejos para apoyar el desarrollo en casa.</li>
+                        </ul>
                     </div>
-                    <div
-                        style="display: flex; align-items: center; gap: 12px; background: rgba(255,255,255,0.05); padding: 12px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.1);">
-                        <span style="color: #4ade80;">✔️</span>
-                        <span>Sincronización familiar para padres</span>
+
+                    <!-- 3. Juegos Exclusivos -->
+                    <div style="background: rgba(255,255,255,0.05); padding: 15px; border-radius: 14px; border: 1px solid rgba(244, 63, 94, 0.2);">
+                        <strong style="color: #f43f5e; font-size: 15px; display: flex; align-items: center; gap: 8px;"><i class="fa-solid fa-gamepad"></i> 3. Juegos Premium</strong>
+                        <ul style="margin: 8px 0 0 0; padding-left: 20px; color: #cbd5e1; display: flex; flex-direction: column; gap: 5px;">
+                            <li>Más niveles, desafíos y misiones cooperativas.</li>
+                            <li>Juegos de realidad aumentada y eventos.</li>
+                        </ul>
+                    </div>
+
+                    <!-- 4. Sistema de Recompensas -->
+                    <div style="background: rgba(255,255,255,0.05); padding: 15px; border-radius: 14px; border: 1px solid rgba(250, 204, 21, 0.2);">
+                        <strong style="color: #facc15; font-size: 15px; display: flex; align-items: center; gap: 8px;"><i class="fa-solid fa-medal"></i> 4. Sistema de Recompensas</strong>
+                        <ul style="margin: 8px 0 0 0; padding-left: 20px; color: #cbd5e1; display: flex; flex-direction: column; gap: 5px;">
+                            <li>Insignias, avatares exclusivos y mascotas.</li>
+                            <li>Tienda avanzada para personalizar personajes.</li>
+                        </ul>
+                    </div>
+
+                    <!-- 5. Rutinas Inteligentes -->
+                    <div style="background: rgba(255,255,255,0.05); padding: 15px; border-radius: 14px; border: 1px solid rgba(34, 197, 94, 0.2);">
+                        <strong style="color: #22c55e; font-size: 15px; display: flex; align-items: center; gap: 8px;"><i class="fa-solid fa-calendar-check"></i> 5. Rutinas Inteligentes</strong>
+                        <ul style="margin: 8px 0 0 0; padding-left: 20px; color: #cbd5e1; display: flex; flex-direction: column; gap: 5px;">
+                            <li>Horarios, recordatorios y descansos Pomodoro.</li>
+                            <li>Ejercicios diarios de 10–20 minutos.</li>
+                        </ul>
+                    </div>
+
+                    <!-- 6. Zona de Relajación & Asistente -->
+                    <div style="background: rgba(255,255,255,0.05); padding: 15px; border-radius: 14px; border: 1px solid rgba(14, 165, 233, 0.2);">
+                        <strong style="color: #0ea5e9; font-size: 15px; display: flex; align-items: center; gap: 8px;"><i class="fa-solid fa-spa"></i> 6. Relajación & Asistente IA</strong>
+                        <ul style="margin: 8px 0 0 0; padding-left: 20px; color: #cbd5e1; display: flex; flex-direction: column; gap: 5px;">
+                            <li>Respiración guiada, música y mindfulness.</li>
+                            <li>Asistente IA que motiva, explica errores y celebra logros.</li>
+                        </ul>
                     </div>
                 </div>
 
@@ -1543,9 +1602,31 @@
             onApprove: function(data, actions) {
                 // Captura el pago cuando el usuario aprueba
                 return actions.order.capture().then(function(details) {
-                    alert('¡Pago completado exitosamente por ' + details.payer.name.given_name + '!');
-                    // Aquí puedes añadir la lógica para actualizar el perfil del usuario a Premium en tu base de datos (Supabase)
-                    document.getElementById('paymentModal').style.display='none';
+                    // 1. Ocultar el modal de pago
+                    document.getElementById('paymentModal').style.display = 'none';
+
+                    // 2. Guardar el estado PREMIUM en el navegador (y base de datos si aplica)
+                    localStorage.setItem('ns_is_premium', 'true');
+                    
+                    // 3. Ocultar el widget de promoción Premium de la pantalla principal
+                    const widget = document.getElementById('premiumWidget');
+                    if(widget) widget.style.display = 'none';
+
+                    // 4. Mostrar alerta de felicitaciones
+                    alert(
+                        '✨ ¡PAGO EXITOSO, ' + details.payer.name.given_name.toUpperCase() + '! ✨\n\n' +
+                        'Tu cuenta ha sido actualizada a NEUROSPARK PREMIUM.\n\n' +
+                        'Se han desbloqueado automáticamente:\n' +
+                        '✅ Entrenamiento personalizado con IA\n' +
+                        '✅ Reportes detallados y gráficos\n' +
+                        '✅ Todos los juegos y niveles exclusivos\n' +
+                        '✅ Sistema de Recompensas avanzado\n' +
+                        '✅ Zona de relajación y Asistente IA\n\n' +
+                        '¡Disfruta de tu nueva experiencia sin límites!'
+                    );
+                    
+                    // 5. Opcional: Recargar la interfaz para aplicar los cambios en los juegos
+                    // window.location.reload();
                 });
             },
             onError: function(err) {
