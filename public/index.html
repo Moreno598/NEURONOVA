@@ -1739,13 +1739,26 @@
                     <!-- 3. Juegos Exclusivos -->
                     <div style="background: rgba(255,255,255,0.05); padding: 20px; border-radius: 14px; border: 1px solid rgba(244, 63, 94, 0.2);">
                         <strong style="color: #f43f5e; font-size: 16px; display: flex; align-items: center; gap: 8px;"><i class="fa-solid fa-gamepad"></i> 🎮 3. Juegos Premium exclusivos</strong>
-                        <ul style="margin: 10px 0 0 0; padding-left: 20px; color: #cbd5e1; display: flex; flex-direction: column; gap: 6px;">
-                            <li>Más niveles.</li>
-                            <li>Nuevos desafíos.</li>
-                            <li>Juegos de realidad aumentada.</li>
-                            <li>Misiones cooperativas.</li>
-                            <li>Eventos especiales.</li>
-                        </ul>
+                        <div style="margin-top: 15px; display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px;">
+                            <div style="background: rgba(56, 189, 248, 0.1); padding: 12px; border-radius: 10px; border: 1px solid rgba(56, 189, 248, 0.2);">
+                                <p style="color: #38bdf8; font-weight: bold; margin: 0 0 8px 0; font-size: 0.9rem;">👦 Para Niños (6-11):</p>
+                                <ul style="margin: 0; padding-left: 18px; color: #cbd5e1; display: flex; flex-direction: column; gap: 4px; font-size: 0.85rem;">
+                                    <li>Cazador de Estrellas (AR)</li>
+                                    <li>Aventura Musical Mágica</li>
+                                    <li>Misiones de Mascotas Virtuales</li>
+                                    <li>Constructor de Cohetes Espaciales</li>
+                                </ul>
+                            </div>
+                            <div style="background: rgba(167, 139, 250, 0.1); padding: 12px; border-radius: 10px; border: 1px solid rgba(167, 139, 250, 0.2);">
+                                <p style="color: #a78bfa; font-weight: bold; margin: 0 0 8px 0; font-size: 0.9rem;">🧑‍🎓 Para Adolescentes (12-17):</p>
+                                <ul style="margin: 0; padding-left: 18px; color: #cbd5e1; display: flex; flex-direction: column; gap: 4px; font-size: 0.85rem;">
+                                    <li>Simulador de Foco Profundo</li>
+                                    <li>Desafíos Tácticos de Memoria</li>
+                                    <li>Escape Rooms Cooperativos</li>
+                                    <li>Retos de Lógica Avanzada (Competición)</li>
+                                </ul>
+                            </div>
+                        </div>
                     </div>
 
                     <!-- 4. Sistema de Recompensas -->
@@ -2151,20 +2164,8 @@
         <div style="background: linear-gradient(135deg, #f43f5e22, #1e293b); border: 1px solid #f43f5e; border-radius: 24px; padding: 40px; width: 100%; max-width: 700px; position: relative;">
             <button onclick="closeSubModal('gamesModal')" style="position: absolute; top: 20px; right: 20px; background: none; border: none; color: white; font-size: 28px; cursor: pointer; z-index: 50;">&times;</button>
             <h2 style="color: white; font-size: 2rem; margin-bottom: 25px; text-align: center;"><i class="fa-solid fa-gamepad" style="color: #f43f5e; margin-right: 10px;"></i>Catálogo VIP</h2>
-            
-            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
-                <div style="background: rgba(0,0,0,0.4); border: 1px solid rgba(255,255,255,0.1); border-radius: 16px; padding: 20px; text-align: center;">
-                    <i class="fa-solid fa-vr-cardboard" style="color: #f43f5e; font-size: 2.5rem; margin-bottom: 10px;"></i>
-                    <h3 style="color: white; margin: 0 0 5px 0;">Odisea AR</h3>
-                    <p style="color: #94a3b8; font-size: 0.85rem; margin-bottom: 15px;">Exploración de galaxias para entrenar atención sostenida.</p>
-                    <button onclick="playRealGame('spatial_focus')" style="background: #f43f5e; color: white; border: none; padding: 8px 20px; border-radius: 8px; font-weight: bold; cursor: pointer;">Jugar Ahora</button>
-                </div>
-                <div style="background: rgba(0,0,0,0.4); border: 1px solid rgba(255,255,255,0.1); border-radius: 16px; padding: 20px; text-align: center;">
-                    <i class="fa-solid fa-puzzle-piece" style="color: #facc15; font-size: 2.5rem; margin-bottom: 10px;"></i>
-                    <h3 style="color: white; margin: 0 0 5px 0;">Escape Cuántico</h3>
-                    <p style="color: #94a3b8; font-size: 0.85rem; margin-bottom: 15px;">Resuelve acertijos lógicos en tiempo récord.</p>
-                    <button onclick="playRealGame('pattern_matcher')" style="background: #f43f5e; color: white; border: none; padding: 8px 20px; border-radius: 8px; font-weight: bold; cursor: pointer;">Jugar Ahora</button>
-                </div>
+            <div id="premium-games-grid" style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; max-height: 60vh; overflow-y: auto; padding-right: 10px;">
+                <!-- Juegos insertados dinámicamente según el perfil -->
             </div>
         </div>
     </div>
@@ -2266,6 +2267,37 @@
                     document.getElementById('rep-ai-tip').innerText = att < mem ? 'Te recomendamos jugar "Distraction Hunter" para subir tu concentración.' : '¡Sigue así, tu progreso es increíble!';
                 }
             } else if (feature === 'games') {
+                const grid = document.getElementById('premium-games-grid');
+                grid.innerHTML = '';
+                const isKids = state && state.profile === 'kids';
+                
+                const kidsGames = [
+                    { id: 'kids_star_catcher', title: 'Cazador de Estrellas', desc: 'Atención sostenida con Realidad Aumentada.', icon: 'fa-star', color: '#facc15' },
+                    { id: 'kids_music_magic', title: 'Aventura Musical Mágica', desc: 'Sigue el ritmo para mejorar la memoria auditiva.', icon: 'fa-music', color: '#a78bfa' },
+                    { id: 'kids_pets', title: 'Misiones de Mascotas', desc: 'Misiones cooperativas con tu mascota virtual.', icon: 'fa-paw', color: '#38bdf8' },
+                    { id: 'kids_rockets', title: 'Constructor de Cohetes', desc: 'Arma piezas en el orden correcto. (AR)', icon: 'fa-rocket', color: '#f43f5e' }
+                ];
+                
+                const teensGames = [
+                    { id: 'teens_focus_sim', title: 'Simulador de Foco', desc: 'Entrenamiento inmersivo de atención profunda.', icon: 'fa-vr-cardboard', color: '#f43f5e' },
+                    { id: 'teens_tactical', title: 'Desafíos Tácticos', desc: 'Estrategia y memoria de trabajo bajo presión.', icon: 'fa-chess-knight', color: '#38bdf8' },
+                    { id: 'teens_escape', title: 'Escape Rooms Coop', desc: 'Colabora en línea para resolver acertijos lógicos.', icon: 'fa-door-open', color: '#facc15' },
+                    { id: 'teens_logic', title: 'Retos de Lógica Avanzada', desc: 'Compite en torneos semanales de resolución rápida.', icon: 'fa-brain', color: '#a78bfa' }
+                ];
+                
+                const gamesToShow = isKids ? kidsGames : teensGames;
+                
+                gamesToShow.forEach(game => {
+                    grid.innerHTML += `
+                        <div style="background: rgba(0,0,0,0.4); border: 1px solid rgba(255,255,255,0.1); border-radius: 16px; padding: 20px; text-align: center;">
+                            <i class="fa-solid ${game.icon}" style="color: ${game.color}; font-size: 2.5rem; margin-bottom: 10px;"></i>
+                            <h3 style="color: white; margin: 0 0 5px 0;">${game.title}</h3>
+                            <p style="color: #94a3b8; font-size: 0.85rem; margin-bottom: 15px;">${game.desc}</p>
+                            <button onclick="playRealGame('${game.id}')" style="background: ${game.color}; color: #0f172a; border: none; padding: 8px 20px; border-radius: 8px; font-weight: bold; cursor: pointer;">Jugar Ahora</button>
+                        </div>
+                    `;
+                });
+                
                 document.getElementById('gamesModal').style.display = 'flex';
             } else if (feature === 'rewards') {
                 document.getElementById('rewardsModal').style.display = 'flex';

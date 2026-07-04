@@ -1011,7 +1011,7 @@ class NeuroSparkApp {
                                 ()=>{el.style.transform='translateY(-18px) scale(1.2)';setTimeout(()=>{el.style.transform='translateY(4px) scale(0.9)';},280);setTimeout(()=>{el.style.transform='scale(1)';},480);},
                                 ()=>{el.style.filter='drop-shadow(0 0 16px #a78bfa)';el.style.transform='scale(1.4)';setTimeout(()=>{el.style.transform='scale(1)';el.style.filter='drop-shadow(0 0 10px rgba(167,139,250,0.5))';},500);}
                             ];
-                            const phrases=['¡Hola! 👋','¡Weee! 🎉','¡Yuju! ✨','¡Soy yo! 😄','¡Vamos! 🚀','💪 ¡Tú puedes!','⭐ ¡Épico!','🎮 ¡A jugar!'];
+                            const phrases=['¡Hola! 👋','¡Weee! 🎉','¡Yuju! ✨','¡Soy yo! 😄','¡Vamos! 🚀','💪 ¡Tú puedes!','⭐ ¡Épico!','🎮 ¡A jugar!','¡Ese es el espíritu! 🔥','¡Hola, hola! 🤩','¡Dale con todo! ⚡','¡Qué divertido! 🎈'];
                             const idx=parseInt(el.dataset.gidx||0);
                             gestures[idx%gestures.length]();
                             el.dataset.gidx=idx+1;
@@ -1024,7 +1024,7 @@ class NeuroSparkApp {
                             b.style.left=(rect.left+rect.width/2-b.offsetWidth/2)+'px';
                             b.style.top=(rect.top-40)+'px';
                             b.style.opacity='1';b.style.transform='translateY(0)';
-                            setTimeout(()=>{b.style.opacity='0';b.style.transform='translateY(-10px)';},1300);
+                            setTimeout(()=>{b.style.opacity='0';b.style.transform='translateY(-10px)';},2500);
                          })(document.getElementById('home-avatar-img'))">
                         <img src="${avatarUrl}"
                              id="home-avatar-img"
@@ -1168,7 +1168,7 @@ class NeuroSparkApp {
                                     ()=>{el.style.transform='translateY(-18px) scale(1.2)';setTimeout(()=>{el.style.transform='translateY(4px) scale(0.9)';},280);setTimeout(()=>{el.style.transform='scale(1)';},480);},
                                     ()=>{el.style.filter='drop-shadow(0 0 16px #a78bfa)';el.style.transform='scale(1.4)';setTimeout(()=>{el.style.transform='scale(1)';el.style.filter='drop-shadow(0 0 10px rgba(167,139,250,0.5))';},500);}
                                 ];
-                                const phrases=['¡Hola! 👋','¡Weee! 🎉','¡Cool! 😎','¡Soy yo! ✌️','¡Vamos! 🚀','💪 ¡Épico!','⭐ ¡Top!','🎮 Pro gamer!'];
+                                const phrases=['¡Hola! 👋','¡Weee! 🎉','¡Cool! 😎','¡Soy yo! ✌️','¡Vamos! 🚀','💪 ¡Épico!','⭐ ¡Top!','🎮 Pro gamer!','¡Eres increíble! 🔥','¡Hola, hola! 🤩','¡Dale con todo! ⚡','¡Qué estilo! 🕶️'];
                                 const idx=parseInt(el.dataset.gidx||0);
                                 gestures[idx%gestures.length]();
                                 el.dataset.gidx=idx+1;
@@ -1181,7 +1181,7 @@ class NeuroSparkApp {
                                 b.style.left=(rect.left+rect.width/2-b.offsetWidth/2)+'px';
                                 b.style.top=(rect.top-40)+'px';
                                 b.style.opacity='1';b.style.transform='translateY(0)';
-                                setTimeout(()=>{b.style.opacity='0';b.style.transform='translateY(-10px)';},1300);
+                                setTimeout(()=>{b.style.opacity='0';b.style.transform='translateY(-10px)';},2500);
                              })(document.getElementById('home-avatar-img-teens'))">
                             <img src="${avatarUrl}"
                                  id="home-avatar-img-teens"
