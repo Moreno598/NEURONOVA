@@ -1918,14 +1918,14 @@
             <p style="color: #94a3b8; font-size: 0.9rem; margin-bottom: 8px;">Escanea con tu app <strong style="color:white;">Yape</strong> o envía al número:</p>
             <div style="background: rgba(124,58,237,0.15); border: 1px solid rgba(124,58,237,0.4); border-radius: 10px; padding: 10px 20px; font-size: 1.3rem; font-weight: 900; color: white; letter-spacing: 2px; margin-bottom: 20px;">+51 960 118 520</div>
 
-            <p style="color: #64748b; font-size: 0.8rem; margin-bottom: 20px;">Tras realizar el pago, presiona el botón para confirmar y activar tu cuenta Premium.</p>
+            <p style="color: #64748b; font-size: 0.8rem; margin-bottom: 20px;">Tras realizar el pago, contáctate con el administrador de la página enviando el comprobante para que recibas tu rol Premium.</p>
 
-            <button
-                id="btn-confirm-yape"
-                style="width: 100%; background: linear-gradient(135deg, #7c3aed, #a855f7); border: none; padding: 14px; border-radius: 12px; color: white; font-size: 1rem; font-weight: 800; cursor: pointer; box-shadow: 0 8px 20px rgba(124,58,237,0.4); transition: transform 0.2s;"
+            <a href="https://wa.me/51929103096?text=Hola,%20acabo%20de%20realizar%20el%20pago%20por%20Yape%20para%20NeuroSpark%20Premium.%20Adjunto%20mi%20comprobante:"
+                target="_blank"
+                style="display: block; text-decoration: none; width: 100%; background: linear-gradient(135deg, #25D366, #128C7E); border: none; padding: 14px; border-radius: 12px; color: white; font-size: 1rem; font-weight: 800; cursor: pointer; box-shadow: 0 8px 20px rgba(37,211,102,0.4); transition: transform 0.2s;"
                 onmouseover="this.style.transform='scale(1.02)'" onmouseout="this.style.transform='scale(1)'">
-                ✅ Ya pagué con Yape &mdash; Activar Premium
-            </button>
+                <i class="fa-brands fa-whatsapp" style="font-size: 1.2rem; margin-right: 8px;"></i> Enviar Comprobante por WhatsApp
+            </a>
         </div>
     </div>
 
@@ -1981,38 +1981,6 @@
                 alert("Ocurrió un error al procesar el pago.");
             }
         }).render('#paypal-button-container');
-    </script>
-
-    <!-- Lógica de Confirmación de Yape -->
-    <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            const btnYape = document.getElementById('btn-confirm-yape');
-            if (btnYape) {
-                btnYape.addEventListener('click', function () {
-                    // 1. Ocultar modales de pago
-                    document.getElementById('yapeModal').style.display = 'none';
-                    document.getElementById('paymentModal').style.display = 'none';
-
-                    // 2. Activar Premium
-                    localStorage.setItem('ns_is_premium', 'true');
-
-                    // 3. Ocultar widget de promoción
-                    const widget = document.getElementById('premiumWidget');
-                    if (widget) widget.style.display = 'none';
-
-                    // 4. Corona VIP en header
-                    const profileSpan = document.getElementById('current-profile-name');
-                    if (profileSpan && !profileSpan.innerHTML.includes('fa-crown')) {
-                        profileSpan.innerHTML += ' <i class="fa-solid fa-crown" style="color: #fcd34d; margin-left: 5px; text-shadow: 0 0 10px #fcd34d;" title="Usuario Premium"></i>';
-                    }
-
-                    // 5. Mostrar modal de éxito con nombre Yape
-                    const nameEl = document.getElementById('success-buyer-name');
-                    if (nameEl) nameEl.innerText = 'YAPERO ⚡';
-                    document.getElementById('successModal').style.display = 'flex';
-                });
-            }
-        });
     </script>
 
     <!-- Modal Éxito de Compra (GRACIAS POR SU COMPRA) -->
