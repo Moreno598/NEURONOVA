@@ -932,23 +932,36 @@ class NeuroSparkApp {
                 
                 <div style="background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 20px; padding: 40px;">
                     <h3 style="font-size: 1.6rem; margin-bottom: 15px; color: white;"><i class="fa-solid fa-users-gear text-blue"></i> Asignación de Roles de Especialistas</h3>
-                    <p style="color: var(--text-muted); margin-bottom: 30px; font-size: 1.05rem;">Busca a un usuario registrado por su correo electrónico para otorgarle los permisos especiales de Docente o Padre.</p>
+                    <p style="color: var(--text-muted); margin-bottom: 30px; font-size: 1.05rem;">Busca a un usuario registrado por su correo electrónico para otorgarle los permisos especiales de Docente, Padre o Premium.</p>
                     
                     <div style="display: flex; gap: 20px; margin-bottom: 40px; flex-wrap: wrap;">
                         <input type="email" id="admin-search-email" placeholder="correo_del_usuario@ejemplo.com" style="flex: 1; min-width: 250px; padding: 18px; border-radius: 12px; border: 2px solid var(--border-color); background: rgba(0,0,0,0.2); color: var(--text-main); font-size: 1.1rem; outline: none; transition: border-color 0.3s;">
                         <select id="admin-role-select" style="padding: 18px; border-radius: 12px; border: 2px solid var(--border-color); background: var(--bg-card); color: white; font-size: 1.1rem; outline: none; cursor: pointer; min-width: 250px;">
                             <option value="padre">Otorgar Rol: Padre / Apoderado</option>
                             <option value="docente">Otorgar Rol: Docente / Especialista</option>
+                            <option value="premium">Otorgar Rol: VIP / Premium 👑</option>
                         </select>
                         <button id="btn-assign-role" class="play-btn" style="background: linear-gradient(135deg, var(--primary-blue), var(--primary-purple)); padding: 0 40px; font-size: 1.1rem; border-radius: 12px; height: 60px;"><i class="fa-solid fa-check"></i> Asignar</button>
                     </div>
 
-                    <div style="border-top: 1px solid var(--border-color); padding-top: 30px;">
-                        <h4 style="margin-bottom: 20px; color: white; font-size: 1.2rem;"><i class="fa-solid fa-clock-rotate-left"></i> Registro de Asignaciones Recientes</h4>
-                        <div id="admin-log-list" style="display: flex; flex-direction: column; gap: 15px;">
-                            <div style="padding: 20px; background: rgba(255,255,255,0.03); border-radius: 12px; border: 1px solid rgba(255,255,255,0.05); display: flex; justify-content: space-between; align-items: center;">
-                                <span style="font-size: 1.05rem;"><i class="fa-solid fa-user-tie text-purple" style="margin-right: 10px;"></i> director@neurospark.edu</span>
-                                <span class="difficulty-badge diff-easy" style="border-color: #a78bfa; color: #a78bfa; padding: 6px 12px; font-size: 0.85rem;">Docente Especialista</span>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+                        <div style="border-top: 1px solid var(--border-color); padding-top: 30px;">
+                            <h4 style="margin-bottom: 20px; color: white; font-size: 1.2rem;"><i class="fa-solid fa-clock-rotate-left"></i> Asignaciones Recientes</h4>
+                            <div id="admin-log-list" style="display: flex; flex-direction: column; gap: 15px;">
+                                <div style="padding: 20px; background: rgba(255,255,255,0.03); border-radius: 12px; border: 1px solid rgba(255,255,255,0.05); display: flex; justify-content: space-between; align-items: center;">
+                                    <span style="font-size: 1.05rem;"><i class="fa-solid fa-user-tie text-purple" style="margin-right: 10px;"></i> director@neurospark.edu</span>
+                                    <span class="difficulty-badge diff-easy" style="border-color: #a78bfa; color: #a78bfa; padding: 6px 12px; font-size: 0.85rem;">Docente Especialista</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div style="border-top: 1px solid var(--border-color); padding-top: 30px;">
+                            <h4 style="margin-bottom: 20px; color: #fcd34d; font-size: 1.2rem;"><i class="fa-solid fa-crown"></i> Usuarios Premium Activos</h4>
+                            <div id="admin-premium-list" style="display: flex; flex-direction: column; gap: 15px;">
+                                <div style="padding: 20px; background: rgba(250, 204, 21, 0.05); border-radius: 12px; border: 1px solid rgba(250, 204, 21, 0.2); display: flex; justify-content: space-between; align-items: center;">
+                                    <span style="font-size: 1.05rem; color: white;"><i class="fa-solid fa-star text-accent" style="margin-right: 10px;"></i> premium@neurospark.com</span>
+                                    <span class="difficulty-badge" style="border-color: #facc15; background: #facc15; color: #0f172a; font-weight: bold; padding: 6px 12px; font-size: 0.85rem;">VIP / Premium 👑</span>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -967,25 +980,40 @@ class NeuroSparkApp {
             const email = document.getElementById('admin-search-email').value;
             const roleSelect = document.getElementById('admin-role-select');
             const roleText = roleSelect.options[roleSelect.selectedIndex].text;
+            const roleValue = roleSelect.value;
 
             if (!email || !email.includes('@')) {
                 this.showToast('Por favor, ingresa un correo electrónico válido.', 'warning');
                 return;
             }
 
-            const logList = document.getElementById('admin-log-list');
-            const div = document.createElement('div');
-            div.style.cssText = "padding: 20px; background: rgba(56, 189, 248, 0.05); border-radius: 12px; border: 1px solid rgba(56, 189, 248, 0.2); display: flex; justify-content: space-between; align-items: center; opacity: 0; transform: translateY(-10px); transition: all 0.4s ease;";
-            div.innerHTML = '<span style="font-size: 1.05rem;"><i class="fa-solid fa-user-check text-blue" style="margin-right: 10px;"></i> ' + email + '</span>' +
-                '<span class="difficulty-badge diff-medium" style="padding: 6px 12px; font-size: 0.85rem;">' + roleText.split(':')[1].trim() + '</span>';
-            logList.prepend(div);
+            if (roleValue === 'premium') {
+                // Unlock premium instantly
+                localStorage.setItem('ns_is_premium', 'true');
+                const widget = document.getElementById('premiumWidget');
+                if (widget) widget.style.display = 'none';
+                const premiumHubBtn = document.getElementById('btn-premium-hub');
+                if (premiumHubBtn) premiumHubBtn.style.display = 'inline-flex';
+                
+                // Add to premium list
+                const premiumList = document.getElementById('admin-premium-list');
+                const div = document.createElement('div');
+                div.style.cssText = "padding: 20px; background: rgba(250, 204, 21, 0.05); border-radius: 12px; border: 1px solid rgba(250, 204, 21, 0.2); display: flex; justify-content: space-between; align-items: center; opacity: 0; transform: translateY(-10px); transition: all 0.4s ease;";
+                div.innerHTML = '<span style="font-size: 1.05rem; color: white;"><i class="fa-solid fa-star text-accent" style="margin-right: 10px;"></i> ' + email + '</span>' +
+                    '<span class="difficulty-badge" style="border-color: #facc15; background: #facc15; color: #0f172a; font-weight: bold; padding: 6px 12px; font-size: 0.85rem;">VIP / Premium 👑</span>';
+                premiumList.prepend(div);
+                setTimeout(() => { div.style.opacity = '1'; div.style.transform = 'translateY(0)'; }, 10);
+            } else {
+                const logList = document.getElementById('admin-log-list');
+                const div = document.createElement('div');
+                div.style.cssText = "padding: 20px; background: rgba(56, 189, 248, 0.05); border-radius: 12px; border: 1px solid rgba(56, 189, 248, 0.2); display: flex; justify-content: space-between; align-items: center; opacity: 0; transform: translateY(-10px); transition: all 0.4s ease;";
+                div.innerHTML = '<span style="font-size: 1.05rem;"><i class="fa-solid fa-user-check text-blue" style="margin-right: 10px;"></i> ' + email + '</span>' +
+                    '<span class="difficulty-badge diff-medium" style="padding: 6px 12px; font-size: 0.85rem;">' + roleText.split(':')[1].trim() + '</span>';
+                logList.prepend(div);
+                setTimeout(() => { div.style.opacity = '1'; div.style.transform = 'translateY(0)'; }, 10);
+            }
 
-            setTimeout(() => {
-                div.style.opacity = '1';
-                div.style.transform = 'translateY(0)';
-            }, 10);
-
-            this.showToast('Rol asignado exitosamente a ' + email, 'success');
+            this.showToast('Rol "' + roleText.split(':')[1].trim() + '" asignado a ' + email, 'success');
             document.getElementById('admin-search-email').value = '';
         });
     }
@@ -1045,16 +1073,27 @@ class NeuroSparkApp {
                 </div>
 
                 <div class="kids-game-section">
-                    <h3 class="section-title"><i class="fa-solid fa-gamepad text-accent"></i> ${i18n.t('kidsGamesTitle')}</h3>
+                    <h3 class="section-title" style="margin-bottom: 10px;"><i class="fa-solid fa-gamepad text-accent"></i> Juegos para 6-8 años</h3>
+                    <p style="color: #94a3b8; font-size: 0.9rem; margin-bottom: 15px;">Dificultad adaptada a tu edad (${this.state.age || 8} años).</p>
+                    <div class="games-grid" style="margin-bottom: 30px;">
+                        ${(function(self, age){
+                            const d = age <= 7 ? 'diff-easy' : 'diff-easy';
+                            return self._gameCard('distraction_hunter', 'g1Name', 'g1Desc', d, 'g1Tag', 'fa-meteor', 'distraction.png') +
+                                   self._gameCard('emotional_stoplight', 'g4Name', 'g4Desc', d, 'g4Tag', 'fa-traffic-light', 'stoplight.png') +
+                                   self._gameCard('kids_spatial', 'k_spatialName', 'k_spatialDesc', d, 'g2Tag', 'fa-star', 'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=600&q=80') +
+                                   self._gameCard('kids_routine', 'k_routineName', 'k_routineDesc', d, 'g3Tag', 'fa-rocket', 'routine.png');
+                        })(this, parseInt(this.state.age) || 8)}
+                    </div>
+                    
+                    <h3 class="section-title" style="margin-bottom: 10px;"><i class="fa-solid fa-puzzle-piece text-accent"></i> Juegos para 9-11 años</h3>
                     <div class="games-grid">
-                        ${this._gameCard('distraction_hunter', 'g1Name', 'g1Desc', 'diff-easy', 'g1Tag', 'fa-meteor', 'distraction.png')}
-                        ${this._gameCard('emotional_stoplight', 'g4Name', 'g4Desc', 'diff-easy', 'g4Tag', 'fa-traffic-light', 'stoplight.png')}
-                        ${this._gameCard('musical_memory', 'g5Name', 'g5Desc', 'diff-medium', 'g5Tag', 'fa-music', 'memory.png')}
-                        ${this._gameCard('memory_cards', 'g6Name', 'g6Desc', 'diff-easy', 'g6Tag', 'fa-layer-group', 'spatial.png')}
-                        ${this._gameCard('kids_spatial', 'k_spatialName', 'k_spatialDesc', 'diff-medium', 'g2Tag', 'fa-star', 'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=600&q=80')}
-                        ${this._gameCard('kids_routine', 'k_routineName', 'k_routineDesc', 'diff-medium', 'g3Tag', 'fa-rocket', 'routine.png')}
-                        ${this._gameCard('kids_pattern', 'k_patternName', 'k_patternDesc', 'diff-medium', 'g7Tag', 'fa-shapes', 'https://images.unsplash.com/photo-1614729939124-032f0b56c9ce?auto=format&fit=crop&w=600&q=80')}
-                        ${this._gameCard('kids_math', 'k_mathName', 'k_mathDesc', 'diff-hard', 'g8Tag', 'fa-calculator', 'https://images.unsplash.com/photo-1550751827-4bd374c3f58b?auto=format&fit=crop&w=600&q=80')}
+                        ${(function(self, age){
+                            const d = age < 9 ? 'diff-hard' : 'diff-medium';
+                            return self._gameCard('musical_memory', 'g5Name', 'g5Desc', d, 'g5Tag', 'fa-music', 'memory.png') +
+                                   self._gameCard('memory_cards', 'g6Name', 'g6Desc', d, 'g6Tag', 'fa-layer-group', 'spatial.png') +
+                                   self._gameCard('kids_pattern', 'k_patternName', 'k_patternDesc', d, 'g7Tag', 'fa-shapes', 'https://images.unsplash.com/photo-1614729939124-032f0b56c9ce?auto=format&fit=crop&w=600&q=80') +
+                                   self._gameCard('kids_math', 'k_mathName', 'k_mathDesc', age < 9 ? 'diff-hard' : (age < 11 ? 'diff-medium' : 'diff-hard'), 'g8Tag', 'fa-calculator', 'https://images.unsplash.com/photo-1550751827-4bd374c3f58b?auto=format&fit=crop&w=600&q=80');
+                        })(this, parseInt(this.state.age) || 8)}
                     </div>
                 </div>
 
@@ -1191,16 +1230,27 @@ class NeuroSparkApp {
                                  onerror="this.style.display='none'">
                         </div>
                     </div>
-                    <h3 class="section-title"><i class="fa-solid fa-brain text-blue"></i> ${i18n.t('teensGamesTitle')}</h3>
+                    <h3 class="section-title" style="margin-bottom: 10px;"><i class="fa-solid fa-brain text-blue"></i> Juegos para 12-14 años</h3>
+                    <p style="color: #94a3b8; font-size: 0.9rem; margin-bottom: 15px;">Dificultad adaptada a tu edad (${this.state.age || 14} años).</p>
+                    <div class="games-grid" style="grid-template-columns:1fr 1fr; margin-bottom: 30px;">
+                        ${(function(self, age){
+                            const d = age <= 13 ? 'diff-easy' : 'diff-medium';
+                            return self._gameCard('spatial_focus', 'g2Name', 'g2Desc', d, 'g2Tag', 'fa-star-half-stroke', 'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=600&q=80') +
+                                   self._gameCard('pattern_matcher', 'g7Name', 'g7Desc', d, 'g7Tag', 'fa-shapes', 'https://images.unsplash.com/photo-1614729939124-032f0b56c9ce?auto=format&fit=crop&w=600&q=80') +
+                                   self._gameCard('teens_distraction', 't_distName', 't_distDesc', d, 'g1Tag', 'fa-shield-halved', 'distraction.png') +
+                                   self._gameCard('teens_cards', 't_cardsName', 't_cardsDesc', d, 'g6Tag', 'fa-unlock-keyhole', 'https://images.unsplash.com/photo-1635313073808-0a0667b5791c?auto=format&fit=crop&w=600&q=80');
+                        })(this, parseInt(this.state.age) || 14)}
+                    </div>
+                    
+                    <h3 class="section-title" style="margin-bottom: 10px;"><i class="fa-solid fa-microchip text-blue"></i> Juegos para 15-17 años</h3>
                     <div class="games-grid" style="grid-template-columns:1fr 1fr;">
-                        ${this._gameCard('spatial_focus', 'g2Name', 'g2Desc', 'diff-medium', 'g2Tag', 'fa-star-half-stroke', 'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=600&q=80')}
-                        ${this._gameCard('routine_builder', 'g3Name', 'g3Desc', 'diff-hard', 'g3Tag', 'fa-puzzle-piece', 'routine.png')}
-                        ${this._gameCard('pattern_matcher', 'g7Name', 'g7Desc', 'diff-medium', 'g7Tag', 'fa-shapes', 'https://images.unsplash.com/photo-1614729939124-032f0b56c9ce?auto=format&fit=crop&w=600&q=80')}
-                        ${this._gameCard('speed_math', 'g8Name', 'g8Desc', 'diff-hard', 'g8Tag', 'fa-calculator', 'https://images.unsplash.com/photo-1550751827-4bd374c3f58b?auto=format&fit=crop&w=600&q=80')}
-                        ${this._gameCard('teens_distraction', 't_distName', 't_distDesc', 'diff-medium', 'g1Tag', 'fa-shield-halved', 'distraction.png')}
-                        ${this._gameCard('teens_stoplight', 't_stopName', 't_stopDesc', 'diff-hard', 'g4Tag', 'fa-bolt', 'stoplight.png')}
-                        ${this._gameCard('teens_sound', 't_soundName', 't_soundDesc', 'diff-hard', 'g5Tag', 'fa-wave-square', 'https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?auto=format&fit=crop&w=600&q=80')}
-                        ${this._gameCard('teens_cards', 't_cardsName', 't_cardsDesc', 'diff-medium', 'g6Tag', 'fa-unlock-keyhole', 'https://images.unsplash.com/photo-1635313073808-0a0667b5791c?auto=format&fit=crop&w=600&q=80')}
+                        ${(function(self, age){
+                            const d = age < 15 ? 'diff-hard' : 'diff-medium';
+                            return self._gameCard('routine_builder', 'g3Name', 'g3Desc', d, 'g3Tag', 'fa-puzzle-piece', 'routine.png') +
+                                   self._gameCard('speed_math', 'g8Name', 'g8Desc', age < 15 ? 'diff-hard' : (age < 17 ? 'diff-medium' : 'diff-hard'), 'g8Tag', 'fa-calculator', 'https://images.unsplash.com/photo-1550751827-4bd374c3f58b?auto=format&fit=crop&w=600&q=80') +
+                                   self._gameCard('teens_stoplight', 't_stopName', 't_stopDesc', d, 'g4Tag', 'fa-bolt', 'stoplight.png') +
+                                   self._gameCard('teens_sound', 't_soundName', 't_soundDesc', d, 'g5Tag', 'fa-wave-square', 'https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?auto=format&fit=crop&w=600&q=80');
+                        })(this, parseInt(this.state.age) || 14)}
                     </div>
                 </div>
 

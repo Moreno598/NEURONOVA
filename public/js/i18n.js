@@ -58,60 +58,60 @@ const translations = {
 
         // --- GAME CARDS ---
         g1Name: '🛸 Cazadores de Distracciones',
-        g1Desc: '¡Entrena tu atención selectiva destruyendo los objetos falsos y asteroides!',
+        g1Desc: 'Ejercita la inhibición de distractores y la atención focalizada mediante la discriminación visual continua.',
         g1Tag:  'Atención Selectiva',
 
         g2Name: '🌌 Viaje de Enfoque Espacial',
-        g2Desc: 'Presta mucha atención al orden de las estrellas y repítelas.',
+        g2Desc: 'Evalúa y entrena la atención sostenida y el barrido visual mediante retención visoespacial.',
         g2Tag:  'Atención Sostenida',
 
         g3Name: '🧩 Constructor de Rutinas',
-        g3Desc: 'Organiza el día del astronauta sin fatigarte.',
+        g3Desc: 'Entrenamiento de funciones ejecutivas avanzadas: priorización, planificación y gestión de energía mental.',
         g3Tag:  'Planificación',
 
         g4Name: '🚦 Semáforo Emocional',
-        g4Desc: '¡Pulsa cuando esté verde y detén el impulso con el rojo!',
-        g4Tag:  'Control de impulsos',
+        g4Desc: 'Entrena el control inhibitorio y la autorregulación motora mediante el paradigma científico Go/No-Go.',
+        g4Tag:  'Control de Impulsos',
 
         g5Name: '🎵 Memoria Musical',
-        g5Desc: 'Escucha los hermosos sonidos del espacio e inténtalos de memoria.',
+        g5Desc: 'Estimula la memoria de trabajo fonológica y la secuenciación auditiva reteniendo patrones progresivos.',
         g5Tag:  'Memoria de Trabajo',
 
         g6Name: '🃏 Cartas de Memoria',
-        g6Desc: 'Encuentra las parejas de cartas espaciales ocultas.',
+        g6Desc: 'Fortalece la memoria de trabajo visoespacial y la memoria episódica a corto plazo.',
         g6Tag:  'Memoria Visual',
 
         g7Name: '🧩 Buscador de Patrones',
-        g7Desc: 'Encuentra la figura que no encaja en el grupo rápidamente.',
+        g7Desc: 'Optimiza la flexibilidad cognitiva y la atención alternante mediante la rápida identificación de anomalías.',
         g7Tag:  'Flexibilidad Cognitiva',
 
         g8Name: '🧮 Astro Matemáticas',
-        g8Desc: 'Resuelve las ecuaciones lo más rápido posible.',
+        g8Desc: 'Mejora la velocidad de procesamiento cognitivo y la automatización mediante cálculo bajo presión temporal.',
         g8Tag:  'Velocidad de Procesamiento',
 
         k_spatialName: '🌌 Laberinto Estelar',
-        k_spatialDesc: 'Sigue a las estrellas en el orden correcto.',
+        k_spatialDesc: 'Desarrolla la retención secuencial visomotora fundamentada en el paradigma de bloques de Corsi.',
         
         k_routineName: '🚀 Día del Astronauta',
-        k_routineDesc: 'Ayuda al astronauta a ordenar su día.',
+        k_routineDesc: 'Fomenta el funcionamiento ejecutivo inicial, enseñando a anticipar y estructurar bloques de tiempo.',
         
         k_patternName: '👽 Figuras Alienígenas',
-        k_patternDesc: '¡Encuentra al alienígena intruso que es diferente!',
+        k_patternDesc: 'Potencia la velocidad de procesamiento y atención al detalle mediante búsqueda visual selectiva.',
         
         k_mathName: '☄️ Meteoritos Matemáticos',
-        k_mathDesc: 'Resuelve la suma espacial antes de que caiga el meteorito.',
+        k_mathDesc: 'Reduce la sobrecarga cognitiva fomentando la fluidez del cálculo mental rápido.',
         
         t_distName: '🛡️ Ciber Defensa',
-        t_distDesc: 'Destruye las amenazas y esquiva los archivos seguros.',
+        t_distDesc: 'Incrementa la atención sostenida ante alta carga de estímulos interferentes (paradigma flanker).',
         
         t_stopName: '⚡ Control de Reactor',
-        t_stopDesc: 'Pulsa rápido en verde, detente por completo en rojo.',
+        t_stopDesc: 'Control de inhibición motora avanzado; basado en tareas Stop-Signal para frenar respuestas prepotentes.',
         
         t_soundName: '📡 Secuencias de Radar',
-        t_soundDesc: 'Identifica y replica las frecuencias de sonido exactas.',
+        t_soundDesc: 'Refuerza el bucle fonológico de la memoria de trabajo con exposición progresiva a estímulos auditivos.',
         
         t_cardsName: '🔐 Desencriptación Visual',
-        t_cardsDesc: 'Encuentra las coincidencias en el panel de datos.',
+        t_cardsDesc: 'Exige actualización constante de la memoria de trabajo (paradigma N-back) y retención espacial.',
 
         playBtn:  'Jugar',
 

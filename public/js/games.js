@@ -73,8 +73,14 @@ class GameController {
                     </div>
                 </div>
                 
-                <div class="game-canvas-wrapper" id="game-canvas-container">
+                <div class="game-canvas-wrapper" id="game-canvas-container" style="position: relative;">
                     <canvas id="game-canvas" width="800" height="500"></canvas>
+                    <div id="game-instructions-overlay" style="position: absolute; inset: 0; background: rgba(15,23,42,0.95); backdrop-filter: blur(8px); z-index: 100; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; padding: 40px; border-radius: inherit;">
+                        <i class="fa-solid fa-graduation-cap" style="font-size: 4rem; color: #38bdf8; margin-bottom: 20px;"></i>
+                        <h2 style="font-size: 2rem; color: white; margin-bottom: 15px;">Misión Cognitiva</h2>
+                        <p id="game-instructions-text" style="color: #cbd5e1; font-size: 1.15rem; max-width: 650px; margin-bottom: 30px; line-height: 1.6;"></p>
+                        <button id="btn-start-mission" style="background: linear-gradient(135deg, #38bdf8, #818cf8); border: none; padding: 15px 40px; border-radius: 12px; font-size: 1.2rem; font-weight: bold; color: white; cursor: pointer; box-shadow: 0 10px 20px rgba(56, 189, 248, 0.3);">🚀 Iniciar Entrenamiento</button>
+                    </div>
                 </div>
             </div>
         `;
@@ -82,15 +88,45 @@ class GameController {
         this.canvas = document.getElementById('game-canvas');
         this.ctx = this.canvas.getContext('2d');
         
+        // Populate instructions
+        const instructionsDict = {
+            'distraction_hunter': 'Debes destruir (haciendo clic) solo los asteroides o amenazas válidas. Ignora y no toques los elementos de distracción para entrenar tu atención selectiva.',
+            'emotional_stoplight': 'Paradigma Go/No-Go: Presiona la pantalla rápido cuando veas el semáforo o indicador en VERDE. Si aparece en ROJO, debes frenar el impulso y no tocar nada.',
+            'musical_memory': 'Escucha y observa la secuencia de sonidos (similares al clásico Simón Dice). Cuando sea tu turno, repite el patrón en el mismo orden.',
+            'memory_cards': 'Encuentra las parejas ocultas en el tablero en el menor tiempo posible para trabajar tu retención de memoria visual a corto plazo.',
+            'kids_spatial': 'Observa el camino iluminado en el laberinto. Retén la secuencia de pasos y replícala exactamente para estimular tu orientación espacial.',
+            'kids_routine': 'Arrastra y organiza las tareas diarias (estudio, juego, sueño) en la agenda. ¡Cuidado con sobrecargar la energía del astronauta!',
+            'kids_pattern': 'Identifica rápidamente al alienígena o figura intrusa que es diferente al resto. ¡Tienes poco tiempo para ejercitar tu flexibilidad cognitiva!',
+            'kids_math': 'Resuelve la ecuación matemática antes de que el meteoro choque. Mejora tu velocidad de procesamiento bajo ligera presión.',
+            'spatial_focus': 'Mantén tu vista en los objetivos que aparecen. Un barrido visual constante es clave para el éxito.',
+            'routine_builder': 'Acomoda las tareas diarias priorizando responsabilidades y tiempo de descanso para evitar la fatiga mental.',
+            'pattern_matcher': 'Encuentra la anomalía en el panel visual. Trabaja tu flexibilidad alternando entre distintos tipos de patrones.',
+            'speed_math': 'Operaciones de cálculo rápido mental sin uso de calculadora, diseñadas para fortalecer la automatización cognitiva.',
+            'teens_distraction': 'Filtra la información irrelevante: ataca a los objetivos clave en un entorno lleno de ruidos visuales e interferencias.',
+            'teens_stoplight': 'Debes reaccionar con un clic lo más rápido posible a la señal de inicio (verde), pero detener por completo tu respuesta motora si la señal cambia de imprevisto a rojo (Stop-Signal).',
+            'teens_sound': 'Identifica qué frecuencias de radar son iguales a las anteriores para entrenar tu memoria de trabajo fonológica.',
+            'teens_cards': 'Descifra la tabla encontrando los pares de datos para ejercitar tu actualización constante (N-Back espacial).'
+        };
+        const instrText = instructionsDict[gameId] || 'Sigue las instrucciones en pantalla y haz tu mejor esfuerzo para entrenar tu cerebro.';
+        document.getElementById('game-instructions-text').innerText = instrText;
+        
+        // Pausar juego hasta iniciar
+        this.isPlaying = false;
+        
+        document.getElementById('btn-start-mission').addEventListener('click', () => {
+            document.getElementById('game-instructions-overlay').style.display = 'none';
+            this.isPlaying = true;
+            this.gameTime = 0;
+            // Import and start specific game instance after instructions
+            this.startSpecificGame(gameId);
+        });
+
         // Event Listeners
         document.getElementById('btn-exit-game').addEventListener('click', () => this.exit());
 
         // Adapt canvas to containers size
         this.resizeCanvas();
         window.addEventListener('resize', () => this.resizeCanvas());
-
-        // Import and start specific game instance
-        this.startSpecificGame(gameId);
 
         // HUD timer loop
         this.gameInterval = setInterval(() => {
