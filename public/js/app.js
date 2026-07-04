@@ -664,6 +664,8 @@ class NeuroSparkApp {
                             <select id="admin-role-select" style="padding: 14px; border-radius: 10px; border: 2px solid var(--border-color); background: var(--bg-app); color: var(--text-main); font-size: 0.95rem; outline: none; cursor: pointer; min-width: 190px;">
                                 <option value="padre">Padre / Apoderado</option>
                                 <option value="docente">Docente / Especialista</option>
+                                <option value="premium">VIP / Premium 👑</option>
+                                <option value="quitar_premium">❌ Revocar Premium</option>
                             </select>
                             <button id="btn-assign-role" class="play-btn" style="background: linear-gradient(135deg, #7c3aed, #1d4ed8); color: white; padding: 0 28px; font-size: 0.95rem; border-radius: 10px; height: 50px; white-space: nowrap;">
                                 <i class="fa-solid fa-check"></i> Asignar Rol
@@ -672,9 +674,23 @@ class NeuroSparkApp {
                     </div>
 
                     <!-- Log -->
-                    <div id="admin-log-list" style="display: flex; flex-direction: column; gap: 10px; max-height: 180px; overflow-y: auto;">
-                        <div style="padding: 14px 18px; background: var(--bg-app); border-radius: 10px; border: 1px solid var(--border-color); display: flex; justify-content: space-between; align-items: center;">
-                            <span style="font-size: 0.9rem; color: var(--text-muted);"><i class="fa-solid fa-circle-info" style="margin-right: 8px;"></i>Aún no hay asignaciones en esta sesión.</span>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+                        <div>
+                            <h4 style="margin: 0 0 10px; color: var(--text-muted); font-size: 0.9rem;"><i class="fa-solid fa-clock-rotate-left"></i> Asignaciones Recientes</h4>
+                            <div id="admin-log-list" style="display: flex; flex-direction: column; gap: 10px; max-height: 180px; overflow-y: auto;">
+                                <div style="padding: 14px 18px; background: var(--bg-app); border-radius: 10px; border: 1px solid var(--border-color); display: flex; justify-content: space-between; align-items: center;">
+                                    <span style="font-size: 0.9rem; color: var(--text-muted);"><i class="fa-solid fa-circle-info" style="margin-right: 8px;"></i>Aún no hay asignaciones en esta sesión.</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div>
+                            <h4 style="margin: 0 0 10px; color: #fcd34d; font-size: 0.9rem;"><i class="fa-solid fa-crown"></i> Usuarios VIP Activos</h4>
+                            <div id="admin-premium-list" style="display: flex; flex-direction: column; gap: 10px; max-height: 180px; overflow-y: auto;">
+                                <div style="padding: 14px 18px; background: rgba(250, 204, 21, 0.05); border-radius: 10px; border: 1px solid rgba(250, 204, 21, 0.2); display: flex; justify-content: space-between; align-items: center;">
+                                    <span style="font-size: 0.9rem; color: white;"><i class="fa-solid fa-star text-accent" style="margin-right: 6px;"></i> premium@neurospark.com</span>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -818,17 +834,58 @@ class NeuroSparkApp {
                 this.showToast('Aviso: Verificación RPC no instalada. Se creará un perfil local.', 'info');
             }
 
-            const logList = document.getElementById('admin-log-list');
-            // Clear placeholder if present
-            if (logList.children.length === 1 && logList.querySelector('[style*="circle-info"]')) {
-                logList.innerHTML = '';
+            const roleValue = roleSelect.value;
+            if (roleValue === 'premium') {
+                localStorage.setItem('ns_is_premium', 'true');
+                const widget = document.getElementById('premiumWidget');
+                if (widget) widget.style.display = 'none';
+                const premiumHubBtn = document.getElementById('btn-premium-hub');
+                if (premiumHubBtn) premiumHubBtn.style.display = 'inline-flex';
+
+                const profileSpan = document.getElementById('current-profile-name');
+                if (profileSpan && !profileSpan.innerHTML.includes('fa-crown')) {
+                    profileSpan.innerHTML += ' <i class="fa-solid fa-crown" style="color: #fcd34d; margin-left: 5px; text-shadow: 0 0 10px #fcd34d;" title="Usuario Premium"></i>';
+                }
+
+                const premiumList = document.getElementById('admin-premium-list');
+                const div = document.createElement('div');
+                div.style.cssText = "padding: 14px 18px; background: rgba(250, 204, 21, 0.05); border-radius: 10px; border: 1px solid rgba(250, 204, 21, 0.2); display: flex; justify-content: space-between; align-items: center; opacity: 0; transform: translateY(-8px); transition: all 0.35s ease;";
+                div.innerHTML = '<span style="font-size: 0.9rem; color: white;"><i class="fa-solid fa-star text-accent" style="margin-right: 6px;"></i> ' + email + '</span>' +
+                    '<span style="background: rgba(250, 204, 21, 0.2); color: #fcd34d; padding: 4px 12px; border-radius: 20px; font-size: 0.8rem; font-weight: 600;">👑 VIP</span>';
+                premiumList.prepend(div);
+                setTimeout(() => { div.style.opacity = '1'; div.style.transform = 'translateY(0)'; }, 10);
+            } else if (roleValue === 'quitar_premium') {
+                localStorage.removeItem('ns_is_premium');
+                const widget = document.getElementById('premiumWidget');
+                if (widget) widget.style.display = 'flex';
+                const premiumHubBtn = document.getElementById('btn-premium-hub');
+                if (premiumHubBtn) premiumHubBtn.style.display = 'none';
+
+                const profileSpan = document.getElementById('current-profile-name');
+                if (profileSpan) profileSpan.innerHTML = profileSpan.innerHTML.replace(/<i[^>]*fa-crown[^>]*><\/i>/g, '');
+
+                const logList = document.getElementById('admin-log-list');
+                const item = document.createElement('div');
+                item.style.cssText = 'padding: 16px 20px; background: rgba(239,68,68,0.08); border-radius: 10px; border: 1px solid rgba(239,68,68,0.25); display: flex; justify-content: space-between; align-items: center; opacity: 0; transform: translateY(-8px); transition: all 0.35s ease;';
+                item.innerHTML = '<span style="font-size: 0.95rem; color: white;"><i class="fa-solid fa-ban" style="color:#ef4444; margin-right: 8px;"></i>' + email + '</span>' +
+                    '<span style="background: rgba(239,68,68,0.2); color: #ef4444; padding: 4px 12px; border-radius: 20px; font-size: 0.8rem; font-weight: 600;">Premium Revocado</span>';
+                logList.prepend(item);
+                setTimeout(() => { item.style.opacity = '1'; item.style.transform = 'translateY(0)'; }, 10);
+
+            } else {
+                const logList = document.getElementById('admin-log-list');
+                // Clear placeholder if present
+                if (logList.children.length === 1 && logList.querySelector('[style*="circle-info"]')) {
+                    logList.innerHTML = '';
+                }
+                const item = document.createElement('div');
+                item.style.cssText = 'padding: 16px 20px; background: rgba(124,58,237,0.08); border-radius: 10px; border: 1px solid rgba(124,58,237,0.25); display: flex; justify-content: space-between; align-items: center; opacity: 0; transform: translateY(-8px); transition: all 0.35s ease;';
+                item.innerHTML = '<span style="font-size: 0.95rem;"><i class="fa-solid fa-user-check" style="color:#7c3aed; margin-right: 8px;"></i>' + email + '</span>' +
+                    '<span style="background: rgba(124,58,237,0.2); color: #a78bfa; padding: 4px 12px; border-radius: 20px; font-size: 0.8rem; font-weight: 600;">' + roleText + '</span>';
+                logList.prepend(item);
+                setTimeout(() => { item.style.opacity = '1'; item.style.transform = 'translateY(0)'; }, 10);
             }
-            const item = document.createElement('div');
-            item.style.cssText = 'padding: 16px 20px; background: rgba(124,58,237,0.08); border-radius: 10px; border: 1px solid rgba(124,58,237,0.25); display: flex; justify-content: space-between; align-items: center; opacity: 0; transform: translateY(-8px); transition: all 0.35s ease;';
-            item.innerHTML = '<span style="font-size: 0.95rem;"><i class="fa-solid fa-user-check" style="color:#7c3aed; margin-right: 8px;"></i>' + email + '</span>' +
-                '<span style="background: rgba(124,58,237,0.2); color: #a78bfa; padding: 4px 12px; border-radius: 20px; font-size: 0.8rem; font-weight: 600;">' + roleText + '</span>';
-            logList.prepend(item);
-            setTimeout(() => { item.style.opacity = '1'; item.style.transform = 'translateY(0)'; }, 10);
+
             this.showToast('Rol "' + roleText + '" asignado a ' + email, 'success');
             emailInput.value = '';
         });
@@ -940,6 +997,7 @@ class NeuroSparkApp {
                             <option value="padre">Otorgar Rol: Padre / Apoderado</option>
                             <option value="docente">Otorgar Rol: Docente / Especialista</option>
                             <option value="premium">Otorgar Rol: VIP / Premium 👑</option>
+                            <option value="quitar_premium">❌ Revocar Premium</option>
                         </select>
                         <button id="btn-assign-role" class="play-btn" style="background: linear-gradient(135deg, var(--primary-blue), var(--primary-purple)); padding: 0 40px; font-size: 1.1rem; border-radius: 12px; height: 60px;"><i class="fa-solid fa-check"></i> Asignar</button>
                     </div>
@@ -995,6 +1053,11 @@ class NeuroSparkApp {
                 const premiumHubBtn = document.getElementById('btn-premium-hub');
                 if (premiumHubBtn) premiumHubBtn.style.display = 'inline-flex';
                 
+                const profileSpan = document.getElementById('current-profile-name');
+                if (profileSpan && !profileSpan.innerHTML.includes('fa-crown')) {
+                    profileSpan.innerHTML += ' <i class="fa-solid fa-crown" style="color: #fcd34d; margin-left: 5px; text-shadow: 0 0 10px #fcd34d;" title="Usuario Premium"></i>';
+                }
+
                 // Add to premium list
                 const premiumList = document.getElementById('admin-premium-list');
                 const div = document.createElement('div');
@@ -1002,6 +1065,23 @@ class NeuroSparkApp {
                 div.innerHTML = '<span style="font-size: 1.05rem; color: white;"><i class="fa-solid fa-star text-accent" style="margin-right: 10px;"></i> ' + email + '</span>' +
                     '<span class="difficulty-badge" style="border-color: #facc15; background: #facc15; color: #0f172a; font-weight: bold; padding: 6px 12px; font-size: 0.85rem;">VIP / Premium 👑</span>';
                 premiumList.prepend(div);
+                setTimeout(() => { div.style.opacity = '1'; div.style.transform = 'translateY(0)'; }, 10);
+            } else if (roleValue === 'quitar_premium') {
+                localStorage.removeItem('ns_is_premium');
+                const widget = document.getElementById('premiumWidget');
+                if (widget) widget.style.display = 'flex';
+                const premiumHubBtn = document.getElementById('btn-premium-hub');
+                if (premiumHubBtn) premiumHubBtn.style.display = 'none';
+                
+                const profileSpan = document.getElementById('current-profile-name');
+                if (profileSpan) profileSpan.innerHTML = profileSpan.innerHTML.replace(/<i[^>]*fa-crown[^>]*><\/i>/g, '');
+
+                const logList = document.getElementById('admin-log-list');
+                const div = document.createElement('div');
+                div.style.cssText = "padding: 20px; background: rgba(239,68,68,0.05); border-radius: 12px; border: 1px solid rgba(239,68,68,0.2); display: flex; justify-content: space-between; align-items: center; opacity: 0; transform: translateY(-10px); transition: all 0.4s ease;";
+                div.innerHTML = '<span style="font-size: 1.05rem;"><i class="fa-solid fa-ban text-red-500" style="margin-right: 10px; color:#ef4444;"></i> ' + email + '</span>' +
+                    '<span class="difficulty-badge diff-hard" style="padding: 6px 12px; font-size: 0.85rem;">Premium Revocado</span>';
+                logList.prepend(div);
                 setTimeout(() => { div.style.opacity = '1'; div.style.transform = 'translateY(0)'; }, 10);
             } else {
                 const logList = document.getElementById('admin-log-list');
