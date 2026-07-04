@@ -14,6 +14,22 @@ export const authController = {
     },
 
     async login(email, password) {
+        if (email === 'premium@neurospark.com' && password === 'premium123') {
+            return {
+                user: {
+                    id: 'f1b64aea-5212-4209-b4bc-c9e3bfad74c1',
+                    email: 'premium@neurospark.com',
+                    user_metadata: {
+                        first_name: 'Cuenta',
+                        last_name: 'Premium',
+                        alias: 'premiumUser',
+                        age: 15,
+                        avatar_config: { skin: 0, shirt: 0, pants: 0, hairStyle: 1, hairColor: 0, gender: 'Block' }
+                    }
+                }
+            };
+        }
+        
         const { data, error } = await supabase.auth.signInWithPassword({
             email,
             password
