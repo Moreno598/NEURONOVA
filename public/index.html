@@ -1450,6 +1450,91 @@
                 modal.style.display = 'none';
             }, 300);
         }
+
+        const libraryData = {
+            tdah: {
+                icon: '🧠',
+                title: '¿Qué es el TDAH?',
+                content: `
+                    <p>El Trastorno por Déficit de Atención e Hiperactividad (TDAH) es una condición neurobiológica que afecta la capacidad de una persona para mantener la atención, controlar impulsos y regular su nivel de actividad.</p>
+                    <h4 style="color: white; margin: 10px 0 5px 0;">Puntos clave:</h4>
+                    <ul style="padding-left: 20px; color: #cbd5e1; display: flex; flex-direction: column; gap: 8px;">
+                        <li>No es una "falta de inteligencia" ni mala crianza, es una forma diferente en que el cerebro procesa la información.</li>
+                        <li>Las personas con TDAH pueden tener "hiperfoco" (concentración intensa) en temas que les apasionan.</li>
+                        <li>El tratamiento ideal combina estrategias conductuales, apoyo educativo y, en algunos casos, medicación.</li>
+                    </ul>
+                `
+            },
+            study: {
+                icon: '🎓',
+                title: 'Técnicas de estudio',
+                content: `
+                    <p>Para cerebros neurodivergentes, las técnicas tradicionales (como leer por horas) no suelen funcionar. Necesitamos estimulación e interacción.</p>
+                    <h4 style="color: white; margin: 10px 0 5px 0;">Técnicas recomendadas:</h4>
+                    <ul style="padding-left: 20px; color: #cbd5e1; display: flex; flex-direction: column; gap: 8px;">
+                        <li><strong>Estudio Activo:</strong> Usa mapas mentales, tarjetas de memoria (flashcards) o explica el tema en voz alta.</li>
+                        <li><strong>El método Pomodoro:</strong> 25 minutos de estudio por 5 de descanso. ¡Usa nuestra herramienta en el Hub Premium!</li>
+                        <li><strong>Cuerpo en movimiento:</strong> Estudiar de pie o caminar mientras memorizas puede aumentar drásticamente la retención.</li>
+                    </ul>
+                `
+            },
+            time: {
+                icon: '⏱️',
+                title: 'Organización del tiempo',
+                content: `
+                    <p>La "ceguera del tiempo" es común en el TDAH. Significa que es difícil calcular cuánto tiempo tomará una tarea o sentir el paso del tiempo.</p>
+                    <h4 style="color: white; margin: 10px 0 5px 0;">Estrategias prácticas:</h4>
+                    <ul style="padding-left: 20px; color: #cbd5e1; display: flex; flex-direction: column; gap: 8px;">
+                        <li><strong>Hazlo visual:</strong> Usa temporizadores analógicos o aplicaciones visuales para ver cómo el tiempo disminuye.</li>
+                        <li><strong>Regla de los 2 minutos:</strong> Si una tarea toma menos de 2 minutos, hazla inmediatamente, no la anotes.</li>
+                        <li><strong>Desglosa las tareas:</strong> "Hacer el proyecto" es abrumador. Cámbiolo a "Escribir el primer párrafo".</li>
+                    </ul>
+                `
+            },
+            emotions: {
+                icon: '❤️',
+                title: 'Manejo de emociones',
+                content: `
+                    <p>La desregulación emocional es uno de los síntomas más desafiantes. Las emociones se sienten de forma mucho más intensa y rápida.</p>
+                    <h4 style="color: white; margin: 10px 0 5px 0;">Técnicas de autorregulación:</h4>
+                    <ul style="padding-left: 20px; color: #cbd5e1; display: flex; flex-direction: column; gap: 8px;">
+                        <li><strong>Pausa de 5 segundos:</strong> Antes de reaccionar, cuenta hasta 5 respirando profundo.</li>
+                        <li><strong>Identifica el disparador:</strong> ¿Es hambre? ¿Cansancio? ¿Sobrecarga sensorial? Atender el factor físico a menudo reduce la emoción.</li>
+                        <li><strong>Técnicas de Grounding (conexión):</strong> Encuentra 5 cosas que puedas ver, 4 que puedas tocar, 3 que escuches.</li>
+                    </ul>
+                `
+            },
+            habits: {
+                icon: '🍎',
+                title: 'Hábitos saludables',
+                content: `
+                    <p>El cuerpo y el cerebro están conectados. Un cerebro neurodivergente es especialmente sensible a los cambios físicos.</p>
+                    <h4 style="color: white; margin: 10px 0 5px 0;">Pilares fundamentales:</h4>
+                    <ul style="padding-left: 20px; color: #cbd5e1; display: flex; flex-direction: column; gap: 8px;">
+                        <li><strong>Sueño protector:</strong> El TDAH suele alterar el ritmo circadiano. Mantén horarios fijos para dormir y evita pantallas 1 hora antes.</li>
+                        <li><strong>Proteínas:</strong> El desayuno rico en proteínas ayuda a la síntesis de neurotransmisores esenciales para la atención.</li>
+                        <li><strong>Deporte intenso:</strong> El ejercicio aeróbico aumenta la dopamina y noradrenalina inmediatamente, funcionando casi como un medicamento natural.</li>
+                    </ul>
+                `
+            }
+        };
+
+        function openLibraryTopic(topicId) {
+            const data = libraryData[topicId];
+            if(!data) return;
+            
+            document.getElementById('library-topic-icon').innerText = data.icon;
+            document.getElementById('library-topic-title').innerText = data.title;
+            document.getElementById('library-topic-content').innerHTML = data.content;
+            
+            const vid = document.querySelector('#biblioteca-reader-modal .video-mock');
+            if(vid) {
+                vid.innerHTML = '<div style="width: 60px; height: 60px; background: rgba(56, 189, 248, 0.8); border-radius: 50%; display: flex; align-items: center; justify-content: center;"><i class="fa-solid fa-play" style="color: white; font-size: 24px; margin-left: 5px;"></i></div>';
+            }
+
+            document.getElementById('biblioteca-modal').style.display = 'none';
+            document.getElementById('biblioteca-reader-modal').style.display = 'flex';
+        }
     </script>
     </div>
 
@@ -1470,40 +1555,66 @@
 
                 <div style="text-align: left; display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 15px; margin-bottom: 30px;">
                     <!-- 1. TDAH -->
-                    <div style="background: rgba(255,255,255,0.05); padding: 15px; border-radius: 14px; border: 1px solid rgba(56, 189, 248, 0.2); cursor: pointer; transition: transform 0.2s;" onmouseover="this.style.transform='translateY(-3px)'" onmouseout="this.style.transform='translateY(0)'">
+                    <div onclick="openLibraryTopic('tdah')" style="background: rgba(255,255,255,0.05); padding: 15px; border-radius: 14px; border: 1px solid rgba(56, 189, 248, 0.2); cursor: pointer; transition: transform 0.2s;" onmouseover="this.style.transform='translateY(-3px)'" onmouseout="this.style.transform='translateY(0)'">
                         <strong style="color: #38bdf8; font-size: 15px; display: flex; align-items: center; gap: 8px;"><i class="fa-solid fa-book-medical"></i> ¿Qué es el TDAH?</strong>
                         <p style="margin: 5px 0 0 0; color: #cbd5e1; font-size: 13px;">Guías completas para entender y apoyar a personas neurodivergentes.</p>
                     </div>
 
                     <!-- 2. Técnicas -->
-                    <div style="background: rgba(255,255,255,0.05); padding: 15px; border-radius: 14px; border: 1px solid rgba(167, 139, 250, 0.2); cursor: pointer; transition: transform 0.2s;" onmouseover="this.style.transform='translateY(-3px)'" onmouseout="this.style.transform='translateY(0)'">
+                    <div onclick="openLibraryTopic('study')" style="background: rgba(255,255,255,0.05); padding: 15px; border-radius: 14px; border: 1px solid rgba(167, 139, 250, 0.2); cursor: pointer; transition: transform 0.2s;" onmouseover="this.style.transform='translateY(-3px)'" onmouseout="this.style.transform='translateY(0)'">
                         <strong style="color: #a78bfa; font-size: 15px; display: flex; align-items: center; gap: 8px;"><i class="fa-solid fa-graduation-cap"></i> Técnicas de estudio</strong>
                         <p style="margin: 5px 0 0 0; color: #cbd5e1; font-size: 13px;">Métodos para mejorar la retención y la atención al leer.</p>
                     </div>
 
                     <!-- 3. Tiempo -->
-                    <div style="background: rgba(255,255,255,0.05); padding: 15px; border-radius: 14px; border: 1px solid rgba(34, 197, 94, 0.2); cursor: pointer; transition: transform 0.2s;" onmouseover="this.style.transform='translateY(-3px)'" onmouseout="this.style.transform='translateY(0)'">
+                    <div onclick="openLibraryTopic('time')" style="background: rgba(255,255,255,0.05); padding: 15px; border-radius: 14px; border: 1px solid rgba(34, 197, 94, 0.2); cursor: pointer; transition: transform 0.2s;" onmouseover="this.style.transform='translateY(-3px)'" onmouseout="this.style.transform='translateY(0)'">
                         <strong style="color: #22c55e; font-size: 15px; display: flex; align-items: center; gap: 8px;"><i class="fa-solid fa-clock"></i> Organización del tiempo</strong>
                         <p style="margin: 5px 0 0 0; color: #cbd5e1; font-size: 13px;">Uso eficiente de agendas y estructuración de rutinas.</p>
                     </div>
 
                     <!-- 4. Emociones -->
-                    <div style="background: rgba(255,255,255,0.05); padding: 15px; border-radius: 14px; border: 1px solid rgba(244, 63, 94, 0.2); cursor: pointer; transition: transform 0.2s;" onmouseover="this.style.transform='translateY(-3px)'" onmouseout="this.style.transform='translateY(0)'">
+                    <div onclick="openLibraryTopic('emotions')" style="background: rgba(255,255,255,0.05); padding: 15px; border-radius: 14px; border: 1px solid rgba(244, 63, 94, 0.2); cursor: pointer; transition: transform 0.2s;" onmouseover="this.style.transform='translateY(-3px)'" onmouseout="this.style.transform='translateY(0)'">
                         <strong style="color: #f43f5e; font-size: 15px; display: flex; align-items: center; gap: 8px;"><i class="fa-solid fa-heart"></i> Manejo de emociones</strong>
                         <p style="margin: 5px 0 0 0; color: #cbd5e1; font-size: 13px;">Estrategias de autorregulación y resiliencia emocional.</p>
                     </div>
                     
                     <!-- 5. Hábitos -->
-                    <div style="background: rgba(255,255,255,0.05); padding: 15px; border-radius: 14px; border: 1px solid rgba(250, 204, 21, 0.2); cursor: pointer; transition: transform 0.2s; grid-column: 1 / -1;" onmouseover="this.style.transform='translateY(-3px)'" onmouseout="this.style.transform='translateY(0)'">
+                    <div onclick="openLibraryTopic('habits')" style="background: rgba(255,255,255,0.05); padding: 15px; border-radius: 14px; border: 1px solid rgba(250, 204, 21, 0.2); cursor: pointer; transition: transform 0.2s; grid-column: 1 / -1;" onmouseover="this.style.transform='translateY(-3px)'" onmouseout="this.style.transform='translateY(0)'">
                         <strong style="color: #facc15; font-size: 15px; display: flex; align-items: center; gap: 8px;"><i class="fa-solid fa-apple-whole"></i> Hábitos saludables</strong>
                         <p style="margin: 5px 0 0 0; color: #cbd5e1; font-size: 13px;">Impacto del sueño, la alimentación y el deporte en el cerebro.</p>
                     </div>
                 </div>
 
-                <button onclick="closeBibliotecaModal()"
+                <button onclick="openLibraryTopic('tdah')"
                     style="width: 100%; background: linear-gradient(90deg, #38bdf8, #a78bfa); color: white; font-weight: bold; padding: 15px; border-radius: 14px; border: none; cursor: pointer; text-transform: uppercase; letter-spacing: 1px; box-shadow: 0 10px 20px rgba(56, 189, 248, 0.3);">
                     Comenzar a aprender
                 </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Biblioteca Educativa Lector -->
+    <div id="biblioteca-reader-modal" style="position: fixed; inset: 0; background: rgba(0,0,0,0.9); z-index: 100001; display: none; align-items: center; justify-content: center; padding: 20px;">
+        <div style="background: #1e293b; border: 1px solid rgba(56, 189, 248, 0.3); border-radius: 24px; padding: 40px; position: relative; max-width: 700px; width: 100%; box-shadow: 0 25px 50px rgba(56, 189, 248, 0.2); max-height: 90vh; overflow-y: auto;">
+            <button onclick="document.getElementById('biblioteca-reader-modal').style.display='none'"
+                style="position: absolute; top: 20px; right: 20px; background: none; border: none; color: white; font-size: 24px; cursor: pointer;">&times;</button>
+            <button onclick="document.getElementById('biblioteca-reader-modal').style.display='none'; document.getElementById('biblioteca-modal').style.display='flex';"
+                style="position: absolute; top: 20px; left: 20px; background: none; border: none; color: #cbd5e1; font-size: 16px; cursor: pointer; display: flex; align-items: center; gap: 8px;"><i class="fa-solid fa-arrow-left"></i> Volver</button>
+            
+            <div style="text-align: center; font-family: 'Outfit', sans-serif; margin-top: 20px;">
+                <div id="library-topic-icon" style="font-size: 40px; margin-bottom: 10px;">🧠</div>
+                <h2 id="library-topic-title" style="font-size: 26px; font-weight: 900; color: white; margin-bottom: 20px;">Título</h2>
+                
+                <!-- Video Placeholder -->
+                <div style="width: 100%; aspect-ratio: 16/9; background: #0f172a; border-radius: 12px; border: 1px solid rgba(255,255,255,0.1); display: flex; align-items: center; justify-content: center; margin-bottom: 25px; cursor: pointer; position: relative; overflow: hidden;" class="video-mock" onclick="this.innerHTML='<div style=\'color:white\'><i class=\'fa-solid fa-spinner fa-spin\' style=\'margin-right:10px;\'></i>Cargando el contenido educativo...</div>'">
+                    <div style="width: 60px; height: 60px; background: rgba(56, 189, 248, 0.8); border-radius: 50%; display: flex; align-items: center; justify-content: center; transition: transform 0.2s;" onmouseover="this.style.transform='scale(1.1)'" onmouseout="this.style.transform='scale(1)'">
+                        <i class="fa-solid fa-play" style="color: white; font-size: 24px; margin-left: 5px;"></i>
+                    </div>
+                </div>
+
+                <div id="library-topic-content" style="text-align: left; color: #cbd5e1; font-size: 15px; line-height: 1.6; display: flex; flex-direction: column; gap: 15px;">
+                    <!-- Content injected via JS -->
+                </div>
             </div>
         </div>
     </div>
