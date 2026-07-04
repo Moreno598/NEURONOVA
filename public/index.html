@@ -1431,9 +1431,9 @@
 
     <!-- Modal Premium -->
     <div id="premiumModal"
-        style="position: fixed; inset: 0; background: rgba(0,0,0,0.8); z-index: 100000; display: none; align-items: center; justify-content: center;">
-        <div
-            style="background: #1e293b; border: 1px solid rgba(245, 158, 11, 0.3); border-radius: 24px; padding: 40px; position: relative; max-width: 450px; width: 90%; box-shadow: 0 25px 50px rgba(245, 158, 11, 0.2);">
+        style="position: fixed; inset: 0; background: rgba(0,0,0,0.8); z-index: 100000; display: none; align-items: center; justify-content: center; padding: 20px;">
+        <div class="modal-scrollable"
+            style="background: #1e293b; border: 1px solid rgba(245, 158, 11, 0.3); border-radius: 24px; padding: 40px; position: relative; max-width: 450px; width: 100%; box-shadow: 0 25px 50px rgba(245, 158, 11, 0.2); max-height: 90vh; overflow-y: auto;">
             <button onclick="document.getElementById('premiumModal').style.display='none'"
                 style="position: absolute; top: 20px; right: 20px; background: none; border: none; color: white; font-size: 24px; cursor: pointer;">&times;</button>
             <div style="text-align: center; font-family: 'Outfit', sans-serif;">
@@ -1474,9 +1474,27 @@
 
     <!-- Modal Métodos de Pago -->
     <div id="paymentModal"
-        style="position: fixed; inset: 0; background: rgba(0,0,0,0.8); z-index: 100001; display: none; align-items: center; justify-content: center;">
-        <div
-            style="background: #1e293b; border: 1px solid rgba(56, 189, 248, 0.3); border-radius: 24px; padding: 40px; position: relative; max-width: 450px; width: 90%; box-shadow: 0 25px 50px rgba(56, 189, 248, 0.2);">
+        style="position: fixed; inset: 0; background: rgba(0,0,0,0.8); z-index: 100001; display: none; align-items: center; justify-content: center; padding: 20px;">
+        <div class="modal-scrollable"
+            style="background: #1e293b; border: 1px solid rgba(56, 189, 248, 0.3); border-radius: 24px; padding: 40px; position: relative; max-width: 450px; width: 100%; box-shadow: 0 25px 50px rgba(56, 189, 248, 0.2); max-height: 90vh; overflow-y: auto;">
+            <style>
+                /* Estilos personalizados para la barra de desplazamiento (Scrollbar) */
+                .modal-scrollable::-webkit-scrollbar {
+                    width: 8px;
+                }
+                .modal-scrollable::-webkit-scrollbar-track {
+                    background: rgba(255, 255, 255, 0.05);
+                    border-radius: 10px;
+                    margin: 15px 0;
+                }
+                .modal-scrollable::-webkit-scrollbar-thumb {
+                    background: rgba(56, 189, 248, 0.4);
+                    border-radius: 10px;
+                }
+                .modal-scrollable::-webkit-scrollbar-thumb:hover {
+                    background: rgba(56, 189, 248, 0.8);
+                }
+            </style>
             <button onclick="document.getElementById('paymentModal').style.display='none'"
                 style="position: absolute; top: 20px; right: 20px; background: none; border: none; color: white; font-size: 24px; cursor: pointer; transition: color 0.3s;"
                 onmouseover="this.style.color='#f87171'" onmouseout="this.style.color='white'">&times;</button>
