@@ -1494,13 +1494,8 @@
                         <span style="font-size: 1.1rem; letter-spacing: 0.5px;">Tarjeta de Crédito / Débito</span>
                     </button>
 
-                    <!-- PayPal -->
-                    <button onclick="alert('Redirigiendo a PayPal...')"
-                        style="width: 100%; display: flex; align-items: center; justify-content: center; gap: 15px; background: rgba(255,255,255,0.05); color: white; font-weight: bold; padding: 18px; border-radius: 14px; border: 1px solid rgba(255,255,255,0.1); cursor: pointer; transition: all 0.3s;"
-                        onmouseover="this.style.background='rgba(255,255,255,0.1)'; this.style.borderColor='rgba(56,189,248,0.5)'" onmouseout="this.style.background='rgba(255,255,255,0.05)'; this.style.borderColor='rgba(255,255,255,0.1)'">
-                        <i class="fa-brands fa-paypal" style="font-size: 1.5rem; color: #38bdf8;"></i>
-                        <span style="font-size: 1.1rem; letter-spacing: 0.5px;">PayPal</span>
-                    </button>
+                    <!-- PayPal Button Container -->
+                    <div id="paypal-button-container" style="width: 100%; margin-top: 10px;"></div>
                 </div>
                 
                 <div style="margin-top: 25px; cursor: pointer; font-size: 0.9rem; color: #64748b; font-weight: 600; transition: color 0.3s;"
@@ -1511,6 +1506,44 @@
             </div>
         </div>
     </div>
+
+    <!-- Script de Integración PayPal -->
+    <!-- Reemplaza "test" por tu verdadero Client ID de PayPal para Producción -->
+    <script src="https://www.paypal.com/sdk/js?client-id=BAA-JmTmCnNobQ9zGp0Ow4N_8X2Yi4WW1o-Me6DdzVV20-n_2AcVo_1JNMpV9qj4JjxXJ0Gz7hncHQBE7E&currency=USD"></script>
+    <script>
+        paypal.Buttons({
+            style: {
+                color:  'blue',
+                shape:  'pill',
+                label:  'pay',
+                height: 40
+            },
+            createOrder: function(data, actions) {
+                // Configura el monto del pago
+                return actions.order.create({
+                    purchase_units: [{
+                        amount: {
+                            value: '20.00' // Monto de la suscripción/compra
+                        },
+                        description: 'NeuroSpark Premium'
+                    }]
+                });
+            },
+            onApprove: function(data, actions) {
+                // Captura el pago cuando el usuario aprueba
+                return actions.order.capture().then(function(details) {
+                    alert('¡Pago completado exitosamente por ' + details.payer.name.given_name + '!');
+                    // Aquí puedes añadir la lógica para actualizar el perfil del usuario a Premium en tu base de datos (Supabase)
+                    document.getElementById('paymentModal').style.display='none';
+                });
+            },
+            onError: function(err) {
+                console.error("Error en el pago con PayPal:", err);
+                alert("Ocurrió un error al procesar el pago.");
+            }
+        }).render('#paypal-button-container');
+    </script>
+
 
     <!-- Notification Toast System -->
     <div id="toast-container" class="toast-container"></div>
