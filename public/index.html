@@ -1504,15 +1504,7 @@
                     SELECCIONA TU MÉTODO DE PAGO</h2>
                 
                 <div style="display: flex; flex-direction: column; gap: 15px;">
-                    <!-- Tarjeta de Crédito -->
-                    <button onclick="alert('Procesando pago con Tarjeta de Crédito...')"
-                        style="width: 100%; display: flex; align-items: center; justify-content: center; gap: 15px; background: rgba(255,255,255,0.05); color: white; font-weight: bold; padding: 18px; border-radius: 14px; border: 1px solid rgba(255,255,255,0.1); cursor: pointer; transition: all 0.3s;"
-                        onmouseover="this.style.background='rgba(255,255,255,0.1)'; this.style.borderColor='rgba(56,189,248,0.5)'" onmouseout="this.style.background='rgba(255,255,255,0.05)'; this.style.borderColor='rgba(255,255,255,0.1)'">
-                        <i class="fa-regular fa-credit-card" style="font-size: 1.5rem; color: #38bdf8;"></i>
-                        <span style="font-size: 1.1rem; letter-spacing: 0.5px;">Tarjeta de Crédito / Débito</span>
-                    </button>
-
-                    <!-- PayPal Button Container -->
+                    <!-- PayPal y Tarjetas (Contenedor Oficial de PayPal) -->
                     <div id="paypal-button-container" style="width: 100%; margin-top: 10px;"></div>
                 </div>
                 
@@ -1537,13 +1529,14 @@
                 height: 40
             },
             createOrder: function(data, actions) {
-                // Configura el monto del pago
+                // PayPal no soporta Soles (PEN) nativamente. 
+                // Cobramos el equivalente en Dólares (aprox $5.35 USD) para que el banco del usuario haga el cambio automático a S/ 20.00
                 return actions.order.create({
                     purchase_units: [{
                         amount: {
-                            value: '20.00' // Monto de la suscripción/compra
+                            value: '5.35' // 5.35 USD ≈ 20.00 Soles
                         },
-                        description: 'NeuroSpark Premium'
+                        description: 'NeuroSpark Premium (Equivalente a S/ 20.00)'
                     }]
                 });
             },
