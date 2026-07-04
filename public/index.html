@@ -1455,7 +1455,8 @@
             tdah: {
                 icon: '🧠',
                 title: '¿Qué es el TDAH?',
-                videoId: 'FGQ_Gt7UHp8',
+                videoKids: 'BE4d4E5Vsjg',
+                videoTeens: 'FGQ_Gt7UHp8',
                 content: `
                     <p>El Trastorno por Déficit de Atención e Hiperactividad (TDAH) es una condición neurobiológica que afecta la capacidad de una persona para mantener la atención, controlar impulsos y regular su nivel de actividad.</p>
                     <h4 style="color: white; margin: 10px 0 5px 0;">Puntos clave:</h4>
@@ -1469,7 +1470,8 @@
             study: {
                 icon: '🎓',
                 title: 'Técnicas de estudio',
-                videoId: 'Q4xLlAhzZNI',
+                videoKids: 'zhe1xioEDg4',
+                videoTeens: 'AvGb_Q0nBFo',
                 content: `
                     <p>Para cerebros neurodivergentes, las técnicas tradicionales (como leer por horas) no suelen funcionar. Necesitamos estimulación e interacción.</p>
                     <h4 style="color: white; margin: 10px 0 5px 0;">Técnicas recomendadas:</h4>
@@ -1483,7 +1485,8 @@
             time: {
                 icon: '⏱️',
                 title: 'Organización del tiempo',
-                videoId: '864228rfcv4',
+                videoKids: '4Dss-mavZHc',
+                videoTeens: 'q1rTQGZcaaM',
                 content: `
                     <p>La "ceguera del tiempo" es común en el TDAH. Significa que es difícil calcular cuánto tiempo tomará una tarea o sentir el paso del tiempo.</p>
                     <h4 style="color: white; margin: 10px 0 5px 0;">Estrategias prácticas:</h4>
@@ -1497,7 +1500,8 @@
             emotions: {
                 icon: '❤️',
                 title: 'Manejo de emociones',
-                videoId: 'xuU_cCFOFA0',
+                videoKids: '0pvUY3pBenA',
+                videoTeens: 'wQUrtig_ZD8',
                 content: `
                     <p>La desregulación emocional es uno de los síntomas más desafiantes. Las emociones se sienten de forma mucho más intensa y rápida.</p>
                     <h4 style="color: white; margin: 10px 0 5px 0;">Técnicas de autorregulación:</h4>
@@ -1511,7 +1515,8 @@
             habits: {
                 icon: '🍎',
                 title: 'Hábitos saludables',
-                videoId: 'HBPZfoB74PI',
+                videoKids: 'VMbRdSe8avs',
+                videoTeens: 'YWGOThGG8-Y',
                 content: `
                     <p>El cuerpo y el cerebro están conectados. Un cerebro neurodivergente es especialmente sensible a los cambios físicos.</p>
                     <h4 style="color: white; margin: 10px 0 5px 0;">Pilares fundamentales:</h4>
@@ -1527,22 +1532,29 @@
         function openLibraryTopic(topicId) {
             const data = libraryData[topicId];
             if(!data) return;
+
+            // Detectar perfil del usuario para video adecuado
+            const profile = (window.neuroApp && window.neuroApp.state) ? window.neuroApp.state.profile : 'teens';
+            const videoId = (profile === 'kids') ? data.videoKids : data.videoTeens;
             
             document.getElementById('library-topic-icon').innerText = data.icon;
             document.getElementById('library-topic-title').innerText = data.title;
             document.getElementById('library-topic-content').innerHTML = data.content;
-            
+
+            // Etiqueta de audiencia
+            const audience = (profile === 'kids') ? '👶 Video para niños' : '🧑‍🎓 Video para adolescentes';
+            document.getElementById('library-audience-label').innerText = audience;
             const vid = document.querySelector('#biblioteca-reader-modal .video-mock');
             if(vid) {
                 vid.outerHTML = `
                     <div class="video-container" style="width: 100%; aspect-ratio: 16/9; background: #0f172a; border-radius: 12px; border: 1px solid rgba(255,255,255,0.1); margin-bottom: 25px; overflow: hidden; position: relative;">
-                        <iframe width="100%" height="100%" src="https://www.youtube.com/embed/${data.videoId}?autoplay=1&rel=0" title="${data.title}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen style="position:absolute; top:0; left:0; width:100%; height:100%;"></iframe>
+                        <iframe width="100%" height="100%" src="https://www.youtube.com/embed/${videoId}?autoplay=1&rel=0" title="${data.title}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen style="position:absolute; top:0; left:0; width:100%; height:100%;"></iframe>
                     </div>
                 `;
             } else {
                 const currentContainer = document.querySelector('#biblioteca-reader-modal .video-container');
                 if (currentContainer) {
-                    currentContainer.innerHTML = `<iframe width="100%" height="100%" src="https://www.youtube.com/embed/${data.videoId}?autoplay=1&rel=0" title="${data.title}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen style="position:absolute; top:0; left:0; width:100%; height:100%;"></iframe>`;
+                    currentContainer.innerHTML = `<iframe width="100%" height="100%" src="https://www.youtube.com/embed/${videoId}?autoplay=1&rel=0" title="${data.title}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen style="position:absolute; top:0; left:0; width:100%; height:100%;"></iframe>`;
                 }
             }
 
@@ -1635,7 +1647,8 @@
             
             <div style="text-align: center; font-family: 'Outfit', sans-serif; margin-top: 20px;">
                 <div id="library-topic-icon" style="font-size: 40px; margin-bottom: 10px;">🧠</div>
-                <h2 id="library-topic-title" style="font-size: 26px; font-weight: 900; color: white; margin-bottom: 20px;">Título</h2>
+                <h2 id="library-topic-title" style="font-size: 26px; font-weight: 900; color: white; margin-bottom: 8px;">Título</h2>
+                <span id="library-audience-label" style="display: inline-block; background: rgba(56,189,248,0.15); border: 1px solid rgba(56,189,248,0.3); color: #38bdf8; font-size: 12px; font-weight: 700; padding: 4px 12px; border-radius: 20px; margin-bottom: 18px; letter-spacing: 0.5px;"></span>
                 
                 <!-- Video Placeholder -->
                 <div style="width: 100%; aspect-ratio: 16/9; background: #0f172a; border-radius: 12px; border: 1px solid rgba(255,255,255,0.1); display: flex; align-items: center; justify-content: center; margin-bottom: 25px; cursor: pointer; position: relative; overflow: hidden;" class="video-mock" onclick="this.innerHTML='<div style=\'color:white\'><i class=\'fa-solid fa-spinner fa-spin\' style=\'margin-right:10px;\'></i>Cargando el contenido educativo...</div>'">
