@@ -35,12 +35,12 @@ class NeuroSparkApp {
         };
 
         this.storeItems = [
-            { id: 'cyber_neon', nameKey: 'skinCyber', cost: 100, icon: 'fa-robot', color: '#38bdf8', image: 'assets/store_cyber_neon.png' },
-            { id: 'green_shield', nameKey: 'skinShield', cost: 180, icon: 'fa-shield-halved', color: '#22c55e' },
-            { id: 'golden_crown', nameKey: 'skinCrown', cost: 250, icon: 'fa-crown', color: '#fbbf24' },
-            { id: 'jetpack', nameKey: 'skinJetpack', cost: 350, icon: 'fa-rocket', color: '#a855f7' },
-            { id: 'stellar_aura', nameKey: 'skinAura', cost: 500, icon: 'fa-star', color: '#f472b6' },
-            { id: 'holo_pet', nameKey: 'skinHolopet', cost: 800, icon: 'fa-dog', color: '#06b6d4' }
+            { id: 'cyber_neon', nameKey: 'skinCyber', cost: 100, icon: 'fa-robot', color: '#38bdf8', image: 'assets/store_cyber_neon.png', effectDesc: '+10% extra de NeuroCoins' },
+            { id: 'green_shield', nameKey: 'skinShield', cost: 180, icon: 'fa-shield-halved', color: '#22c55e', effectDesc: 'Ignora tu primer fallo (Escudo protector)' },
+            { id: 'golden_crown', nameKey: 'skinCrown', cost: 250, icon: 'fa-crown', color: '#fbbf24', effectDesc: 'Tiempo extra (+10s en todas las misiones)' },
+            { id: 'jetpack', nameKey: 'skinJetpack', cost: 350, icon: 'fa-rocket', color: '#a855f7', effectDesc: 'Multiplicador x1.5 de puntos (Velocidad)' },
+            { id: 'stellar_aura', nameKey: 'skinAura', cost: 500, icon: 'fa-star', color: '#f472b6', effectDesc: 'Reduce la velocidad de caída/reacción un 15%' },
+            { id: 'holo_pet', nameKey: 'skinHolopet', cost: 800, icon: 'fa-dog', color: '#06b6d4', effectDesc: '+50% NeuroCoins y Mascotas de ayuda' }
         ];
     }
 
@@ -1116,7 +1116,8 @@ class NeuroSparkApp {
                                 <div class="store-item ${bought ? 'purchased' : ''} ${active ? 'active-skin' : ''}" data-id="${item.id}">
                                     ${imgOrIcon}
                                     <strong>${i18n.t(item.nameKey)}</strong>
-                                    <div style="margin-top:10px;">${btnHTML}</div>
+                                    <div style="margin: 6px 0; font-size: 0.75rem; color: ${item.color}; background: ${item.color}22; border: 1px solid ${item.color}55; border-radius: 6px; padding: 3px 8px; display: inline-block;"><i class="fa-solid fa-bolt" style="margin-right:4px;"></i>${item.effectDesc}</div>
+                                    <div style="margin-top:8px;">${btnHTML}</div>
                                 </div>`;
         }).join('')}
                     </div>
@@ -1135,7 +1136,7 @@ class NeuroSparkApp {
                 if (e.target.closest('.equip-btn')) {
                     this.state.activeSkin = itemId;
                     this.saveState(); this.renderHome();
-                    this.showToast(i18n.t('customized'), 'success');
+                    this.showItemUnlockModal(itemData, false);
                     return;
                 }
                 if (this.state.unlockedItems.includes(itemId)) return;
@@ -1146,13 +1147,89 @@ class NeuroSparkApp {
                     this.state.activeSkin = itemId;
                     this.saveState(); this.updateHeaderHUD(); this.renderHome();
                     sound.playSuccess();
-                    this.showToast(i18n.t('bought', { name: i18n.t(itemData.nameKey) }), 'success');
+                    this.showItemUnlockModal(itemData, true);
                 } else {
                     sound.playError();
                     this.showToast(i18n.t('notEnoughCoins'), 'warning');
                 }
             });
         });
+    }
+
+    showItemUnlockModal(itemData, wasPurchase) {
+        // Remove existing modal if any
+        const existing = document.getElementById('item-unlock-modal');
+        if (existing) existing.remove();
+
+        const modal = document.createElement('div');
+        modal.id = 'item-unlock-modal';
+        modal.style.cssText = `
+            position: fixed; inset: 0; z-index: 999999;
+            display: flex; align-items: center; justify-content: center;
+            background: rgba(0,0,0,0.75); backdrop-filter: blur(12px);
+            animation: fadeIn 0.3s ease;
+        `;
+        modal.innerHTML = `
+            <div style="
+                background: linear-gradient(135deg, #0f172a, #1e1b4b);
+                border: 2px solid ${itemData.color};
+                border-radius: 24px;
+                padding: 48px 40px;
+                max-width: 420px;
+                width: 90%;
+                text-align: center;
+                box-shadow: 0 0 60px ${itemData.color}55, 0 20px 60px rgba(0,0,0,0.6);
+                position: relative;
+                animation: popIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            ">
+                <div style="
+                    width: 90px; height: 90px; border-radius: 50%;
+                    background: ${itemData.color}22;
+                    border: 3px solid ${itemData.color};
+                    display: flex; align-items: center; justify-content: center;
+                    margin: 0 auto 20px auto;
+                    box-shadow: 0 0 30px ${itemData.color}66;
+                ">
+                    <i class="fa-solid ${itemData.icon}" style="font-size: 2.5rem; color: ${itemData.color};"></i>
+                </div>
+
+                <div style="font-size: 0.85rem; letter-spacing: 2px; color: ${itemData.color}; text-transform: uppercase; margin-bottom: 8px; font-weight: 700;">
+                    ${wasPurchase ? '🎉 ¡NUEVO OBJETO DESBLOQUEADO!' : '⚡ OBJETO EQUIPADO'}
+                </div>
+
+                <h2 style="color: white; font-size: 1.7rem; margin: 0 0 6px 0; font-weight: 800;">
+                    ${i18n.t(itemData.nameKey)}
+                </h2>
+
+                <div style="
+                    margin: 20px auto;
+                    background: ${itemData.color}18;
+                    border: 1px solid ${itemData.color}55;
+                    border-radius: 14px;
+                    padding: 18px 24px;
+                ">
+                    <div style="font-size: 0.8rem; color: #94a3b8; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px;">⚡ Poder Especial Activo</div>
+                    <p style="color: white; font-size: 1.1rem; font-weight: 600; margin: 0;">${itemData.effectDesc}</p>
+                </div>
+
+                <p style="color: #64748b; font-size: 0.85rem; margin-bottom: 24px;">
+                    ${wasPurchase ? 'Este efecto se activará automáticamente cada vez que entres a una misión.' : 'Tu efecto especial ya está activo para la próxima misión.'}
+                </p>
+
+                <button id="btn-close-unlock-modal" style="
+                    background: linear-gradient(135deg, ${itemData.color}, ${itemData.color}99);
+                    color: #0f172a; border: none; padding: 14px 40px;
+                    border-radius: 12px; font-size: 1rem; font-weight: 800;
+                    cursor: pointer; width: 100%;
+                    box-shadow: 0 8px 20px ${itemData.color}44;
+                    transition: transform 0.2s;
+                ">¡Entendido, Explorador! 🚀</button>
+            </div>
+        `;
+
+        document.body.appendChild(modal);
+        modal.addEventListener('click', e => { if (e.target === modal) modal.remove(); });
+        document.getElementById('btn-close-unlock-modal').addEventListener('click', () => modal.remove());
     }
 
     _gameCard(id, nameKey, descKey, diffClass, tagKey, icon, imgName) {

@@ -117,6 +117,26 @@ class GameController {
             document.getElementById('game-instructions-overlay').style.display = 'none';
             this.isPlaying = true;
             this.gameTime = 0;
+
+            // --- Aplicar efectos de la tienda al inicio de la partida ---
+            const app = getApp();
+            const skin = app ? app.state.activeSkin : null;
+            this.activeEffects = { shieldActive: false, timeBonus: 0, multiplier: 1, slowMode: false, coinBonus: 1 };
+            if (skin === 'green_shield')  { this.activeEffects.shieldActive = true; coach.speak('¡Escudo activo! Tu primer fallo será ignorado.'); }
+            if (skin === 'golden_crown')  { this.activeEffects.timeBonus = 10; coach.speak('¡Corona equipada! +10 segundos de misión.'); }
+            if (skin === 'jetpack')       { this.activeEffects.multiplier = 1.5; coach.speak('¡Mochila Cohete activa! Puntos x1.5 en esta misión.'); }
+            if (skin === 'stellar_aura') { this.activeEffects.slowMode = true; coach.speak('¡Aura Estelar activa! Los estímulos irán más lentos.'); }
+            if (skin === 'cyber_neon')   { this.activeEffects.coinBonus = 1.1; coach.speak('¡Skin Cyber Neon activo! +10% de NeuroCoins esta misión.'); }
+            if (skin === 'holo_pet')     { this.activeEffects.coinBonus = 1.5; coach.speak('¡Mascota Holográfica activa! +50% de NeuroCoins y escudo extra.'); this.activeEffects.shieldActive = true; }
+            this.shieldUsed = false;
+
+            // Notificar en instrucciones si hay efecto activo
+            if (skin && this.activeEffects.multiplier !== 1 || this.activeEffects.shieldActive || this.activeEffects.timeBonus || this.activeEffects.slowMode || this.activeEffects.coinBonus !== 1) {
+                const skinName = skin || '';
+                const el = document.getElementById('game-instructions-overlay');
+                if (el) el.style.display = 'none';
+            }
+
             // Import and start specific game instance after instructions
             this.startSpecificGame(gameId);
         });
@@ -129,10 +149,12 @@ class GameController {
         window.addEventListener('resize', () => this.resizeCanvas());
 
         // HUD timer loop
+        const baseDuration = 60;
         this.gameInterval = setInterval(() => {
             if (!this.isPlaying) return;
             this.gameTime++;
-            const timeDisplay = Math.max(0, 60 - this.gameTime);
+            const bonus = (this.activeEffects && this.activeEffects.timeBonus) || 0;
+            const timeDisplay = Math.max(0, baseDuration + bonus - this.gameTime);
             document.getElementById('game-hud-time').innerText = `${timeDisplay}s`;
             
             // Check fatigue
@@ -225,13 +247,24 @@ class GameController {
     }
 
     addScore(points) {
-        this.gameScore += points;
+        // Apply multiplier from Jetpack skin, and coinBonus from Cyber/HoloPet
+        const mult = (this.activeEffects && this.activeEffects.multiplier) || 1;
+        const coinBonus = (this.activeEffects && this.activeEffects.coinBonus) || 1;
+        this.gameScore += Math.round(points * mult * coinBonus);
         const scoreHUD = document.getElementById('game-hud-score');
         if (scoreHUD) scoreHUD.innerText = this.gameScore;
         sound.playPop();
     }
 
     registerError() {
+        // Shield effect: absorb first error (green_shield or holo_pet)
+        if (this.activeEffects && this.activeEffects.shieldActive && !this.shieldUsed) {
+            this.shieldUsed = true;
+            this.activeEffects.shieldActive = false;
+            coach.speak('¡Escudo activado! Tu fallo fue absorbido. El escudo ya no está disponible.');
+            sound.playPop();
+            return; // skip error registration
+        }
         this.gameErrors++;
         this.impulseClicks++;
         const errorsHUD = document.getElementById('game-hud-errors');

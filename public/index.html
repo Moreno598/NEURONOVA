@@ -1855,6 +1855,35 @@
                 <div style="display: flex; flex-direction: column; gap: 15px;">
                     <!-- PayPal y Tarjetas (Contenedor Oficial de PayPal) -->
                     <div id="paypal-button-container" style="width: 100%; margin-top: 10px;"></div>
+
+                    <!-- Separador -->
+                    <div style="display: flex; align-items: center; gap: 12px; margin: 4px 0;">
+                        <div style="flex: 1; height: 1px; background: rgba(255,255,255,0.1);"></div>
+                        <span style="color: #475569; font-size: 0.85rem; font-weight: 600;">O PAGA CON</span>
+                        <div style="flex: 1; height: 1px; background: rgba(255,255,255,0.1);"></div>
+                    </div>
+
+                    <!-- Botón YAPE -->
+                    <button
+                        id="btn-pay-yape"
+                        onclick="document.getElementById('yapeModal').style.display='flex'"
+                        style="
+                            width: 100%; padding: 14px 20px;
+                            background: linear-gradient(135deg, #6d28d9, #7c3aed);
+                            border: none; border-radius: 12px; cursor: pointer;
+                            display: flex; align-items: center; justify-content: center; gap: 14px;
+                            transition: transform 0.2s, box-shadow 0.2s;
+                            box-shadow: 0 6px 20px rgba(109,40,217,0.4);
+                        "
+                        onmouseover="this.style.transform='scale(1.02)'; this.style.boxShadow='0 10px 30px rgba(109,40,217,0.6)';"
+                        onmouseout="this.style.transform='scale(1)'; this.style.boxShadow='0 6px 20px rgba(109,40,217,0.4)';">
+                        <svg width="28" height="28" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <circle cx="20" cy="20" r="20" fill="white"/>
+                            <text x="50%" y="55%" dominant-baseline="middle" text-anchor="middle" font-size="18" font-weight="900" fill="#6d28d9">Y</text>
+                        </svg>
+                        <span style="color: white; font-size: 1rem; font-weight: 800; letter-spacing: 0.5px;">PAGAR CON YAPE</span>
+                        <span style="color: #c4b5fd; font-size: 0.85rem; font-weight: 600;">S/ 20.00</span>
+                    </button>
                 </div>
                 
                 <div style="margin-top: 25px; cursor: pointer; font-size: 0.9rem; color: #64748b; font-weight: 600; transition: color 0.3s;"
@@ -1863,6 +1892,40 @@
                     <i class="fa-solid fa-arrow-left"></i> Volver atrás
                 </div>
             </div>
+        </div>
+    </div>
+
+    <!-- Modal Yape QR -->
+    <div id="yapeModal"
+        style="position: fixed; inset: 0; background: rgba(0,0,0,0.85); z-index: 100002; display: none; align-items: center; justify-content: center; padding: 20px; backdrop-filter: blur(10px);">
+        <div style="background: linear-gradient(135deg, #1e1b4b, #0f172a); border: 2px solid #7c3aed; border-radius: 24px; padding: 40px; max-width: 400px; width: 100%; text-align: center; box-shadow: 0 0 60px rgba(124,58,237,0.5); animation: popIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); position: relative;">
+            <button onclick="document.getElementById('yapeModal').style.display='none'"
+                style="position: absolute; top: 16px; right: 16px; background: none; border: none; color: white; font-size: 22px; cursor: pointer;">&#x2715;</button>
+
+            <!-- Logo Yape -->
+            <div style="width: 64px; height: 64px; border-radius: 50%; background: white; display: flex; align-items: center; justify-content: center; margin: 0 auto 16px auto; box-shadow: 0 0 20px rgba(124,58,237,0.6);">
+                <span style="font-size: 2rem; font-weight: 900; color: #6d28d9;">Y</span>
+            </div>
+
+            <h2 style="color: white; font-size: 1.5rem; font-weight: 900; margin: 0 0 6px 0;">Pagar con Yape</h2>
+            <p style="color: #a78bfa; font-weight: 700; font-size: 1.1rem; margin-bottom: 20px;">S/ 20.00 &bull; NeuroSpark Premium</p>
+
+            <!-- QR Real de Yape -->
+            <div style="background: white; border-radius: 16px; padding: 12px; width: 192px; margin: 0 auto 20px auto; box-shadow: 0 0 25px rgba(124,58,237,0.5);">
+                <img src="assets/yape_qr.png" alt="QR Yape NeuroSpark" style="width: 168px; height: 168px; display: block; border-radius: 8px;" />
+            </div>
+
+            <p style="color: #94a3b8; font-size: 0.9rem; margin-bottom: 8px;">Escanea con tu app <strong style="color:white;">Yape</strong> o envía al número:</p>
+            <div style="background: rgba(124,58,237,0.15); border: 1px solid rgba(124,58,237,0.4); border-radius: 10px; padding: 10px 20px; font-size: 1.3rem; font-weight: 900; color: white; letter-spacing: 2px; margin-bottom: 20px;">+51 960 118 520</div>
+
+            <p style="color: #64748b; font-size: 0.8rem; margin-bottom: 20px;">Tras realizar el pago, presiona el botón para confirmar y activar tu cuenta Premium.</p>
+
+            <button
+                id="btn-confirm-yape"
+                style="width: 100%; background: linear-gradient(135deg, #7c3aed, #a855f7); border: none; padding: 14px; border-radius: 12px; color: white; font-size: 1rem; font-weight: 800; cursor: pointer; box-shadow: 0 8px 20px rgba(124,58,237,0.4); transition: transform 0.2s;"
+                onmouseover="this.style.transform='scale(1.02)'" onmouseout="this.style.transform='scale(1)'">
+                ✅ Ya pagué con Yape &mdash; Activar Premium
+            </button>
         </div>
     </div>
 
@@ -1920,6 +1983,37 @@
         }).render('#paypal-button-container');
     </script>
 
+    <!-- Lógica de Confirmación de Yape -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const btnYape = document.getElementById('btn-confirm-yape');
+            if (btnYape) {
+                btnYape.addEventListener('click', function () {
+                    // 1. Ocultar modales de pago
+                    document.getElementById('yapeModal').style.display = 'none';
+                    document.getElementById('paymentModal').style.display = 'none';
+
+                    // 2. Activar Premium
+                    localStorage.setItem('ns_is_premium', 'true');
+
+                    // 3. Ocultar widget de promoción
+                    const widget = document.getElementById('premiumWidget');
+                    if (widget) widget.style.display = 'none';
+
+                    // 4. Corona VIP en header
+                    const profileSpan = document.getElementById('current-profile-name');
+                    if (profileSpan && !profileSpan.innerHTML.includes('fa-crown')) {
+                        profileSpan.innerHTML += ' <i class="fa-solid fa-crown" style="color: #fcd34d; margin-left: 5px; text-shadow: 0 0 10px #fcd34d;" title="Usuario Premium"></i>';
+                    }
+
+                    // 5. Mostrar modal de éxito con nombre Yape
+                    const nameEl = document.getElementById('success-buyer-name');
+                    if (nameEl) nameEl.innerText = 'YAPERO ⚡';
+                    document.getElementById('successModal').style.display = 'flex';
+                });
+            }
+        });
+    </script>
 
     <!-- Modal Éxito de Compra (GRACIAS POR SU COMPRA) -->
     <div id="successModal"
