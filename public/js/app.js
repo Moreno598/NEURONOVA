@@ -105,6 +105,17 @@ class NeuroSparkApp {
         document.getElementById('player-level').innerText = this.state.level;
         document.getElementById('current-profile-name').innerText = this.state.activeProfileName;
 
+        // Mostrar links solo si hay sesión
+        const navBib = document.getElementById('nav-biblioteca');
+        const navEst = document.getElementById('nav-estadisticas');
+        if (this.state.currentUserEmail) {
+            if (navBib) navBib.style.display = 'inline-block';
+            if (navEst) navEst.style.display = 'inline-block';
+        } else {
+            if (navBib) navBib.style.display = 'none';
+            if (navEst) navEst.style.display = 'none';
+        }
+
         // Render custom avatar in header
         const avatarIcon = document.querySelector('.profile-select-btn i.fa-user-astronaut');
         if (this.state.avatar && document.querySelector('.profile-select-btn')) {
@@ -228,6 +239,27 @@ class NeuroSparkApp {
             chatPanel.classList.toggle('hidden');
             document.getElementById('coach-badge').style.display = 'none';
             sound.playPop();
+
+            // Animación de gestos de Sparky al hacer click/touch
+            const face = document.querySelector('.coach-avatar-face');
+            const leftEye = document.getElementById('sparky-eye-left');
+            const rightEye = document.getElementById('sparky-eye-right');
+            const mouth = document.getElementById('sparky-mouth');
+
+            if(face) {
+                face.style.transition = 'transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275)';
+                face.style.transform = 'scale(1.1) rotate(8deg)';
+                if(leftEye) leftEye.style.fill = '#facc15'; // Ojos amarillos brillantes
+                if(rightEye) rightEye.style.fill = '#facc15';
+                if(mouth) mouth.setAttribute('d', 'M 42 53 Q 50 68 58 53'); // Boca muy feliz
+                
+                setTimeout(() => {
+                    face.style.transform = 'scale(1) rotate(0deg)';
+                    if(leftEye) leftEye.style.fill = '#38bdf8';
+                    if(rightEye) rightEye.style.fill = '#38bdf8';
+                    if(mouth) mouth.setAttribute('d', 'M 42 58 Q 50 63 58 58'); // Boca normal
+                }, 500);
+            }
         });
         document.getElementById('btn-close-chat').addEventListener('click', () => {
             chatPanel.classList.add('hidden');

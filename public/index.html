@@ -274,9 +274,12 @@
                         <span
                             style="color: #1e293b; font-weight: 800; font-size: 0.85rem; cursor: pointer; transition: color 0.3s; letter-spacing: 0.5px;">LA
                             PLATAFORMA</span>
-                        <span onclick="openStatsModal()" onmouseover="this.style.color='#38bdf8'"
+                        <span id="nav-biblioteca" onclick="openBibliotecaModal()" onmouseover="this.style.color='#38bdf8'"
                             onmouseout="this.style.color='#64748b'"
-                            style="color: #64748b; font-weight: 700; font-size: 0.85rem; cursor: pointer; transition: color 0.3s; letter-spacing: 0.5px;">ESTADÍSTICAS</span>
+                            style="display: none; color: #64748b; font-weight: 700; font-size: 0.85rem; cursor: pointer; transition: color 0.3s; letter-spacing: 0.5px;">BIBLIOTECA</span>
+                        <span id="nav-estadisticas" onclick="openStatsModal()" onmouseover="this.style.color='#38bdf8'"
+                            onmouseout="this.style.color='#64748b'"
+                            style="display: none; color: #64748b; font-weight: 700; font-size: 0.85rem; cursor: pointer; transition: color 0.3s; letter-spacing: 0.5px;">ESTADÍSTICAS</span>
                         <span onclick="openInstitutionsModal()" onmouseover="this.style.color='#38bdf8'"
                             onmouseout="this.style.color='#64748b'"
                             style="color: #64748b; font-weight: 700; font-size: 0.85rem; cursor: pointer; transition: color 0.3s; letter-spacing: 0.5px;">INSTITUCIONES</span>
@@ -1416,6 +1419,21 @@
             }, 300);
         }
 
+        function openBibliotecaModal() {
+            const modal = document.getElementById('biblioteca-modal');
+            modal.style.display = 'flex';
+            void modal.offsetWidth;
+            modal.style.opacity = '1';
+        }
+
+        function closeBibliotecaModal() {
+            const modal = document.getElementById('biblioteca-modal');
+            modal.style.opacity = '0';
+            setTimeout(() => {
+                modal.style.display = 'none';
+            }, 300);
+        }
+
         function openHelpModal() {
             const modal = document.getElementById('help-modal');
             modal.style.display = 'flex';
@@ -1431,6 +1449,61 @@
             }, 300);
         }
     </script>
+    </div>
+
+    <!-- Modal Biblioteca Educativa -->
+    <div id="biblioteca-modal"
+        style="position: fixed; inset: 0; background: rgba(0,0,0,0.8); z-index: 100000; display: none; align-items: center; justify-content: center; padding: 20px; transition: opacity 0.3s; opacity: 0;">
+        <div class="modal-scrollable"
+            style="background: #1e293b; border: 1px solid rgba(56, 189, 248, 0.3); border-radius: 24px; padding: 40px; position: relative; max-width: 600px; width: 100%; box-shadow: 0 25px 50px rgba(56, 189, 248, 0.2); max-height: 90vh; overflow-y: auto;">
+            <button onclick="closeBibliotecaModal()"
+                style="position: absolute; top: 20px; right: 20px; background: none; border: none; color: white; font-size: 24px; cursor: pointer; transition: color 0.3s;"
+                onmouseover="this.style.color='#f87171'" onmouseout="this.style.color='white'">&times;</button>
+            <div style="text-align: center; font-family: 'Outfit', sans-serif;">
+                <div style="font-size: 50px; margin-bottom: 15px;">📚</div>
+                <h2
+                    style="font-size: 28px; font-weight: 900; background: linear-gradient(90deg, #38bdf8, #a78bfa); -webkit-background-clip: text; background-clip: text; color: transparent; margin-bottom: 10px;">
+                    BIBLIOTECA EDUCATIVA</h2>
+                <p style="color: #cbd5e1; font-size: 14px; margin-bottom: 25px;">Videos y recursos para padres, estudiantes y educadores.</p>
+
+                <div style="text-align: left; display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 15px; margin-bottom: 30px;">
+                    <!-- 1. TDAH -->
+                    <div style="background: rgba(255,255,255,0.05); padding: 15px; border-radius: 14px; border: 1px solid rgba(56, 189, 248, 0.2); cursor: pointer; transition: transform 0.2s;" onmouseover="this.style.transform='translateY(-3px)'" onmouseout="this.style.transform='translateY(0)'">
+                        <strong style="color: #38bdf8; font-size: 15px; display: flex; align-items: center; gap: 8px;"><i class="fa-solid fa-book-medical"></i> ¿Qué es el TDAH?</strong>
+                        <p style="margin: 5px 0 0 0; color: #cbd5e1; font-size: 13px;">Guías completas para entender y apoyar a personas neurodivergentes.</p>
+                    </div>
+
+                    <!-- 2. Técnicas -->
+                    <div style="background: rgba(255,255,255,0.05); padding: 15px; border-radius: 14px; border: 1px solid rgba(167, 139, 250, 0.2); cursor: pointer; transition: transform 0.2s;" onmouseover="this.style.transform='translateY(-3px)'" onmouseout="this.style.transform='translateY(0)'">
+                        <strong style="color: #a78bfa; font-size: 15px; display: flex; align-items: center; gap: 8px;"><i class="fa-solid fa-graduation-cap"></i> Técnicas de estudio</strong>
+                        <p style="margin: 5px 0 0 0; color: #cbd5e1; font-size: 13px;">Métodos para mejorar la retención y la atención al leer.</p>
+                    </div>
+
+                    <!-- 3. Tiempo -->
+                    <div style="background: rgba(255,255,255,0.05); padding: 15px; border-radius: 14px; border: 1px solid rgba(34, 197, 94, 0.2); cursor: pointer; transition: transform 0.2s;" onmouseover="this.style.transform='translateY(-3px)'" onmouseout="this.style.transform='translateY(0)'">
+                        <strong style="color: #22c55e; font-size: 15px; display: flex; align-items: center; gap: 8px;"><i class="fa-solid fa-clock"></i> Organización del tiempo</strong>
+                        <p style="margin: 5px 0 0 0; color: #cbd5e1; font-size: 13px;">Uso eficiente de agendas y estructuración de rutinas.</p>
+                    </div>
+
+                    <!-- 4. Emociones -->
+                    <div style="background: rgba(255,255,255,0.05); padding: 15px; border-radius: 14px; border: 1px solid rgba(244, 63, 94, 0.2); cursor: pointer; transition: transform 0.2s;" onmouseover="this.style.transform='translateY(-3px)'" onmouseout="this.style.transform='translateY(0)'">
+                        <strong style="color: #f43f5e; font-size: 15px; display: flex; align-items: center; gap: 8px;"><i class="fa-solid fa-heart"></i> Manejo de emociones</strong>
+                        <p style="margin: 5px 0 0 0; color: #cbd5e1; font-size: 13px;">Estrategias de autorregulación y resiliencia emocional.</p>
+                    </div>
+                    
+                    <!-- 5. Hábitos -->
+                    <div style="background: rgba(255,255,255,0.05); padding: 15px; border-radius: 14px; border: 1px solid rgba(250, 204, 21, 0.2); cursor: pointer; transition: transform 0.2s; grid-column: 1 / -1;" onmouseover="this.style.transform='translateY(-3px)'" onmouseout="this.style.transform='translateY(0)'">
+                        <strong style="color: #facc15; font-size: 15px; display: flex; align-items: center; gap: 8px;"><i class="fa-solid fa-apple-whole"></i> Hábitos saludables</strong>
+                        <p style="margin: 5px 0 0 0; color: #cbd5e1; font-size: 13px;">Impacto del sueño, la alimentación y el deporte en el cerebro.</p>
+                    </div>
+                </div>
+
+                <button onclick="closeBibliotecaModal()"
+                    style="width: 100%; background: linear-gradient(90deg, #38bdf8, #a78bfa); color: white; font-weight: bold; padding: 15px; border-radius: 14px; border: none; cursor: pointer; text-transform: uppercase; letter-spacing: 1px; box-shadow: 0 10px 20px rgba(56, 189, 248, 0.3);">
+                    Comenzar a aprender
+                </button>
+            </div>
+        </div>
     </div>
 
     <!-- Premium Widget (Flotante) -->
