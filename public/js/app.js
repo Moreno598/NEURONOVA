@@ -47,6 +47,7 @@ class NeuroSparkApp {
     /* ---- BOOT ---- */
     init() {
         window.neuroApp = this;
+        this.engine = engine;
         this.loadState();
         this.setupEventListeners();
         this.updateHeaderHUD();

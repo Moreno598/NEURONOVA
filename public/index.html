@@ -1457,7 +1457,7 @@
     <div id="premiumModal"
         style="position: fixed; inset: 0; background: rgba(0,0,0,0.8); z-index: 100000; display: none; align-items: center; justify-content: center; padding: 20px;">
         <div class="modal-scrollable"
-            style="background: #1e293b; border: 1px solid rgba(245, 158, 11, 0.3); border-radius: 24px; padding: 40px; position: relative; max-width: 450px; width: 100%; box-shadow: 0 25px 50px rgba(245, 158, 11, 0.2); max-height: 90vh; overflow-y: auto;">
+            style="background: #1e293b; border: 1px solid rgba(245, 158, 11, 0.3); border-radius: 24px; padding: 40px; position: relative; max-width: 600px; width: 100%; box-shadow: 0 25px 50px rgba(245, 158, 11, 0.2); max-height: 90vh; overflow-y: auto;">
             <button onclick="document.getElementById('premiumModal').style.display='none'"
                 style="position: absolute; top: 20px; right: 20px; background: none; border: none; color: white; font-size: 24px; cursor: pointer;">&times;</button>
             <div style="text-align: center; font-family: 'Outfit', sans-serif;">
@@ -1472,58 +1472,98 @@
                     style="text-align: left; display: flex; flex-direction: column; gap: 15px; margin-bottom: 30px; font-size: 13px; color: #f8fafc; overflow-x: hidden;">
                     
                     <!-- 1. Entrenamiento IA -->
-                    <div style="background: rgba(255,255,255,0.05); padding: 15px; border-radius: 14px; border: 1px solid rgba(56, 189, 248, 0.2);">
-                        <strong style="color: #38bdf8; font-size: 15px; display: flex; align-items: center; gap: 8px;"><i class="fa-solid fa-brain"></i> 1. Entrenamiento con IA</strong>
-                        <ul style="margin: 8px 0 0 0; padding-left: 20px; color: #cbd5e1; display: flex; flex-direction: column; gap: 5px;">
-                            <li>Evaluación inicial y adaptación dinámica de dificultad.</li>
-                            <li>Recomendaciones específicas (memoria, concentración).</li>
-                            <li><span style="color: #fcd34d;">⭐ Entrenamiento único por usuario.</span></li>
+                    <div style="background: rgba(255,255,255,0.05); padding: 20px; border-radius: 14px; border: 1px solid rgba(56, 189, 248, 0.2);">
+                        <strong style="color: #38bdf8; font-size: 16px; display: flex; align-items: center; gap: 8px;"><i class="fa-solid fa-brain"></i> 1. Plan de entrenamiento personalizado (IA)</strong>
+                        <ul style="margin: 10px 0 0 0; padding-left: 20px; color: #cbd5e1; display: flex; flex-direction: column; gap: 6px;">
+                            <li>Evaluación inicial del nivel de atención.</li>
+                            <li>La inteligencia artificial adapta la dificultad según el desempeño.</li>
+                            <li>Recomendaciones de juegos específicas para fortalecer memoria, concentración o control de impulsos.</li>
+                            <li>Objetivos semanales personalizados.</li>
+                            <li style="color: #fcd34d; font-weight: bold; list-style: none; margin-left: -20px; margin-top: 5px;">⭐ Valor Premium: Cada usuario recibe un entrenamiento único.</li>
                         </ul>
                     </div>
 
                     <!-- 2. Reportes -->
-                    <div style="background: rgba(255,255,255,0.05); padding: 15px; border-radius: 14px; border: 1px solid rgba(167, 139, 250, 0.2);">
-                        <strong style="color: #a78bfa; font-size: 15px; display: flex; align-items: center; gap: 8px;"><i class="fa-solid fa-chart-pie"></i> 2. Reportes Detallados</strong>
-                        <ul style="margin: 8px 0 0 0; padding-left: 20px; color: #cbd5e1; display: flex; flex-direction: column; gap: 5px;">
-                            <li>Gráficos de tiempo, memoria y velocidad.</li>
-                            <li>Evolución, logros y áreas de mejora.</li>
-                            <li>Consejos para apoyar el desarrollo en casa.</li>
-                        </ul>
+                    <div style="background: rgba(255,255,255,0.05); padding: 20px; border-radius: 14px; border: 1px solid rgba(167, 139, 250, 0.2);">
+                        <strong style="color: #a78bfa; font-size: 16px; display: flex; align-items: center; gap: 8px;"><i class="fa-solid fa-chart-pie"></i> 📊 2. Reportes detallados de progreso</strong>
+                        <div style="margin: 10px 0 0 0; color: #cbd5e1;">
+                            <p style="margin: 0 0 5px 0;">Incluye gráficos sobre:</p>
+                            <ul style="padding-left: 20px; margin: 0 0 10px 0; display: flex; flex-direction: column; gap: 4px;">
+                                <li>Tiempo de concentración.</li>
+                                <li>Memoria de trabajo.</li>
+                                <li>Velocidad de respuesta.</li>
+                                <li>Control de impulsividad.</li>
+                                <li>Evolución semanal y mensual.</li>
+                            </ul>
+                            <p style="margin: 0 0 5px 0;">Además:</p>
+                            <ul style="padding-left: 20px; margin: 0 0 10px 0; display: flex; flex-direction: column; gap: 4px;">
+                                <li>Comparación del progreso.</li>
+                                <li>Logros obtenidos y Áreas que necesitan reforzarse.</li>
+                                <li>Recibir consejos para apoyar el desarrollo en casa.</li>
+                            </ul>
+                            <p style="color: #a78bfa; margin: 0; font-weight: bold; font-style: italic;">*Ideal para colegios y centros terapéuticos.</p>
+                        </div>
                     </div>
 
                     <!-- 3. Juegos Exclusivos -->
-                    <div style="background: rgba(255,255,255,0.05); padding: 15px; border-radius: 14px; border: 1px solid rgba(244, 63, 94, 0.2);">
-                        <strong style="color: #f43f5e; font-size: 15px; display: flex; align-items: center; gap: 8px;"><i class="fa-solid fa-gamepad"></i> 3. Juegos Premium</strong>
-                        <ul style="margin: 8px 0 0 0; padding-left: 20px; color: #cbd5e1; display: flex; flex-direction: column; gap: 5px;">
-                            <li>Más niveles, desafíos y misiones cooperativas.</li>
-                            <li>Juegos de realidad aumentada y eventos.</li>
+                    <div style="background: rgba(255,255,255,0.05); padding: 20px; border-radius: 14px; border: 1px solid rgba(244, 63, 94, 0.2);">
+                        <strong style="color: #f43f5e; font-size: 16px; display: flex; align-items: center; gap: 8px;"><i class="fa-solid fa-gamepad"></i> 🎮 3. Juegos Premium exclusivos</strong>
+                        <ul style="margin: 10px 0 0 0; padding-left: 20px; color: #cbd5e1; display: flex; flex-direction: column; gap: 6px;">
+                            <li>Más niveles.</li>
+                            <li>Nuevos desafíos.</li>
+                            <li>Juegos de realidad aumentada.</li>
+                            <li>Misiones cooperativas.</li>
+                            <li>Eventos especiales.</li>
                         </ul>
                     </div>
 
                     <!-- 4. Sistema de Recompensas -->
-                    <div style="background: rgba(255,255,255,0.05); padding: 15px; border-radius: 14px; border: 1px solid rgba(250, 204, 21, 0.2);">
-                        <strong style="color: #facc15; font-size: 15px; display: flex; align-items: center; gap: 8px;"><i class="fa-solid fa-medal"></i> 4. Sistema de Recompensas</strong>
-                        <ul style="margin: 8px 0 0 0; padding-left: 20px; color: #cbd5e1; display: flex; flex-direction: column; gap: 5px;">
-                            <li>Insignias, avatares exclusivos y mascotas.</li>
-                            <li>Tienda avanzada para personalizar personajes.</li>
+                    <div style="background: rgba(255,255,255,0.05); padding: 20px; border-radius: 14px; border: 1px solid rgba(250, 204, 21, 0.2);">
+                        <strong style="color: #facc15; font-size: 16px; display: flex; align-items: center; gap: 8px;"><i class="fa-solid fa-medal"></i> 🎖️ 4. Sistema de recompensas avanzado</strong>
+                        <ul style="margin: 10px 0 0 0; padding-left: 20px; color: #cbd5e1; display: flex; flex-direction: column; gap: 6px;">
+                            <li>Insignias especiales.</li>
+                            <li>Avatares exclusivos.</li>
+                            <li>Monedas virtuales.</li>
+                            <li>Tienda para personalizar personajes.</li>
+                            <li>Mascotas virtuales.</li>
                         </ul>
                     </div>
 
                     <!-- 5. Rutinas Inteligentes -->
-                    <div style="background: rgba(255,255,255,0.05); padding: 15px; border-radius: 14px; border: 1px solid rgba(34, 197, 94, 0.2);">
-                        <strong style="color: #22c55e; font-size: 15px; display: flex; align-items: center; gap: 8px;"><i class="fa-solid fa-calendar-check"></i> 5. Rutinas Inteligentes</strong>
-                        <ul style="margin: 8px 0 0 0; padding-left: 20px; color: #cbd5e1; display: flex; flex-direction: column; gap: 5px;">
-                            <li>Horarios, recordatorios y descansos Pomodoro.</li>
+                    <div style="background: rgba(255,255,255,0.05); padding: 20px; border-radius: 14px; border: 1px solid rgba(34, 197, 94, 0.2);">
+                        <strong style="color: #22c55e; font-size: 16px; display: flex; align-items: center; gap: 8px;"><i class="fa-solid fa-calendar-check"></i> 🎯 5. Rutinas inteligentes</strong>
+                        <p style="margin: 10px 0 5px 0; color: #cbd5e1;">La aplicación crea automáticamente:</p>
+                        <ul style="margin: 0; padding-left: 20px; color: #cbd5e1; display: flex; flex-direction: column; gap: 6px;">
+                            <li>Horarios de entrenamiento.</li>
+                            <li>Recordatorios.</li>
+                            <li>Descansos con técnica Pomodoro.</li>
                             <li>Ejercicios diarios de 10–20 minutos.</li>
                         </ul>
                     </div>
 
-                    <!-- 6. Zona de Relajación & Asistente -->
-                    <div style="background: rgba(255,255,255,0.05); padding: 15px; border-radius: 14px; border: 1px solid rgba(14, 165, 233, 0.2);">
-                        <strong style="color: #0ea5e9; font-size: 15px; display: flex; align-items: center; gap: 8px;"><i class="fa-solid fa-spa"></i> 6. Relajación & Asistente IA</strong>
-                        <ul style="margin: 8px 0 0 0; padding-left: 20px; color: #cbd5e1; display: flex; flex-direction: column; gap: 5px;">
-                            <li>Respiración guiada, música y mindfulness.</li>
-                            <li>Asistente IA que motiva, explica errores y celebra logros.</li>
+                    <!-- 6. Zona de Relajación -->
+                    <div style="background: rgba(255,255,255,0.05); padding: 20px; border-radius: 14px; border: 1px solid rgba(14, 165, 233, 0.2);">
+                        <strong style="color: #0ea5e9; font-size: 16px; display: flex; align-items: center; gap: 8px;"><i class="fa-solid fa-spa"></i> 🧘 6. Zona de relajación</strong>
+                        <p style="margin: 10px 0 5px 0; color: #cbd5e1;">Incluye:</p>
+                        <ul style="margin: 0; padding-left: 20px; color: #cbd5e1; display: flex; flex-direction: column; gap: 6px;">
+                            <li>Respiración guiada.</li>
+                            <li>Música para concentración.</li>
+                            <li>Sonidos de la naturaleza.</li>
+                            <li>Ejercicios de mindfulness.</li>
+                            <li>Relajación antes de estudiar.</li>
+                        </ul>
+                    </div>
+                    
+                    <!-- 7. Asistente Virtual -->
+                    <div style="background: rgba(255,255,255,0.05); padding: 20px; border-radius: 14px; border: 1px solid rgba(251, 113, 133, 0.2);">
+                        <strong style="color: #fb7185; font-size: 16px; display: flex; align-items: center; gap: 8px;"><i class="fa-solid fa-robot"></i> 🤖 7. Asistente virtual</strong>
+                        <p style="margin: 10px 0 5px 0; color: #cbd5e1;">Un asistente con IA que:</p>
+                        <ul style="margin: 0; padding-left: 20px; color: #cbd5e1; display: flex; flex-direction: column; gap: 6px;">
+                            <li>Motiva al usuario.</li>
+                            <li>Explica errores.</li>
+                            <li>Sugiere ejercicios.</li>
+                            <li>Responde preguntas.</li>
+                            <li>Celebra los logros.</li>
                         </ul>
                     </div>
                 </div>
@@ -1748,12 +1788,39 @@
                         <p style="color: #94a3b8; font-size: 0.85rem; margin: 0; pointer-events: none;">Relajación guiada para después de estudiar.</p>
                     </div>
 
+                    <!-- Asistente Virtual -->
+                    <div onclick="openPremiumFeature('assistant')" style="background: rgba(251,113,133,0.1); padding: 20px; border-radius: 16px; border: 1px solid rgba(251,113,133,0.3); cursor: pointer; transition: transform 0.2s; position: relative; z-index: 10;" onmouseover="this.style.transform='translateY(-5px)'" onmouseout="this.style.transform='translateY(0)'">
+                        <i class="fa-solid fa-robot" style="color: #fb7185; font-size: 2rem; margin-bottom: 15px; pointer-events: none;"></i>
+                        <h4 style="color: white; margin: 0 0 8px 0; font-size: 1.1rem; pointer-events: none;">Asistente Virtual</h4>
+                        <p style="color: #94a3b8; font-size: 0.85rem; margin: 0; pointer-events: none;">Motiva, explica errores y celebra logros.</p>
+                    </div>
+
                 </div>
             </div>
         </div>
     </div>
 
     <!-- Modales de Funciones Premium -->
+    <!-- Modal Asistente Virtual -->
+    <div id="assistantModal" style="position: fixed; inset: 0; background: rgba(0,0,0,0.9); backdrop-filter: blur(15px); z-index: 100003; display: none; align-items: center; justify-content: center; padding: 20px; animation: popIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;">
+        <div style="background: linear-gradient(135deg, #fb718522, #1e293b); border: 1px solid #fb7185; border-radius: 24px; padding: 40px; text-align: center; max-width: 500px; width: 100%; position: relative;">
+            <button onclick="closeSubModal('assistantModal')" style="position: absolute; top: 20px; right: 20px; background: none; border: none; color: white; font-size: 28px; cursor: pointer; z-index: 50;">&times;</button>
+            <div style="position: relative; display: inline-block;">
+                <i class="fa-solid fa-robot" style="color: #fb7185; font-size: 3.5rem; margin-bottom: 20px; animation: floatConfetti 3s infinite;"></i>
+            </div>
+            <h2 style="color: white; font-size: 1.8rem; margin-bottom: 10px;">Tu Asistente IA</h2>
+            <div id="assistant-chat-box" style="background: rgba(0,0,0,0.4); border-radius: 12px; padding: 20px; height: 180px; overflow-y: auto; text-align: left; margin-bottom: 20px; display: flex; flex-direction: column; gap: 10px;">
+                <div style="background: rgba(251,113,133,0.2); border: 1px solid rgba(251,113,133,0.4); padding: 10px 15px; border-radius: 12px; color: white; font-size: 0.95rem; align-self: flex-start; max-width: 85%;">
+                    ¡Hola! Soy tu asistente virtual. Estoy aquí para motivarte, explicar tus errores y celebrar tus logros. ¿En qué te puedo ayudar hoy?
+                </div>
+            </div>
+            <div style="display: flex; gap: 10px;">
+                <input type="text" id="assistant-input" placeholder="Pregúntame lo que quieras..." onkeypress="if(event.key === 'Enter') sendAssistantMessage()" style="flex: 1; padding: 12px 20px; border-radius: 12px; border: 1px solid #fb7185; background: rgba(0,0,0,0.5); color: white; outline: none; font-family: 'Outfit', sans-serif;">
+                <button onclick="sendAssistantMessage()" style="background: #fb7185; color: white; border: none; padding: 0 25px; border-radius: 12px; font-weight: bold; cursor: pointer; transition: transform 0.2s;" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'"><i class="fa-solid fa-paper-plane"></i></button>
+            </div>
+        </div>
+    </div>
+
     <!-- Modal Zona Zen -->
     <div id="zenModal" style="position: fixed; inset: 0; background: rgba(0,0,0,0.9); backdrop-filter: blur(15px); z-index: 100003; display: none; align-items: center; justify-content: center; padding: 20px; animation: popIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;">
         <div style="background: linear-gradient(135deg, #0ea5e922, #1e293b); border: 1px solid #0ea5e9; border-radius: 24px; padding: 40px; text-align: center; max-width: 500px; width: 100%; position: relative;">
@@ -1971,7 +2038,34 @@
                 document.getElementById('gamesModal').style.display = 'flex';
             } else if (feature === 'rewards') {
                 document.getElementById('rewardsModal').style.display = 'flex';
+            } else if (feature === 'assistant') {
+                document.getElementById('assistantModal').style.display = 'flex';
             }
+        }
+
+        function sendAssistantMessage() {
+            const input = document.getElementById('assistant-input');
+            const chatBox = document.getElementById('assistant-chat-box');
+            if (input.value.trim() === '') return;
+            
+            // Mensaje del usuario
+            chatBox.innerHTML += `<div style="background: rgba(255,255,255,0.1); padding: 10px 15px; border-radius: 12px; color: white; font-size: 0.95rem; align-self: flex-end; max-width: 85%;">${input.value}</div>`;
+            input.value = '';
+            chatBox.scrollTop = chatBox.scrollHeight;
+            
+            // Simular respuesta de IA
+            setTimeout(() => {
+                const respuestas = [
+                    "¡Excelente pregunta! Recuerda que cada error es un paso más hacia el éxito, no te rindas.",
+                    "La paciencia y el enfoque son la clave. Si te sientes cansado, prueba un descanso Pomodoro.",
+                    "Te sugiero jugar 'Odisea AR' para mejorar tu atención sostenida el día de hoy.",
+                    "¡Estoy muy orgulloso de tu progreso semanal! Sigue entrenando todos los días.",
+                    "Si te equivocas en un patrón, toma aire y revisa la secuencia lentamente. ¡Tú puedes!"
+                ];
+                const res = respuestas[Math.floor(Math.random() * respuestas.length)];
+                chatBox.innerHTML += `<div style="background: rgba(251,113,133,0.2); border: 1px solid rgba(251,113,133,0.4); padding: 10px 15px; border-radius: 12px; color: white; font-size: 0.95rem; align-self: flex-start; max-width: 85%;">${res}</div>`;
+                chatBox.scrollTop = chatBox.scrollHeight;
+            }, 1000);
         }
 
         // Lógica real para lanzar juegos de la plataforma desde los modales VIP
