@@ -1101,8 +1101,10 @@ class NeuroSparkApp {
     /* ---- KIDS HOME ---- */
     renderKidsHome(mount) {
         const name = this.state.activeProfileName;
-        const avatar = this.state.avatar || 'sparky';
-        const avatarUrl = (avatar.startsWith('http') || avatar.startsWith('data:')) ? avatar : `https://api.dicebear.com/7.x/bottts/svg?seed=${avatar.charAt(0).toUpperCase() + avatar.slice(1)}`;
+        const avatar = this.state.avatar;
+        const avatarUrl = (avatar && (avatar.startsWith('http') || avatar.startsWith('data:'))) 
+            ? avatar 
+            : 'assets/mascota_ninos.png';
         mount.innerHTML = `
             <div class="kids-home-view">
                 <div class="kids-welcome-banner">
