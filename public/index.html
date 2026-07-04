@@ -1605,28 +1605,22 @@
                     // 1. Ocultar el modal de pago
                     document.getElementById('paymentModal').style.display = 'none';
 
-                    // 2. Guardar el estado PREMIUM en el navegador (y base de datos si aplica)
+                    // 2. Guardar el estado PREMIUM en el navegador
                     localStorage.setItem('ns_is_premium', 'true');
                     
                     // 3. Ocultar el widget de promoción Premium de la pantalla principal
                     const widget = document.getElementById('premiumWidget');
                     if(widget) widget.style.display = 'none';
 
-                    // 4. Mostrar alerta de felicitaciones
-                    alert(
-                        '✨ ¡PAGO EXITOSO, ' + details.payer.name.given_name.toUpperCase() + '! ✨\n\n' +
-                        'Tu cuenta ha sido actualizada a NEUROSPARK PREMIUM.\n\n' +
-                        'Se han desbloqueado automáticamente:\n' +
-                        '✅ Entrenamiento personalizado con IA\n' +
-                        '✅ Reportes detallados y gráficos\n' +
-                        '✅ Todos los juegos y niveles exclusivos\n' +
-                        '✅ Sistema de Recompensas avanzado\n' +
-                        '✅ Zona de relajación y Asistente IA\n\n' +
-                        '¡Disfruta de tu nueva experiencia sin límites!'
-                    );
-                    
-                    // 5. Opcional: Recargar la interfaz para aplicar los cambios en los juegos
-                    // window.location.reload();
+                    // 4. Actualizar visualmente el perfil del usuario con una Corona VIP
+                    const profileSpan = document.getElementById('current-profile-name');
+                    if(profileSpan && !profileSpan.innerHTML.includes('fa-crown')) {
+                        profileSpan.innerHTML += ' <i class="fa-solid fa-crown" style="color: #fcd34d; margin-left: 5px; text-shadow: 0 0 10px #fcd34d;" title="Usuario Premium"></i>';
+                    }
+
+                    // 5. Personalizar y Mostrar el Modal Espectacular de Éxito
+                    document.getElementById('success-buyer-name').innerText = details.payer.name.given_name.toUpperCase();
+                    document.getElementById('successModal').style.display = 'flex';
                 });
             },
             onError: function(err) {
@@ -1636,6 +1630,50 @@
         }).render('#paypal-button-container');
     </script>
 
+
+    <!-- Modal Éxito de Compra (GRACIAS POR SU COMPRA) -->
+    <div id="successModal"
+        style="position: fixed; inset: 0; background: rgba(0,0,0,0.9); z-index: 100005; display: none; align-items: center; justify-content: center; padding: 20px;">
+        <div style="background: linear-gradient(135deg, #1e293b, #0f172a); border: 2px solid #facc15; border-radius: 24px; padding: 50px 40px; position: relative; max-width: 500px; width: 100%; box-shadow: 0 0 80px rgba(250, 204, 21, 0.4); text-align: center; animation: popIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;">
+            <style>
+                @keyframes popIn {
+                    0% { transform: scale(0.5); opacity: 0; }
+                    100% { transform: scale(1); opacity: 1; }
+                }
+                .confetti {
+                    position: absolute;
+                    width: 10px; height: 10px; background: #facc15;
+                    border-radius: 50%;
+                    animation: floatConfetti 3s ease-in-out infinite;
+                }
+                @keyframes floatConfetti {
+                    0%, 100% { transform: translateY(0) scale(1); }
+                    50% { transform: translateY(-20px) scale(1.2); }
+                }
+            </style>
+            <!-- Confetti visual de adorno -->
+            <div class="confetti" style="top: 20px; left: 30px; background: #38bdf8;"></div>
+            <div class="confetti" style="top: 40px; right: 40px; background: #a78bfa;"></div>
+            <div class="confetti" style="bottom: 30px; left: 50px; background: #22c55e;"></div>
+            
+            <i class="fa-solid fa-crown" style="color: #facc15; font-size: 4rem; margin-bottom: 20px; text-shadow: 0 0 30px rgba(250, 204, 21, 0.8);"></i>
+            
+            <h1 style="color: white; font-weight: 900; font-size: 2.2rem; margin: 0 0 10px 0; letter-spacing: 1px; text-transform: uppercase;">
+                ¡GRACIAS POR SU COMPRA!
+            </h1>
+            <p style="color: #38bdf8; font-size: 1.2rem; font-weight: 700; margin-bottom: 25px;">
+                Felicidades <span id="success-buyer-name" style="color: #fcd34d;"></span>
+            </p>
+            <p style="color: #cbd5e1; font-size: 1.05rem; line-height: 1.6; margin-bottom: 35px;">
+                Su cuenta ahora es <strong>NEUROSPARK PREMIUM</strong>. Hemos activado automáticamente todas las funciones exclusivas: IA Avanzada, Reportes Detallados, Juegos Exclusivos y Zona de Relajación en su entorno.
+            </p>
+            
+            <button onclick="document.getElementById('successModal').style.display='none'; window.location.reload();"
+                style="width: 100%; background: linear-gradient(90deg, #facc15, #f59e0b); color: #1e293b; font-weight: 900; padding: 18px; border-radius: 14px; border: none; cursor: pointer; text-transform: uppercase; letter-spacing: 1.5px; font-size: 1.1rem; box-shadow: 0 10px 30px rgba(250, 204, 21, 0.4); transition: transform 0.2s;">
+                Comenzar Aventura VIP
+            </button>
+        </div>
+    </div>
 
     <!-- Notification Toast System -->
     <div id="toast-container" class="toast-container"></div>
