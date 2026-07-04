@@ -1002,7 +1002,7 @@ class NeuroSparkApp {
                         <h2>${i18n.t('kidsWelcome', { name })}</h2>
                         <p>${i18n.t('kidsWelcomeSub')}</p>
                     </div>
-                    <div class="sparky-mascot-img" style="position:relative; cursor:pointer;" id="home-avatar-wrap"
+                    <div class="sparky-mascot-img" style="position:relative; cursor:pointer; animation:avatarFloat 3s ease-in-out infinite;" id="home-avatar-wrap"
                          onclick="(function(el){
                             const gestures=[
                                 ()=>{el.style.transform='scale(1.3) translateY(-10px)';setTimeout(()=>{el.style.transform='scale(1)'},400);},
@@ -1017,17 +1017,20 @@ class NeuroSparkApp {
                             el.dataset.gidx=idx+1;
                             let b=document.getElementById('avatar-bubble');
                             if(!b){b=document.createElement('div');b.id='avatar-bubble';
-                            b.style.cssText='position:absolute;top:-40px;left:50%;transform:translateX(-50%);background:linear-gradient(135deg,#a78bfa,#38bdf8);color:white;font-weight:900;font-size:13px;padding:6px 14px;border-radius:20px;box-shadow:0 4px 20px rgba(167,139,250,0.6);white-space:nowrap;pointer-events:none;transition:all 0.3s ease;z-index:9;';
-                            document.getElementById('home-avatar-wrap').appendChild(b);}
+                            b.style.cssText='position:fixed;background:linear-gradient(135deg,#a78bfa,#38bdf8);color:white;font-weight:900;font-size:13px;padding:6px 14px;border-radius:20px;box-shadow:0 4px 20px rgba(167,139,250,0.6);white-space:nowrap;pointer-events:none;transition:all 0.3s ease;z-index:99999;opacity:0;';
+                            document.body.appendChild(b);}
                             b.innerText=phrases[Math.floor(Math.random()*phrases.length)];
-                            b.style.opacity='1';b.style.transform='translateX(-50%) translateY(0)';
-                            setTimeout(()=>{b.style.opacity='0';b.style.transform='translateX(-50%) translateY(-10px)';},1300);
+                            const rect=el.getBoundingClientRect();
+                            b.style.left=(rect.left+rect.width/2-b.offsetWidth/2)+'px';
+                            b.style.top=(rect.top-40)+'px';
+                            b.style.opacity='1';b.style.transform='translateY(0)';
+                            setTimeout(()=>{b.style.opacity='0';b.style.transform='translateY(-10px)';},1300);
                          })(document.getElementById('home-avatar-img'))">
                         <img src="${avatarUrl}"
                              id="home-avatar-img"
                              alt="${name}"
                              data-gidx="0"
-                             style="width:110px;height:110px;border-radius:50%;background:rgba(255,255,255,0.15);border:3px solid rgba(255,255,255,0.5);object-fit:cover;box-shadow:0 0 20px rgba(167,139,250,0.4);cursor:pointer;transition:transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), filter 0.4s ease;filter:drop-shadow(0 0 10px rgba(167,139,250,0.5));animation:avatarFloat 3s ease-in-out infinite;"
+                             style="width:110px;height:110px;border-radius:50%;background:rgba(255,255,255,0.15);border:3px solid rgba(255,255,255,0.5);object-fit:cover;box-shadow:0 0 20px rgba(167,139,250,0.4);cursor:pointer;transition:transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), filter 0.4s ease;filter:drop-shadow(0 0 10px rgba(167,139,250,0.5));"
                              onerror="this.style.display='none';this.nextElementSibling.style.display='block'">
                         <svg viewBox="0 0 100 100" style="width:110px;height:110px;display:none;">
                             <rect x="20" y="20" width="60" height="55" rx="15" fill="#a78bfa" stroke="#ffffff" stroke-width="4"/>
@@ -1156,7 +1159,7 @@ class NeuroSparkApp {
                             <h2 style="color: #1e293b;">${i18n.t('teensWelcome', { name })}</h2>
                             <p style="color: #334155;">${i18n.t('teensWelcomeSub')}</p>
                         </div>
-                        <div style="flex-shrink:0; position:relative; cursor:pointer;" id="home-avatar-wrap"
+                        <div style="flex-shrink:0; position:relative; cursor:pointer; animation:avatarFloat 3s ease-in-out infinite;" id="home-avatar-wrap"
                              onclick="(function(el){
                                 const gestures=[
                                     ()=>{el.style.transform='scale(1.3) translateY(-10px)';setTimeout(()=>{el.style.transform='scale(1)'},400);},
@@ -1169,19 +1172,22 @@ class NeuroSparkApp {
                                 const idx=parseInt(el.dataset.gidx||0);
                                 gestures[idx%gestures.length]();
                                 el.dataset.gidx=idx+1;
-                                let b=document.getElementById('avatar-bubble');
-                                if(!b){b=document.createElement('div');b.id='avatar-bubble';
-                                b.style.cssText='position:absolute;top:-40px;left:50%;transform:translateX(-50%);background:linear-gradient(135deg,#a78bfa,#38bdf8);color:white;font-weight:900;font-size:13px;padding:6px 14px;border-radius:20px;box-shadow:0 4px 20px rgba(167,139,250,0.6);white-space:nowrap;pointer-events:none;transition:all 0.3s ease;z-index:9;';
-                                document.getElementById('home-avatar-wrap').appendChild(b);}
+                                let b=document.getElementById('avatar-bubble-teens');
+                                if(!b){b=document.createElement('div');b.id='avatar-bubble-teens';
+                                b.style.cssText='position:fixed;background:linear-gradient(135deg,#a78bfa,#38bdf8);color:white;font-weight:900;font-size:13px;padding:6px 14px;border-radius:20px;box-shadow:0 4px 20px rgba(167,139,250,0.6);white-space:nowrap;pointer-events:none;transition:all 0.3s ease;z-index:99999;opacity:0;';
+                                document.body.appendChild(b);}
                                 b.innerText=phrases[Math.floor(Math.random()*phrases.length)];
-                                b.style.opacity='1';b.style.transform='translateX(-50%) translateY(0)';
-                                setTimeout(()=>{b.style.opacity='0';b.style.transform='translateX(-50%) translateY(-10px)';},1300);
-                             })(document.getElementById('home-avatar-img'))">
+                                const rect=el.getBoundingClientRect();
+                                b.style.left=(rect.left+rect.width/2-b.offsetWidth/2)+'px';
+                                b.style.top=(rect.top-40)+'px';
+                                b.style.opacity='1';b.style.transform='translateY(0)';
+                                setTimeout(()=>{b.style.opacity='0';b.style.transform='translateY(-10px)';},1300);
+                             })(document.getElementById('home-avatar-img-teens'))">
                             <img src="${avatarUrl}"
-                                 id="home-avatar-img"
+                                 id="home-avatar-img-teens"
                                  alt="${name}"
                                  data-gidx="0"
-                                 style="width:100px;height:100px;border-radius:50%;background:rgba(255,255,255,0.6);border:4px solid #c4b5fd;object-fit:cover;box-shadow:0 0 20px rgba(196,181,253,0.5);cursor:pointer;transition:transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), filter 0.4s ease;filter:drop-shadow(0 0 10px rgba(167,139,250,0.4));animation:avatarFloat 3s ease-in-out infinite;"
+                                 style="width:100px;height:100px;border-radius:50%;background:rgba(255,255,255,0.6);border:4px solid #c4b5fd;object-fit:cover;box-shadow:0 0 20px rgba(196,181,253,0.5);cursor:pointer;transition:transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), filter 0.4s ease;filter:drop-shadow(0 0 10px rgba(167,139,250,0.4));"
                                  onerror="this.style.display='none'">
                         </div>
                     </div>
