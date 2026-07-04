@@ -121,12 +121,102 @@ class NeuroSparkApp {
             if (!imgEl) {
                 imgEl = document.createElement('img');
                 imgEl.id = 'header-avatar-img';
-                imgEl.style.width = '24px';
-                imgEl.style.height = '24px';
-                imgEl.style.borderRadius = '50%';
-                imgEl.style.background = 'rgba(255,255,255,0.1)';
+                imgEl.style.cssText = `
+                    width: 32px; height: 32px; border-radius: 50%;
+                    background: rgba(255,255,255,0.1);
+                    cursor: pointer;
+                    transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+                    border: 2px solid rgba(167,139,250,0.5);
+                    box-shadow: 0 0 10px rgba(167,139,250,0.3);
+                `;
                 if (avatarIcon) avatarIcon.style.display = 'none';
                 profileBtn.insertBefore(imgEl, document.getElementById('current-profile-name'));
+
+                // Gestos aleatorios al click/touch
+                const gestures = [
+                    // Bounce feliz
+                    () => {
+                        imgEl.style.transform = 'scale(1.4) translateY(-6px)';
+                        setTimeout(() => { imgEl.style.transform = 'scale(1)'; }, 400);
+                    },
+                    // Wiggle / baile
+                    () => {
+                        imgEl.style.transition = 'transform 0.1s';
+                        let count = 0;
+                        const wiggle = setInterval(() => {
+                            imgEl.style.transform = count % 2 === 0 ? 'rotate(-15deg) scale(1.1)' : 'rotate(15deg) scale(1.1)';
+                            count++;
+                            if (count > 5) { clearInterval(wiggle); imgEl.style.transform = 'rotate(0deg) scale(1)'; imgEl.style.transition = 'transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275)'; }
+                        }, 80);
+                    },
+                    // Spin 360
+                    () => {
+                        imgEl.style.transition = 'transform 0.5s ease-in-out';
+                        imgEl.style.transform = 'rotate(360deg) scale(1.2)';
+                        setTimeout(() => { imgEl.style.transition = 'none'; imgEl.style.transform = 'rotate(0deg)'; setTimeout(() => { imgEl.style.transition = 'transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275)'; }, 50); }, 520);
+                    },
+                    // Salto grande
+                    () => {
+                        imgEl.style.transform = 'translateY(-12px) scale(1.2)';
+                        setTimeout(() => { imgEl.style.transform = 'translateY(4px) scale(0.95)'; }, 250);
+                        setTimeout(() => { imgEl.style.transform = 'scale(1)'; }, 450);
+                    },
+                    // Pulso de corazón
+                    () => {
+                        imgEl.style.transform = 'scale(1.5)';
+                        imgEl.style.filter = 'drop-shadow(0 0 8px #f43f5e)';
+                        setTimeout(() => { imgEl.style.transform = 'scale(0.9)'; }, 200);
+                        setTimeout(() => { imgEl.style.transform = 'scale(1.2)'; }, 350);
+                        setTimeout(() => { imgEl.style.transform = 'scale(1)'; imgEl.style.filter = ''; }, 500);
+                    }
+                ];
+
+                // Frases de reacción del avatar
+                const reactions = ['¡Hola! 👋', '¡Weee! 🎉', '¡Yuju! ✨', '¡Soy yo! 😄', '¡Genial! 🚀', '💪 ¡Tú puedes!', '⚡ Sparky!'];
+
+                const showReaction = (msg) => {
+                    let toast = document.getElementById('avatar-reaction-toast');
+                    if (!toast) {
+                        toast = document.createElement('div');
+                        toast.id = 'avatar-reaction-toast';
+                        toast.style.cssText = `
+                            position: fixed; z-index: 99999; pointer-events: none;
+                            background: linear-gradient(135deg, #a78bfa, #38bdf8);
+                            color: white; font-weight: 800; font-size: 13px;
+                            padding: 6px 14px; border-radius: 20px;
+                            box-shadow: 0 4px 20px rgba(167,139,250,0.5);
+                            opacity: 0; transform: translateY(10px);
+                            transition: all 0.25s ease;
+                            white-space: nowrap;
+                        `;
+                        document.body.appendChild(toast);
+                    }
+                    const rect = imgEl.getBoundingClientRect();
+                    toast.style.left = (rect.left + rect.width / 2 - 50) + 'px';
+                    toast.style.top = (rect.bottom + 8) + 'px';
+                    toast.innerText = msg;
+                    toast.style.opacity = '1';
+                    toast.style.transform = 'translateY(0)';
+                    setTimeout(() => { toast.style.opacity = '0'; toast.style.transform = 'translateY(-10px)'; }, 1200);
+                };
+
+                let gestureIdx = 0;
+                imgEl.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    gestures[gestureIdx % gestures.length]();
+                    showReaction(reactions[Math.floor(Math.random() * reactions.length)]);
+                    gestureIdx++;
+                });
+                imgEl.addEventListener('touchstart', (e) => {
+                    e.preventDefault();
+                    gestures[gestureIdx % gestures.length]();
+                    showReaction(reactions[Math.floor(Math.random() * reactions.length)]);
+                    gestureIdx++;
+                }, { passive: false });
+
+                // Hover glow effect
+                imgEl.addEventListener('mouseenter', () => { imgEl.style.boxShadow = '0 0 20px rgba(167,139,250,0.8)'; imgEl.style.borderColor = '#a78bfa'; });
+                imgEl.addEventListener('mouseleave', () => { imgEl.style.boxShadow = '0 0 10px rgba(167,139,250,0.3)'; imgEl.style.borderColor = 'rgba(167,139,250,0.5)'; });
             }
             const avState = this.state.avatar;
             imgEl.src = (avState.startsWith('http') || avState.startsWith('data:')) ? avState : `https://api.dicebear.com/7.x/bottts/svg?seed=${avState.charAt(0).toUpperCase() + avState.slice(1)}`;
