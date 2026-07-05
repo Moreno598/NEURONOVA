@@ -16,6 +16,7 @@ class NeuroSparkApp {
             profile: 'kids',
             activeProfileName: 'Matias',
             coins: 120,
+            ecoPoints: 0,
             level: 1,
             lang: 'es',
             unlockedItems: ['classic_skin'],
@@ -30,17 +31,27 @@ class NeuroSparkApp {
                 musicOn: false,
                 voiceOn: false,
                 lowStimulus: false,
+                ecoMode: false,
                 volume: 50
             }
         };
 
+        // Items clásicos — se compran con NeuroCoins 🪙
         this.storeItems = [
-            { id: 'cyber_neon', nameKey: 'skinCyber', cost: 100, icon: 'fa-robot', color: '#38bdf8', image: 'assets/store_cyber_neon.png', effectDesc: '+10% extra de NeuroCoins' },
-            { id: 'green_shield', nameKey: 'skinShield', cost: 180, icon: 'fa-shield-halved', color: '#22c55e', image: 'assets/store_green_shield.png', effectDesc: 'Ignora tu primer fallo (Escudo protector)' },
-            { id: 'golden_crown', nameKey: 'skinCrown', cost: 250, icon: 'fa-crown', color: '#fbbf24', image: 'assets/store_golden_crown.png', effectDesc: 'Tiempo extra (+10s en todas las misiones)' },
-            { id: 'jetpack', nameKey: 'skinJetpack', cost: 350, icon: 'fa-rocket', color: '#a855f7', image: 'assets/store_jetpack.png', effectDesc: 'Multiplicador x1.5 de puntos (Velocidad)' },
-            { id: 'stellar_aura', nameKey: 'skinAura', cost: 500, icon: 'fa-star', color: '#f472b6', image: 'assets/store_stellar_aura.png', effectDesc: 'Reduce la velocidad de caída/reacción un 15%' },
-            { id: 'holo_pet', nameKey: 'skinHolopet', cost: 800, icon: 'fa-dog', color: '#06b6d4', image: 'assets/store_holo_pet.png', effectDesc: '+50% NeuroCoins y Mascotas de ayuda' }
+            { id: 'cyber_neon',   nameKey: 'skinCyber',   cost: 100, icon: 'fa-robot',        color: '#38bdf8', image: 'assets/store_cyber_neon.png',   effectDesc: '+10% extra de NeuroCoins' },
+            { id: 'green_shield', nameKey: 'skinShield',  cost: 180, icon: 'fa-shield-halved', color: '#22c55e', image: 'assets/store_green_shield.png', effectDesc: 'Ignora tu primer fallo (Escudo protector)' },
+            { id: 'golden_crown', nameKey: 'skinCrown',   cost: 250, icon: 'fa-crown',         color: '#fbbf24', image: 'assets/store_golden_crown.png', effectDesc: 'Tiempo extra (+10s en todas las misiones)' },
+            { id: 'jetpack',      nameKey: 'skinJetpack', cost: 350, icon: 'fa-rocket',        color: '#a855f7', image: 'assets/store_jetpack.png',       effectDesc: 'Multiplicador x1.5 de puntos (Velocidad)' },
+            { id: 'stellar_aura', nameKey: 'skinAura',    cost: 500, icon: 'fa-star',          color: '#f472b6', image: 'assets/store_stellar_aura.png', effectDesc: 'Reduce la velocidad de caída/reacción un 15%' },
+            { id: 'holo_pet',     nameKey: 'skinHolopet', cost: 800, icon: 'fa-dog',           color: '#06b6d4', image: 'assets/store_holo_pet.png',      effectDesc: '+50% NeuroCoins y Mascotas de ayuda' }
+        ];
+
+        // Items ecológicos — se canjean con EcoPuntos 🌱
+        this.ecoStoreItems = [
+            { id: 'eco_tree',   nameKey: 'ecoTree',   cost: 30,  icon: 'fa-tree',     color: '#22c55e', image: 'assets/store_eco_tree.png',   effectDesc: 'Planta un árbol virtual. ¡Oxigena el planeta!' },
+            { id: 'eco_garden', nameKey: 'ecoGarden', cost: 60,  icon: 'fa-leaf',     color: '#10b981', image: 'assets/store_eco_garden.png', effectDesc: 'Crea tu jardín de paz y relajación sostenible.' },
+            { id: 'eco_pet',    nameKey: 'ecoPet',    cost: 90,  icon: 'fa-paw',      color: '#059669', image: 'assets/store_eco_pet.png',    effectDesc: 'Mascota ecológica que te acompaña en misiones.' },
+            { id: 'eco_forest', nameKey: 'ecoForest', cost: 150, icon: 'fa-seedling', color: '#047857', image: 'assets/store_eco_forest.png', effectDesc: 'Tu propio bosque digital en constante crecimiento.' }
         ];
     }
 
@@ -86,6 +97,7 @@ class NeuroSparkApp {
         sound.setVolume(this.state.settings.volume / 100);
         coach.voiceEnabled = this.state.settings.voiceOn;
         if (this.state.settings.lowStimulus) document.body.classList.add('low-stimulus');
+        if (this.state.settings.ecoMode) document.body.classList.add('eco-mode');
 
         this.updateHeaderHUD();
     }
@@ -104,13 +116,18 @@ class NeuroSparkApp {
         document.getElementById('player-coins').innerText = this.state.coins.toLocaleString();
         document.getElementById('player-level').innerText = this.state.level;
         document.getElementById('current-profile-name').innerText = this.state.activeProfileName;
+        const ecoEl = document.getElementById('player-eco-points');
+        if (ecoEl) ecoEl.innerText = (this.state.ecoPoints || 0).toLocaleString();
 
         // Mostrar links solo si hay sesión (Dashboard Controls)
         const btnBib = document.getElementById('btn-biblioteca');
+        const btnEco = document.getElementById('btn-ecospark');
         if (this.state.currentUserEmail) {
             if (btnBib) btnBib.style.display = 'inline-flex';
+            if (btnEco) btnEco.style.display = 'inline-flex';
         } else {
             if (btnBib) btnBib.style.display = 'none';
+            if (btnEco) btnEco.style.display = 'none';
         }
 
         // Render custom avatar in header
@@ -315,6 +332,15 @@ class NeuroSparkApp {
         });
 
 
+
+        // EcoSpark Mode
+        const btnEcoSpark = document.getElementById('btn-ecospark');
+        if (btnEcoSpark) {
+            btnEcoSpark.addEventListener('click', () => {
+                if (engine.isPlaying) engine.exit();
+                this.renderEcoSparkHome();
+            });
+        }
 
         // Settings
         document.getElementById('btn-settings').addEventListener('click', () => this.openSettingsModal());
@@ -1098,6 +1124,213 @@ class NeuroSparkApp {
         });
     }
 
+    /* ---- ECOSPARK HOME ---- */
+    renderEcoSparkHome() {
+        const mount = document.getElementById('app-view-mount');
+        if (!mount) return;
+
+        mount.innerHTML = `
+            <div class="eco-home-view" style="padding: 20px; animation: fadeIn 0.4s ease;">
+                <div class="kids-welcome-banner" style="background: linear-gradient(135deg, #10b981, #047857); color: white; display:flex; align-items:center; justify-content:space-between; padding: 25px; border-radius: 16px; margin-bottom: 24px;">
+                    <div>
+                        <h2 style="margin: 0; font-size: 2rem; display: flex; align-items: center; gap: 10px;">
+                            <i class="fa-solid fa-earth-americas"></i> Modo EcoSpark
+                        </h2>
+                        <p style="margin: 8px 0 0; font-size: 1.1rem; opacity: 0.9;">Aprende, juega y cuida el planeta 🌱</p>
+                    </div>
+                    <div style="background: rgba(255,255,255,0.2); padding: 12px 20px; border-radius: 12px; text-align: center;">
+                        <div style="font-size: 0.9rem; text-transform: uppercase; font-weight: bold; letter-spacing: 1px;">EcoPuntos</div>
+                        <div style="font-size: 1.8rem; font-weight: 900; margin-top: 4px;"><i class="fa-solid fa-leaf"></i> ${this.state.ecoPoints || 0}</div>
+                    </div>
+                </div>
+
+                <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 24px;">
+                    <!-- Columna Principal -->
+                    <div style="display: flex; flex-direction: column; gap: 24px;">
+                        
+                        <!-- EcoRetos -->
+                        <div class="store-container" style="background: rgba(16, 185, 129, 0.05); border-color: rgba(16, 185, 129, 0.2);">
+                            <h3 class="section-title"><i class="fa-solid fa-recycle text-green"></i> EcoRetos (Desafíos semanales) ⭐</h3>
+                            <p style="color:var(--text-muted);font-size:0.9rem;">Completa estas acciones en la vida real, sube una foto y gana EcoPuntos.</p>
+                            <div class="task-list" id="eco-task-list" style="margin-top: 15px;">
+                                ${[
+                                    '💧 Ahorrar agua al cepillarte los dientes',
+                                    '💡 Apagar las luces cuando no se usan',
+                                    '♻️ Separar residuos',
+                                    '🌳 Plantar una semilla',
+                                    '🚶 Caminar o usar bicicleta en trayectos cortos'
+                                ].map((task, i) => `
+                                    <div class="task-item" style="display:flex; justify-content:space-between; align-items:center; background: var(--bg-card); padding: 12px 16px; border-radius: 12px; margin-bottom: 8px; border: 1px solid #10b981;">
+                                        <div style="display:flex; align-items:center; gap: 12px;">
+                                            <i class="fa-solid fa-leaf" style="color: #10b981;"></i>
+                                            <span style="font-weight: 600; color: var(--text-main);">${task}</span>
+                                        </div>
+                                        <button class="eco-upload-btn" data-pts="15" style="background: linear-gradient(135deg, #10b981, #059669); color: white; border: none; padding: 8px 14px; border-radius: 8px; cursor: pointer; font-size: 0.85rem; font-weight: bold; transition: transform 0.2s;">
+                                            <i class="fa-solid fa-camera"></i> Subir (+15 pts)
+                                        </button>
+                                    </div>
+                                `).join('')}
+                            </div>
+                        </div>
+
+                        <!-- Juegos Ecológicos -->
+                        <div class="store-container">
+                            <h3 class="section-title"><i class="fa-solid fa-gamepad text-green"></i> Juegos Ecológicos 🧠</h3>
+                            <p style="color:var(--text-muted);font-size:0.9rem;">Minijuegos relacionados con el cuidado del ambiente.</p>
+                            <div class="games-grid" style="grid-template-columns:1fr 1fr; margin-top: 15px;">
+                                ${this._gameCard('eco_recycle', 'Clasificador de Residuos', 'Aprende a separar basura', 'diff-easy', 'ecoTag', 'fa-trash-can-arrow-up', 'https://images.unsplash.com/photo-1532996122724-e3c354a0b15b?auto=format&fit=crop&w=600&q=80')}
+                                ${this._gameCard('eco_water', 'Guardián del Agua', 'Repara fugas y ahorra', 'diff-medium', 'ecoTag', 'fa-droplet', 'https://images.unsplash.com/photo-1519999482648-25049ddd37b1?auto=format&fit=crop&w=600&q=80')}
+                            </div>
+                        </div>
+
+                        <!-- Bosque Virtual -->
+                        <div class="store-container" style="background: linear-gradient(135deg, rgba(16,185,129,0.06), rgba(4,120,87,0.06)); border-color: rgba(16,185,129,0.3);">
+                            <h3 class="section-title"><i class="fa-solid fa-seedling" style="color:#10b981;"></i> Bosque Virtual 🌳</h3>
+                            <p style="color:#6ee7b7;font-size:0.9rem;">Usa tus EcoPuntos para poblar tu bosque virtual.</p>
+                            <div class="store-grid" style="margin-top:16px;">
+                                ${this.ecoStoreItems.map(item => {
+                                    const bought = this.state.unlockedItems.includes(item.id);
+                                    const active = this.state.activeSkin === item.id;
+                                    const btnHTML = active
+                                        ? `<span class="difficulty-badge diff-easy">${i18n.t('equipped')}</span>`
+                                        : bought
+                                            ? `<button class="equip-btn" style="background:#059669;color:white;border:none;padding:4px 10px;border-radius:4px;cursor:pointer;">${i18n.t('equip')}</button>`
+                                            : `<span style="color:#10b981;font-weight:700;"><i class="fa-solid fa-leaf"></i> ${item.cost} pts</span>`;
+                                    const imgOrIcon = `<i class="fa-solid ${item.icon}" style="font-size:2.5rem;color:${item.color};display:block;margin:10px 0;text-shadow:0 0 14px ${item.color};"></i>`;
+                                    return `
+                                        <div class="store-item ${bought ? 'purchased' : ''} ${active ? 'active-skin' : ''}" data-id="${item.id}" data-currency="eco" style="border-color:${item.color}44; background:${item.color}0a;">
+                                            ${imgOrIcon}
+                                            <strong style="color:#a7f3d0;">${i18n.t(item.nameKey)}</strong>
+                                            <div style="margin:6px 0;font-size:0.75rem;color:${item.color};background:${item.color}22;border:1px solid ${item.color}55;border-radius:6px;padding:3px 8px;display:inline-block;"><i class="fa-solid fa-seedling" style="margin-right:4px;"></i>${item.effectDesc}</div>
+                                            <div style="margin-top:8px;">${btnHTML}</div>
+                                        </div>`;
+                                }).join('')}
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <!-- Columna Secundaria -->
+                    <div style="display: flex; flex-direction: column; gap: 24px;">
+                        
+                        <!-- EcoImpacto -->
+                        <div class="store-container">
+                            <h3 class="section-title"><i class="fa-solid fa-chart-pie text-blue"></i> EcoImpacto 📊</h3>
+                            <div style="display:flex; flex-direction:column; gap:12px; margin-top:15px;">
+                                <div style="display:flex; justify-content:space-between; padding: 10px; background:var(--bg-app); border-radius:8px;">
+                                    <span>Nivel Ecológico</span>
+                                    <strong style="color:#10b981;">Nvl. ${Math.floor((this.state.ecoPoints || 0) / 50) + 1}</strong>
+                                </div>
+                                <div style="display:flex; justify-content:space-between; padding: 10px; background:var(--bg-app); border-radius:8px;">
+                                    <span>Retos completados</span>
+                                    <strong>${Math.floor((this.state.ecoPoints || 0) / 15)}</strong>
+                                </div>
+                                <div style="display:flex; justify-content:space-between; padding: 10px; background:var(--bg-app); border-radius:8px;">
+                                    <span>Árboles/Elementos</span>
+                                    <strong>${this.state.unlockedItems.filter(id => id.startsWith('eco_')).length}</strong>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Insignias Ecológicas -->
+                        <div class="store-container">
+                            <h3 class="section-title"><i class="fa-solid fa-medal text-yellow-500"></i> Insignias 🏆</h3>
+                            <div style="display:flex; flex-wrap:wrap; gap:10px; margin-top:15px;">
+                                ${['🌱 EcoExplorador', '🌳 Guardián del Bosque', '♻️ Maestro Reciclaje'].map((badge, i) => {
+                                    const unlocked = (this.state.ecoPoints || 0) >= (i * 30 + 15);
+                                    return `
+                                    <div style="padding: 10px; background: ${unlocked ? 'rgba(16,185,129,0.1)' : 'var(--bg-app)'}; border: 1px solid ${unlocked ? '#10b981' : 'var(--border-color)'}; border-radius: 8px; text-align:center; flex: 1; min-width:80px; opacity: ${unlocked ? '1' : '0.5'}; filter: ${unlocked ? 'none' : 'grayscale(1)'};">
+                                        <div style="font-size: 1.5rem; margin-bottom: 5px;">${badge.split(' ')[0]}</div>
+                                        <div style="font-size: 0.75rem; font-weight: ${unlocked ? 'bold' : 'normal'}; color: ${unlocked ? '#10b981' : 'var(--text-muted)'};">${badge.split(' ').slice(1).join(' ')}</div>
+                                    </div>`;
+                                }).join('')}
+                            </div>
+                        </div>
+
+                        <!-- EcoBot (IA) & EcoTips -->
+                        <div class="store-container" style="background: linear-gradient(135deg, rgba(56,189,248,0.1), rgba(16,185,129,0.1)); border-color: rgba(56,189,248,0.3);">
+                            <h3 class="section-title"><i class="fa-solid fa-robot text-blue"></i> EcoBot 🤖</h3>
+                            <div style="display:flex; gap: 12px; margin-top: 15px; align-items:flex-start;">
+                                <div style="font-size: 2rem; background:white; border-radius:50%; width:48px; height:48px; display:flex; align-items:center; justify-content:center; box-shadow:0 4px 10px rgba(0,0,0,0.1);">🤖</div>
+                                <div style="background: var(--bg-card); padding: 12px; border-radius: 12px; border: 1px solid var(--border-color); font-size: 0.9rem; flex:1; position:relative;">
+                                    <div style="position:absolute; left:-6px; top:15px; width:10px; height:10px; background:var(--bg-card); border-left:1px solid var(--border-color); border-bottom:1px solid var(--border-color); transform:rotate(45deg);"></div>
+                                    <p style="margin:0 0 8px 0; color:var(--text-main);">"¡Hola! Hoy intenta reutilizar una botella de plástico. Cuando termines, sube una foto para obtener EcoPuntos."</p>
+                                    <strong style="color: #38bdf8; font-size: 0.8rem;"><i class="fa-solid fa-lightbulb"></i> EcoTip:</strong>
+                                    <p style="margin:4px 0 0 0; font-size:0.8rem; color:var(--text-muted);">Reducir el uso del plástico salva a miles de animales marinos cada año.</p>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>`;
+
+        // Event Listeners for Eco Uploads
+        mount.querySelectorAll('.eco-upload-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                if(btn.disabled) return;
+                
+                const fileInput = document.createElement('input');
+                fileInput.type = 'file';
+                fileInput.accept = 'image/*';
+                fileInput.style.display = 'none';
+                
+                fileInput.onchange = (e) => {
+                    if (e.target.files && e.target.files.length > 0) {
+                        const pts = parseInt(btn.getAttribute('data-pts') || '15');
+                        this.state.ecoPoints = (this.state.ecoPoints || 0) + pts;
+                        this.saveState();
+                        this.updateHeaderHUD();
+                        sound.playSuccess();
+                        this.showToast('¡Foto subida! +' + pts + ' EcoPuntos 🌱', 'success');
+                        btn.innerHTML = '<i class="fa-solid fa-check"></i> ¡Completado!';
+                        btn.style.background = 'linear-gradient(135deg,#047857,#065f46)';
+                        btn.disabled = true;
+                        
+                        // Re-render to update stats and badges
+                        setTimeout(() => this.renderEcoSparkHome(), 1000);
+                    }
+                    document.body.removeChild(fileInput);
+                };
+                document.body.appendChild(fileInput);
+                fileInput.click();
+            });
+        });
+
+        // Event Listeners for Store
+        mount.querySelectorAll('.store-item[data-currency="eco"]').forEach(item => {
+            item.addEventListener('click', e => {
+                const itemId = item.getAttribute('data-id');
+                const itemData = this.ecoStoreItems.find(i => i.id === itemId);
+                if (!itemData) return;
+                if (e.target.closest('.equip-btn')) {
+                    this.state.activeSkin = itemId;
+                    this.saveState(); this.renderEcoSparkHome();
+                    this.showItemUnlockModal(itemData, false);
+                    return;
+                }
+                if (this.state.unlockedItems.includes(itemId)) return;
+                const ep = this.state.ecoPoints || 0;
+                if (ep >= itemData.cost) {
+                    this.state.ecoPoints = ep - itemData.cost;
+                    this.state.unlockedItems.push(itemId);
+                    this.state.activeSkin = itemId;
+                    this.saveState(); this.updateHeaderHUD(); this.renderEcoSparkHome();
+                    sound.playSuccess();
+                    this.showItemUnlockModal(itemData, true);
+                } else {
+                    sound.playError();
+                    this.showToast('¡EcoPuntos insuficientes! 🌱', 'warning');
+                }
+            });
+        });
+
+        // Event Listeners for Games
+        mount.querySelectorAll('.play-btn[data-game]').forEach(btn =>
+            btn.addEventListener('click', () => engine.launch(btn.getAttribute('data-game')))
+        );
+    }
+
     /* ---- KIDS HOME ---- */
     renderKidsHome(mount) {
         const name = this.state.activeProfileName;
@@ -1179,10 +1412,19 @@ class NeuroSparkApp {
                     </div>
                 </div>
 
+                <!-- TIENDA CLASSIC: NeuroCoins -->
                 <div class="store-container">
-                    <h3 class="section-title"><i class="fa-solid fa-shop text-purple"></i> ${i18n.t('storeTitle')}</h3>
-                    <p style="color:var(--text-muted);font-size:0.9rem;">${i18n.t('storeSub')}</p>
-                    <div class="store-grid">
+                    <div style="display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:10px;">
+                        <div>
+                            <h3 class="section-title"><i class="fa-solid fa-shop text-purple"></i> ${i18n.t('storeTitle')}</h3>
+                            <p style="color:var(--text-muted);font-size:0.9rem;">${i18n.t('storeSub')}</p>
+                        </div>
+                        <div style="background:rgba(251,191,36,0.1);border:1px solid rgba(251,191,36,0.4);border-radius:10px;padding:8px 16px;display:flex;align-items:center;gap:8px;">
+                            <i class="fa-solid fa-coins" style="color:#fbbf24;"></i>
+                            <span style="color:#fbbf24;font-weight:700;font-size:0.95rem;">Precio en NeuroCoins</span>
+                        </div>
+                    </div>
+                    <div class="store-grid" style="margin-top:16px;">
                         ${this.storeItems.map(item => {
             const bought = this.state.unlockedItems.includes(item.id);
             const active = this.state.activeSkin === item.id;
@@ -1198,26 +1440,112 @@ class NeuroSparkApp {
                 imgOrIcon = `<img src="assets/mascota_ninos.png" alt="${i18n.t(item.nameKey)}" style="height: 65px; width: 65px; object-fit: contain; margin-bottom: 12px; filter: drop-shadow(0 0 10px ${item.color});" />`;
             }
             return `
-                                <div class="store-item ${bought ? 'purchased' : ''} ${active ? 'active-skin' : ''}" data-id="${item.id}">
-                                    ${imgOrIcon}
-                                    <strong>${i18n.t(item.nameKey)}</strong>
-                                    <div style="margin: 6px 0; font-size: 0.75rem; color: ${item.color}; background: ${item.color}22; border: 1px solid ${item.color}55; border-radius: 6px; padding: 3px 8px; display: inline-block;"><i class="fa-solid fa-bolt" style="margin-right:4px;"></i>${item.effectDesc}</div>
-                                    <div style="margin-top:8px;">${btnHTML}</div>
-                                </div>`;
+                <div class="store-item ${bought ? 'purchased' : ''} ${active ? 'active-skin' : ''}" data-id="${item.id}" data-currency="coins">
+                    ${imgOrIcon}
+                    <strong>${i18n.t(item.nameKey)}</strong>
+                    <div style="margin: 6px 0; font-size: 0.75rem; color: ${item.color}; background: ${item.color}22; border: 1px solid ${item.color}55; border-radius: 6px; padding: 3px 8px; display: inline-block;"><i class="fa-solid fa-bolt" style="margin-right:4px;"></i>${item.effectDesc}</div>
+                    <div style="margin-top:8px;">${btnHTML}</div>
+                </div>`;
         }).join('')}
                     </div>
                 </div>
+
+                <!-- TIENDA ECO: EcoPuntos 🌱 -->
+                <div class="store-container" style="background: linear-gradient(135deg, rgba(16,185,129,0.06), rgba(4,120,87,0.06)); border-color: rgba(16,185,129,0.3);">
+                    <div style="display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:10px;">
+                        <div>
+                            <h3 class="section-title"><i class="fa-solid fa-seedling" style="color:#10b981;"></i> 🌿 Mundo Verde — Recompensas Eco</h3>
+                            <p style="color:#6ee7b7;font-size:0.9rem;">Canjea tus EcoPuntos 🌱 por estos elementos especiales.</p>
+                        </div>
+                        <div style="background:rgba(16,185,129,0.1);border:1px solid rgba(16,185,129,0.4);border-radius:10px;padding:8px 16px;display:flex;align-items:center;gap:8px;">
+                            <i class="fa-solid fa-leaf" style="color:#10b981;"></i>
+                            <span style="color:#10b981;font-weight:700;font-size:0.95rem;">Tienes ${this.state.ecoPoints || 0} EcoPts</span>
+                        </div>
+                    </div>
+                    <div class="store-grid" style="margin-top:16px;">
+                        ${this.ecoStoreItems.map(item => {
+            const bought = this.state.unlockedItems.includes(item.id);
+            const active = this.state.activeSkin === item.id;
+            const ep = this.state.ecoPoints || 0;
+            const btnHTML = active
+                ? `<span class="difficulty-badge diff-easy">${i18n.t('equipped')}</span>`
+                : bought
+                    ? `<button class="equip-btn" style="background:#059669;color:white;border:none;padding:4px 10px;border-radius:4px;cursor:pointer;">${i18n.t('equip')}</button>`
+                    : `<span style="color:#10b981;font-weight:700;"><i class="fa-solid fa-leaf"></i> ${item.cost} pts</span>`;
+            const imgOrIcon = `<i class="fa-solid ${item.icon}" style="font-size:2.5rem;color:${item.color};display:block;margin:10px 0;text-shadow:0 0 14px ${item.color};"></i>`;
+            return `
+                <div class="store-item ${bought ? 'purchased' : ''} ${active ? 'active-skin' : ''}" data-id="${item.id}" data-currency="eco" style="border-color:${item.color}44; background: ${item.color}0a;">
+                    ${imgOrIcon}
+                    <strong style="color:#a7f3d0;">${i18n.t(item.nameKey)}</strong>
+                    <div style="margin:6px 0;font-size:0.75rem;color:${item.color};background:${item.color}22;border:1px solid ${item.color}55;border-radius:6px;padding:3px 8px;display:inline-block;"><i class="fa-solid fa-seedling" style="margin-right:4px;"></i>${item.effectDesc}</div>
+                    <div style="margin-top:8px;">${btnHTML}</div>
+                </div>`;
+        }).join('')}
+                    </div>
+                </div>
+
+                <div class="store-container" style="margin-top: 40px; background: rgba(16, 185, 129, 0.05); border-color: rgba(16, 185, 129, 0.2);">
+                    <h3 class="section-title"><i class="fa-solid fa-recycle text-green"></i> ${i18n.t('ecoChallengesTitle') || 'Retos Ecológicos Semanales'}</h3>
+                    <p style="color:var(--text-muted);font-size:0.9rem;">${i18n.t('ecoChallengesSub') || 'Sube una foto cumpliendo estas acciones y gana puntos:'}</p>
+                    <div class="task-list" id="eco-task-list" style="margin-top: 15px;">
+                        ${[1,2,3,4,5].map(i => `
+                            <div class="task-item" style="display:flex; justify-content:space-between; align-items:center; background: var(--bg-card); padding: 12px 16px; border-radius: 12px; margin-bottom: 8px; border: 1px solid #10b981;">
+                                <div style="display:flex; align-items:center; gap: 12px;">
+                                    <i class="fa-solid fa-leaf" style="color: #10b981;"></i>
+                                    <span style="font-weight: 600; color: var(--text-main);">${i18n.t('ecoTask' + i) || 'Reto Eco ' + i}</span>
+                                </div>
+                                <button class="eco-upload-btn" data-pts="15" style="background: linear-gradient(135deg, #10b981, #059669); color: white; border: none; padding: 8px 14px; border-radius: 8px; cursor: pointer; font-size: 0.85rem; font-weight: bold; transition: transform 0.2s;">
+                                    <i class="fa-solid fa-camera"></i> Subir (+15 pts)
+                                </button>
+                            </div>
+                        `).join('')}
+                    </div>
+                </div>
+
             </div>`;
 
         mount.querySelectorAll('.play-btn').forEach(btn => {
             btn.addEventListener('click', () => engine.launch(btn.getAttribute('data-game')));
         });
 
-        mount.querySelectorAll('.store-item').forEach(item => {
+        mount.querySelectorAll('.eco-upload-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                if(btn.disabled) return;
+                
+                // Simular input de subida de archivo
+                const fileInput = document.createElement('input');
+                fileInput.type = 'file';
+                fileInput.accept = 'image/*';
+                fileInput.style.display = 'none';
+                
+                fileInput.onchange = (e) => {
+                    if (e.target.files && e.target.files.length > 0) {
+                        const pts = parseInt(btn.getAttribute('data-pts') || '15');
+                        this.state.ecoPoints = (this.state.ecoPoints || 0) + pts;
+                        this.saveState();
+                        this.updateHeaderHUD();
+                        sound.playSuccess();
+                        this.showToast('¡Foto subida! +' + pts + ' EcoPuntos 🌱', 'success');
+                        btn.innerHTML = '<i class="fa-solid fa-check"></i> ¡Completado!';
+                        btn.style.background = 'linear-gradient(135deg,#047857,#065f46)';
+                        btn.disabled = true;
+                        btn.style.transform = 'scale(0.95)';
+                    }
+                    // Cleanup
+                    document.body.removeChild(fileInput);
+                };
+                
+                document.body.appendChild(fileInput);
+                fileInput.click();
+            });
+        });
+
+        // Classic store items (NeuroCoins)
+        mount.querySelectorAll('.store-item[data-currency="coins"]').forEach(item => {
             item.addEventListener('click', e => {
                 const itemId = item.getAttribute('data-id');
                 const itemData = this.storeItems.find(i => i.id === itemId);
-
+                if (!itemData) return;
                 if (e.target.closest('.equip-btn')) {
                     this.state.activeSkin = itemId;
                     this.saveState(); this.renderHome();
@@ -1225,7 +1553,6 @@ class NeuroSparkApp {
                     return;
                 }
                 if (this.state.unlockedItems.includes(itemId)) return;
-
                 if (this.state.coins >= itemData.cost) {
                     this.state.coins -= itemData.cost;
                     this.state.unlockedItems.push(itemId);
@@ -1236,6 +1563,34 @@ class NeuroSparkApp {
                 } else {
                     sound.playError();
                     this.showToast(i18n.t('notEnoughCoins'), 'warning');
+                }
+            });
+        });
+
+        // Eco store items (EcoPuntos 🌱)
+        mount.querySelectorAll('.store-item[data-currency="eco"]').forEach(item => {
+            item.addEventListener('click', e => {
+                const itemId = item.getAttribute('data-id');
+                const itemData = this.ecoStoreItems.find(i => i.id === itemId);
+                if (!itemData) return;
+                if (e.target.closest('.equip-btn')) {
+                    this.state.activeSkin = itemId;
+                    this.saveState(); this.renderHome();
+                    this.showItemUnlockModal(itemData, false);
+                    return;
+                }
+                if (this.state.unlockedItems.includes(itemId)) return;
+                const ep = this.state.ecoPoints || 0;
+                if (ep >= itemData.cost) {
+                    this.state.ecoPoints = ep - itemData.cost;
+                    this.state.unlockedItems.push(itemId);
+                    this.state.activeSkin = itemId;
+                    this.saveState(); this.updateHeaderHUD(); this.renderHome();
+                    sound.playSuccess();
+                    this.showItemUnlockModal(itemData, true);
+                } else {
+                    sound.playError();
+                    this.showToast('¡EcoPuntos insuficientes! Completa más retos ecológicos 🌱', 'warning');
                 }
             });
         });
@@ -1418,10 +1773,19 @@ class NeuroSparkApp {
                     </div>
                 </div>
 
+                <!-- TIENDA CLASSIC: NeuroCoins -->
                 <div class="store-container" style="margin-top: 40px;">
-                    <h3 class="section-title"><i class="fa-solid fa-shop text-purple"></i> ${i18n.t('storeTitle')}</h3>
-                    <p style="color:var(--text-muted);font-size:0.9rem;">${i18n.t('storeSub')}</p>
-                    <div class="store-grid">
+                    <div style="display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:10px;">
+                        <div>
+                            <h3 class="section-title"><i class="fa-solid fa-shop text-purple"></i> ${i18n.t('storeTitle')}</h3>
+                            <p style="color:var(--text-muted);font-size:0.9rem;">${i18n.t('storeSub')}</p>
+                        </div>
+                        <div style="background:rgba(251,191,36,0.1);border:1px solid rgba(251,191,36,0.4);border-radius:10px;padding:8px 16px;display:flex;align-items:center;gap:8px;">
+                            <i class="fa-solid fa-coins" style="color:#fbbf24;"></i>
+                            <span style="color:#fbbf24;font-weight:700;font-size:0.95rem;">Precio en NeuroCoins</span>
+                        </div>
+                    </div>
+                    <div class="store-grid" style="margin-top:16px;">
                         ${this.storeItems.map(item => {
                             const bought = this.state.unlockedItems.includes(item.id);
                             const active = this.state.activeSkin === item.id;
@@ -1433,16 +1797,47 @@ class NeuroSparkApp {
                             let imgOrIcon = item.image
                                 ? `<img src="${item.image}" alt="${i18n.t(item.nameKey)}" style="height: 60px; width: 60px; object-fit: contain; margin-bottom: 12px; filter: drop-shadow(0 0 10px ${item.color});" />`
                                 : `<i class="fa-solid ${item.icon}" style="font-size:2.5rem;color:${item.color};display:block;margin:10px 0;text-shadow: 0 0 10px ${item.color};"></i>`;
-                            
                             if (item.id === 'holo_pet') {
                                 imgOrIcon = `<img src="assets/mascota_adolescentes.png" alt="${i18n.t(item.nameKey)}" style="height: 65px; width: 65px; object-fit: contain; margin-bottom: 12px; filter: drop-shadow(0 0 10px ${item.color});" />`;
                             }
-
                             return `
-                                <div class="store-item ${bought ? 'purchased' : ''} ${active ? 'active-skin' : ''}" data-id="${item.id}">
+                                <div class="store-item ${bought ? 'purchased' : ''} ${active ? 'active-skin' : ''}" data-id="${item.id}" data-currency="coins">
                                     ${imgOrIcon}
                                     <strong>${i18n.t(item.nameKey)}</strong>
                                     <div style="margin: 6px 0; font-size: 0.75rem; color: ${item.color}; background: ${item.color}22; border: 1px solid ${item.color}55; border-radius: 6px; padding: 3px 8px; display: inline-block;"><i class="fa-solid fa-bolt" style="margin-right:4px;"></i>${item.effectDesc}</div>
+                                    <div style="margin-top:8px;">${btnHTML}</div>
+                                </div>`;
+                        }).join('')}
+                    </div>
+                </div>
+
+                <!-- TIENDA ECO: EcoPuntos 🌱 -->
+                <div class="store-container" style="margin-top:24px; background: linear-gradient(135deg, rgba(16,185,129,0.06), rgba(4,120,87,0.06)); border-color: rgba(16,185,129,0.3);">
+                    <div style="display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:10px;">
+                        <div>
+                            <h3 class="section-title"><i class="fa-solid fa-seedling" style="color:#10b981;"></i> 🌿 Mundo Verde — Recompensas Eco</h3>
+                            <p style="color:#6ee7b7;font-size:0.9rem;">Canjea tus EcoPuntos 🌱 por activos del ecosistema digital.</p>
+                        </div>
+                        <div style="background:rgba(16,185,129,0.1);border:1px solid rgba(16,185,129,0.4);border-radius:10px;padding:8px 16px;display:flex;align-items:center;gap:8px;">
+                            <i class="fa-solid fa-leaf" style="color:#10b981;"></i>
+                            <span style="color:#10b981;font-weight:700;font-size:0.95rem;">Tienes ${this.state.ecoPoints || 0} EcoPts</span>
+                        </div>
+                    </div>
+                    <div class="store-grid" style="margin-top:16px;">
+                        ${this.ecoStoreItems.map(item => {
+                            const bought = this.state.unlockedItems.includes(item.id);
+                            const active = this.state.activeSkin === item.id;
+                            const btnHTML = active
+                                ? `<span class="difficulty-badge diff-easy">${i18n.t('equipped')}</span>`
+                                : bought
+                                    ? `<button class="equip-btn" style="background:#059669;color:white;border:none;padding:4px 10px;border-radius:4px;cursor:pointer;">${i18n.t('equip')}</button>`
+                                    : `<span style="color:#10b981;font-weight:700;"><i class="fa-solid fa-leaf"></i> ${item.cost} pts</span>`;
+                            const imgOrIcon = `<i class="fa-solid ${item.icon}" style="font-size:2.5rem;color:${item.color};display:block;margin:10px 0;text-shadow:0 0 14px ${item.color};"></i>`;
+                            return `
+                                <div class="store-item ${bought ? 'purchased' : ''} ${active ? 'active-skin' : ''}" data-id="${item.id}" data-currency="eco" style="border-color:${item.color}44; background:${item.color}0a;">
+                                    ${imgOrIcon}
+                                    <strong style="color:#a7f3d0;">${i18n.t(item.nameKey)}</strong>
+                                    <div style="margin:6px 0;font-size:0.75rem;color:${item.color};background:${item.color}22;border:1px solid ${item.color}55;border-radius:6px;padding:3px 8px;display:inline-block;"><i class="fa-solid fa-seedling" style="margin-right:4px;"></i>${item.effectDesc}</div>
                                     <div style="margin-top:8px;">${btnHTML}</div>
                                 </div>`;
                         }).join('')}
@@ -1480,6 +1875,24 @@ class NeuroSparkApp {
                                 </div>`).join('')}
                         </div>
                     </div>
+
+                    <div class="store-container" style="margin-top: 40px; background: rgba(16, 185, 129, 0.05); border-color: rgba(16, 185, 129, 0.2);">
+                        <h3 class="section-title"><i class="fa-solid fa-recycle text-green"></i> ${i18n.t('ecoChallengesTitle') || 'Retos Ecológicos Semanales'}</h3>
+                        <p style="color:var(--text-muted);font-size:0.9rem;">${i18n.t('ecoChallengesSub') || 'Sube una foto cumpliendo estas acciones y gana puntos:'}</p>
+                        <div class="task-list" id="eco-task-list" style="margin-top: 15px;">
+                            ${[1,2,3,4,5].map(i => `
+                                <div class="task-item" style="display:flex; justify-content:space-between; align-items:center; background: var(--bg-card); padding: 12px 16px; border-radius: 12px; margin-bottom: 8px; border: 1px solid #10b981;">
+                                    <div style="display:flex; align-items:center; gap: 12px;">
+                                        <i class="fa-solid fa-leaf" style="color: #10b981;"></i>
+                                        <span style="font-weight: 600; color: var(--text-main);">${i18n.t('ecoTask' + i) || 'Reto Eco ' + i}</span>
+                                    </div>
+                                    <button class="eco-upload-btn" data-pts="15" style="background: linear-gradient(135deg, #10b981, #059669); color: white; border: none; padding: 8px 14px; border-radius: 8px; cursor: pointer; font-size: 0.85rem; font-weight: bold; transition: transform 0.2s;">
+                                        <i class="fa-solid fa-camera"></i> Subir (+15 pts)
+                                    </button>
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
                 </div>
             </div>`;
 
@@ -1487,11 +1900,44 @@ class NeuroSparkApp {
             btn.addEventListener('click', () => engine.launch(btn.getAttribute('data-game')))
         );
 
-        mount.querySelectorAll('.store-item').forEach(item => {
+        mount.querySelectorAll('.eco-upload-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                if(btn.disabled) return;
+                
+                // Simular input de subida de archivo
+                const fileInput = document.createElement('input');
+                fileInput.type = 'file';
+                fileInput.accept = 'image/*';
+                fileInput.style.display = 'none';
+                
+                fileInput.onchange = (e) => {
+                    if (e.target.files && e.target.files.length > 0) {
+                        const pts = parseInt(btn.getAttribute('data-pts') || '15');
+                        this.state.ecoPoints = (this.state.ecoPoints || 0) + pts;
+                        this.saveState();
+                        this.updateHeaderHUD();
+                        sound.playSuccess();
+                        this.showToast('¡Foto subida! +' + pts + ' EcoPuntos 🌱', 'success');
+                        btn.innerHTML = '<i class="fa-solid fa-check"></i> ¡Completado!';
+                        btn.style.background = 'linear-gradient(135deg,#047857,#065f46)';
+                        btn.disabled = true;
+                        btn.style.transform = 'scale(0.95)';
+                    }
+                    // Cleanup
+                    document.body.removeChild(fileInput);
+                };
+                
+                document.body.appendChild(fileInput);
+                fileInput.click();
+            });
+        });
+
+        // Classic store items (NeuroCoins)
+        mount.querySelectorAll('.store-item[data-currency="coins"]').forEach(item => {
             item.addEventListener('click', e => {
                 const itemId = item.getAttribute('data-id');
                 const itemData = this.storeItems.find(i => i.id === itemId);
-
+                if (!itemData) return;
                 if (e.target.closest('.equip-btn')) {
                     this.state.activeSkin = itemId;
                     this.saveState(); this.renderHome();
@@ -1499,7 +1945,6 @@ class NeuroSparkApp {
                     return;
                 }
                 if (this.state.unlockedItems.includes(itemId)) return;
-
                 if (this.state.coins >= itemData.cost) {
                     this.state.coins -= itemData.cost;
                     this.state.unlockedItems.push(itemId);
@@ -1510,6 +1955,34 @@ class NeuroSparkApp {
                 } else {
                     sound.playError();
                     this.showToast(i18n.t('notEnoughCoins'), 'warning');
+                }
+            });
+        });
+
+        // Eco store items (EcoPuntos 🌱)
+        mount.querySelectorAll('.store-item[data-currency="eco"]').forEach(item => {
+            item.addEventListener('click', e => {
+                const itemId = item.getAttribute('data-id');
+                const itemData = this.ecoStoreItems.find(i => i.id === itemId);
+                if (!itemData) return;
+                if (e.target.closest('.equip-btn')) {
+                    this.state.activeSkin = itemId;
+                    this.saveState(); this.renderHome();
+                    this.showItemUnlockModal(itemData, false);
+                    return;
+                }
+                if (this.state.unlockedItems.includes(itemId)) return;
+                const ep = this.state.ecoPoints || 0;
+                if (ep >= itemData.cost) {
+                    this.state.ecoPoints = ep - itemData.cost;
+                    this.state.unlockedItems.push(itemId);
+                    this.state.activeSkin = itemId;
+                    this.saveState(); this.updateHeaderHUD(); this.renderHome();
+                    sound.playSuccess();
+                    this.showItemUnlockModal(itemData, true);
+                } else {
+                    sound.playError();
+                    this.showToast('¡EcoPuntos insuficientes! Completa más retos ecológicos 🌱', 'warning');
                 }
             });
         });
@@ -2097,6 +2570,18 @@ class NeuroSparkApp {
                     </label>
                 </div>
 
+                <!-- Eco Mode -->
+                <div class="settings-row">
+                    <div class="settings-row-label">
+                        <span style="color: #10b981;"><i class="fa-solid fa-leaf"></i> ${i18n.t('settingEcoLabel') || 'Modo Eco'}</span>
+                        <small>${i18n.t('settingEcoDesc') || 'Reduce el brillo, disminuye animaciones y consume menos batería.'}</small>
+                    </div>
+                    <label class="switch">
+                        <input type="checkbox" id="check-eco" ${this.state.settings.ecoMode ? 'checked' : ''}>
+                        <span class="slider"></span>
+                    </label>
+                </div>
+
                 <!-- Volume -->
                 <div class="settings-row">
                     <div class="settings-row-label">
@@ -2182,6 +2667,12 @@ class NeuroSparkApp {
             this.state.settings.voiceOn = e.target.checked;
             coach.voiceEnabled = e.target.checked;
             this.saveState(); this.updateHeaderHUD();
+        });
+
+        document.getElementById('check-eco').addEventListener('change', e => {
+            this.state.settings.ecoMode = e.target.checked;
+            document.body.classList.toggle('eco-mode', e.target.checked);
+            this.saveState();
         });
 
         document.getElementById('slider-volume').addEventListener('input', e => {

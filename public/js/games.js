@@ -1,6 +1,6 @@
-/* -------------------------------------------------------------
-   NEUROSPARK GAME ENGINE (Game Runner & Difficulty Coordinator)
-   ------------------------------------------------------------- */
+/* eslint-disable */
+// NEUROSPARK GAME ENGINE (Game Runner & Difficulty Coordinator)
+// -------------------------------------------------------------
 
 import { sound } from './sound.js';
 import { coach } from './neurocoach.js';
@@ -105,7 +105,9 @@ class GameController {
             'teens_distraction': 'Filtra la información irrelevante: ataca a los objetivos clave en un entorno lleno de ruidos visuales e interferencias.',
             'teens_stoplight': 'Debes reaccionar con un clic lo más rápido posible a la señal de inicio (verde), pero detener por completo tu respuesta motora si la señal cambia de imprevisto a rojo (Stop-Signal).',
             'teens_sound': 'Identifica qué frecuencias de radar son iguales a las anteriores para entrenar tu memoria de trabajo fonológica.',
-            'teens_cards': 'Descifra la tabla encontrando los pares de datos para ejercitar tu actualización constante (N-Back espacial).'
+            'teens_cards': 'Descifra la tabla encontrando los pares de datos para ejercitar tu actualización constante (N-Back espacial).',
+            'eco_recycle': 'Clasifica correctamente los residuos y colócalos en el contenedor correspondiente para entrenar tu atención selectiva y cuidar el planeta.',
+            'eco_water': 'Toca las tuberías rotas lo más rápido posible para reparar las fugas de agua y mejorar tu tiempo de reacción.'
         };
         const instrText = instructionsDict[gameId] || 'Sigue las instrucciones en pantalla y haz tu mejor esfuerzo para entrenar tu cerebro.';
         document.getElementById('game-instructions-text').innerText = instrText;
@@ -211,6 +213,10 @@ class GameController {
                 module = await import('./games/pattern_matcher.js');
             } else if (gameId === 'speed_math' || gameId === 'kids_math') {
                 module = await import('./games/speed_math.js');
+            } else if (gameId === 'eco_recycle') {
+                module = await import('./games/pattern_matcher.js'); // Usamos este como base por ahora
+            } else if (gameId === 'eco_water') {
+                module = await import('./games/spatial_focus.js'); // Usamos este como base por ahora
             }
             
             if (module && module.default) {
@@ -472,7 +478,9 @@ class GameController {
             teens_distraction: 'gameName13',
             teens_stoplight: 'gameName14',
             teens_sound: 'gameName15',
-            teens_cards: 'gameName16'
+            teens_cards: 'gameName16',
+            eco_recycle: 'Juego de Reciclaje',
+            eco_water: 'Juego del Agua'
         };
         return i18n.t(map[gameId] || 'gameNameDefault');
     }

@@ -119,6 +119,23 @@ input:-webkit-autofill:active {
     display: none;
 }
 
+/* Eco Mode reduces brightness, disables animations, and consumes less battery */
+body.eco-mode {
+    filter: brightness(0.85);
+}
+
+.eco-mode *, .eco-mode *::before, .eco-mode *::after {
+    animation-duration: 0.01s !important;
+    transition-duration: 0.01s !important;
+}
+
+.eco-mode .dynamic-bg,
+.eco-mode .sparky-mascot-img,
+.eco-mode .game-thumbnail::before {
+    display: none !important;
+    animation: none !important;
+}
+
 body.light-theme .dynamic-bg .nebula {
     opacity: 0.15;
 }

@@ -55,6 +55,13 @@
                     <i class="fa-solid fa-coins gold-text"></i>
                     <span id="player-coins">100</span>
                 </div>
+                <!-- EcoPuntos indicator -->
+                <div class="status-item" title="EcoPuntos — canjeables en la tienda verde 🌿"
+                    style="gap:6px; border-left:1px solid rgba(16,185,129,0.3); padding-left:14px; margin-left:2px;">
+                    <i class="fa-solid fa-leaf" style="color:#10b981; filter:drop-shadow(0 0 6px #10b981);"></i>
+                    <span id="player-eco-points" style="color:#10b981; font-weight:700;">0</span>
+                    <span style="font-size:0.7rem; color:#6ee7b7; font-weight:500;">pts</span>
+                </div>
                 <div class="status-item level" title="Nivel del perfil"
                     style="flex-direction:column; align-items:flex-start; gap:4px;">
                     <div style="display:flex; align-items:center; gap:8px;">
@@ -74,6 +81,12 @@
 
             <!-- Right Controls -->
             <div class="header-controls">
+                <!-- Modo EcoSpark -->
+                <button class="control-btn" id="btn-ecospark" title="Modo EcoSpark 🌱"
+                    style="display:none; background: linear-gradient(135deg, #10b981, #047857); color: white; border: 1px solid #34d399; box-shadow: 0 0 10px rgba(16,185,129,0.3);">
+                    <i class="fa-solid fa-leaf"></i>
+                </button>
+
                 <!-- Biblioteca -->
                 <button class="control-btn" id="btn-biblioteca" title="Biblioteca Educativa"
                     onclick="openBibliotecaModal()"

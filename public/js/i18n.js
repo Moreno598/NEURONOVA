@@ -42,6 +42,25 @@ const translations = {
         skinAura:    '✨ Aura Estelar',
         skinHolopet: '✨ Mascota Especial',
 
+        // --- ECO REWARDS ---
+        ecoTree:     '🌳 Árbol Virtual',
+        ecoGarden:   '🌿 Jardín Zen',
+        ecoPet:      '🐕 Mascota Ecológica',
+        ecoForest:   '🌲 Bosque Digital',
+
+        // --- ECO MODE ---
+        settingEcoLabel: 'Modo Eco',
+        settingEcoDesc:  'Reduce el brillo, disminuye animaciones y consume menos batería.',
+        
+        // --- ECO CHALLENGES ---
+        ecoChallengesTitle: '♻️ Retos Ecológicos Semanales',
+        ecoChallengesSub:   'Sube una foto cumpliendo estas acciones y gana puntos:',
+        ecoTask1: '💧 Ahorrar agua',
+        ecoTask2: '💡 Apagar luces innecesarias',
+        ecoTask3: '🗑️ Separar residuos',
+        ecoTask4: '📄 Reciclar papel',
+        ecoTask5: '🌱 Plantar una semilla',
+
         // --- TEENS HOME ---
         teensWelcome:    'Hola, {name}',
         teensWelcomeSub: 'Plataforma de hiperfoco y entrenamiento cognitivo para estudiantes autónomos.',
