@@ -36,11 +36,11 @@ class NeuroSparkApp {
 
         this.storeItems = [
             { id: 'cyber_neon', nameKey: 'skinCyber', cost: 100, icon: 'fa-robot', color: '#38bdf8', image: 'assets/store_cyber_neon.png', effectDesc: '+10% extra de NeuroCoins' },
-            { id: 'green_shield', nameKey: 'skinShield', cost: 180, icon: 'fa-shield-halved', color: '#22c55e', effectDesc: 'Ignora tu primer fallo (Escudo protector)' },
-            { id: 'golden_crown', nameKey: 'skinCrown', cost: 250, icon: 'fa-crown', color: '#fbbf24', effectDesc: 'Tiempo extra (+10s en todas las misiones)' },
-            { id: 'jetpack', nameKey: 'skinJetpack', cost: 350, icon: 'fa-rocket', color: '#a855f7', effectDesc: 'Multiplicador x1.5 de puntos (Velocidad)' },
-            { id: 'stellar_aura', nameKey: 'skinAura', cost: 500, icon: 'fa-star', color: '#f472b6', effectDesc: 'Reduce la velocidad de caída/reacción un 15%' },
-            { id: 'holo_pet', nameKey: 'skinHolopet', cost: 800, icon: 'fa-dog', color: '#06b6d4', effectDesc: '+50% NeuroCoins y Mascotas de ayuda' }
+            { id: 'green_shield', nameKey: 'skinShield', cost: 180, icon: 'fa-shield-halved', color: '#22c55e', image: 'assets/store_green_shield.png', effectDesc: 'Ignora tu primer fallo (Escudo protector)' },
+            { id: 'golden_crown', nameKey: 'skinCrown', cost: 250, icon: 'fa-crown', color: '#fbbf24', image: 'assets/store_golden_crown.png', effectDesc: 'Tiempo extra (+10s en todas las misiones)' },
+            { id: 'jetpack', nameKey: 'skinJetpack', cost: 350, icon: 'fa-rocket', color: '#a855f7', image: 'assets/store_jetpack.png', effectDesc: 'Multiplicador x1.5 de puntos (Velocidad)' },
+            { id: 'stellar_aura', nameKey: 'skinAura', cost: 500, icon: 'fa-star', color: '#f472b6', image: 'assets/store_stellar_aura.png', effectDesc: 'Reduce la velocidad de caída/reacción un 15%' },
+            { id: 'holo_pet', nameKey: 'skinHolopet', cost: 800, icon: 'fa-dog', color: '#06b6d4', image: 'assets/store_holo_pet.png', effectDesc: '+50% NeuroCoins y Mascotas de ayuda' }
         ];
     }
 
