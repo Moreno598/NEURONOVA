@@ -75,7 +75,9 @@
             <!-- Right Controls -->
             <div class="header-controls">
                 <!-- Biblioteca -->
-                <button class="control-btn" id="btn-biblioteca" title="Biblioteca Educativa" onclick="openBibliotecaModal()" style="display:none; background: linear-gradient(135deg, #38bdf8, #a78bfa); color: white;">
+                <button class="control-btn" id="btn-biblioteca" title="Biblioteca Educativa"
+                    onclick="openBibliotecaModal()"
+                    style="display:none; background: linear-gradient(135deg, #38bdf8, #a78bfa); color: white;">
                     <i class="fa-solid fa-book-open"></i>
                 </button>
 
@@ -103,7 +105,8 @@
 
                 <!-- Premium Hub Button (hidden by default) -->
                 <button class="control-btn" id="btn-premium-hub" title="Hub Premium"
-                    style="display:none; background: linear-gradient(135deg, #facc15, #f59e0b); color: #1e293b; border: 1px solid #fcd34d; font-weight: 900; animation: pulseGlow 2s infinite;" onclick="openPremiumHub()">
+                    style="display:none; background: linear-gradient(135deg, #facc15, #f59e0b); color: #1e293b; border: 1px solid #fcd34d; font-weight: 900; animation: pulseGlow 2s infinite;"
+                    onclick="openPremiumHub()">
                     <i class="fa-solid fa-crown"></i>
                 </button>
 
@@ -1164,21 +1167,34 @@
                     <li><i class="fa-solid fa-code-branch" style="color: #38bdf8; width: 25px;"></i> <strong
                             style="color: white;">Lógica y resolución de problemas</strong></li>
                 </ul>
-                
+
                 <!-- Biblioteca Educativa (Versión Gratuita) -->
-                <div style="background: rgba(34, 197, 94, 0.05); padding: 20px; border-radius: 14px; border: 1px solid rgba(34, 197, 94, 0.2); margin-top: 10px;">
-                    <strong style="color: #22c55e; font-size: 1.15rem; display: flex; align-items: center; gap: 8px; margin-bottom: 8px;">
+                <div
+                    style="background: rgba(34, 197, 94, 0.05); padding: 20px; border-radius: 14px; border: 1px solid rgba(34, 197, 94, 0.2); margin-top: 10px;">
+                    <strong
+                        style="color: #22c55e; font-size: 1.15rem; display: flex; align-items: center; gap: 8px; margin-bottom: 8px;">
                         <i class="fa-solid fa-book-open-reader"></i> Versión Gratuita: Biblioteca Educativa
                     </strong>
                     <p style="color: rgba(255,255,255,0.7); font-size: 0.95rem; margin: 0 0 12px 0;">
-                        Accede sin costo a una colección exclusiva de videos y recursos diseñados para apoyar tu aprendizaje continuo y bienestar:
+                        Accede sin costo a una colección exclusiva de videos y recursos diseñados para apoyar tu
+                        aprendizaje continuo y bienestar:
                     </p>
-                    <ul style="margin: 0; padding-left: 20px; color: rgba(255,255,255,0.85); font-size: 0.95rem; display: grid; grid-template-columns: 1fr 1fr; gap: 8px;">
-                        <li><i class="fa-solid fa-circle-play" style="color: #22c55e; margin-right: 5px; font-size: 0.8rem;"></i> ¿Qué es el TDAH?</li>
-                        <li><i class="fa-solid fa-circle-play" style="color: #22c55e; margin-right: 5px; font-size: 0.8rem;"></i> Técnicas de estudio</li>
-                        <li><i class="fa-solid fa-circle-play" style="color: #22c55e; margin-right: 5px; font-size: 0.8rem;"></i> Organización del tiempo</li>
-                        <li><i class="fa-solid fa-circle-play" style="color: #22c55e; margin-right: 5px; font-size: 0.8rem;"></i> Manejo de emociones</li>
-                        <li><i class="fa-solid fa-circle-play" style="color: #22c55e; margin-right: 5px; font-size: 0.8rem;"></i> Hábitos saludables</li>
+                    <ul
+                        style="margin: 0; padding-left: 20px; color: rgba(255,255,255,0.85); font-size: 0.95rem; display: grid; grid-template-columns: 1fr 1fr; gap: 8px;">
+                        <li><i class="fa-solid fa-circle-play"
+                                style="color: #22c55e; margin-right: 5px; font-size: 0.8rem;"></i> ¿Qué es el TDAH?</li>
+                        <li><i class="fa-solid fa-circle-play"
+                                style="color: #22c55e; margin-right: 5px; font-size: 0.8rem;"></i> Técnicas de estudio
+                        </li>
+                        <li><i class="fa-solid fa-circle-play"
+                                style="color: #22c55e; margin-right: 5px; font-size: 0.8rem;"></i> Organización del
+                            tiempo</li>
+                        <li><i class="fa-solid fa-circle-play"
+                                style="color: #22c55e; margin-right: 5px; font-size: 0.8rem;"></i> Manejo de emociones
+                        </li>
+                        <li><i class="fa-solid fa-circle-play"
+                                style="color: #22c55e; margin-right: 5px; font-size: 0.8rem;"></i> Hábitos saludables
+                        </li>
                     </ul>
                 </div>
 
@@ -1531,12 +1547,12 @@
 
         function openLibraryTopic(topicId) {
             const data = libraryData[topicId];
-            if(!data) return;
+            if (!data) return;
 
             // Detectar perfil del usuario para video adecuado
             const profile = (window.neuroApp && window.neuroApp.state) ? window.neuroApp.state.profile : 'teens';
             const videoId = (profile === 'kids') ? data.videoKids : data.videoTeens;
-            
+
             document.getElementById('library-topic-icon').innerText = data.icon;
             document.getElementById('library-topic-title').innerText = data.title;
             document.getElementById('library-topic-content').innerHTML = data.content;
@@ -1545,7 +1561,7 @@
             const audience = (profile === 'kids') ? '👶 Video para niños' : '🧑‍🎓 Video para adolescentes';
             document.getElementById('library-audience-label').innerText = audience;
             const vid = document.querySelector('#biblioteca-reader-modal .video-mock');
-            if(vid) {
+            if (vid) {
                 vid.outerHTML = `
                     <div class="video-container" style="width: 100%; aspect-ratio: 16/9; background: #0f172a; border-radius: 12px; border: 1px solid rgba(255,255,255,0.1); margin-bottom: 25px; overflow: hidden; position: relative;">
                         <iframe width="100%" height="100%" src="https://www.youtube.com/embed/${videoId}?autoplay=1&rel=0" title="${data.title}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen style="position:absolute; top:0; left:0; width:100%; height:100%;"></iframe>
@@ -1595,37 +1611,69 @@
                 <h2
                     style="font-size: 28px; font-weight: 900; background: linear-gradient(90deg, #38bdf8, #a78bfa); -webkit-background-clip: text; background-clip: text; color: transparent; margin-bottom: 10px;">
                     BIBLIOTECA EDUCATIVA</h2>
-                <p style="color: #cbd5e1; font-size: 14px; margin-bottom: 25px;">Videos y recursos para padres, estudiantes y educadores.</p>
+                <p style="color: #cbd5e1; font-size: 14px; margin-bottom: 25px;">Videos y recursos para padres,
+                    estudiantes y educadores.</p>
 
-                <div style="text-align: left; display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 15px; margin-bottom: 30px;">
+                <div
+                    style="text-align: left; display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 15px; margin-bottom: 30px;">
                     <!-- 1. TDAH -->
-                    <div onclick="openLibraryTopic('tdah')" style="background: rgba(255,255,255,0.05); padding: 15px; border-radius: 14px; border: 1px solid rgba(56, 189, 248, 0.2); cursor: pointer; transition: transform 0.2s;" onmouseover="this.style.transform='translateY(-3px)'" onmouseout="this.style.transform='translateY(0)'">
-                        <strong style="color: #38bdf8; font-size: 15px; display: flex; align-items: center; gap: 8px;"><i class="fa-solid fa-book-medical"></i> ¿Qué es el TDAH?</strong>
-                        <p style="margin: 5px 0 0 0; color: #cbd5e1; font-size: 13px;">Guías completas para entender y apoyar a personas neurodivergentes.</p>
+                    <div onclick="openLibraryTopic('tdah')"
+                        style="background: rgba(255,255,255,0.05); padding: 15px; border-radius: 14px; border: 1px solid rgba(56, 189, 248, 0.2); cursor: pointer; transition: transform 0.2s;"
+                        onmouseover="this.style.transform='translateY(-3px)'"
+                        onmouseout="this.style.transform='translateY(0)'">
+                        <strong
+                            style="color: #38bdf8; font-size: 15px; display: flex; align-items: center; gap: 8px;"><i
+                                class="fa-solid fa-book-medical"></i> ¿Qué es el TDAH?</strong>
+                        <p style="margin: 5px 0 0 0; color: #cbd5e1; font-size: 13px;">Guías completas para entender y
+                            apoyar a personas neurodivergentes.</p>
                     </div>
 
                     <!-- 2. Técnicas -->
-                    <div onclick="openLibraryTopic('study')" style="background: rgba(255,255,255,0.05); padding: 15px; border-radius: 14px; border: 1px solid rgba(167, 139, 250, 0.2); cursor: pointer; transition: transform 0.2s;" onmouseover="this.style.transform='translateY(-3px)'" onmouseout="this.style.transform='translateY(0)'">
-                        <strong style="color: #a78bfa; font-size: 15px; display: flex; align-items: center; gap: 8px;"><i class="fa-solid fa-graduation-cap"></i> Técnicas de estudio</strong>
-                        <p style="margin: 5px 0 0 0; color: #cbd5e1; font-size: 13px;">Métodos para mejorar la retención y la atención al leer.</p>
+                    <div onclick="openLibraryTopic('study')"
+                        style="background: rgba(255,255,255,0.05); padding: 15px; border-radius: 14px; border: 1px solid rgba(167, 139, 250, 0.2); cursor: pointer; transition: transform 0.2s;"
+                        onmouseover="this.style.transform='translateY(-3px)'"
+                        onmouseout="this.style.transform='translateY(0)'">
+                        <strong
+                            style="color: #a78bfa; font-size: 15px; display: flex; align-items: center; gap: 8px;"><i
+                                class="fa-solid fa-graduation-cap"></i> Técnicas de estudio</strong>
+                        <p style="margin: 5px 0 0 0; color: #cbd5e1; font-size: 13px;">Métodos para mejorar la retención
+                            y la atención al leer.</p>
                     </div>
 
                     <!-- 3. Tiempo -->
-                    <div onclick="openLibraryTopic('time')" style="background: rgba(255,255,255,0.05); padding: 15px; border-radius: 14px; border: 1px solid rgba(34, 197, 94, 0.2); cursor: pointer; transition: transform 0.2s;" onmouseover="this.style.transform='translateY(-3px)'" onmouseout="this.style.transform='translateY(0)'">
-                        <strong style="color: #22c55e; font-size: 15px; display: flex; align-items: center; gap: 8px;"><i class="fa-solid fa-clock"></i> Organización del tiempo</strong>
-                        <p style="margin: 5px 0 0 0; color: #cbd5e1; font-size: 13px;">Uso eficiente de agendas y estructuración de rutinas.</p>
+                    <div onclick="openLibraryTopic('time')"
+                        style="background: rgba(255,255,255,0.05); padding: 15px; border-radius: 14px; border: 1px solid rgba(34, 197, 94, 0.2); cursor: pointer; transition: transform 0.2s;"
+                        onmouseover="this.style.transform='translateY(-3px)'"
+                        onmouseout="this.style.transform='translateY(0)'">
+                        <strong
+                            style="color: #22c55e; font-size: 15px; display: flex; align-items: center; gap: 8px;"><i
+                                class="fa-solid fa-clock"></i> Organización del tiempo</strong>
+                        <p style="margin: 5px 0 0 0; color: #cbd5e1; font-size: 13px;">Uso eficiente de agendas y
+                            estructuración de rutinas.</p>
                     </div>
 
                     <!-- 4. Emociones -->
-                    <div onclick="openLibraryTopic('emotions')" style="background: rgba(255,255,255,0.05); padding: 15px; border-radius: 14px; border: 1px solid rgba(244, 63, 94, 0.2); cursor: pointer; transition: transform 0.2s;" onmouseover="this.style.transform='translateY(-3px)'" onmouseout="this.style.transform='translateY(0)'">
-                        <strong style="color: #f43f5e; font-size: 15px; display: flex; align-items: center; gap: 8px;"><i class="fa-solid fa-heart"></i> Manejo de emociones</strong>
-                        <p style="margin: 5px 0 0 0; color: #cbd5e1; font-size: 13px;">Estrategias de autorregulación y resiliencia emocional.</p>
+                    <div onclick="openLibraryTopic('emotions')"
+                        style="background: rgba(255,255,255,0.05); padding: 15px; border-radius: 14px; border: 1px solid rgba(244, 63, 94, 0.2); cursor: pointer; transition: transform 0.2s;"
+                        onmouseover="this.style.transform='translateY(-3px)'"
+                        onmouseout="this.style.transform='translateY(0)'">
+                        <strong
+                            style="color: #f43f5e; font-size: 15px; display: flex; align-items: center; gap: 8px;"><i
+                                class="fa-solid fa-heart"></i> Manejo de emociones</strong>
+                        <p style="margin: 5px 0 0 0; color: #cbd5e1; font-size: 13px;">Estrategias de autorregulación y
+                            resiliencia emocional.</p>
                     </div>
-                    
+
                     <!-- 5. Hábitos -->
-                    <div onclick="openLibraryTopic('habits')" style="background: rgba(255,255,255,0.05); padding: 15px; border-radius: 14px; border: 1px solid rgba(250, 204, 21, 0.2); cursor: pointer; transition: transform 0.2s; grid-column: 1 / -1;" onmouseover="this.style.transform='translateY(-3px)'" onmouseout="this.style.transform='translateY(0)'">
-                        <strong style="color: #facc15; font-size: 15px; display: flex; align-items: center; gap: 8px;"><i class="fa-solid fa-apple-whole"></i> Hábitos saludables</strong>
-                        <p style="margin: 5px 0 0 0; color: #cbd5e1; font-size: 13px;">Impacto del sueño, la alimentación y el deporte en el cerebro.</p>
+                    <div onclick="openLibraryTopic('habits')"
+                        style="background: rgba(255,255,255,0.05); padding: 15px; border-radius: 14px; border: 1px solid rgba(250, 204, 21, 0.2); cursor: pointer; transition: transform 0.2s; grid-column: 1 / -1;"
+                        onmouseover="this.style.transform='translateY(-3px)'"
+                        onmouseout="this.style.transform='translateY(0)'">
+                        <strong
+                            style="color: #facc15; font-size: 15px; display: flex; align-items: center; gap: 8px;"><i
+                                class="fa-solid fa-apple-whole"></i> Hábitos saludables</strong>
+                        <p style="margin: 5px 0 0 0; color: #cbd5e1; font-size: 13px;">Impacto del sueño, la
+                            alimentación y el deporte en el cerebro.</p>
                     </div>
                 </div>
 
@@ -1638,26 +1686,35 @@
     </div>
 
     <!-- Modal Biblioteca Educativa Lector -->
-    <div id="biblioteca-reader-modal" style="position: fixed; inset: 0; background: rgba(0,0,0,0.9); z-index: 100001; display: none; align-items: center; justify-content: center; padding: 20px;">
-        <div style="background: #1e293b; border: 1px solid rgba(56, 189, 248, 0.3); border-radius: 24px; padding: 40px; position: relative; max-width: 700px; width: 100%; box-shadow: 0 25px 50px rgba(56, 189, 248, 0.2); max-height: 90vh; overflow-y: auto;">
+    <div id="biblioteca-reader-modal"
+        style="position: fixed; inset: 0; background: rgba(0,0,0,0.9); z-index: 100001; display: none; align-items: center; justify-content: center; padding: 20px;">
+        <div
+            style="background: #1e293b; border: 1px solid rgba(56, 189, 248, 0.3); border-radius: 24px; padding: 40px; position: relative; max-width: 700px; width: 100%; box-shadow: 0 25px 50px rgba(56, 189, 248, 0.2); max-height: 90vh; overflow-y: auto;">
             <button onclick="closeLibraryReaderFully()"
                 style="position: absolute; top: 20px; right: 20px; background: none; border: none; color: white; font-size: 24px; cursor: pointer;">&times;</button>
             <button onclick="closeLibraryReaderToMain()"
-                style="position: absolute; top: 20px; left: 20px; background: none; border: none; color: #cbd5e1; font-size: 16px; cursor: pointer; display: flex; align-items: center; gap: 8px;"><i class="fa-solid fa-arrow-left"></i> Volver</button>
-            
+                style="position: absolute; top: 20px; left: 20px; background: none; border: none; color: #cbd5e1; font-size: 16px; cursor: pointer; display: flex; align-items: center; gap: 8px;"><i
+                    class="fa-solid fa-arrow-left"></i> Volver</button>
+
             <div style="text-align: center; font-family: 'Outfit', sans-serif; margin-top: 20px;">
                 <div id="library-topic-icon" style="font-size: 40px; margin-bottom: 10px;">🧠</div>
-                <h2 id="library-topic-title" style="font-size: 26px; font-weight: 900; color: white; margin-bottom: 8px;">Título</h2>
-                <span id="library-audience-label" style="display: inline-block; background: rgba(56,189,248,0.15); border: 1px solid rgba(56,189,248,0.3); color: #38bdf8; font-size: 12px; font-weight: 700; padding: 4px 12px; border-radius: 20px; margin-bottom: 18px; letter-spacing: 0.5px;"></span>
-                
+                <h2 id="library-topic-title"
+                    style="font-size: 26px; font-weight: 900; color: white; margin-bottom: 8px;">Título</h2>
+                <span id="library-audience-label"
+                    style="display: inline-block; background: rgba(56,189,248,0.15); border: 1px solid rgba(56,189,248,0.3); color: #38bdf8; font-size: 12px; font-weight: 700; padding: 4px 12px; border-radius: 20px; margin-bottom: 18px; letter-spacing: 0.5px;"></span>
+
                 <!-- Video Placeholder -->
-                <div style="width: 100%; aspect-ratio: 16/9; background: #0f172a; border-radius: 12px; border: 1px solid rgba(255,255,255,0.1); display: flex; align-items: center; justify-content: center; margin-bottom: 25px; cursor: pointer; position: relative; overflow: hidden;" class="video-mock" onclick="this.innerHTML='<div style=\'color:white\'><i class=\'fa-solid fa-spinner fa-spin\' style=\'margin-right:10px;\'></i>Cargando el contenido educativo...</div>'">
-                    <div style="width: 60px; height: 60px; background: rgba(56, 189, 248, 0.8); border-radius: 50%; display: flex; align-items: center; justify-content: center; transition: transform 0.2s;" onmouseover="this.style.transform='scale(1.1)'" onmouseout="this.style.transform='scale(1)'">
+                <div style="width: 100%; aspect-ratio: 16/9; background: #0f172a; border-radius: 12px; border: 1px solid rgba(255,255,255,0.1); display: flex; align-items: center; justify-content: center; margin-bottom: 25px; cursor: pointer; position: relative; overflow: hidden;"
+                    class="video-mock"
+                    onclick="this.innerHTML='<div style=\'color:white\'><i class=\'fa-solid fa-spinner fa-spin\' style=\'margin-right:10px;\'></i>Cargando el contenido educativo...</div>'">
+                    <div style="width: 60px; height: 60px; background: rgba(56, 189, 248, 0.8); border-radius: 50%; display: flex; align-items: center; justify-content: center; transition: transform 0.2s;"
+                        onmouseover="this.style.transform='scale(1.1)'" onmouseout="this.style.transform='scale(1)'">
                         <i class="fa-solid fa-play" style="color: white; font-size: 24px; margin-left: 5px;"></i>
                     </div>
                 </div>
 
-                <div id="library-topic-content" style="text-align: left; color: #cbd5e1; font-size: 15px; line-height: 1.6; display: flex; flex-direction: column; gap: 15px;">
+                <div id="library-topic-content"
+                    style="text-align: left; color: #cbd5e1; font-size: 15px; line-height: 1.6; display: flex; flex-direction: column; gap: 15px;">
                     <!-- Content injected via JS -->
                 </div>
             </div>
@@ -1701,25 +1758,36 @@
 
                 <div
                     style="text-align: left; display: flex; flex-direction: column; gap: 15px; margin-bottom: 30px; font-size: 13px; color: #f8fafc; overflow-x: hidden;">
-                    
+
                     <!-- 1. Entrenamiento IA -->
-                    <div style="background: rgba(255,255,255,0.05); padding: 20px; border-radius: 14px; border: 1px solid rgba(56, 189, 248, 0.2);">
-                        <strong style="color: #38bdf8; font-size: 16px; display: flex; align-items: center; gap: 8px;"><i class="fa-solid fa-brain"></i> 1. Plan de entrenamiento personalizado (IA)</strong>
-                        <ul style="margin: 10px 0 0 0; padding-left: 20px; color: #cbd5e1; display: flex; flex-direction: column; gap: 6px;">
+                    <div
+                        style="background: rgba(255,255,255,0.05); padding: 20px; border-radius: 14px; border: 1px solid rgba(56, 189, 248, 0.2);">
+                        <strong
+                            style="color: #38bdf8; font-size: 16px; display: flex; align-items: center; gap: 8px;"><i
+                                class="fa-solid fa-brain"></i> 1. Plan de entrenamiento personalizado (IA)</strong>
+                        <ul
+                            style="margin: 10px 0 0 0; padding-left: 20px; color: #cbd5e1; display: flex; flex-direction: column; gap: 6px;">
                             <li>Evaluación inicial del nivel de atención.</li>
                             <li>La inteligencia artificial adapta la dificultad según el desempeño.</li>
-                            <li>Recomendaciones de juegos específicas para fortalecer memoria, concentración o control de impulsos.</li>
+                            <li>Recomendaciones de juegos específicas para fortalecer memoria, concentración o control
+                                de impulsos.</li>
                             <li>Objetivos semanales personalizados.</li>
-                            <li style="color: #fcd34d; font-weight: bold; list-style: none; margin-left: -20px; margin-top: 5px;">⭐ Valor Premium: Cada usuario recibe un entrenamiento único.</li>
+                            <li
+                                style="color: #fcd34d; font-weight: bold; list-style: none; margin-left: -20px; margin-top: 5px;">
+                                ⭐ Valor Premium: Cada usuario recibe un entrenamiento único.</li>
                         </ul>
                     </div>
 
                     <!-- 2. Reportes -->
-                    <div style="background: rgba(255,255,255,0.05); padding: 20px; border-radius: 14px; border: 1px solid rgba(167, 139, 250, 0.2);">
-                        <strong style="color: #a78bfa; font-size: 16px; display: flex; align-items: center; gap: 8px;"><i class="fa-solid fa-chart-pie"></i> 📊 2. Reportes detallados de progreso</strong>
+                    <div
+                        style="background: rgba(255,255,255,0.05); padding: 20px; border-radius: 14px; border: 1px solid rgba(167, 139, 250, 0.2);">
+                        <strong
+                            style="color: #a78bfa; font-size: 16px; display: flex; align-items: center; gap: 8px;"><i
+                                class="fa-solid fa-chart-pie"></i> 📊 2. Reportes detallados de progreso</strong>
                         <div style="margin: 10px 0 0 0; color: #cbd5e1;">
                             <p style="margin: 0 0 5px 0;">Incluye gráficos sobre:</p>
-                            <ul style="padding-left: 20px; margin: 0 0 10px 0; display: flex; flex-direction: column; gap: 4px;">
+                            <ul
+                                style="padding-left: 20px; margin: 0 0 10px 0; display: flex; flex-direction: column; gap: 4px;">
                                 <li>Tiempo de concentración.</li>
                                 <li>Memoria de trabajo.</li>
                                 <li>Velocidad de respuesta.</li>
@@ -1727,31 +1795,43 @@
                                 <li>Evolución semanal y mensual.</li>
                             </ul>
                             <p style="margin: 0 0 5px 0;">Además:</p>
-                            <ul style="padding-left: 20px; margin: 0 0 10px 0; display: flex; flex-direction: column; gap: 4px;">
+                            <ul
+                                style="padding-left: 20px; margin: 0 0 10px 0; display: flex; flex-direction: column; gap: 4px;">
                                 <li>Comparación del progreso.</li>
                                 <li>Logros obtenidos y Áreas que necesitan reforzarse.</li>
                                 <li>Recibir consejos para apoyar el desarrollo en casa.</li>
                             </ul>
-                            <p style="color: #a78bfa; margin: 0; font-weight: bold; font-style: italic;">*Ideal para colegios y centros terapéuticos.</p>
+                            <p style="color: #a78bfa; margin: 0; font-weight: bold; font-style: italic;">*Ideal para
+                                colegios y centros terapéuticos.</p>
                         </div>
                     </div>
 
                     <!-- 3. Juegos Exclusivos -->
-                    <div style="background: rgba(255,255,255,0.05); padding: 20px; border-radius: 14px; border: 1px solid rgba(244, 63, 94, 0.2);">
-                        <strong style="color: #f43f5e; font-size: 16px; display: flex; align-items: center; gap: 8px;"><i class="fa-solid fa-gamepad"></i> 🎮 3. Juegos Premium exclusivos</strong>
-                        <div style="margin-top: 15px; display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px;">
-                            <div style="background: rgba(56, 189, 248, 0.1); padding: 12px; border-radius: 10px; border: 1px solid rgba(56, 189, 248, 0.2);">
-                                <p style="color: #38bdf8; font-weight: bold; margin: 0 0 8px 0; font-size: 0.9rem;">👦 Para Niños (6-11):</p>
-                                <ul style="margin: 0; padding-left: 18px; color: #cbd5e1; display: flex; flex-direction: column; gap: 4px; font-size: 0.85rem;">
+                    <div
+                        style="background: rgba(255,255,255,0.05); padding: 20px; border-radius: 14px; border: 1px solid rgba(244, 63, 94, 0.2);">
+                        <strong
+                            style="color: #f43f5e; font-size: 16px; display: flex; align-items: center; gap: 8px;"><i
+                                class="fa-solid fa-gamepad"></i> 🎮 3. Juegos Premium exclusivos</strong>
+                        <div
+                            style="margin-top: 15px; display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px;">
+                            <div
+                                style="background: rgba(56, 189, 248, 0.1); padding: 12px; border-radius: 10px; border: 1px solid rgba(56, 189, 248, 0.2);">
+                                <p style="color: #38bdf8; font-weight: bold; margin: 0 0 8px 0; font-size: 0.9rem;">👦
+                                    Para Niños (6-11):</p>
+                                <ul
+                                    style="margin: 0; padding-left: 18px; color: #cbd5e1; display: flex; flex-direction: column; gap: 4px; font-size: 0.85rem;">
                                     <li>Cazador de Estrellas (AR)</li>
                                     <li>Aventura Musical Mágica</li>
                                     <li>Misiones de Mascotas Virtuales</li>
                                     <li>Constructor de Cohetes Espaciales</li>
                                 </ul>
                             </div>
-                            <div style="background: rgba(167, 139, 250, 0.1); padding: 12px; border-radius: 10px; border: 1px solid rgba(167, 139, 250, 0.2);">
-                                <p style="color: #a78bfa; font-weight: bold; margin: 0 0 8px 0; font-size: 0.9rem;">🧑‍🎓 Para Adolescentes (12-17):</p>
-                                <ul style="margin: 0; padding-left: 18px; color: #cbd5e1; display: flex; flex-direction: column; gap: 4px; font-size: 0.85rem;">
+                            <div
+                                style="background: rgba(167, 139, 250, 0.1); padding: 12px; border-radius: 10px; border: 1px solid rgba(167, 139, 250, 0.2);">
+                                <p style="color: #a78bfa; font-weight: bold; margin: 0 0 8px 0; font-size: 0.9rem;">
+                                    🧑‍🎓 Para Adolescentes (12-17):</p>
+                                <ul
+                                    style="margin: 0; padding-left: 18px; color: #cbd5e1; display: flex; flex-direction: column; gap: 4px; font-size: 0.85rem;">
                                     <li>Simulador de Foco Profundo</li>
                                     <li>Desafíos Tácticos de Memoria</li>
                                     <li>Escape Rooms Cooperativos</li>
@@ -1762,9 +1842,13 @@
                     </div>
 
                     <!-- 4. Sistema de Recompensas -->
-                    <div style="background: rgba(255,255,255,0.05); padding: 20px; border-radius: 14px; border: 1px solid rgba(250, 204, 21, 0.2);">
-                        <strong style="color: #facc15; font-size: 16px; display: flex; align-items: center; gap: 8px;"><i class="fa-solid fa-medal"></i> 🎖️ 4. Sistema de recompensas avanzado</strong>
-                        <ul style="margin: 10px 0 0 0; padding-left: 20px; color: #cbd5e1; display: flex; flex-direction: column; gap: 6px;">
+                    <div
+                        style="background: rgba(255,255,255,0.05); padding: 20px; border-radius: 14px; border: 1px solid rgba(250, 204, 21, 0.2);">
+                        <strong
+                            style="color: #facc15; font-size: 16px; display: flex; align-items: center; gap: 8px;"><i
+                                class="fa-solid fa-medal"></i> 🎖️ 4. Sistema de recompensas avanzado</strong>
+                        <ul
+                            style="margin: 10px 0 0 0; padding-left: 20px; color: #cbd5e1; display: flex; flex-direction: column; gap: 6px;">
                             <li>Insignias especiales.</li>
                             <li>Avatares exclusivos.</li>
                             <li>Monedas virtuales.</li>
@@ -1774,10 +1858,14 @@
                     </div>
 
                     <!-- 5. Rutinas Inteligentes -->
-                    <div style="background: rgba(255,255,255,0.05); padding: 20px; border-radius: 14px; border: 1px solid rgba(34, 197, 94, 0.2);">
-                        <strong style="color: #22c55e; font-size: 16px; display: flex; align-items: center; gap: 8px;"><i class="fa-solid fa-calendar-check"></i> 🎯 5. Rutinas inteligentes</strong>
+                    <div
+                        style="background: rgba(255,255,255,0.05); padding: 20px; border-radius: 14px; border: 1px solid rgba(34, 197, 94, 0.2);">
+                        <strong
+                            style="color: #22c55e; font-size: 16px; display: flex; align-items: center; gap: 8px;"><i
+                                class="fa-solid fa-calendar-check"></i> 🎯 5. Rutinas inteligentes</strong>
                         <p style="margin: 10px 0 5px 0; color: #cbd5e1;">La aplicación crea automáticamente:</p>
-                        <ul style="margin: 0; padding-left: 20px; color: #cbd5e1; display: flex; flex-direction: column; gap: 6px;">
+                        <ul
+                            style="margin: 0; padding-left: 20px; color: #cbd5e1; display: flex; flex-direction: column; gap: 6px;">
                             <li>Horarios de entrenamiento.</li>
                             <li>Recordatorios.</li>
                             <li>Descansos con técnica Pomodoro.</li>
@@ -1786,10 +1874,14 @@
                     </div>
 
                     <!-- 6. Zona de Relajación -->
-                    <div style="background: rgba(255,255,255,0.05); padding: 20px; border-radius: 14px; border: 1px solid rgba(14, 165, 233, 0.2);">
-                        <strong style="color: #0ea5e9; font-size: 16px; display: flex; align-items: center; gap: 8px;"><i class="fa-solid fa-spa"></i> 🧘 6. Zona de relajación</strong>
+                    <div
+                        style="background: rgba(255,255,255,0.05); padding: 20px; border-radius: 14px; border: 1px solid rgba(14, 165, 233, 0.2);">
+                        <strong
+                            style="color: #0ea5e9; font-size: 16px; display: flex; align-items: center; gap: 8px;"><i
+                                class="fa-solid fa-spa"></i> 🧘 6. Zona de relajación</strong>
                         <p style="margin: 10px 0 5px 0; color: #cbd5e1;">Incluye:</p>
-                        <ul style="margin: 0; padding-left: 20px; color: #cbd5e1; display: flex; flex-direction: column; gap: 6px;">
+                        <ul
+                            style="margin: 0; padding-left: 20px; color: #cbd5e1; display: flex; flex-direction: column; gap: 6px;">
                             <li>Respiración guiada.</li>
                             <li>Música para concentración.</li>
                             <li>Sonidos de la naturaleza.</li>
@@ -1797,12 +1889,16 @@
                             <li>Relajación antes de estudiar.</li>
                         </ul>
                     </div>
-                    
+
                     <!-- 7. Asistente Virtual -->
-                    <div style="background: rgba(255,255,255,0.05); padding: 20px; border-radius: 14px; border: 1px solid rgba(251, 113, 133, 0.2);">
-                        <strong style="color: #fb7185; font-size: 16px; display: flex; align-items: center; gap: 8px;"><i class="fa-solid fa-robot"></i> 🤖 7. Asistente virtual</strong>
+                    <div
+                        style="background: rgba(255,255,255,0.05); padding: 20px; border-radius: 14px; border: 1px solid rgba(251, 113, 133, 0.2);">
+                        <strong
+                            style="color: #fb7185; font-size: 16px; display: flex; align-items: center; gap: 8px;"><i
+                                class="fa-solid fa-robot"></i> 🤖 7. Asistente virtual</strong>
                         <p style="margin: 10px 0 5px 0; color: #cbd5e1;">Un asistente con IA que:</p>
-                        <ul style="margin: 0; padding-left: 20px; color: #cbd5e1; display: flex; flex-direction: column; gap: 6px;">
+                        <ul
+                            style="margin: 0; padding-left: 20px; color: #cbd5e1; display: flex; flex-direction: column; gap: 6px;">
                             <li>Motiva al usuario.</li>
                             <li>Explica errores.</li>
                             <li>Sugiere ejercicios.</li>
@@ -1831,15 +1927,18 @@
                 .modal-scrollable::-webkit-scrollbar {
                     width: 8px;
                 }
+
                 .modal-scrollable::-webkit-scrollbar-track {
                     background: rgba(255, 255, 255, 0.05);
                     border-radius: 10px;
                     margin: 15px 0;
                 }
+
                 .modal-scrollable::-webkit-scrollbar-thumb {
                     background: rgba(56, 189, 248, 0.4);
                     border-radius: 10px;
                 }
+
                 .modal-scrollable::-webkit-scrollbar-thumb:hover {
                     background: rgba(56, 189, 248, 0.8);
                 }
@@ -1851,10 +1950,12 @@
                 <h2
                     style="font-size: 24px; font-weight: 900; background: linear-gradient(90deg, #38bdf8, #a78bfa); -webkit-background-clip: text; background-clip: text; color: transparent; margin-bottom: 30px;">
                     SELECCIONA TU MÉTODO DE PAGO</h2>
-                
+
                 <div style="display: flex; flex-direction: column; gap: 15px;">
                     <!-- PayPal y Tarjetas (Contenedor Oficial de PayPal) -->
-                    <div id="paypal-button-container" style="width: 100%; margin-top: 10px; background: white; padding: 15px 15px 5px 15px; border-radius: 12px; box-shadow: inset 0 0 10px rgba(0,0,0,0.05);"></div>
+                    <div id="paypal-button-container"
+                        style="width: 100%; margin-top: 10px; background: white; padding: 15px 15px 5px 15px; border-radius: 12px; box-shadow: inset 0 0 10px rgba(0,0,0,0.05);">
+                    </div>
 
                     <!-- Separador -->
                     <div style="display: flex; align-items: center; gap: 12px; margin: 4px 0;">
@@ -1864,10 +1965,7 @@
                     </div>
 
                     <!-- Botón YAPE -->
-                    <button
-                        id="btn-pay-yape"
-                        onclick="document.getElementById('yapeModal').style.display='flex'"
-                        style="
+                    <button id="btn-pay-yape" onclick="document.getElementById('yapeModal').style.display='flex'" style="
                             width: 100%; padding: 14px 20px;
                             background: linear-gradient(135deg, #6d28d9, #7c3aed);
                             border: none; border-radius: 12px; cursor: pointer;
@@ -1878,14 +1976,16 @@
                         onmouseover="this.style.transform='scale(1.02)'; this.style.boxShadow='0 10px 30px rgba(109,40,217,0.6)';"
                         onmouseout="this.style.transform='scale(1)'; this.style.boxShadow='0 6px 20px rgba(109,40,217,0.4)';">
                         <svg width="28" height="28" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <circle cx="20" cy="20" r="20" fill="white"/>
-                            <text x="50%" y="55%" dominant-baseline="middle" text-anchor="middle" font-size="18" font-weight="900" fill="#6d28d9">Y</text>
+                            <circle cx="20" cy="20" r="20" fill="white" />
+                            <text x="50%" y="55%" dominant-baseline="middle" text-anchor="middle" font-size="18"
+                                font-weight="900" fill="#6d28d9">Y</text>
                         </svg>
-                        <span style="color: white; font-size: 1rem; font-weight: 800; letter-spacing: 0.5px;">PAGAR CON YAPE</span>
+                        <span style="color: white; font-size: 1rem; font-weight: 800; letter-spacing: 0.5px;">PAGAR CON
+                            YAPE</span>
                         <span style="color: #c4b5fd; font-size: 0.85rem; font-weight: 600;">S/ 22.00</span>
                     </button>
                 </div>
-                
+
                 <div style="margin-top: 25px; cursor: pointer; font-size: 0.9rem; color: #64748b; font-weight: 600; transition: color 0.3s;"
                     onmouseover="this.style.color='#38bdf8'" onmouseout="this.style.color='#64748b'"
                     onclick="document.getElementById('paymentModal').style.display='none'; document.getElementById('premiumModal').style.display='flex';">
@@ -1898,49 +1998,61 @@
     <!-- Modal Yape QR -->
     <div id="yapeModal"
         style="position: fixed; inset: 0; background: rgba(0,0,0,0.85); z-index: 100002; display: none; align-items: center; justify-content: center; padding: 20px; backdrop-filter: blur(10px);">
-        <div style="background: linear-gradient(135deg, #1e1b4b, #0f172a); border: 2px solid #7c3aed; border-radius: 24px; padding: 40px; max-width: 400px; width: 100%; text-align: center; box-shadow: 0 0 60px rgba(124,58,237,0.5); animation: popIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); position: relative;">
+        <div
+            style="background: linear-gradient(135deg, #1e1b4b, #0f172a); border: 2px solid #7c3aed; border-radius: 24px; padding: 40px; max-width: 400px; width: 100%; text-align: center; box-shadow: 0 0 60px rgba(124,58,237,0.5); animation: popIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); position: relative;">
             <button onclick="document.getElementById('yapeModal').style.display='none'"
                 style="position: absolute; top: 16px; right: 16px; background: none; border: none; color: white; font-size: 22px; cursor: pointer;">&#x2715;</button>
 
             <!-- Logo Yape -->
-            <div style="width: 64px; height: 64px; border-radius: 50%; background: white; display: flex; align-items: center; justify-content: center; margin: 0 auto 16px auto; box-shadow: 0 0 20px rgba(124,58,237,0.6);">
+            <div
+                style="width: 64px; height: 64px; border-radius: 50%; background: white; display: flex; align-items: center; justify-content: center; margin: 0 auto 16px auto; box-shadow: 0 0 20px rgba(124,58,237,0.6);">
                 <span style="font-size: 2rem; font-weight: 900; color: #6d28d9;">Y</span>
             </div>
 
             <h2 style="color: white; font-size: 1.5rem; font-weight: 900; margin: 0 0 6px 0;">Pagar con Yape</h2>
-            <p style="color: #a78bfa; font-weight: 700; font-size: 1.1rem; margin-bottom: 20px;">S/ 22.00 &bull; NeuroSpark Premium</p>
+            <p style="color: #a78bfa; font-weight: 700; font-size: 1.1rem; margin-bottom: 20px;">S/ 22.00 &bull;
+                NeuroSpark Premium</p>
 
             <!-- QR Real de Yape -->
-            <div style="background: white; border-radius: 16px; padding: 12px; width: 192px; margin: 0 auto 20px auto; box-shadow: 0 0 25px rgba(124,58,237,0.5);">
-                <img src="assets/yape_qr.png" alt="QR Yape NeuroSpark" style="width: 168px; height: 168px; display: block; border-radius: 8px;" />
+            <div
+                style="background: white; border-radius: 16px; padding: 12px; width: 192px; margin: 0 auto 20px auto; box-shadow: 0 0 25px rgba(124,58,237,0.5);">
+                <img src="assets/yape_qr.png" alt="QR Yape NeuroSpark"
+                    style="width: 168px; height: 168px; display: block; border-radius: 8px;" />
             </div>
 
-            <p style="color: #94a3b8; font-size: 0.9rem; margin-bottom: 8px;">Escanea con tu app <strong style="color:white;">Yape</strong> o envía al número:</p>
-            <div style="background: rgba(124,58,237,0.15); border: 1px solid rgba(124,58,237,0.4); border-radius: 10px; padding: 10px 20px; font-size: 1.3rem; font-weight: 900; color: white; letter-spacing: 2px; margin-bottom: 20px;">+51 960 118 520</div>
+            <p style="color: #94a3b8; font-size: 0.9rem; margin-bottom: 8px;">Escanea con tu app <strong
+                    style="color:white;">Yape</strong> o envía al número:</p>
+            <div
+                style="background: rgba(124,58,237,0.15); border: 1px solid rgba(124,58,237,0.4); border-radius: 10px; padding: 10px 20px; font-size: 1.3rem; font-weight: 900; color: white; letter-spacing: 2px; margin-bottom: 20px;">
+                +51 960 118 520</div>
 
-            <p style="color: #64748b; font-size: 0.8rem; margin-bottom: 20px;">Tras realizar el pago, contáctate con el administrador de la página enviando el comprobante para que recibas tu rol Premium.</p>
+            <p style="color: #64748b; font-size: 0.8rem; margin-bottom: 20px;">Tras realizar el pago, contáctate con el
+                administrador de la página enviando el comprobante para que recibas tu rol Premium.</p>
 
             <a href="https://wa.me/51929103096?text=Hola,%20acabo%20de%20realizar%20el%20pago%20por%20Yape%20para%20NeuroSpark%20Premium.%20Adjunto%20mi%20comprobante:"
                 target="_blank"
                 style="display: block; text-decoration: none; width: 100%; background: linear-gradient(135deg, #25D366, #128C7E); border: none; padding: 14px; border-radius: 12px; color: white; font-size: 1rem; font-weight: 800; cursor: pointer; box-shadow: 0 8px 20px rgba(37,211,102,0.4); transition: transform 0.2s;"
                 onmouseover="this.style.transform='scale(1.02)'" onmouseout="this.style.transform='scale(1)'">
-                <i class="fa-brands fa-whatsapp" style="font-size: 1.2rem; margin-right: 8px;"></i> Enviar Comprobante por WhatsApp
+                <i class="fa-brands fa-whatsapp" style="font-size: 1.2rem; margin-right: 8px;"></i> Enviar Comprobante
+                por WhatsApp
             </a>
         </div>
     </div>
 
     <!-- Script de Integración PayPal -->
     <!-- Reemplaza el client-id por el de Producción cuando estés listo. -->
-    <script src="https://www.paypal.com/sdk/js?client-id=BAA-JmTmCnNobQ9zGp0Ow4N_8X2Yi4WW1o-Me6DdzVV20-n_2AcVo_1JNMpV9qj4JjxXJ0Gz7hncHQBE7E&currency=USD&locale=es_PE"></script>
+    <script
+        src="https://www.paypal.com/sdk/js?client-id=BAA-JmTmCnNobQ9zGp0Ow4N_8X2Yi4WW1o-Me6DdzVV20-n_2AcVo_1JNMpV9qj4JjxXJ0Gz7hncHQBE7E&currency=USD&locale=es_PE"></script>
     <script>
         paypal.Buttons({
+            fundingSource: paypal.FUNDING.CARD,
             style: {
-                color:  'blue',
-                shape:  'pill',
-                label:  'pay',
+                color: 'blue',
+                shape: 'pill',
+                label: 'pay',
                 height: 40
             },
-            createOrder: function(data, actions) {
+            createOrder: function (data, actions) {
                 // PayPal no soporta Soles (PEN) nativamente. 
                 // Cobramos el equivalente en Dólares (aprox $5.89 USD) para que el banco del usuario haga el cambio automático a S/ 22.00
                 return actions.order.create({
@@ -1952,22 +2064,24 @@
                     }]
                 });
             },
-            onApprove: function(data, actions) {
+            onApprove: function (data, actions) {
                 // Captura el pago cuando el usuario aprueba
-                return actions.order.capture().then(function(details) {
+                return actions.order.capture().then(function (details) {
                     // 1. Ocultar el modal de pago
                     document.getElementById('paymentModal').style.display = 'none';
 
                     // 2. Guardar el estado PREMIUM en el navegador
                     localStorage.setItem('ns_is_premium', 'true');
-                    
+
                     // 3. Ocultar el widget de promoción Premium de la pantalla principal
                     const widget = document.getElementById('premiumWidget');
-                    if(widget) widget.style.display = 'none';
+                    if (widget) widget.style.display = 'none';
+                    const premiumHubBtn = document.getElementById('btn-premium-hub');
+                    if (premiumHubBtn) premiumHubBtn.style.display = 'inline-flex';
 
                     // 4. Actualizar visualmente el perfil del usuario con una Corona VIP
                     const profileSpan = document.getElementById('current-profile-name');
-                    if(profileSpan && !profileSpan.innerHTML.includes('fa-crown')) {
+                    if (profileSpan && !profileSpan.innerHTML.includes('fa-crown')) {
                         profileSpan.innerHTML += ' <i class="fa-solid fa-crown" style="color: #fcd34d; margin-left: 5px; text-shadow: 0 0 10px #fcd34d;" title="Usuario Premium"></i>';
                     }
 
@@ -1976,7 +2090,7 @@
                     document.getElementById('successModal').style.display = 'flex';
                 });
             },
-            onError: function(err) {
+            onError: function (err) {
                 console.error("Error en el pago con PayPal:", err);
                 alert("Ocurrió un error al procesar el pago.");
             }
@@ -1986,40 +2100,63 @@
     <!-- Modal Éxito de Compra (GRACIAS POR SU COMPRA) -->
     <div id="successModal"
         style="position: fixed; inset: 0; background: rgba(0,0,0,0.9); z-index: 100005; display: none; align-items: center; justify-content: center; padding: 20px;">
-        <div style="background: linear-gradient(135deg, #1e293b, #0f172a); border: 2px solid #facc15; border-radius: 24px; padding: 50px 40px; position: relative; max-width: 500px; width: 100%; box-shadow: 0 0 80px rgba(250, 204, 21, 0.4); text-align: center; animation: popIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;">
+        <div
+            style="background: linear-gradient(135deg, #1e293b, #0f172a); border: 2px solid #facc15; border-radius: 24px; padding: 50px 40px; position: relative; max-width: 500px; width: 100%; box-shadow: 0 0 80px rgba(250, 204, 21, 0.4); text-align: center; animation: popIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;">
             <style>
                 @keyframes popIn {
-                    0% { transform: scale(0.5); opacity: 0; }
-                    100% { transform: scale(1); opacity: 1; }
+                    0% {
+                        transform: scale(0.5);
+                        opacity: 0;
+                    }
+
+                    100% {
+                        transform: scale(1);
+                        opacity: 1;
+                    }
                 }
+
                 .confetti {
                     position: absolute;
-                    width: 10px; height: 10px; background: #facc15;
+                    width: 10px;
+                    height: 10px;
+                    background: #facc15;
                     border-radius: 50%;
                     animation: floatConfetti 3s ease-in-out infinite;
                 }
+
                 @keyframes floatConfetti {
-                    0%, 100% { transform: translateY(0) scale(1); }
-                    50% { transform: translateY(-20px) scale(1.2); }
+
+                    0%,
+                    100% {
+                        transform: translateY(0) scale(1);
+                    }
+
+                    50% {
+                        transform: translateY(-20px) scale(1.2);
+                    }
                 }
             </style>
             <!-- Confetti visual de adorno -->
             <div class="confetti" style="top: 20px; left: 30px; background: #38bdf8;"></div>
             <div class="confetti" style="top: 40px; right: 40px; background: #a78bfa;"></div>
             <div class="confetti" style="bottom: 30px; left: 50px; background: #22c55e;"></div>
-            
-            <i class="fa-solid fa-crown" style="color: #facc15; font-size: 4rem; margin-bottom: 20px; text-shadow: 0 0 30px rgba(250, 204, 21, 0.8);"></i>
-            
-            <h1 style="color: white; font-weight: 900; font-size: 2.2rem; margin: 0 0 10px 0; letter-spacing: 1px; text-transform: uppercase;">
+
+            <i class="fa-solid fa-crown"
+                style="color: #facc15; font-size: 4rem; margin-bottom: 20px; text-shadow: 0 0 30px rgba(250, 204, 21, 0.8);"></i>
+
+            <h1
+                style="color: white; font-weight: 900; font-size: 2.2rem; margin: 0 0 10px 0; letter-spacing: 1px; text-transform: uppercase;">
                 ¡GRACIAS POR SU COMPRA!
             </h1>
             <p style="color: #38bdf8; font-size: 1.2rem; font-weight: 700; margin-bottom: 25px;">
                 Felicidades <span id="success-buyer-name" style="color: #fcd34d;"></span>
             </p>
             <p style="color: #cbd5e1; font-size: 1.05rem; line-height: 1.6; margin-bottom: 35px;">
-                Su cuenta ahora es <strong>NEUROSPARK PREMIUM</strong>. Hemos activado automáticamente todas las funciones exclusivas: IA Avanzada, Reportes Detallados, Juegos Exclusivos y Zona de Relajación en su entorno.
+                Su cuenta ahora es <strong>NEUROSPARK PREMIUM</strong>. Hemos activado automáticamente todas las
+                funciones exclusivas: IA Avanzada, Reportes Detallados, Juegos Exclusivos y Zona de Relajación en su
+                entorno.
             </p>
-            
+
             <button onclick="document.getElementById('successModal').style.display='none'; window.location.reload();"
                 style="width: 100%; background: linear-gradient(90deg, #facc15, #f59e0b); color: #1e293b; font-weight: 900; padding: 18px; border-radius: 14px; border: none; cursor: pointer; text-transform: uppercase; letter-spacing: 1.5px; font-size: 1.1rem; box-shadow: 0 10px 30px rgba(250, 204, 21, 0.4); transition: transform 0.2s;">
                 Comenzar Aventura VIP
@@ -2041,7 +2178,7 @@
             <button onclick="closePremiumHub()"
                 style="position: absolute; top: 20px; right: 20px; background: none; border: none; color: white; font-size: 24px; cursor: pointer; transition: color 0.3s;"
                 onmouseover="this.style.color='#f87171'" onmouseout="this.style.color='white'">&times;</button>
-            
+
             <div style="text-align: center; font-family: 'Outfit', sans-serif;">
                 <i class="fa-solid fa-crown" style="color: #facc15; font-size: 3rem; margin-bottom: 15px;"></i>
                 <h2 style="font-size: 28px; font-weight: 900; color: white; margin-bottom: 10px;">
@@ -2049,56 +2186,99 @@
                 <p style="color: #cbd5e1; font-size: 1rem; margin-bottom: 30px;">
                     Bienvenido a tu entorno exclusivo. Haz clic en cualquier función para acceder.
                 </p>
-                
-                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 15px; text-align: left;">
-                    
+
+                <div
+                    style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 15px; text-align: left;">
+
                     <!-- IA -->
-                    <div onclick="openPremiumFeature('ia')" style="background: rgba(56,189,248,0.1); padding: 20px; border-radius: 16px; border: 1px solid rgba(56,189,248,0.3); cursor: pointer; transition: transform 0.2s; position: relative; z-index: 10;" onmouseover="this.style.transform='translateY(-5px)'" onmouseout="this.style.transform='translateY(0)'">
-                        <i class="fa-solid fa-brain" style="color: #38bdf8; font-size: 2rem; margin-bottom: 15px; pointer-events: none;"></i>
-                        <h4 style="color: white; margin: 0 0 8px 0; font-size: 1.1rem; pointer-events: none;">IA Personalizada</h4>
-                        <p style="color: #94a3b8; font-size: 0.85rem; margin: 0; pointer-events: none;">Entrenamiento dinámico ajustado a tu rendimiento.</p>
+                    <div onclick="openPremiumFeature('ia')"
+                        style="background: rgba(56,189,248,0.1); padding: 20px; border-radius: 16px; border: 1px solid rgba(56,189,248,0.3); cursor: pointer; transition: transform 0.2s; position: relative; z-index: 10;"
+                        onmouseover="this.style.transform='translateY(-5px)'"
+                        onmouseout="this.style.transform='translateY(0)'">
+                        <i class="fa-solid fa-brain"
+                            style="color: #38bdf8; font-size: 2rem; margin-bottom: 15px; pointer-events: none;"></i>
+                        <h4 style="color: white; margin: 0 0 8px 0; font-size: 1.1rem; pointer-events: none;">IA
+                            Personalizada</h4>
+                        <p style="color: #94a3b8; font-size: 0.85rem; margin: 0; pointer-events: none;">Entrenamiento
+                            dinámico ajustado a tu rendimiento.</p>
                     </div>
 
                     <!-- Reportes -->
-                    <div onclick="openPremiumFeature('reports')" style="background: rgba(167,139,250,0.1); padding: 20px; border-radius: 16px; border: 1px solid rgba(167,139,250,0.3); cursor: pointer; transition: transform 0.2s; position: relative; z-index: 10;" onmouseover="this.style.transform='translateY(-5px)'" onmouseout="this.style.transform='translateY(0)'">
-                        <i class="fa-solid fa-chart-pie" style="color: #a78bfa; font-size: 2rem; margin-bottom: 15px; pointer-events: none;"></i>
-                        <h4 style="color: white; margin: 0 0 8px 0; font-size: 1.1rem; pointer-events: none;">Mis Reportes</h4>
-                        <p style="color: #94a3b8; font-size: 0.85rem; margin: 0; pointer-events: none;">Análisis detallado de concentración y memoria.</p>
+                    <div onclick="openPremiumFeature('reports')"
+                        style="background: rgba(167,139,250,0.1); padding: 20px; border-radius: 16px; border: 1px solid rgba(167,139,250,0.3); cursor: pointer; transition: transform 0.2s; position: relative; z-index: 10;"
+                        onmouseover="this.style.transform='translateY(-5px)'"
+                        onmouseout="this.style.transform='translateY(0)'">
+                        <i class="fa-solid fa-chart-pie"
+                            style="color: #a78bfa; font-size: 2rem; margin-bottom: 15px; pointer-events: none;"></i>
+                        <h4 style="color: white; margin: 0 0 8px 0; font-size: 1.1rem; pointer-events: none;">Mis
+                            Reportes</h4>
+                        <p style="color: #94a3b8; font-size: 0.85rem; margin: 0; pointer-events: none;">Análisis
+                            detallado de concentración y memoria.</p>
                     </div>
 
                     <!-- Juegos VIP -->
-                    <div onclick="openPremiumFeature('games')" style="background: rgba(244,63,94,0.1); padding: 20px; border-radius: 16px; border: 1px solid rgba(244,63,94,0.3); cursor: pointer; transition: transform 0.2s; position: relative; z-index: 10;" onmouseover="this.style.transform='translateY(-5px)'" onmouseout="this.style.transform='translateY(0)'">
-                        <i class="fa-solid fa-gamepad" style="color: #f43f5e; font-size: 2rem; margin-bottom: 15px; pointer-events: none;"></i>
-                        <h4 style="color: white; margin: 0 0 8px 0; font-size: 1.1rem; pointer-events: none;">Juegos VIP</h4>
-                        <p style="color: #94a3b8; font-size: 0.85rem; margin: 0; pointer-events: none;">Misiones cooperativas y eventos especiales.</p>
+                    <div onclick="openPremiumFeature('games')"
+                        style="background: rgba(244,63,94,0.1); padding: 20px; border-radius: 16px; border: 1px solid rgba(244,63,94,0.3); cursor: pointer; transition: transform 0.2s; position: relative; z-index: 10;"
+                        onmouseover="this.style.transform='translateY(-5px)'"
+                        onmouseout="this.style.transform='translateY(0)'">
+                        <i class="fa-solid fa-gamepad"
+                            style="color: #f43f5e; font-size: 2rem; margin-bottom: 15px; pointer-events: none;"></i>
+                        <h4 style="color: white; margin: 0 0 8px 0; font-size: 1.1rem; pointer-events: none;">Juegos VIP
+                        </h4>
+                        <p style="color: #94a3b8; font-size: 0.85rem; margin: 0; pointer-events: none;">Misiones
+                            cooperativas y eventos especiales.</p>
                     </div>
 
                     <!-- Recompensas -->
-                    <div onclick="openPremiumFeature('rewards')" style="background: rgba(250,204,21,0.1); padding: 20px; border-radius: 16px; border: 1px solid rgba(250,204,21,0.3); cursor: pointer; transition: transform 0.2s; position: relative; z-index: 10;" onmouseover="this.style.transform='translateY(-5px)'" onmouseout="this.style.transform='translateY(0)'">
-                        <i class="fa-solid fa-medal" style="color: #facc15; font-size: 2rem; margin-bottom: 15px; pointer-events: none;"></i>
-                        <h4 style="color: white; margin: 0 0 8px 0; font-size: 1.1rem; pointer-events: none;">Recompensas +</h4>
-                        <p style="color: #94a3b8; font-size: 0.85rem; margin: 0; pointer-events: none;">Personalización extrema y mascotas virtuales.</p>
+                    <div onclick="openPremiumFeature('rewards')"
+                        style="background: rgba(250,204,21,0.1); padding: 20px; border-radius: 16px; border: 1px solid rgba(250,204,21,0.3); cursor: pointer; transition: transform 0.2s; position: relative; z-index: 10;"
+                        onmouseover="this.style.transform='translateY(-5px)'"
+                        onmouseout="this.style.transform='translateY(0)'">
+                        <i class="fa-solid fa-medal"
+                            style="color: #facc15; font-size: 2rem; margin-bottom: 15px; pointer-events: none;"></i>
+                        <h4 style="color: white; margin: 0 0 8px 0; font-size: 1.1rem; pointer-events: none;">
+                            Recompensas +</h4>
+                        <p style="color: #94a3b8; font-size: 0.85rem; margin: 0; pointer-events: none;">Personalización
+                            extrema y mascotas virtuales.</p>
                     </div>
 
                     <!-- Rutinas -->
-                    <div onclick="openPremiumFeature('pomodoro')" style="background: rgba(34,197,94,0.1); padding: 20px; border-radius: 16px; border: 1px solid rgba(34,197,94,0.3); cursor: pointer; transition: transform 0.2s; position: relative; z-index: 10;" onmouseover="this.style.transform='translateY(-5px)'" onmouseout="this.style.transform='translateY(0)'">
-                        <i class="fa-solid fa-calendar-check" style="color: #22c55e; font-size: 2rem; margin-bottom: 15px; pointer-events: none;"></i>
-                        <h4 style="color: white; margin: 0 0 8px 0; font-size: 1.1rem; pointer-events: none;">Rutinas Pomodoro</h4>
-                        <p style="color: #94a3b8; font-size: 0.85rem; margin: 0; pointer-events: none;">Tiempos exactos para entrenar y descansar.</p>
+                    <div onclick="openPremiumFeature('pomodoro')"
+                        style="background: rgba(34,197,94,0.1); padding: 20px; border-radius: 16px; border: 1px solid rgba(34,197,94,0.3); cursor: pointer; transition: transform 0.2s; position: relative; z-index: 10;"
+                        onmouseover="this.style.transform='translateY(-5px)'"
+                        onmouseout="this.style.transform='translateY(0)'">
+                        <i class="fa-solid fa-calendar-check"
+                            style="color: #22c55e; font-size: 2rem; margin-bottom: 15px; pointer-events: none;"></i>
+                        <h4 style="color: white; margin: 0 0 8px 0; font-size: 1.1rem; pointer-events: none;">Rutinas
+                            Pomodoro</h4>
+                        <p style="color: #94a3b8; font-size: 0.85rem; margin: 0; pointer-events: none;">Tiempos exactos
+                            para entrenar y descansar.</p>
                     </div>
 
                     <!-- Relax -->
-                    <div onclick="openPremiumFeature('zen')" style="background: rgba(14,165,233,0.1); padding: 20px; border-radius: 16px; border: 1px solid rgba(14,165,233,0.3); cursor: pointer; transition: transform 0.2s; position: relative; z-index: 10;" onmouseover="this.style.transform='translateY(-5px)'" onmouseout="this.style.transform='translateY(0)'">
-                        <i class="fa-solid fa-spa" style="color: #0ea5e9; font-size: 2rem; margin-bottom: 15px; pointer-events: none;"></i>
-                        <h4 style="color: white; margin: 0 0 8px 0; font-size: 1.1rem; pointer-events: none;">Zona Zen</h4>
-                        <p style="color: #94a3b8; font-size: 0.85rem; margin: 0; pointer-events: none;">Relajación guiada para después de estudiar.</p>
+                    <div onclick="openPremiumFeature('zen')"
+                        style="background: rgba(14,165,233,0.1); padding: 20px; border-radius: 16px; border: 1px solid rgba(14,165,233,0.3); cursor: pointer; transition: transform 0.2s; position: relative; z-index: 10;"
+                        onmouseover="this.style.transform='translateY(-5px)'"
+                        onmouseout="this.style.transform='translateY(0)'">
+                        <i class="fa-solid fa-spa"
+                            style="color: #0ea5e9; font-size: 2rem; margin-bottom: 15px; pointer-events: none;"></i>
+                        <h4 style="color: white; margin: 0 0 8px 0; font-size: 1.1rem; pointer-events: none;">Zona Zen
+                        </h4>
+                        <p style="color: #94a3b8; font-size: 0.85rem; margin: 0; pointer-events: none;">Relajación
+                            guiada para después de estudiar.</p>
                     </div>
 
                     <!-- Asistente Virtual -->
-                    <div onclick="openPremiumFeature('assistant')" style="background: rgba(251,113,133,0.1); padding: 20px; border-radius: 16px; border: 1px solid rgba(251,113,133,0.3); cursor: pointer; transition: transform 0.2s; position: relative; z-index: 10;" onmouseover="this.style.transform='translateY(-5px)'" onmouseout="this.style.transform='translateY(0)'">
-                        <i class="fa-solid fa-robot" style="color: #fb7185; font-size: 2rem; margin-bottom: 15px; pointer-events: none;"></i>
-                        <h4 style="color: white; margin: 0 0 8px 0; font-size: 1.1rem; pointer-events: none;">Asistente Virtual</h4>
-                        <p style="color: #94a3b8; font-size: 0.85rem; margin: 0; pointer-events: none;">Motiva, explica errores y celebra logros.</p>
+                    <div onclick="openPremiumFeature('assistant')"
+                        style="background: rgba(251,113,133,0.1); padding: 20px; border-radius: 16px; border: 1px solid rgba(251,113,133,0.3); cursor: pointer; transition: transform 0.2s; position: relative; z-index: 10;"
+                        onmouseover="this.style.transform='translateY(-5px)'"
+                        onmouseout="this.style.transform='translateY(0)'">
+                        <i class="fa-solid fa-robot"
+                            style="color: #fb7185; font-size: 2rem; margin-bottom: 15px; pointer-events: none;"></i>
+                        <h4 style="color: white; margin: 0 0 8px 0; font-size: 1.1rem; pointer-events: none;">Asistente
+                            Virtual</h4>
+                        <p style="color: #94a3b8; font-size: 0.85rem; margin: 0; pointer-events: none;">Motiva, explica
+                            errores y celebra logros.</p>
                     </div>
 
                 </div>
@@ -2108,88 +2288,140 @@
 
     <!-- Modales de Funciones Premium -->
     <!-- Modal Asistente Virtual -->
-    <div id="assistantModal" style="position: fixed; inset: 0; background: rgba(0,0,0,0.9); backdrop-filter: blur(15px); z-index: 100003; display: none; align-items: center; justify-content: center; padding: 20px; animation: popIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;">
-        <div style="background: linear-gradient(135deg, #fb718522, #1e293b); border: 1px solid #fb7185; border-radius: 24px; padding: 40px; text-align: center; max-width: 500px; width: 100%; position: relative;">
-            <button onclick="closeSubModal('assistantModal')" style="position: absolute; top: 20px; right: 20px; background: none; border: none; color: white; font-size: 28px; cursor: pointer; z-index: 50;">&times;</button>
+    <div id="assistantModal"
+        style="position: fixed; inset: 0; background: rgba(0,0,0,0.9); backdrop-filter: blur(15px); z-index: 100003; display: none; align-items: center; justify-content: center; padding: 20px; animation: popIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;">
+        <div
+            style="background: linear-gradient(135deg, #fb718522, #1e293b); border: 1px solid #fb7185; border-radius: 24px; padding: 40px; text-align: center; max-width: 500px; width: 100%; position: relative;">
+            <button onclick="closeSubModal('assistantModal')"
+                style="position: absolute; top: 20px; right: 20px; background: none; border: none; color: white; font-size: 28px; cursor: pointer; z-index: 50;">&times;</button>
             <div style="position: relative; display: inline-block;">
-                <i class="fa-solid fa-robot" style="color: #fb7185; font-size: 3.5rem; margin-bottom: 20px; animation: floatConfetti 3s infinite;"></i>
+                <i class="fa-solid fa-robot"
+                    style="color: #fb7185; font-size: 3.5rem; margin-bottom: 20px; animation: floatConfetti 3s infinite;"></i>
             </div>
             <h2 style="color: white; font-size: 1.8rem; margin-bottom: 10px;">Tu Asistente IA</h2>
-            <div id="assistant-chat-box" style="background: rgba(0,0,0,0.4); border-radius: 12px; padding: 20px; height: 180px; overflow-y: auto; text-align: left; margin-bottom: 20px; display: flex; flex-direction: column; gap: 10px;">
-                <div style="background: rgba(251,113,133,0.2); border: 1px solid rgba(251,113,133,0.4); padding: 10px 15px; border-radius: 12px; color: white; font-size: 0.95rem; align-self: flex-start; max-width: 85%;">
-                    ¡Hola! Soy tu asistente virtual. Estoy aquí para motivarte, explicar tus errores y celebrar tus logros. ¿En qué te puedo ayudar hoy?
+            <div id="assistant-chat-box"
+                style="background: rgba(0,0,0,0.4); border-radius: 12px; padding: 20px; height: 180px; overflow-y: auto; text-align: left; margin-bottom: 20px; display: flex; flex-direction: column; gap: 10px;">
+                <div
+                    style="background: rgba(251,113,133,0.2); border: 1px solid rgba(251,113,133,0.4); padding: 10px 15px; border-radius: 12px; color: white; font-size: 0.95rem; align-self: flex-start; max-width: 85%;">
+                    ¡Hola! Soy tu asistente virtual. Estoy aquí para motivarte, explicar tus errores y celebrar tus
+                    logros. ¿En qué te puedo ayudar hoy?
                 </div>
             </div>
             <div style="display: flex; gap: 10px;">
-                <input type="text" id="assistant-input" placeholder="Pregúntame lo que quieras..." onkeypress="if(event.key === 'Enter') sendAssistantMessage()" style="flex: 1; padding: 12px 20px; border-radius: 12px; border: 1px solid #fb7185; background: rgba(0,0,0,0.5); color: white; outline: none; font-family: 'Outfit', sans-serif;">
-                <button onclick="sendAssistantMessage()" style="background: #fb7185; color: white; border: none; padding: 0 25px; border-radius: 12px; font-weight: bold; cursor: pointer; transition: transform 0.2s;" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'"><i class="fa-solid fa-paper-plane"></i></button>
+                <input type="text" id="assistant-input" placeholder="Pregúntame lo que quieras..."
+                    onkeypress="if(event.key === 'Enter') sendAssistantMessage()"
+                    style="flex: 1; padding: 12px 20px; border-radius: 12px; border: 1px solid #fb7185; background: rgba(0,0,0,0.5); color: white; outline: none; font-family: 'Outfit', sans-serif;">
+                <button onclick="sendAssistantMessage()"
+                    style="background: #fb7185; color: white; border: none; padding: 0 25px; border-radius: 12px; font-weight: bold; cursor: pointer; transition: transform 0.2s;"
+                    onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'"><i
+                        class="fa-solid fa-paper-plane"></i></button>
             </div>
         </div>
     </div>
 
     <!-- Modal Zona Zen -->
-    <div id="zenModal" style="position: fixed; inset: 0; background: rgba(0,0,0,0.9); backdrop-filter: blur(15px); z-index: 100003; display: none; align-items: center; justify-content: center; padding: 20px; animation: popIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;">
-        <div style="background: linear-gradient(135deg, #0ea5e922, #1e293b); border: 1px solid #0ea5e9; border-radius: 24px; padding: 40px; text-align: center; max-width: 500px; width: 100%; position: relative;">
-            <button onclick="closeSubModal('zenModal')" style="position: absolute; top: 20px; right: 20px; background: none; border: none; color: white; font-size: 28px; cursor: pointer; z-index: 50;">&times;</button>
-            <i class="fa-solid fa-spa" style="color: #0ea5e9; font-size: 4rem; margin-bottom: 20px; animation: pulseGlow 3s infinite;"></i>
+    <div id="zenModal"
+        style="position: fixed; inset: 0; background: rgba(0,0,0,0.9); backdrop-filter: blur(15px); z-index: 100003; display: none; align-items: center; justify-content: center; padding: 20px; animation: popIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;">
+        <div
+            style="background: linear-gradient(135deg, #0ea5e922, #1e293b); border: 1px solid #0ea5e9; border-radius: 24px; padding: 40px; text-align: center; max-width: 500px; width: 100%; position: relative;">
+            <button onclick="closeSubModal('zenModal')"
+                style="position: absolute; top: 20px; right: 20px; background: none; border: none; color: white; font-size: 28px; cursor: pointer; z-index: 50;">&times;</button>
+            <i class="fa-solid fa-spa"
+                style="color: #0ea5e9; font-size: 4rem; margin-bottom: 20px; animation: pulseGlow 3s infinite;"></i>
             <h2 style="color: white; font-size: 2rem; margin-bottom: 10px;">Zona Zen</h2>
             <p style="color: #cbd5e1; margin-bottom: 30px;">Relájate y respira. La música binaural está activa.</p>
-            <div style="width: 150px; height: 150px; border-radius: 50%; border: 4px solid #0ea5e9; margin: 0 auto 30px; display: flex; align-items: center; justify-content: center; animation: breatheAnim 8s infinite ease-in-out;">
+            <div
+                style="width: 150px; height: 150px; border-radius: 50%; border: 4px solid #0ea5e9; margin: 0 auto 30px; display: flex; align-items: center; justify-content: center; animation: breatheAnim 8s infinite ease-in-out;">
                 <span style="color: #0ea5e9; font-weight: bold; font-size: 1.2rem;">Respira</span>
             </div>
             <style>
                 @keyframes breatheAnim {
-                    0%, 100% { transform: scale(1); border-color: #0ea5e9; }
-                    50% { transform: scale(1.5); border-color: #38bdf8; }
+
+                    0%,
+                    100% {
+                        transform: scale(1);
+                        border-color: #0ea5e9;
+                    }
+
+                    50% {
+                        transform: scale(1.5);
+                        border-color: #38bdf8;
+                    }
                 }
             </style>
         </div>
     </div>
 
     <!-- Modal Pomodoro -->
-    <div id="pomodoroModal" style="position: fixed; inset: 0; background: rgba(0,0,0,0.9); backdrop-filter: blur(15px); z-index: 100003; display: none; align-items: center; justify-content: center; padding: 20px; animation: popIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;">
-        <div style="background: linear-gradient(135deg, #22c55e22, #1e293b); border: 1px solid #22c55e; border-radius: 24px; padding: 40px; text-align: center; max-width: 400px; width: 100%; position: relative;">
-            <button onclick="closeSubModal('pomodoroModal')" style="position: absolute; top: 20px; right: 20px; background: none; border: none; color: white; font-size: 28px; cursor: pointer; z-index: 50;">&times;</button>
+    <div id="pomodoroModal"
+        style="position: fixed; inset: 0; background: rgba(0,0,0,0.9); backdrop-filter: blur(15px); z-index: 100003; display: none; align-items: center; justify-content: center; padding: 20px; animation: popIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;">
+        <div
+            style="background: linear-gradient(135deg, #22c55e22, #1e293b); border: 1px solid #22c55e; border-radius: 24px; padding: 40px; text-align: center; max-width: 400px; width: 100%; position: relative;">
+            <button onclick="closeSubModal('pomodoroModal')"
+                style="position: absolute; top: 20px; right: 20px; background: none; border: none; color: white; font-size: 28px; cursor: pointer; z-index: 50;">&times;</button>
             <i class="fa-solid fa-stopwatch" style="color: #22c55e; font-size: 3rem; margin-bottom: 20px;"></i>
             <h2 style="color: white; font-size: 2rem; margin-bottom: 10px;">Enfoque Pomodoro</h2>
-            <div id="pomodoro-timer" style="font-size: 4rem; color: #4ade80; font-weight: 900; font-family: monospace; margin: 20px 0; pointer-events: none;">25:00</div>
-            
+            <div id="pomodoro-timer"
+                style="font-size: 4rem; color: #4ade80; font-weight: 900; font-family: monospace; margin: 20px 0; pointer-events: none;">
+                25:00</div>
+
             <div style="display: flex; gap: 15px; justify-content: center; position: relative; z-index: 10;">
-                <button id="btn-start-pomo" onclick="startPomodoro()" style="background: #22c55e; color: #0f172a; border: none; padding: 15px 30px; border-radius: 12px; font-weight: bold; font-size: 1.1rem; cursor: pointer; box-shadow: 0 4px 15px rgba(34, 197, 94, 0.4);">Iniciar</button>
-                <button id="btn-stop-pomo" onclick="stopPomodoro()" style="background: #ef4444; color: #ffffff; border: none; padding: 15px 30px; border-radius: 12px; font-weight: bold; font-size: 1.1rem; cursor: pointer; box-shadow: 0 4px 15px rgba(239, 68, 68, 0.4); display: none;">Detener</button>
+                <button id="btn-start-pomo" onclick="startPomodoro()"
+                    style="background: #22c55e; color: #0f172a; border: none; padding: 15px 30px; border-radius: 12px; font-weight: bold; font-size: 1.1rem; cursor: pointer; box-shadow: 0 4px 15px rgba(34, 197, 94, 0.4);">Iniciar</button>
+                <button id="btn-stop-pomo" onclick="stopPomodoro()"
+                    style="background: #ef4444; color: #ffffff; border: none; padding: 15px 30px; border-radius: 12px; font-weight: bold; font-size: 1.1rem; cursor: pointer; box-shadow: 0 4px 15px rgba(239, 68, 68, 0.4); display: none;">Detener</button>
             </div>
         </div>
     </div>
 
     <!-- Modal IA Personalizada -->
-    <div id="iaModal" style="position: fixed; inset: 0; background: rgba(0,0,0,0.9); backdrop-filter: blur(15px); z-index: 100003; display: none; align-items: center; justify-content: center; padding: 20px; animation: popIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;">
-        <div style="background: linear-gradient(135deg, #38bdf822, #1e293b); border: 1px solid #38bdf8; border-radius: 24px; padding: 40px; text-align: center; max-width: 500px; width: 100%; position: relative;">
-            <button onclick="closeSubModal('iaModal')" style="position: absolute; top: 20px; right: 20px; background: none; border: none; color: white; font-size: 28px; cursor: pointer; z-index: 50;">&times;</button>
+    <div id="iaModal"
+        style="position: fixed; inset: 0; background: rgba(0,0,0,0.9); backdrop-filter: blur(15px); z-index: 100003; display: none; align-items: center; justify-content: center; padding: 20px; animation: popIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;">
+        <div
+            style="background: linear-gradient(135deg, #38bdf822, #1e293b); border: 1px solid #38bdf8; border-radius: 24px; padding: 40px; text-align: center; max-width: 500px; width: 100%; position: relative;">
+            <button onclick="closeSubModal('iaModal')"
+                style="position: absolute; top: 20px; right: 20px; background: none; border: none; color: white; font-size: 28px; cursor: pointer; z-index: 50;">&times;</button>
             <i class="fa-solid fa-brain" style="color: #38bdf8; font-size: 3rem; margin-bottom: 20px;"></i>
             <h2 style="color: white; font-size: 1.8rem; margin-bottom: 15px;">Análisis de IA Activo</h2>
-            <div style="text-align: left; background: rgba(0,0,0,0.3); padding: 20px; border-radius: 12px; margin-bottom: 20px;">
-                <p style="color: #cbd5e1; margin: 0 0 10px 0; font-size: 0.95rem;"><strong>Estado:</strong> Optimizando redes para <span id="ia-user-name" style="color: #fcd34d; font-weight: bold;">Usuario</span>...</p>
-                <div style="width: 100%; height: 8px; background: #334155; border-radius: 4px; overflow: hidden; margin-bottom: 15px;">
-                    <div style="width: 100%; height: 100%; background: #38bdf8; animation: loadBar 2s ease-in-out infinite alternate;"></div>
+            <div
+                style="text-align: left; background: rgba(0,0,0,0.3); padding: 20px; border-radius: 12px; margin-bottom: 20px;">
+                <p style="color: #cbd5e1; margin: 0 0 10px 0; font-size: 0.95rem;"><strong>Estado:</strong> Optimizando
+                    redes para <span id="ia-user-name" style="color: #fcd34d; font-weight: bold;">Usuario</span>...</p>
+                <div
+                    style="width: 100%; height: 8px; background: #334155; border-radius: 4px; overflow: hidden; margin-bottom: 15px;">
+                    <div
+                        style="width: 100%; height: 100%; background: #38bdf8; animation: loadBar 2s ease-in-out infinite alternate;">
+                    </div>
                 </div>
-                <p style="color: #38bdf8; margin: 0; font-size: 0.9rem; font-weight: bold;">✓ Dificultad ajustada a Nivel <span id="ia-user-level">1</span></p>
-                <p style="color: #38bdf8; margin: 5px 0 0 0; font-size: 0.9rem; font-weight: bold;">✓ Enfoque actual: <span id="ia-focus-area">Memoria a Corto Plazo</span></p>
+                <p style="color: #38bdf8; margin: 0; font-size: 0.9rem; font-weight: bold;">✓ Dificultad ajustada a
+                    Nivel <span id="ia-user-level">1</span></p>
+                <p style="color: #38bdf8; margin: 5px 0 0 0; font-size: 0.9rem; font-weight: bold;">✓ Enfoque actual:
+                    <span id="ia-focus-area">Memoria a Corto Plazo</span>
+                </p>
             </div>
-            <button onclick="closeSubModal('iaModal')" style="background: #38bdf8; color: #0f172a; border: none; padding: 12px 25px; border-radius: 12px; font-weight: bold; cursor: pointer;">Entendido</button>
+            <button onclick="closeSubModal('iaModal')"
+                style="background: #38bdf8; color: #0f172a; border: none; padding: 12px 25px; border-radius: 12px; font-weight: bold; cursor: pointer;">Entendido</button>
         </div>
     </div>
 
     <!-- Modal Mis Reportes -->
-    <div id="reportsModal" style="position: fixed; inset: 0; background: rgba(0,0,0,0.9); backdrop-filter: blur(15px); z-index: 100003; display: none; align-items: center; justify-content: center; padding: 20px; animation: popIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;">
-        <div style="background: linear-gradient(135deg, #a78bfa22, #1e293b); border: 1px solid #a78bfa; border-radius: 24px; padding: 40px; width: 100%; max-width: 600px; position: relative;">
-            <button onclick="closeSubModal('reportsModal')" style="position: absolute; top: 20px; right: 20px; background: none; border: none; color: white; font-size: 28px; cursor: pointer; z-index: 50;">&times;</button>
-            <h2 style="color: white; font-size: 1.8rem; margin-bottom: 25px; text-align: center;"><i class="fa-solid fa-chart-pie" style="color: #a78bfa; margin-right: 10px;"></i>Rendimiento Semanal</h2>
-            
+    <div id="reportsModal"
+        style="position: fixed; inset: 0; background: rgba(0,0,0,0.9); backdrop-filter: blur(15px); z-index: 100003; display: none; align-items: center; justify-content: center; padding: 20px; animation: popIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;">
+        <div
+            style="background: linear-gradient(135deg, #a78bfa22, #1e293b); border: 1px solid #a78bfa; border-radius: 24px; padding: 40px; width: 100%; max-width: 600px; position: relative;">
+            <button onclick="closeSubModal('reportsModal')"
+                style="position: absolute; top: 20px; right: 20px; background: none; border: none; color: white; font-size: 28px; cursor: pointer; z-index: 50;">&times;</button>
+            <h2 style="color: white; font-size: 1.8rem; margin-bottom: 25px; text-align: center;"><i
+                    class="fa-solid fa-chart-pie" style="color: #a78bfa; margin-right: 10px;"></i>Rendimiento Semanal
+            </h2>
+
             <div style="display: flex; flex-direction: column; gap: 20px;">
                 <!-- Barra 1 -->
                 <div>
-                    <div style="display: flex; justify-content: space-between; color: white; margin-bottom: 5px; font-size: 0.9rem;">
-                        <span>Concentración (<span id="rep-att-val">85</span>%)</span><span id="rep-att-lbl">Excelente</span>
+                    <div
+                        style="display: flex; justify-content: space-between; color: white; margin-bottom: 5px; font-size: 0.9rem;">
+                        <span>Concentración (<span id="rep-att-val">85</span>%)</span><span
+                            id="rep-att-lbl">Excelente</span>
                     </div>
                     <div style="width: 100%; height: 12px; background: #334155; border-radius: 6px; overflow: hidden;">
                         <div id="rep-att-bar" style="width: 85%; height: 100%; background: #22c55e;"></div>
@@ -2197,8 +2429,10 @@
                 </div>
                 <!-- Barra 2 -->
                 <div>
-                    <div style="display: flex; justify-content: space-between; color: white; margin-bottom: 5px; font-size: 0.9rem;">
-                        <span>Control de Impulsos (<span id="rep-imp-val">65</span>%)</span><span id="rep-imp-lbl">En progreso</span>
+                    <div
+                        style="display: flex; justify-content: space-between; color: white; margin-bottom: 5px; font-size: 0.9rem;">
+                        <span>Control de Impulsos (<span id="rep-imp-val">65</span>%)</span><span id="rep-imp-lbl">En
+                            progreso</span>
                     </div>
                     <div style="width: 100%; height: 12px; background: #334155; border-radius: 6px; overflow: hidden;">
                         <div id="rep-imp-bar" style="width: 65%; height: 100%; background: #facc15;"></div>
@@ -2206,53 +2440,75 @@
                 </div>
                 <!-- Barra 3 -->
                 <div>
-                    <div style="display: flex; justify-content: space-between; color: white; margin-bottom: 5px; font-size: 0.9rem;">
-                        <span>Memoria de Trabajo (<span id="rep-mem-val">92</span>%)</span><span id="rep-mem-lbl">Sobresaliente</span>
+                    <div
+                        style="display: flex; justify-content: space-between; color: white; margin-bottom: 5px; font-size: 0.9rem;">
+                        <span>Memoria de Trabajo (<span id="rep-mem-val">92</span>%)</span><span
+                            id="rep-mem-lbl">Sobresaliente</span>
                     </div>
                     <div style="width: 100%; height: 12px; background: #334155; border-radius: 6px; overflow: hidden;">
                         <div id="rep-mem-bar" style="width: 92%; height: 100%; background: #38bdf8;"></div>
                     </div>
                 </div>
             </div>
-            
+
             <p style="color: #cbd5e1; font-size: 0.9rem; text-align: center; margin-top: 30px;">
-                💡 <em>Sugerencia IA: <span id="rep-ai-tip">Te recomendamos jugar "Laberinto de Luz" hoy para subir tu memoria.</span></em>
+                💡 <em>Sugerencia IA: <span id="rep-ai-tip">Te recomendamos jugar "Laberinto de Luz" hoy para subir tu
+                        memoria.</span></em>
             </p>
         </div>
     </div>
 
     <!-- Modal Juegos VIP -->
-    <div id="gamesModal" style="position: fixed; inset: 0; background: rgba(0,0,0,0.9); backdrop-filter: blur(15px); z-index: 100003; display: none; align-items: center; justify-content: center; padding: 20px; animation: popIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;">
-        <div style="background: linear-gradient(135deg, #f43f5e22, #1e293b); border: 1px solid #f43f5e; border-radius: 24px; padding: 40px; width: 100%; max-width: 700px; position: relative;">
-            <button onclick="closeSubModal('gamesModal')" style="position: absolute; top: 20px; right: 20px; background: none; border: none; color: white; font-size: 28px; cursor: pointer; z-index: 50;">&times;</button>
-            <h2 style="color: white; font-size: 2rem; margin-bottom: 25px; text-align: center;"><i class="fa-solid fa-gamepad" style="color: #f43f5e; margin-right: 10px;"></i>Catálogo VIP</h2>
-            <div id="premium-games-grid" style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; max-height: 60vh; overflow-y: auto; padding-right: 10px;">
+    <div id="gamesModal"
+        style="position: fixed; inset: 0; background: rgba(0,0,0,0.9); backdrop-filter: blur(15px); z-index: 100003; display: none; align-items: center; justify-content: center; padding: 20px; animation: popIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;">
+        <div
+            style="background: linear-gradient(135deg, #f43f5e22, #1e293b); border: 1px solid #f43f5e; border-radius: 24px; padding: 40px; width: 100%; max-width: 700px; position: relative;">
+            <button onclick="closeSubModal('gamesModal')"
+                style="position: absolute; top: 20px; right: 20px; background: none; border: none; color: white; font-size: 28px; cursor: pointer; z-index: 50;">&times;</button>
+            <h2 style="color: white; font-size: 2rem; margin-bottom: 25px; text-align: center;"><i
+                    class="fa-solid fa-gamepad" style="color: #f43f5e; margin-right: 10px;"></i>Catálogo VIP</h2>
+            <div id="premium-games-grid"
+                style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; max-height: 60vh; overflow-y: auto; padding-right: 10px;">
                 <!-- Juegos insertados dinámicamente según el perfil -->
             </div>
         </div>
     </div>
 
     <!-- Modal Recompensas + -->
-    <div id="rewardsModal" style="position: fixed; inset: 0; background: rgba(0,0,0,0.9); backdrop-filter: blur(15px); z-index: 100003; display: none; align-items: center; justify-content: center; padding: 20px; animation: popIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;">
-        <div style="background: linear-gradient(135deg, #facc1522, #1e293b); border: 1px solid #facc15; border-radius: 24px; padding: 40px; width: 100%; max-width: 600px; position: relative;">
-            <button onclick="closeSubModal('rewardsModal')" style="position: absolute; top: 20px; right: 20px; background: none; border: none; color: white; font-size: 28px; cursor: pointer; z-index: 50;">&times;</button>
-            <h2 style="color: white; font-size: 2rem; margin-bottom: 25px; text-align: center;"><i class="fa-solid fa-gift" style="color: #facc15; margin-right: 10px;"></i>Inventario Exclusivo</h2>
-            
+    <div id="rewardsModal"
+        style="position: fixed; inset: 0; background: rgba(0,0,0,0.9); backdrop-filter: blur(15px); z-index: 100003; display: none; align-items: center; justify-content: center; padding: 20px; animation: popIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;">
+        <div
+            style="background: linear-gradient(135deg, #facc1522, #1e293b); border: 1px solid #facc15; border-radius: 24px; padding: 40px; width: 100%; max-width: 600px; position: relative;">
+            <button onclick="closeSubModal('rewardsModal')"
+                style="position: absolute; top: 20px; right: 20px; background: none; border: none; color: white; font-size: 28px; cursor: pointer; z-index: 50;">&times;</button>
+            <h2 style="color: white; font-size: 2rem; margin-bottom: 25px; text-align: center;"><i
+                    class="fa-solid fa-gift" style="color: #facc15; margin-right: 10px;"></i>Inventario Exclusivo</h2>
+
             <div style="display: flex; justify-content: space-around; flex-wrap: wrap; gap: 15px;">
-                <div style="background: rgba(255,255,255,0.05); padding: 15px; border-radius: 12px; text-align: center; width: 140px;">
+                <div
+                    style="background: rgba(255,255,255,0.05); padding: 15px; border-radius: 12px; text-align: center; width: 140px;">
                     <i class="fa-solid fa-dragon" style="color: #22c55e; font-size: 3rem; margin-bottom: 10px;"></i>
-                    <p style="color: white; font-weight: bold; margin: 0 0 10px 0; font-size: 0.9rem;">Dragón de Jade</p>
-                    <button id="btn-equip-dragon" onclick="equipRealSkin('green_shield', 'btn-equip-dragon')" style="background: transparent; color: #facc15; border: 1px solid #facc15; padding: 5px 15px; border-radius: 6px; cursor: pointer; font-size: 0.8rem;">Equipar Mascota</button>
+                    <p style="color: white; font-weight: bold; margin: 0 0 10px 0; font-size: 0.9rem;">Dragón de Jade
+                    </p>
+                    <button id="btn-equip-dragon" onclick="equipRealSkin('green_shield', 'btn-equip-dragon')"
+                        style="background: transparent; color: #facc15; border: 1px solid #facc15; padding: 5px 15px; border-radius: 6px; cursor: pointer; font-size: 0.8rem;">Equipar
+                        Mascota</button>
                 </div>
-                <div style="background: rgba(255,255,255,0.05); padding: 15px; border-radius: 12px; text-align: center; width: 140px;">
+                <div
+                    style="background: rgba(255,255,255,0.05); padding: 15px; border-radius: 12px; text-align: center; width: 140px;">
                     <i class="fa-solid fa-user-ninja" style="color: #a78bfa; font-size: 3rem; margin-bottom: 10px;"></i>
                     <p style="color: white; font-weight: bold; margin: 0 0 10px 0; font-size: 0.9rem;">Avatar Ninja</p>
-                    <button id="btn-equip-ninja" onclick="equipRealSkin('stellar_aura', 'btn-equip-ninja')" style="background: transparent; color: #facc15; border: 1px solid #facc15; padding: 6px 15px; border-radius: 6px; cursor: pointer; font-size: 0.8rem;">Equipar Avatar</button>
+                    <button id="btn-equip-ninja" onclick="equipRealSkin('stellar_aura', 'btn-equip-ninja')"
+                        style="background: transparent; color: #facc15; border: 1px solid #facc15; padding: 6px 15px; border-radius: 6px; cursor: pointer; font-size: 0.8rem;">Equipar
+                        Avatar</button>
                 </div>
-                <div style="background: rgba(255,255,255,0.05); padding: 15px; border-radius: 12px; text-align: center; width: 140px;">
+                <div
+                    style="background: rgba(255,255,255,0.05); padding: 15px; border-radius: 12px; text-align: center; width: 140px;">
                     <i class="fa-solid fa-rocket" style="color: #38bdf8; font-size: 3rem; margin-bottom: 10px;"></i>
                     <p style="color: white; font-weight: bold; margin: 0 0 10px 0; font-size: 0.9rem;">Jetpack Neón</p>
-                    <button id="btn-equip-jetpack" onclick="equipRealSkin('jetpack', 'btn-equip-jetpack')" style="background: transparent; color: #facc15; border: 1px solid #facc15; padding: 5px 15px; border-radius: 6px; cursor: pointer; font-size: 0.8rem;">Equipar Efecto</button>
+                    <button id="btn-equip-jetpack" onclick="equipRealSkin('jetpack', 'btn-equip-jetpack')"
+                        style="background: transparent; color: #facc15; border: 1px solid #facc15; padding: 5px 15px; border-radius: 6px; cursor: pointer; font-size: 0.8rem;">Equipar
+                        Efecto</button>
                 </div>
             </div>
         </div>
@@ -2291,16 +2547,16 @@
         function openPremiumFeature(feature) {
             document.getElementById('premiumHubModal').style.display = 'none';
             const state = window.neuroApp ? window.neuroApp.state : null;
-            
+
             if (feature === 'zen') {
                 document.getElementById('zenModal').style.display = 'flex';
                 const audio = document.getElementById('ambient-audio');
-                if(audio && audio.src) { audio.play().catch(e=>console.log(e)); }
+                if (audio && audio.src) { audio.play().catch(e => console.log(e)); }
             } else if (feature === 'pomodoro') {
                 document.getElementById('pomodoroModal').style.display = 'flex';
             } else if (feature === 'ia') {
                 document.getElementById('iaModal').style.display = 'flex';
-                if(state) {
+                if (state) {
                     document.getElementById('ia-user-name').innerText = state.activeProfileName;
                     document.getElementById('ia-user-level').innerText = state.level;
                     // Lógica real: Si tiene muchos errores en su historial de memoria, enfoca en eso
@@ -2308,47 +2564,47 @@
                 }
             } else if (feature === 'reports') {
                 document.getElementById('reportsModal').style.display = 'flex';
-                if(state) {
+                if (state) {
                     // Calculamos métricas reales basadas en su nivel y monedas
                     let att = Math.min(98, 50 + (state.level * 5));
                     let imp = Math.min(95, 40 + (state.level * 4));
                     let mem = Math.min(99, 60 + (state.level * 3));
-                    
+
                     document.getElementById('rep-att-val').innerText = att;
                     document.getElementById('rep-att-bar').style.width = att + '%';
                     document.getElementById('rep-att-lbl').innerText = att > 80 ? 'Excelente' : 'Bueno';
-                    
+
                     document.getElementById('rep-imp-val').innerText = imp;
                     document.getElementById('rep-imp-bar').style.width = imp + '%';
                     document.getElementById('rep-imp-lbl').innerText = imp > 70 ? 'Mejorando' : 'En progreso';
-                    
+
                     document.getElementById('rep-mem-val').innerText = mem;
                     document.getElementById('rep-mem-bar').style.width = mem + '%';
                     document.getElementById('rep-mem-lbl').innerText = mem > 85 ? 'Sobresaliente' : 'Adecuado';
-                    
+
                     document.getElementById('rep-ai-tip').innerText = att < mem ? 'Te recomendamos jugar "Distraction Hunter" para subir tu concentración.' : '¡Sigue así, tu progreso es increíble!';
                 }
             } else if (feature === 'games') {
                 const grid = document.getElementById('premium-games-grid');
                 grid.innerHTML = '';
                 const isKids = state && state.profile === 'kids';
-                
+
                 const kidsGames = [
                     { id: 'kids_star_catcher', title: 'Cazador de Estrellas', desc: 'Atención sostenida con Realidad Aumentada.', icon: 'fa-star', color: '#facc15' },
                     { id: 'kids_music_magic', title: 'Aventura Musical Mágica', desc: 'Sigue el ritmo para mejorar la memoria auditiva.', icon: 'fa-music', color: '#a78bfa' },
                     { id: 'kids_pets', title: 'Misiones de Mascotas', desc: 'Misiones cooperativas con tu mascota virtual.', icon: 'fa-paw', color: '#38bdf8' },
                     { id: 'kids_rockets', title: 'Constructor de Cohetes', desc: 'Arma piezas en el orden correcto. (AR)', icon: 'fa-rocket', color: '#f43f5e' }
                 ];
-                
+
                 const teensGames = [
                     { id: 'teens_focus_sim', title: 'Simulador de Foco', desc: 'Entrenamiento inmersivo de atención profunda.', icon: 'fa-vr-cardboard', color: '#f43f5e' },
                     { id: 'teens_tactical', title: 'Desafíos Tácticos', desc: 'Estrategia y memoria de trabajo bajo presión.', icon: 'fa-chess-knight', color: '#38bdf8' },
                     { id: 'teens_escape', title: 'Escape Rooms Coop', desc: 'Colabora en línea para resolver acertijos lógicos.', icon: 'fa-door-open', color: '#facc15' },
                     { id: 'teens_logic', title: 'Retos de Lógica Avanzada', desc: 'Compite en torneos semanales de resolución rápida.', icon: 'fa-brain', color: '#a78bfa' }
                 ];
-                
+
                 const gamesToShow = isKids ? kidsGames : teensGames;
-                
+
                 gamesToShow.forEach(game => {
                     grid.innerHTML += `
                         <div style="background: rgba(0,0,0,0.4); border: 1px solid rgba(255,255,255,0.1); border-radius: 16px; padding: 20px; text-align: center;">
@@ -2359,7 +2615,7 @@
                         </div>
                     `;
                 });
-                
+
                 document.getElementById('gamesModal').style.display = 'flex';
             } else if (feature === 'rewards') {
                 document.getElementById('rewardsModal').style.display = 'flex';
@@ -2372,12 +2628,12 @@
             const input = document.getElementById('assistant-input');
             const chatBox = document.getElementById('assistant-chat-box');
             if (input.value.trim() === '') return;
-            
+
             // Mensaje del usuario
             chatBox.innerHTML += `<div style="background: rgba(255,255,255,0.1); padding: 10px 15px; border-radius: 12px; color: white; font-size: 0.95rem; align-self: flex-end; max-width: 85%;">${input.value}</div>`;
             input.value = '';
             chatBox.scrollTop = chatBox.scrollHeight;
-            
+
             // Simular respuesta de IA
             setTimeout(() => {
                 const respuestas = [
@@ -2402,11 +2658,11 @@
                 modal.style.display = 'none';
                 modal.style.opacity = '0';
             }
-            if(window.neuroApp && window.neuroApp.engine) {
+            if (window.neuroApp && window.neuroApp.engine) {
                 // Cerramos cualquier otro modal abierto (toast, options, etc)
                 const overlays = document.querySelectorAll('.settings-overlay, .modal-scrollable');
-                overlays.forEach(o => { if(o.classList) o.classList.remove('open'); o.style.display = 'none'; });
-                
+                overlays.forEach(o => { if (o.classList) o.classList.remove('open'); o.style.display = 'none'; });
+
                 // Lanzamos el juego real
                 window.neuroApp.engine.launch(gameId);
             }
@@ -2414,13 +2670,13 @@
 
         // Lógica real para equipar skins/recompensas en la DB
         function equipRealSkin(skinId, btnId) {
-            if(window.neuroApp && window.neuroApp.state) {
+            if (window.neuroApp && window.neuroApp.state) {
                 window.neuroApp.state.activeSkin = skinId;
-                if(!window.neuroApp.state.unlockedItems.includes(skinId)){
+                if (!window.neuroApp.state.unlockedItems.includes(skinId)) {
                     window.neuroApp.state.unlockedItems.push(skinId);
                 }
                 window.neuroApp.saveState();
-                
+
                 // Actualizar UI del botón temporalmente para dar feedback visual
                 const btn = document.getElementById(btnId);
                 const oldText = btn.innerText;
@@ -2441,10 +2697,10 @@
         function startPomodoro() {
             document.getElementById('btn-start-pomo').style.display = 'none';
             document.getElementById('btn-stop-pomo').style.display = 'inline-block';
-            
+
             const timerEl = document.getElementById('pomodoro-timer');
             clearInterval(pomoInterval);
-            
+
             pomoInterval = setInterval(() => {
                 pomoTimeLeft--;
                 const m = Math.floor(pomoTimeLeft / 60).toString().padStart(2, '0');
