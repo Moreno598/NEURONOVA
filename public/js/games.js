@@ -76,7 +76,11 @@ class GameController {
                 <div class="game-canvas-wrapper" id="game-canvas-container" style="position: relative;">
                     <canvas id="game-canvas" width="800" height="500"></canvas>
                     <div id="game-instructions-overlay" style="position: absolute; inset: 0; background: rgba(15,23,42,0.95); backdrop-filter: blur(8px); z-index: 100; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; padding: 40px; border-radius: inherit;">
-                        <i class="fa-solid fa-graduation-cap" style="font-size: 4rem; color: #38bdf8; margin-bottom: 20px;"></i>
+                        <div class="game-thumbnail anim-bg-${gameId}" style="width:120px; height:120px; border-radius:50%; margin:0 auto 20px auto; display:flex; justify-content:center; align-items:center; position:relative; overflow:hidden; box-shadow:0 0 30px rgba(56,189,248,0.2);">
+                            <div class="premium-3d-orb" style="position:relative; width:90px; height:90px; margin:0;">
+                                <i class="fa-solid fa-graduation-cap" style="font-size: 2.5rem; color: #38bdf8; position: relative; z-index: 2; text-shadow: 0 0 10px rgba(56,189,248,0.8);"></i>
+                            </div>
+                        </div>
                         <h2 style="font-size: 2rem; color: white; margin-bottom: 15px;">Misión Cognitiva</h2>
                         <p id="game-instructions-text" style="color: #cbd5e1; font-size: 1.15rem; max-width: 650px; margin-bottom: 30px; line-height: 1.6;"></p>
                         <button id="btn-start-mission" style="background: linear-gradient(135deg, #38bdf8, #818cf8); border: none; padding: 15px 40px; border-radius: 12px; font-size: 1.2rem; font-weight: bold; color: white; cursor: pointer; box-shadow: 0 10px 20px rgba(56, 189, 248, 0.3);">🚀 Iniciar Entrenamiento</button>
@@ -107,7 +111,9 @@ class GameController {
             'teens_sound': 'Identifica qué frecuencias de radar son iguales a las anteriores para entrenar tu memoria de trabajo fonológica.',
             'teens_cards': 'Descifra la tabla encontrando los pares de datos para ejercitar tu actualización constante (N-Back espacial).',
             'eco_recycle': 'Clasifica correctamente los residuos y colócalos en el contenedor correspondiente para entrenar tu atención selectiva y cuidar el planeta.',
-            'eco_water': 'Toca las tuberías rotas lo más rápido posible para reparar las fugas de agua y mejorar tu tiempo de reacción.'
+            'eco_water': 'Toca las tuberías rotas lo más rápido posible para reparar las fugas de agua y mejorar tu tiempo de reacción.',
+            'teens_eco_energy': 'Gestor de Energía: Apaga (toca) los dispositivos que derrochan energía (en rojo). Ignora los eficientes (verdes). La velocidad aumentará rápidamente.',
+            'teens_eco_ocean': 'Limpiador Oceánico: Recoge todo el plástico (rojo) flotando en el agua. Evita tocar a la fauna marina (peces azules).',
         };
         const instrText = instructionsDict[gameId] || 'Sigue las instrucciones en pantalla y haz tu mejor esfuerzo para entrenar tu cerebro.';
         document.getElementById('game-instructions-text').innerText = instrText;
@@ -214,9 +220,13 @@ class GameController {
             } else if (gameId === 'speed_math' || gameId === 'kids_math') {
                 module = await import('./games/speed_math.js');
             } else if (gameId === 'eco_recycle') {
-                module = await import('./games/pattern_matcher.js'); // Usamos este como base por ahora
+                module = await import('./games/eco_recycle.js');
             } else if (gameId === 'eco_water') {
-                module = await import('./games/spatial_focus.js'); // Usamos este como base por ahora
+                module = await import('./games/eco_water.js');
+            } else if (gameId === 'teens_eco_energy') {
+                module = await import('./games/teens_eco_energy.js');
+            } else if (gameId === 'teens_eco_ocean') {
+                module = await import('./games/teens_eco_ocean.js');
             }
             
             if (module && module.default) {
@@ -294,7 +304,13 @@ class GameController {
             this.activeGame.destroy();
         }
         const app = getApp();
-        if (app) app.renderHome();
+        if (app) {
+            if (this.currentGameId === 'eco_recycle' || this.currentGameId === 'eco_water' || this.currentGameId === 'teens_eco_energy' || this.currentGameId === 'teens_eco_ocean') {
+                app.renderEcoSparkHome();
+            } else {
+                app.renderHome();
+            }
+        }
     }
 
     finish() {
@@ -453,7 +469,13 @@ class GameController {
 
         document.getElementById('btn-summary-home').addEventListener('click', () => {
             const app = getApp();
-            if (app) app.renderHome();
+            if (app) {
+                if (this.currentGameId === 'eco_recycle' || this.currentGameId === 'eco_water' || this.currentGameId === 'teens_eco_energy' || this.currentGameId === 'teens_eco_ocean') {
+                    app.renderEcoSparkHome();
+                } else {
+                    app.renderHome();
+                }
+            }
         });
         
         document.getElementById('btn-summary-replay').addEventListener('click', () => {

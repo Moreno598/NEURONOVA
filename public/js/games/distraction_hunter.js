@@ -44,7 +44,9 @@ export default class DistractionHunter {
 
     spawnObjects() {
         this.spawnTimer++;
-        if (this.spawnTimer >= this.spawnRate) {
+        const currentSpawnRate = Math.max(30, this.spawnRate - (this.controller.gameTime * 1.5));
+        
+        if (this.spawnTimer >= currentSpawnRate) {
             this.spawnTimer = 0;
             
             // Spawn Target (Energy Spark)
@@ -55,14 +57,15 @@ export default class DistractionHunter {
                 pulse: 0,
                 pulseSpeed: 0.05 + Math.random() * 0.05,
                 color: 'hsl(195, 100%, 65%)',
-                life: 180 // frames it remains alive
+                life: Math.max(60, 180 - (this.controller.gameTime * 2)) // Less time to click
             });
             this.controller.totalStimuli++;
 
             // Spawn Distractor (Asteroid or fake spark)
             if (Math.random() < 0.7) {
                 const angle = Math.random() * Math.PI * 2;
-                const speed = (1 + Math.random() * 2) * this.speedMultiplier;
+                const dynamicSpeedMultiplier = this.speedMultiplier + (this.controller.gameTime * 0.03);
+                const speed = (1 + Math.random() * 2) * dynamicSpeedMultiplier;
                 this.distractors.push({
                     x: Math.random() * 800,
                     y: -30,
@@ -199,10 +202,11 @@ export default class DistractionHunter {
             this.ctx.fill();
 
             // Draw life timer circle ring
+            const maxLife = Math.max(60, 180 - (this.controller.gameTime * 2));
             this.ctx.strokeStyle = 'rgba(255, 255, 255, 0.3)';
             this.ctx.lineWidth = 2;
             this.ctx.beginPath();
-            this.ctx.arc(t.x, t.y, currentRadius + 12, -Math.PI / 2, (Math.PI * 2) * (t.life / 180) - Math.PI / 2);
+            this.ctx.arc(t.x, t.y, currentRadius + 12, -Math.PI / 2, (Math.PI * 2) * (t.life / maxLife) - Math.PI / 2);
             this.ctx.stroke();
         }
 

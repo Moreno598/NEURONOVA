@@ -22,13 +22,33 @@ export default class SpeedMath {
     }
 
     startLevel() {
-        let a = Math.floor(Math.random() * 10) + 1;
-        let b = Math.floor(Math.random() * 10) + 1;
-        let isPlus = Math.random() > 0.5;
-        if (!isPlus && a < b) [a, b] = [b, a]; // ensure positive
+        let maxNum = 10 + Math.floor(this.controller.gameTime / 10) * 5;
         
-        let ans = isPlus ? a + b : a - b;
-        this.equation = `${a} ${isPlus ? '+' : '-'} ${b} = ?`;
+        let opRand = Math.random();
+        let a, b, ans, opStr;
+        
+        if (this.controller.gameTime > 30 && opRand < 0.3) {
+            // Multiplication for higher difficulty
+            a = Math.floor(Math.random() * (maxNum / 1.5)) + 1;
+            b = Math.floor(Math.random() * 10) + 1;
+            ans = a * b;
+            opStr = 'x';
+        } else if (opRand < 0.65) {
+            // Subtraction
+            a = Math.floor(Math.random() * maxNum) + 1;
+            b = Math.floor(Math.random() * maxNum) + 1;
+            if (a < b) [a, b] = [b, a]; // ensure positive
+            ans = a - b;
+            opStr = '-';
+        } else {
+            // Addition
+            a = Math.floor(Math.random() * maxNum) + 1;
+            b = Math.floor(Math.random() * maxNum) + 1;
+            ans = a + b;
+            opStr = '+';
+        }
+        
+        this.equation = `${a} ${opStr} ${b} = ?`;
         
         this.answers = [];
         this.correctIndex = Math.floor(Math.random() * 3);

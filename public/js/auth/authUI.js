@@ -163,6 +163,14 @@ export class AuthUI {
                 app.saveState();
                 app.updateHeaderHUD();
                 app.renderHome();
+
+                setTimeout(() => {
+                    if (app.state.settings.voiceOn) {
+                        import('../neurocoach.js').then(module => {
+                            module.coach.speak(app.i18n ? app.i18n.t('coachWelcome') : '¡Bienvenido a NeuroSpark!');
+                        });
+                    }
+                }, 1000);
             } else {
                 isAlreadyAuthenticated = false;
                 this.overlay.classList.add('open');

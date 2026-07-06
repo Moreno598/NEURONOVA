@@ -157,6 +157,7 @@ export default class MemoryTones {
                     setTimeout(() => {
                         this.round++;
                         this.sequenceLength++;
+                        this.playbackSpeed = Math.max(15, this.playbackSpeed - 2); // Faster playback
                         this.generateSequence();
                         this.startSequencePlayback();
                     }, 1200);

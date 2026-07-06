@@ -63,7 +63,8 @@ export default class StoplightSelfRegulation {
         }
         
         // Randomize duration slightly to prevent anticipatory clicking (ADHD focus support)
-        this.stateDuration = Math.round((70 + Math.random() * 50) / this.speedMultiplier);
+        const dynamicSpeed = this.speedMultiplier + (this.controller.gameTime * 0.03);
+        this.stateDuration = Math.max(30, Math.round((70 + Math.random() * 50) / dynamicSpeed));
     }
 
     adjustPacing(slowDown) {

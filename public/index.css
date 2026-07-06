@@ -119,21 +119,74 @@ input:-webkit-autofill:active {
     display: none;
 }
 
-/* Eco Mode reduces brightness, disables animations, and consumes less battery */
-body.eco-mode {
-    filter: brightness(0.85);
+/* Eco Mode — keeps animations but reduces intensity for performance */
+/* Use a full-screen overlay to reduce brightness universally without breaking position:fixed */
+body.eco-mode::after {
+    content: '';
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: rgba(0, 0, 0, 0.35); /* Darkens everything by 35% */
+    pointer-events: none;
+    z-index: 99999999;
+    transition: background 0.4s ease;
 }
 
-.eco-mode *, .eco-mode *::before, .eco-mode *::after {
-    animation-duration: 0.01s !important;
-    transition-duration: 0.01s !important;
+/* Slow down all animations for lower CPU/GPU usage and reduce transitions */
+.eco-mode *,
+.eco-mode *::before,
+.eco-mode *::after {
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.05s !important;
+    will-change: auto !important;
 }
 
-.eco-mode .dynamic-bg,
+/* Keep specific looping animations but at reduced intensity */
+.eco-mode .premium-3d-orb,
 .eco-mode .sparky-mascot-img,
+.eco-mode .orb-shadow {
+    animation-iteration-count: infinite !important;
+}
+
+/* Reduce visual weight of heavy background layers */
+.eco-mode .dynamic-bg {
+    opacity: 0.25 !important;
+}
+
+.eco-mode .dynamic-bg .nebula {
+    opacity: 0.15 !important;
+}
+
+/* Dim game thumbnails slightly and simplify their pseudo-element effects */
 .eco-mode .game-thumbnail::before {
+    opacity: 0.3 !important;
+}
+
+.eco-mode .game-thumbnail::after {
     display: none !important;
-    animation: none !important;
+}
+
+/* Reduce glow/shadow intensity */
+.eco-mode .game-card {
+    box-shadow: 0 2px 8px rgba(0,0,0,0.15) !important;
+}
+
+.eco-mode .game-card:hover {
+    box-shadow: 0 4px 12px rgba(0,0,0,0.2) !important;
+}
+
+/* Reduce orb animation intensity */
+.eco-mode .premium-3d-orb {
+    opacity: 0.75 !important;
+}
+
+/* Hide particle canvas to save GPU */
+.eco-mode #ns-particles {
+    display: none !important;
+}
+
+/* Sparky mascot — keep but dim */
+.eco-mode .sparky-mascot-img {
+    opacity: 0.6 !important;
 }
 
 body.light-theme .dynamic-bg .nebula {
@@ -546,7 +599,7 @@ body.light-theme .school-insignia {
 /* -------------------------------------------------------------
    KIDS MODE (MODO NIÑOS) — COLORFUL, GAMIFIED, EASY
    ------------------------------------------------------------- */
-body.kids-mode {
+body.light-theme.kids-mode {
     --bg-app: #f8fafc;
     /* Tono neutro gris muy claro */
     --bg-header: #ffffff;
@@ -840,6 +893,71 @@ body.kids-mode {
     100% { transform: scale(2) rotate(360deg); }
 }
 
+/* --- ECO GAME CARD BACKGROUNDS --- */
+
+/* 9. Eco Recycle — Rotating green recycling arrows / gradient */
+.anim-bg-eco_recycle::before {
+    background:
+        conic-gradient(from 0deg at 50% 50%, #059669, #10b981, #34d399, #6ee7b7, #34d399, #10b981, #059669),
+        radial-gradient(circle at 50% 50%, rgba(16, 185, 129, 0.3), transparent 70%);
+    background-blend-mode: overlay;
+    background-color: #022c22;
+    animation: ecoRecycleSpin 12s linear infinite;
+    filter: brightness(0.9) saturate(1.2);
+}
+
+/* 10. Eco Water — Blue water ripple waves */
+.anim-bg-eco_water::before {
+    background:
+        radial-gradient(ellipse at 50% 50%, rgba(56, 189, 248, 0.5), transparent 50%),
+        radial-gradient(ellipse at 30% 70%, rgba(14, 165, 233, 0.4), transparent 55%),
+        radial-gradient(ellipse at 70% 30%, rgba(2, 132, 199, 0.5), transparent 60%),
+        repeating-radial-gradient(circle at 50% 50%, transparent 0, transparent 20px, rgba(56, 189, 248, 0.15) 22px, transparent 24px);
+    background-color: #0c4a6e;
+    animation: ecoWaterRipple 6s ease-in-out infinite alternate;
+}
+
+@keyframes ecoRecycleSpin {
+    0%   { transform: scale(1.8) rotate(0deg); }
+    100% { transform: scale(1.8) rotate(360deg); }
+}
+
+@keyframes ecoWaterRipple {
+    0%   { background-size: 100% 100%, 100% 100%, 100% 100%, 60px 60px; transform: scale(1); filter: hue-rotate(0deg); }
+    50%  { background-size: 130% 130%, 120% 120%, 110% 110%, 80px 80px; transform: scale(1.1); filter: hue-rotate(15deg); }
+    100% { background-size: 100% 100%, 100% 100%, 100% 100%, 60px 60px; transform: scale(1); filter: hue-rotate(0deg); }
+}
+
+/* 11. Teens Eco Energy — Pulsing electric red/green circuits */
+.anim-bg-teens_eco_energy::before {
+    background:
+        repeating-linear-gradient(45deg, transparent 0, transparent 20px, rgba(239, 68, 68, 0.2) 20px, rgba(239, 68, 68, 0.2) 22px),
+        repeating-linear-gradient(-45deg, transparent 0, transparent 20px, rgba(34, 197, 94, 0.2) 20px, rgba(34, 197, 94, 0.2) 22px),
+        radial-gradient(circle at 50% 50%, rgba(239, 68, 68, 0.3), transparent 60%);
+    background-color: #0f172a;
+    animation: ecoEnergyPulse 4s ease-in-out infinite alternate;
+}
+
+/* 12. Teens Eco Ocean — Deep ocean currents with plastic debris */
+.anim-bg-teens_eco_ocean::before {
+    background:
+        radial-gradient(circle at 20% 80%, rgba(14, 165, 233, 0.4), transparent 60%),
+        radial-gradient(circle at 80% 20%, rgba(56, 189, 248, 0.3), transparent 60%),
+        repeating-radial-gradient(circle at 50% 50%, transparent 0, transparent 30px, rgba(239, 68, 68, 0.1) 32px, transparent 34px);
+    background-color: #082f49;
+    animation: ecoOceanCurrents 8s linear infinite;
+}
+
+@keyframes ecoEnergyPulse {
+    0%   { transform: scale(1); filter: brightness(1) saturate(1); }
+    100% { transform: scale(1.1); filter: brightness(1.4) saturate(1.5); }
+}
+
+@keyframes ecoOceanCurrents {
+    0%   { background-position: 0 0, 0 0, 0 0; transform: rotate(0deg) scale(1.2); }
+    100% { background-position: -50px 50px, 50px -50px, 0 0; transform: rotate(10deg) scale(1.3); }
+}
+
 /* --- SUPER PREMIUM HOVER EFFECTS --- */
 .game-card {
     transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
@@ -1118,6 +1236,160 @@ body.kids-mode {
 }
 
 /* -------------------------------------------------------------
+   DARK THEME OVERRIDES — For kids-mode and teens-mode
+   Ensures all light-background elements adapt when dark mode is on.
+   ------------------------------------------------------------- */
+
+/* Store container */
+body.dark-theme .store-container {
+    background: linear-gradient(135deg, #1e293b, #0f172a);
+    border-color: rgba(148, 163, 184, 0.2);
+}
+
+/* Store items */
+body.dark-theme .store-item {
+    background: linear-gradient(135deg, #1e293b, #334155);
+    border-color: rgba(148, 163, 184, 0.2);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    color: #e2e8f0;
+}
+
+body.dark-theme .store-item:hover {
+    border-color: var(--accent-yellow);
+    box-shadow: 0 8px 24px rgba(251, 191, 36, 0.25);
+}
+
+body.dark-theme .store-item strong {
+    color: #f1f5f9;
+}
+
+body.dark-theme .store-item[data-id="holo_pet"] {
+    background: linear-gradient(135deg, #164e63, #1e3a5f);
+    border-color: rgba(125, 211, 252, 0.3);
+}
+
+body.dark-theme .store-item[data-id="stellar_aura"] {
+    background: linear-gradient(135deg, #422006, #451a03);
+    border-color: rgba(253, 224, 71, 0.3);
+}
+
+/* Kids welcome banner in dark mode */
+body.dark-theme .kids-welcome-banner {
+    background: linear-gradient(135deg, #1e293b, #111827) !important;
+    border-color: rgba(96, 165, 250, 0.3) !important;
+    color: #e2e8f0 !important;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4) !important;
+}
+body.dark-theme .kids-welcome-banner h2, 
+body.dark-theme .kids-welcome-banner p {
+    color: #e2e8f0 !important;
+}
+
+/* Section titles */
+body.dark-theme .section-title {
+    color: #f1f5f9 !important;
+}
+
+/* Game Cards */
+body.dark-theme .game-card {
+    background: var(--bg-card) !important;
+    border-color: var(--border-color) !important;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4) !important;
+}
+body.dark-theme .game-card:hover {
+    border-color: var(--primary-blue) !important;
+    box-shadow: 0 12px 32px rgba(56, 189, 248, 0.15) !important;
+}
+body.dark-theme .game-title {
+    color: #f8fafc !important;
+}
+body.dark-theme .game-desc {
+    color: #cbd5e1 !important;
+}
+
+/* Task items */
+body.dark-theme .task-item {
+    background: var(--bg-card) !important;
+    color: #e2e8f0;
+}
+body.dark-theme .task-item span {
+    color: #e2e8f0 !important;
+}
+
+/* Eco-specific containers */
+body.dark-theme .eco-home-view .store-container {
+    background: linear-gradient(135deg, rgba(16, 185, 129, 0.08), rgba(4, 120, 87, 0.08));
+    border-color: rgba(16, 185, 129, 0.25);
+}
+body.dark-theme .eco-home-view p {
+    color: #cbd5e1 !important;
+}
+
+/* Kids mode body when dark */
+body.dark-theme.kids-mode {
+    --bg-app: hsl(222, 47%, 9%);
+    --bg-header: hsla(222, 47%, 6%, 0.75);
+    --bg-card: hsla(222, 47%, 15%, 0.65);
+    --bg-card-hover: hsla(222, 47%, 20%, 0.8);
+    --border-color: hsla(222, 47%, 25%, 0.4);
+    --text-main: hsl(210, 40%, 95%);
+    --text-muted: hsl(210, 15%, 70%);
+    --card-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+}
+
+/* Teens mode body when dark */
+body.dark-theme.teens-mode {
+    --bg-app: hsl(222, 47%, 9%);
+    --bg-header: hsla(222, 47%, 6%, 0.75);
+    --bg-card: hsla(222, 47%, 15%, 0.65);
+    --bg-card-hover: hsla(222, 47%, 20%, 0.8);
+    --border-color: hsla(222, 47%, 25%, 0.4);
+    --text-main: hsl(210, 40%, 95%);
+    --text-muted: hsl(210, 15%, 70%);
+    --card-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+    background-color: hsl(222, 47%, 9%) !important;
+}
+
+/* Teens dark header */
+body.dark-theme.teens-mode .app-header {
+    background-color: hsla(222, 47%, 6%, 0.75) !important;
+    border-bottom-color: rgba(148, 163, 184, 0.15) !important;
+}
+
+/* Teens dark text elements */
+body.dark-theme.teens-mode .logo-main,
+body.dark-theme.teens-mode h2,
+body.dark-theme.teens-mode h3,
+body.dark-theme.teens-mode p {
+    color: #f1f5f9 !important;
+}
+
+body.dark-theme.teens-mode .logo-sub {
+    color: #94a3b8 !important;
+}
+
+body.dark-theme.teens-mode .status-item,
+body.dark-theme.teens-mode .gold-text,
+body.dark-theme.teens-mode .glow-text {
+    color: #e2e8f0 !important;
+}
+
+body.dark-theme.teens-mode .control-btn {
+    background: rgba(148, 163, 184, 0.1) !important;
+    color: #e2e8f0 !important;
+}
+
+body.dark-theme.teens-mode .store-item {
+    background: linear-gradient(135deg, #1e293b, #334155);
+    border-color: rgba(148, 163, 184, 0.2);
+    color: #e2e8f0;
+}
+
+body.dark-theme.teens-mode .game-tag {
+    color: #86efac;
+}
+
+/* -------------------------------------------------------------
    TEENS MODE (MODO ADOLESCENTES) — CALM FOCUS, SOFT PALETTE
    Azul suave: concentración y tranquilidad.
    Verde: reduce estrés y fatiga visual.
@@ -1159,18 +1431,18 @@ body.teens-mode {
 /* ── Teens Dark Theme - Calm & Focused (Not overly dark, still soft) ── */
 /* teens-mode nunca recibe dark-theme desde JS — estas reglas no son necesarias */
 
-/* Fuerza fondo claro en teens */
-body.teens-mode {
+/* Fuerza fondo claro en teens solo cuando es light-theme */
+body.light-theme.teens-mode {
     background-color: #f8f9fa !important;
 }
 
-body.teens-mode .app-header {
+body.light-theme.teens-mode .app-header {
     background-color: #ffffff !important;
     border-bottom-color: #dbeafe !important;
 }
 
 /* Logo NEUROSPARK — visible en fondo blanco */
-body.teens-mode .logo-main {
+body.light-theme.teens-mode .logo-main {
     background: none !important;
     -webkit-background-clip: unset !important;
     background-clip: unset !important;
@@ -1178,47 +1450,47 @@ body.teens-mode .logo-main {
     color: #3b82f6 !important;
 }
 
-body.teens-mode .logo-sub {
+body.light-theme.teens-mode .logo-sub {
     -webkit-text-fill-color: #64748b !important;
     color: #64748b !important;
 }
 
-body.teens-mode .header-status {
+body.light-theme.teens-mode .header-status {
     background: #f3f4f6 !important;
     border-color: #dbeafe !important;
 }
 
-body.teens-mode .status-item,
-body.teens-mode .gold-text,
-body.teens-mode .glow-text {
+body.light-theme.teens-mode .status-item,
+body.light-theme.teens-mode .gold-text,
+body.light-theme.teens-mode .glow-text {
     color: #374151 !important;
     -webkit-text-fill-color: #374151 !important;
     text-shadow: none !important;
 }
 
-body.teens-mode .control-btn {
+body.light-theme.teens-mode .control-btn {
     background: #f3f4f6 !important;
     border-color: #d1d5db !important;
     color: #374151 !important;
 }
 
-body.teens-mode .control-btn:hover {
+body.light-theme.teens-mode .control-btn:hover {
     background: #ede9fe !important;
     border-color: #a78bfa !important;
     color: #5b21b6 !important;
 }
 
-body.teens-mode .profile-select-btn {
+body.light-theme.teens-mode .profile-select-btn {
     background: linear-gradient(135deg, #60a5fa, #a78bfa) !important;
     color: #fff !important;
 }
 
-body.teens-mode .dropdown-content {
+body.light-theme.teens-mode .dropdown-content {
     background: #ffffff !important;
     border-color: #dbeafe !important;
 }
 
-body.teens-mode .dropdown-content a {
+body.light-theme.teens-mode .dropdown-content a {
     color: #374151 !important;
 }
 
@@ -1227,20 +1499,15 @@ body.teens-mode .dynamic-bg {
 }
 
 
-body.teens-mode .logo-sub,
-body.teens-mode.dark-theme .logo-sub {
+body.light-theme.teens-mode .logo-sub {
     -webkit-text-fill-color: #64748b !important;
     color: #64748b !important;
 }
 
-body.teens-mode .header-status,
-body.teens-mode.dark-theme .header-status,
-body.teens-mode .status-item,
-body.teens-mode.dark-theme .status-item,
-body.teens-mode .gold-text,
-body.teens-mode.dark-theme .gold-text,
-body.teens-mode .glow-text,
-body.teens-mode.dark-theme .glow-text {
+body.light-theme.teens-mode .header-status,
+body.light-theme.teens-mode .status-item,
+body.light-theme.teens-mode .gold-text,
+body.light-theme.teens-mode .glow-text {
     color: #374151 !important;
     -webkit-text-fill-color: #374151 !important;
     text-shadow: none !important;

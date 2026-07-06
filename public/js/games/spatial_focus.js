@@ -125,6 +125,7 @@ export default class SpatialFocus {
                     setTimeout(() => {
                         this.round++;
                         this.sequenceLength++;
+                        this.playbackSpeed = Math.max(15, this.playbackSpeed - 3); // Faster playback
                         this.generateSequence();
                         this.startSequencePlayback();
                     }, 1000);

@@ -30,6 +30,14 @@ export default class MemoryCards {
         this.matched = 0;
         this.isProcessing = false;
         
+        if (this.controller.gameTime > 60) {
+            this.grid = { rows: 4, cols: 5, width: 60, height: 80, gap: 15 };
+        } else if (this.controller.gameTime > 30) {
+            this.grid = { rows: 4, cols: 4, width: 70, height: 90, gap: 15 };
+        } else {
+            this.grid = { rows: 3, cols: 4, width: 80, height: 100, gap: 20 };
+        }
+        
         let pairs = (this.grid.rows * this.grid.cols) / 2;
         let icons = ['👽', '🚀', '⭐', '🌎', '☄️', '🛸', '🛰️', '🪐', '🌙', '🌌'];
         

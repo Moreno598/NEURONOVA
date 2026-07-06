@@ -21,37 +21,33 @@ export default class PatternMatcher {
 
     startLevel() {
         this.shapes = [];
-        let types = ['circle', 'square', 'triangle', 'star'];
-        let colors = ['#38bdf8', '#a78bfa', '#facc15', '#22c55e', '#ef4444'];
+        let emojis = ['👽', '👾', '🛸', '🚀', '🪐', '☄️', '🌌'];
         
-        let baseType = types[Math.floor(Math.random() * types.length)];
-        let baseColor = colors[Math.floor(Math.random() * colors.length)];
+        let baseEmoji = emojis[Math.floor(Math.random() * emojis.length)];
+        let diffEmoji = baseEmoji;
         
-        let diffType = baseType;
-        let diffColor = baseColor;
-        
-        if (Math.random() > 0.5) {
-            // different type
-            while (diffType === baseType) diffType = types[Math.floor(Math.random() * types.length)];
-        } else {
-            // different color
-            while (diffColor === baseColor) diffColor = colors[Math.floor(Math.random() * colors.length)];
-        }
+        // Find a different emoji
+        while (diffEmoji === baseEmoji) diffEmoji = emojis[Math.floor(Math.random() * emojis.length)];
 
-        let diffIndex = Math.floor(Math.random() * 4);
-        
-        let positions = [
-            {x: 200, y: 250}, {x: 333, y: 250}, {x: 466, y: 250}, {x: 600, y: 250}
-        ];
+        // Difficulty scaling: increase number of shapes as time goes on
+        let numShapes = 4 + Math.floor(this.controller.gameTime / 20);
+        numShapes = Math.min(numShapes, 8); // cap at 8 shapes
 
-        for (let i = 0; i < 4; i++) {
+        let diffIndex = Math.floor(Math.random() * numShapes);
+        
+        let startX = 100;
+        let endX = 700;
+        let stepX = (endX - startX) / (numShapes - 1);
+
+        for (let i = 0; i < numShapes; i++) {
+            // Slight vertical randomness to make it harder
+            let yOffset = (Math.random() - 0.5) * 100;
             this.shapes.push({
-                x: positions[i].x,
-                y: positions[i].y,
-                type: i === diffIndex ? diffType : baseType,
-                color: i === diffIndex ? diffColor : baseColor,
+                x: startX + stepX * i,
+                y: 250 + yOffset,
+                emoji: i === diffIndex ? diffEmoji : baseEmoji,
                 isDiff: i === diffIndex,
-                radius: 40
+                radius: 40 // collision radius
             });
         }
         
@@ -83,25 +79,23 @@ export default class PatternMatcher {
     }
 
     drawShape(s) {
-        this.ctx.fillStyle = s.color;
-        this.ctx.beginPath();
-        if (s.type === 'circle') {
-            this.ctx.arc(s.x, s.y, s.radius, 0, Math.PI*2);
-        } else if (s.type === 'square') {
-            this.ctx.rect(s.x - s.radius, s.y - s.radius, s.radius*2, s.radius*2);
-        } else if (s.type === 'triangle') {
-            this.ctx.moveTo(s.x, s.y - s.radius);
-            this.ctx.lineTo(s.x + s.radius, s.y + s.radius);
-            this.ctx.lineTo(s.x - s.radius, s.y + s.radius);
-        } else if (s.type === 'star') {
-            for(let i=0; i<5; i++) {
-                this.ctx.lineTo(Math.cos((18 + i*72)/180*Math.PI)*s.radius + s.x,
-                                -Math.sin((18 + i*72)/180*Math.PI)*s.radius + s.y);
-                this.ctx.lineTo(Math.cos((54 + i*72)/180*Math.PI)*s.radius/2 + s.x,
-                                -Math.sin((54 + i*72)/180*Math.PI)*s.radius/2 + s.y);
-            }
-        }
-        this.ctx.fill();
+        this.ctx.font = '60px Arial';
+        this.ctx.textAlign = 'center';
+        this.ctx.textBaseline = 'middle';
+        
+        // Dynamic rotation to increase difficulty
+        const rotation = (this.controller.gameTime > 30) ? (Math.random() * 0.2 - 0.1) : 0;
+        
+        this.ctx.save();
+        this.ctx.translate(s.x, s.y);
+        this.ctx.rotate(rotation);
+        
+        // Add a subtle glow for better visibility
+        this.ctx.shadowBlur = 15;
+        this.ctx.shadowColor = 'rgba(56, 189, 248, 0.4)';
+        
+        this.ctx.fillText(s.emoji, 0, 0);
+        this.ctx.restore();
     }
 
     loop() {

@@ -29,9 +29,10 @@ class NeuroSparkApp {
             ],
             settings: {
                 musicOn: false,
-                voiceOn: false,
-                lowStimulus: false,
+                voiceOn: true,
+                lowStimulus: true,
                 ecoMode: false,
+                darkTheme: false,
                 volume: 50
             }
         };
@@ -65,10 +66,6 @@ class NeuroSparkApp {
         this.renderHome();
 
         document.body.addEventListener('click', e => coach.trackInteraction(e));
-
-        setTimeout(() => {
-            coach.speak(i18n.t('coachWelcome'));
-        }, 1500);
     }
 
     async loadState(email = null) {
@@ -124,7 +121,8 @@ class NeuroSparkApp {
         const btnEco = document.getElementById('btn-ecospark');
         if (this.state.currentUserEmail) {
             if (btnBib) btnBib.style.display = 'inline-flex';
-            if (btnEco) btnEco.style.display = 'inline-flex';
+            // EcoSpark visible para kids, teens y admin. Oculto solo para apoderados.
+            if (btnEco) btnEco.style.display = this.state.profile === 'parent' ? 'none' : 'inline-flex';
         } else {
             if (btnBib) btnBib.style.display = 'none';
             if (btnEco) btnEco.style.display = 'none';
@@ -447,28 +445,41 @@ class NeuroSparkApp {
     renderHome() {
         const mount = document.getElementById('app-view-mount');
         mount.innerHTML = '';
+        
+        // Reset view tracking and remove EcoSpark eco-mode if it was set
+        this._currentView = 'home';
+        if (!this.state.settings.ecoMode) {
+            document.body.classList.remove('eco-mode');
+        }
+        
         const lowStim = this.state.settings.lowStimulus ? ' low-stimulus' : '';
-        const themeClass = document.body.classList.contains('light-theme') ? ' light-theme' : ' dark-theme';
+        
+        // Aplicar el tema global según la configuración
+        const isDark = this.state.settings.darkTheme;
+        if (isDark) {
+            document.body.classList.remove('light-theme');
+            document.body.classList.add('dark-theme');
+        } else {
+            document.body.classList.remove('dark-theme');
+            document.body.classList.add('light-theme');
+        }
+        const themeClass = isDark ? ' dark-theme' : ' light-theme';
+        const ecoClass = this.state.settings.ecoMode ? ' eco-mode' : '';
 
         if (this.state.profile === 'admin') {
-            document.body.className = 'teens-mode admin-games-mode' + themeClass + lowStim;
-            this._clearLightTheme();
+            document.body.className = 'teens-mode admin-games-mode' + themeClass + lowStim + ecoClass;
             this.renderAdminGamesHome(mount);
         } else if (this.state.profile === 'parent') {
-            document.body.className = 'teens-mode parent-panel-mode' + lowStim;
-            this._applyLightTheme();
+            document.body.className = 'teens-mode parent-panel-mode' + themeClass + lowStim + ecoClass;
             this.renderParentHome(mount);
         } else if (this.state.profile === 'kids') {
-            document.body.className = 'kids-mode' + themeClass + lowStim;
-            this._clearLightTheme();
+            document.body.className = 'kids-mode' + themeClass + lowStim + ecoClass;
             this.renderKidsHome(mount);
         } else if (this.state.profile === 'teens') {
-            document.body.className = 'teens-mode' + lowStim;
-            this._applyLightTheme();
+            document.body.className = 'teens-mode' + themeClass + lowStim + ecoClass;
             this.renderTeensHome(mount);
         } else {
-            document.body.className = 'adults-mode' + themeClass + lowStim;
-            this._clearLightTheme();
+            document.body.className = 'adults-mode' + themeClass + lowStim + ecoClass;
             dashboard.render(mount, this.state);
         }
 
@@ -554,13 +565,10 @@ class NeuroSparkApp {
         const old = document.getElementById('admin-access-card');
         if (old) old.remove();
 
-        // Show the pre-existing header button
+        // btn-admin-header is no longer shown — btn-admin-games handles everything
         const btn = document.getElementById('btn-admin-header');
         if (btn) {
-            btn.style.display = '';
-            const fresh = btn.cloneNode(true);
-            btn.parentNode.replaceChild(fresh, btn);
-            fresh.addEventListener('click', () => this.openAdminPanel());
+            btn.style.display = 'none';
         }
 
         // Show games toggle button
@@ -725,9 +733,15 @@ class NeuroSparkApp {
 
 
         overlay.classList.add('open');
+        document.body.style.overflow = 'hidden';
 
-        document.getElementById('btn-close-admin').addEventListener('click', () => overlay.classList.remove('open'));
-        overlay.addEventListener('click', e => { if (e.target === overlay) overlay.classList.remove('open'); });
+        const closeAdmin = () => {
+            overlay.classList.remove('open');
+            document.body.style.overflow = '';
+        };
+
+        document.getElementById('btn-close-admin').addEventListener('click', closeAdmin);
+        overlay.addEventListener('click', e => { if (e.target === overlay) closeAdmin(); });
 
         // ── Load & render users table ──────────────────────────────
         let allUsers = [];
@@ -1129,6 +1143,15 @@ class NeuroSparkApp {
         const mount = document.getElementById('app-view-mount');
         if (!mount) return;
 
+        // Track that we are in EcoSpark view
+        this._currentView = 'ecospark';
+
+        // Si es admin, mostrar panel de gestión de EcoPuntos
+        if (this.state.profile === 'admin') {
+            this._renderEcoAdminPanel(mount);
+            return;
+        }
+
         mount.innerHTML = `
             <div class="eco-home-view" style="padding: 20px; animation: fadeIn 0.4s ease;">
                 <div class="kids-welcome-banner" style="background: linear-gradient(135deg, #10b981, #047857); color: white; display:flex; align-items:center; justify-content:space-between; padding: 25px; border-radius: 16px; margin-bottom: 24px;">
@@ -1178,8 +1201,13 @@ class NeuroSparkApp {
                             <h3 class="section-title"><i class="fa-solid fa-gamepad text-green"></i> Juegos Ecológicos 🧠</h3>
                             <p style="color:var(--text-muted);font-size:0.9rem;">Minijuegos relacionados con el cuidado del ambiente.</p>
                             <div class="games-grid" style="grid-template-columns:1fr 1fr; margin-top: 15px;">
-                                ${this._gameCard('eco_recycle', 'Clasificador de Residuos', 'Aprende a separar basura', 'diff-easy', 'ecoTag', 'fa-trash-can-arrow-up', 'https://images.unsplash.com/photo-1532996122724-e3c354a0b15b?auto=format&fit=crop&w=600&q=80')}
-                                ${this._gameCard('eco_water', 'Guardián del Agua', 'Repara fugas y ahorra', 'diff-medium', 'ecoTag', 'fa-droplet', 'https://images.unsplash.com/photo-1519999482648-25049ddd37b1?auto=format&fit=crop&w=600&q=80')}
+                                ${(this.state.profile === 'teens' || this.state.profile === 'admin') ? `
+                                    ${this._gameCard('teens_eco_energy', 'Gestor de Energía', 'Apaga dispositivos ineficientes', 'diff-hard', 'ecoTag', 'fa-plug-circle-xmark', '')}
+                                    ${this._gameCard('teens_eco_ocean', 'Limpiador Oceánico', 'Filtra plástico sin dañar fauna', 'diff-hard', 'ecoTag', 'fa-water', '')}
+                                ` : `
+                                    ${this._gameCard('eco_recycle', 'Clasificador de Residuos', 'Aprende a separar basura', 'diff-easy', 'ecoTag', 'fa-trash-can-arrow-up', '')}
+                                    ${this._gameCard('eco_water', 'Guardián del Agua', 'Repara fugas y ahorra', 'diff-medium', 'ecoTag', 'fa-droplet', '')}
+                                `}
                             </div>
                         </div>
 
@@ -1331,6 +1359,144 @@ class NeuroSparkApp {
         );
     }
 
+    /* ---- ECOSPARK ADMIN PANEL ---- */
+    _renderEcoAdminPanel(mount) {
+        // Cargar todos los estados de usuarios registrados en localStorage
+        const allUsers = [];
+        for (let i = 0; i < localStorage.length; i++) {
+            const key = localStorage.key(i);
+            if (key && key.startsWith('neurospark_state_')) {
+                try {
+                    const data = JSON.parse(localStorage.getItem(key));
+                    if (data && data.activeProfileName) {
+                        allUsers.push({
+                            email: key.replace('neurospark_state_', ''),
+                            name: data.activeProfileName,
+                            ecoPoints: data.ecoPoints || 0,
+                            profile: data.profile || 'kids'
+                        });
+                    }
+                } catch(e) {}
+            }
+        }
+
+        mount.innerHTML = `
+            <div class="eco-home-view" style="padding: 20px; animation: fadeIn 0.4s ease;">
+                <div class="kids-welcome-banner" style="background: linear-gradient(135deg, #047857, #065f46); color: white; display:flex; align-items:center; justify-content:space-between; padding: 25px; border-radius: 16px; margin-bottom: 24px;">
+                    <div>
+                        <h2 style="margin: 0; font-size: 1.8rem; display: flex; align-items: center; gap: 10px;">
+                            <i class="fa-solid fa-leaf"></i> EcoSpark — Panel de Administración
+                        </h2>
+                        <p style="margin: 8px 0 0; font-size: 1rem; opacity: 0.9;">Asigna o ajusta los EcoPuntos de cada alumno.</p>
+                    </div>
+                    <div style="background: rgba(255,255,255,0.15); padding: 10px 18px; border-radius: 10px; text-align:center;">
+                        <div style="font-size: 0.8rem; font-weight: bold; letter-spacing: 1px;">ALUMNOS</div>
+                        <div style="font-size: 2rem; font-weight: 900;">${allUsers.length}</div>
+                    </div>
+                </div>
+
+                <!-- Asignación manual -->
+                <div class="store-container" style="margin-bottom: 24px; border-color: rgba(16,185,129,0.3);">
+                    <h3 class="section-title"><i class="fa-solid fa-plus-circle" style="color:#10b981;"></i> Asignar EcoPuntos Manualmente</h3>
+                    <p style="color:var(--text-muted); font-size:0.9rem; margin-bottom:16px;">Ingresa el correo del alumno y la cantidad de puntos a sumar.</p>
+                    <div style="display:flex; gap:12px; flex-wrap:wrap;">
+                        <input id="eco-admin-email" type="email" placeholder="correo@alumno.com"
+                            style="flex:2; min-width:200px; padding:10px 14px; border-radius:8px; border:1px solid var(--border-color); background:var(--bg-app); color:var(--text-main); font-size:0.95rem; outline:none;">
+                        <input id="eco-admin-pts" type="number" placeholder="Puntos (ej: 15)" min="1" max="500" value="15"
+                            style="flex:1; min-width:120px; padding:10px 14px; border-radius:8px; border:1px solid var(--border-color); background:var(--bg-app); color:var(--text-main); font-size:0.95rem; outline:none;">
+                        <button id="eco-admin-give-btn"
+                            style="background: linear-gradient(135deg,#10b981,#047857); color:white; border:none; padding:10px 22px; border-radius:8px; font-weight:700; cursor:pointer; font-size:0.95rem; white-space:nowrap;">
+                            <i class="fa-solid fa-leaf"></i> Sumar Puntos
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Tabla de alumnos -->
+                <div class="store-container">
+                    <h3 class="section-title"><i class="fa-solid fa-users" style="color:#38bdf8;"></i> Alumnos Registrados</h3>
+                    ${ allUsers.length === 0
+                        ? `<p style="color:var(--text-muted); text-align:center; padding:20px;">No hay alumnos registrados aún.</p>`
+                        : `<div style="overflow-x:auto;">
+                            <table style="width:100%; border-collapse:collapse; font-size:0.9rem;">
+                                <thead>
+                                    <tr style="border-bottom:1px solid var(--border-color);">
+                                        <th style="text-align:left; padding:10px 12px; color:var(--text-muted);">Nombre</th>
+                                        <th style="text-align:left; padding:10px 12px; color:var(--text-muted);">Correo</th>
+                                        <th style="text-align:left; padding:10px 12px; color:var(--text-muted);">Perfil</th>
+                                        <th style="text-align:center; padding:10px 12px; color:#10b981;">EcoPuntos</th>
+                                        <th style="text-align:center; padding:10px 12px; color:var(--text-muted);">Acción</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    ${allUsers.map(u => `
+                                        <tr style="border-bottom:1px solid var(--border-color); transition: background 0.2s;" onmouseover="this.style.background='rgba(16,185,129,0.05)'" onmouseout="this.style.background='transparent'">
+                                            <td style="padding:12px;"><strong>${u.name}</strong></td>
+                                            <td style="padding:12px; color:var(--text-muted); font-size:0.85rem;">${u.email}</td>
+                                            <td style="padding:12px;"><span style="background:${u.profile==='teens'?'rgba(56,189,248,0.15)':'rgba(167,139,250,0.15)'}; color:${u.profile==='teens'?'#38bdf8':'#a78bfa'}; border-radius:6px; padding:2px 8px; font-size:0.8rem; font-weight:700;">${u.profile}</span></td>
+                                            <td style="padding:12px; text-align:center;"><strong style="color:#10b981; font-size:1.05rem;"><i class="fa-solid fa-leaf"></i> ${u.ecoPoints}</strong></td>
+                                            <td style="padding:12px; text-align:center;">
+                                                <button class="eco-quick-add-btn" data-email="${u.email}"
+                                                    style="background:rgba(16,185,129,0.1); border:1px solid #10b981; color:#10b981; padding:5px 12px; border-radius:6px; cursor:pointer; font-size:0.8rem; font-weight:700;">
+                                                    +15 pts
+                                                </button>
+                                            </td>
+                                        </tr>`).join('')}
+                                </tbody>
+                            </table>
+                        </div>`
+                    }
+                </div>
+            </div>`;
+
+        // Listener: Sumar puntos manual
+        const giveBtn = document.getElementById('eco-admin-give-btn');
+        if (giveBtn) {
+            giveBtn.addEventListener('click', () => {
+                const email = document.getElementById('eco-admin-email').value.trim().toLowerCase();
+                const pts = parseInt(document.getElementById('eco-admin-pts').value) || 0;
+                if (!email || pts <= 0) {
+                    this.showToast('Ingresa un correo y una cantidad válida.', 'warning');
+                    return;
+                }
+                const key = 'neurospark_state_' + email;
+                const raw = localStorage.getItem(key);
+                if (!raw) {
+                    this.showToast('No se encontró al alumno con ese correo.', 'warning');
+                    return;
+                }
+                try {
+                    const data = JSON.parse(raw);
+                    data.ecoPoints = (data.ecoPoints || 0) + pts;
+                    localStorage.setItem(key, JSON.stringify(data));
+                    sound.playSuccess();
+                    this.showToast(`+${pts} EcoPuntos asignados a ${email} 🌱`, 'success');
+                    document.getElementById('eco-admin-email').value = '';
+                    this._renderEcoAdminPanel(mount);
+                } catch(e) {
+                    this.showToast('Error al actualizar los puntos.', 'warning');
+                }
+            });
+        }
+
+        // Listeners: botones rápidos +15 en la tabla
+        mount.querySelectorAll('.eco-quick-add-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const email = btn.getAttribute('data-email');
+                const key = 'neurospark_state_' + email;
+                const raw = localStorage.getItem(key);
+                if (!raw) return;
+                try {
+                    const data = JSON.parse(raw);
+                    data.ecoPoints = (data.ecoPoints || 0) + 15;
+                    localStorage.setItem(key, JSON.stringify(data));
+                    sound.playSuccess();
+                    this.showToast(`+15 EcoPuntos → ${email} 🌱`, 'success');
+                    this._renderEcoAdminPanel(mount);
+                } catch(e) {}
+            });
+        });
+    }
+
     /* ---- KIDS HOME ---- */
     renderKidsHome(mount) {
         const name = this.state.activeProfileName;
@@ -1406,7 +1572,7 @@ class NeuroSparkApp {
                             const d = age < 9 ? 'diff-hard' : 'diff-medium';
                             return self._gameCard('musical_memory', 'g5Name', 'g5Desc', d, 'g5Tag', 'fa-music', 'memory.png') +
                                    self._gameCard('memory_cards', 'g6Name', 'g6Desc', d, 'g6Tag', 'fa-layer-group', 'spatial.png') +
-                                   self._gameCard('kids_pattern', 'k_patternName', 'k_patternDesc', d, 'g7Tag', 'fa-shapes', 'https://images.unsplash.com/photo-1614729939124-032f0b56c9ce?auto=format&fit=crop&w=600&q=80') +
+                                   self._gameCard('kids_pattern', 'k_patternName', 'k_patternDesc', d, 'g7Tag', 'assets/game_alien.png', 'https://images.unsplash.com/photo-1614729939124-032f0b56c9ce?auto=format&fit=crop&w=600&q=80') +
                                    self._gameCard('kids_math', 'k_mathName', 'k_mathDesc', age < 9 ? 'diff-hard' : (age < 11 ? 'diff-medium' : 'diff-hard'), 'g8Tag', 'fa-calculator', 'https://images.unsplash.com/photo-1550751827-4bd374c3f58b?auto=format&fit=crop&w=600&q=80');
                         })(this, parseInt(this.state.age) || 8)}
                     </div>
@@ -1686,7 +1852,7 @@ class NeuroSparkApp {
                 <div class="game-thumbnail anim-bg-${id}">
                     <div class="premium-3d-orb">
                         <div class="orb-highlight"></div>
-                        <i class="fa-solid ${icon} orb-icon"></i>
+                        ${icon.startsWith('fa-') ? `<i class="fa-solid ${icon} orb-icon"></i>` : (icon.endsWith('.png') ? `<img src="${icon}" class="orb-img" style="width: 85%; height: 85%; object-fit: cover; border-radius: 50%; transform: translateZ(30px); z-index: 2; box-shadow: 0 4px 12px rgba(0,0,0,0.5);" />` : `<span class="orb-icon" style="font-size: 40px; font-style: normal; filter: drop-shadow(0 4px 8px rgba(0,0,0,0.3));">${icon}</span>`)}
                     </div>
                     <div class="orb-shadow"></div>
                 </div>
@@ -1755,7 +1921,7 @@ class NeuroSparkApp {
                         ${(function(self, age){
                             const d = age <= 13 ? 'diff-easy' : 'diff-medium';
                             return self._gameCard('spatial_focus', 'g2Name', 'g2Desc', d, 'g2Tag', 'fa-star-half-stroke', 'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=600&q=80') +
-                                   self._gameCard('pattern_matcher', 'g7Name', 'g7Desc', d, 'g7Tag', 'fa-shapes', 'https://images.unsplash.com/photo-1614729939124-032f0b56c9ce?auto=format&fit=crop&w=600&q=80') +
+                                   self._gameCard('pattern_matcher', 'g7Name', 'g7Desc', d, 'g7Tag', 'assets/game_alien.png', 'https://images.unsplash.com/photo-1614729939124-032f0b56c9ce?auto=format&fit=crop&w=600&q=80') +
                                    self._gameCard('teens_distraction', 't_distName', 't_distDesc', d, 'g1Tag', 'fa-shield-halved', 'distraction.png') +
                                    self._gameCard('teens_cards', 't_cardsName', 't_cardsDesc', d, 'g6Tag', 'fa-unlock-keyhole', 'https://images.unsplash.com/photo-1635313073808-0a0667b5791c?auto=format&fit=crop&w=600&q=80');
                         })(this, parseInt(this.state.age) || 14)}
@@ -2441,7 +2607,7 @@ class NeuroSparkApp {
                         ${this._gameCard('memory_cards', 'g6Name', 'g6Desc', 'diff-easy', 'g6Tag', 'fa-layer-group', 'spatial.png')}
                         ${this._gameCard('kids_spatial', 'k_spatialName', 'k_spatialDesc', 'diff-medium', 'g2Tag', 'fa-star', 'spatial.png')}
                         ${this._gameCard('kids_routine', 'k_routineName', 'k_routineDesc', 'diff-medium', 'g3Tag', 'fa-rocket', 'routine.png')}
-                        ${this._gameCard('kids_pattern', 'k_patternName', 'k_patternDesc', 'diff-medium', 'g7Tag', 'fa-shapes', 'distraction.png')}
+                        ${this._gameCard('kids_pattern', 'k_patternName', 'k_patternDesc', 'diff-medium', 'g7Tag', 'assets/game_alien.png', 'distraction.png')}
                         ${this._gameCard('kids_math', 'k_mathName', 'k_mathDesc', 'diff-hard', 'g8Tag', 'fa-calculator', 'memory.png')}
                     </div>
                 </div>
@@ -2462,7 +2628,7 @@ class NeuroSparkApp {
                     <div class="games-grid" style="grid-template-columns:1fr 1fr;">
                         ${this._gameCard('spatial_focus', 'g2Name', 'g2Desc', 'diff-medium', 'g2Tag', 'fa-star-half-stroke', 'spatial.png')}
                         ${this._gameCard('routine_builder', 'g3Name', 'g3Desc', 'diff-hard', 'g3Tag', 'fa-puzzle-piece', 'routine.png')}
-                        ${this._gameCard('pattern_matcher', 'g7Name', 'g7Desc', 'diff-medium', 'g7Tag', 'fa-shapes', 'distraction.png')}
+                        ${this._gameCard('pattern_matcher', 'g7Name', 'g7Desc', 'diff-medium', 'g7Tag', 'assets/game_alien.png', 'distraction.png')}
                         ${this._gameCard('speed_math', 'g8Name', 'g8Desc', 'diff-hard', 'g8Tag', 'fa-calculator', 'memory.png')}
                         ${this._gameCard('teens_distraction', 't_distName', 't_distDesc', 'diff-medium', 'g1Tag', 'fa-shield-halved', 'distraction.png')}
                         ${this._gameCard('teens_stoplight', 't_stopName', 't_stopDesc', 'diff-hard', 'g4Tag', 'fa-bolt', 'stoplight.png')}
@@ -2542,8 +2708,8 @@ class NeuroSparkApp {
         overlay.innerHTML = `
             <div class="settings-modal">
                 <div class="settings-header" style="display: flex; justify-content: space-between; align-items: center; width: 100%;">
-                    <h3 style="margin: 0; color: #1e293b;">${i18n.t('settingsTitle')}</h3>
-                    <button id="btn-close-settings" style="background: transparent; border: none; font-size: 2rem; color: #1e293b; cursor: pointer; line-height: 1; padding: 0 10px;">&times;</button>
+                    <h3 style="margin: 0; color: var(--text-main);">${i18n.t('settingsTitle')}</h3>
+                    <button id="btn-close-settings" style="background: transparent; border: none; font-size: 2rem; color: var(--text-main); cursor: pointer; line-height: 1; padding: 0 10px;">&times;</button>
                 </div>
 
                 <!-- Low Stimulus -->
@@ -2578,6 +2744,18 @@ class NeuroSparkApp {
                     </div>
                     <label class="switch">
                         <input type="checkbox" id="check-eco" ${this.state.settings.ecoMode ? 'checked' : ''}>
+                        <span class="slider"></span>
+                    </label>
+                </div>
+
+                <!-- Dark Mode -->
+                <div class="settings-row">
+                    <div class="settings-row-label">
+                        <span style="color: #a78bfa;"><i class="fa-solid fa-moon"></i> Modo Oscuro</span>
+                        <small>Cambia la apariencia visual de la plataforma a tonos oscuros.</small>
+                    </div>
+                    <label class="switch">
+                        <input type="checkbox" id="check-dark-mode" ${this.state.settings.darkTheme ? 'checked' : ''}>
                         <span class="slider"></span>
                     </label>
                 </div>
@@ -2653,9 +2831,20 @@ class NeuroSparkApp {
         }
 
         overlay.classList.add('open');
+        document.body.style.overflow = 'hidden'; // Bloquear el scroll del fondo
+
+        const closeSettings = () => {
+            overlay.classList.remove('open');
+            document.body.style.overflow = ''; // Restaurar el scroll del fondo
+        };
 
         // Bind events
-        document.getElementById('btn-close-settings').addEventListener('click', () => overlay.classList.remove('open'));
+        document.getElementById('btn-close-settings').addEventListener('click', closeSettings);
+        
+        // Cerrar tocando afuera
+        overlay.addEventListener('click', (e) => {
+            if (e.target === overlay) closeSettings();
+        });
 
         document.getElementById('check-stimulus').addEventListener('change', e => {
             this.state.settings.lowStimulus = e.target.checked;
@@ -2675,6 +2864,21 @@ class NeuroSparkApp {
             this.saveState();
         });
 
+        document.getElementById('check-dark-mode').addEventListener('change', e => {
+            const isDark = e.target.checked;
+            // Preserve the current body classes (kids-mode, teens-mode, etc) and just swap the theme
+            const currentClasses = document.body.className;
+            if (isDark) {
+                document.body.className = currentClasses.replace('light-theme', 'dark-theme');
+                this.state.settings.darkTheme = true;
+            } else {
+                document.body.className = currentClasses.replace('dark-theme', 'light-theme');
+                this.state.settings.darkTheme = false;
+            }
+            this.saveState();
+            this.updateHeaderHUD();
+        });
+
         document.getElementById('slider-volume').addEventListener('input', e => {
             this.state.settings.volume = parseInt(e.target.value);
             sound.setVolume(this.state.settings.volume / 100);
@@ -2686,7 +2890,7 @@ class NeuroSparkApp {
             btn.addEventListener('click', () => {
                 const newLang = btn.getAttribute('data-lang');
                 if (newLang === i18n.currentLang) return;
-                overlay.classList.remove('open');
+                closeSettings();
                 this.setLanguage(newLang);
             });
         });
