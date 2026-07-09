@@ -29,7 +29,7 @@ export default class MemoryCards {
         this.flipped = [];
         this.matched = 0;
         this.isProcessing = false;
-        
+
         if (this.controller.gameTime > 60) {
             this.grid = { rows: 4, cols: 5, width: 60, height: 80, gap: 15 };
         } else if (this.controller.gameTime > 30) {
@@ -37,17 +37,17 @@ export default class MemoryCards {
         } else {
             this.grid = { rows: 3, cols: 4, width: 80, height: 100, gap: 20 };
         }
-        
+
         let pairs = (this.grid.rows * this.grid.cols) / 2;
         let icons = ['👽', '🚀', '⭐', '🌎', '☄️', '🛸', '🛰️', '🪐', '🌙', '🌌'];
-        
+
         // Randomly pick icons for pairs
         let selectedIcons = [];
-        while(selectedIcons.length < pairs) {
+        while (selectedIcons.length < pairs) {
             let rand = icons[Math.floor(Math.random() * icons.length)];
             if (!selectedIcons.includes(rand)) selectedIcons.push(rand);
         }
-        
+
         let deck = [...selectedIcons, ...selectedIcons];
         deck.sort(() => Math.random() - 0.5); // shuffle
 
@@ -74,11 +74,11 @@ export default class MemoryCards {
     handleClick(e) {
         if (this.isProcessing) return;
         const rect = this.canvas.getBoundingClientRect();
-        
+
         // Use logic from game controller scale
         const scaleX = 800 / rect.width;
         const scaleY = 500 / rect.height;
-        
+
         const x = (e.clientX - rect.left) * scaleX;
         const y = (e.clientY - rect.top) * scaleY;
 
@@ -144,7 +144,7 @@ export default class MemoryCards {
                 this.ctx.font = '40px Arial';
                 this.ctx.textAlign = 'center';
                 this.ctx.textBaseline = 'middle';
-                this.ctx.fillText(card.icon, card.x + card.w/2, card.y + card.h/2);
+                this.ctx.fillText(card.icon, card.x + card.w / 2, card.y + card.h / 2);
             }
             this.ctx.restore();
         });

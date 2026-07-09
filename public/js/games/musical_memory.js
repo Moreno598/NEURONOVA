@@ -14,17 +14,17 @@ export default class MemoryTones {
         this.pads = [];
         this.sequence = [];
         this.userSequence = [];
-        
+
         this.gameState = 'showing'; // 'showing', 'input', 'success', 'failure'
         this.playbackIndex = 0;
         this.playbackTimer = 0;
         this.playbackSpeed = 40; // frames per note
         this.playbackGap = 18;
         this.activePadIndex = -1;
-        
+
         this.sequenceLength = 3;
         this.round = 1;
-        
+
         this.handleClickBound = this.handleClick.bind(this);
     }
 
@@ -35,7 +35,7 @@ export default class MemoryTones {
         const halfW = 800 / 2;
         const halfH = 500 / 2;
         const padding = 15;
-        
+
         // Pad 1: Red/Top-Left (C4)
         this.pads.push({
             id: 0,
@@ -129,7 +129,7 @@ export default class MemoryTones {
         const rect = this.canvas.getBoundingClientRect();
         const mouseX = (e.clientX - rect.left) * (800 / rect.width);
         const mouseY = (e.clientY - rect.top) * (500 / rect.height);
-        
+
         let clickedPad = -1;
         for (let i = 0; i < this.pads.length; i++) {
             const pad = this.pads[i];
@@ -143,13 +143,13 @@ export default class MemoryTones {
         if (clickedPad !== -1) {
             this.flashPad(clickedPad);
             this.userSequence.push(clickedPad);
-            
+
             const step = this.userSequence.length - 1;
-            
+
             // Check note correctness
             if (this.userSequence[step] === this.sequence[step]) {
                 this.controller.correctResponses++;
-                
+
                 if (this.userSequence.length === this.sequence.length) {
                     // Sequence completed successfully
                     this.gameState = 'success';
@@ -166,7 +166,7 @@ export default class MemoryTones {
                 // Mistake
                 this.gameState = 'failure';
                 this.controller.registerError();
-                
+
                 // Flash incorrect visual display
                 this.activePadIndex = this.sequence[step];
                 setTimeout(() => {
@@ -181,7 +181,7 @@ export default class MemoryTones {
         const pad = this.pads[index];
         this.activePadIndex = index;
         sound.playTone(pad.freq, 0.4, 'triangle');
-        
+
         setTimeout(() => {
             if (this.activePadIndex === index && this.gameState !== 'showing') {
                 this.activePadIndex = -1;
@@ -198,10 +198,10 @@ export default class MemoryTones {
         if (this.gameState === 'showing') {
             this.playbackTimer++;
             const totalFrameTime = this.playbackSpeed + this.playbackGap;
-            
+
             if (this.playbackTimer < this.playbackSpeed) {
                 this.activePadIndex = this.sequence[this.playbackIndex];
-                
+
                 if (this.playbackTimer === 1) {
                     const pad = this.pads[this.activePadIndex];
                     sound.playTone(pad.freq, (this.playbackSpeed / 60), 'triangle');
@@ -211,7 +211,7 @@ export default class MemoryTones {
             } else {
                 this.playbackTimer = 0;
                 this.playbackIndex++;
-                
+
                 if (this.playbackIndex >= this.sequence.length) {
                     this.gameState = 'input';
                     this.activePadIndex = -1;
@@ -222,15 +222,15 @@ export default class MemoryTones {
         // Render Pad Buttons
         this.pads.forEach((pad, idx) => {
             const isActive = this.activePadIndex === idx;
-            
+
             this.ctx.save();
-            
+
             // Neon Glow styling
             if (isActive) {
                 this.ctx.shadowBlur = 35;
                 this.ctx.shadowColor = pad.color;
                 this.ctx.fillStyle = pad.color;
-                
+
                 if (this.gameState === 'failure') {
                     this.ctx.shadowColor = '#ef4444';
                     this.ctx.fillStyle = '#ef4444';
@@ -239,7 +239,7 @@ export default class MemoryTones {
                 this.ctx.shadowBlur = 0;
                 this.ctx.fillStyle = 'rgba(21, 29, 43, 0.85)';
             }
-            
+
             this.ctx.strokeStyle = isActive ? '#ffffff' : 'rgba(255,255,255,0.1)';
             this.ctx.lineWidth = isActive ? 3 : 1.5;
 
@@ -248,12 +248,12 @@ export default class MemoryTones {
             this.ctx.roundRect(pad.x, pad.y, pad.w, pad.h, 16);
             this.ctx.fill();
             this.ctx.stroke();
-            
+
             // Pad inside text
             this.ctx.fillStyle = isActive ? '#000000' : '#ffffff';
             this.ctx.font = 'bold 15px Outfit';
             this.ctx.textAlign = 'center';
-            this.ctx.fillText(pad.label, pad.x + pad.w/2, pad.y + pad.h/2);
+            this.ctx.fillText(pad.label, pad.x + pad.w / 2, pad.y + pad.h / 2);
 
             this.ctx.restore();
         });
@@ -262,7 +262,7 @@ export default class MemoryTones {
         this.ctx.fillStyle = '#ffffff';
         this.ctx.font = 'bold 16px Outfit';
         this.ctx.textAlign = 'center';
-        
+
         if (this.gameState === 'showing') {
             this.ctx.fillText("Escucha los tonos musicales...", 800 / 2, 28);
         } else if (this.gameState === 'input') {

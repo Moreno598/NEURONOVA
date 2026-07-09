@@ -26,7 +26,7 @@ export class AuthUI {
 
     init() {
         if (!this.overlay) return;
-        
+
         // Load saved credentials
         const savedEmail = localStorage.getItem('ns_saved_email');
         const savedPass = localStorage.getItem('ns_saved_password');
@@ -92,7 +92,7 @@ export class AuthUI {
                             if (window.dismissAuthOverlay) window.dismissAuthOverlay();
                         });
                     }
-                    
+
                     const btnLogout = document.getElementById('btn-nav-logout');
                     if (btnLogout) btnLogout.style.display = 'flex';
 
@@ -107,7 +107,7 @@ export class AuthUI {
                     }
                 }
 
-                
+
                 if (isAlreadyAuthenticated) return;
                 isAlreadyAuthenticated = true;
 
@@ -127,7 +127,7 @@ export class AuthUI {
                     app.state.activeProfileName = 'Matias M.';
                 } else if (userMeta) {
                     const { firstName, lastName, age, alias, avatar } = userMeta;
-                    
+
                     if (avatar) app.state.avatar = avatar;
 
                     // Set Profile Name
@@ -136,7 +136,7 @@ export class AuthUI {
                     } else if (firstName) {
                         app.state.activeProfileName = `${firstName} ${lastName || ''}`.trim();
                     }
-                    
+
                     const isParent = localStorage.getItem('ns_is_parent') === 'true';
 
                     // Save age for parent dashboard
@@ -158,7 +158,7 @@ export class AuthUI {
                         }
                     }
                 }
-                
+
                 // Refresh app logic
                 app.saveState();
                 app.updateHeaderHUD();
@@ -185,18 +185,18 @@ export class AuthUI {
             this.isLoginMode = !this.isLoginMode;
             if (this.isLoginMode) {
                 this.title.innerText = 'Bienvenido de nuevo';
-                if(this.subtitle) this.subtitle.innerText = 'Ingresa tus credenciales para acceder a tu entorno.';
+                if (this.subtitle) this.subtitle.innerText = 'Ingresa tus credenciales para acceder a tu entorno.';
                 this.submitBtn.innerText = 'Ingresar al Portal';
                 this.toggleBtn.innerHTML = '¿No tienes una cuenta? <span style="color: #38bdf8; font-weight: 800;">Crear una ahora</span>';
-                if(this.registerFieldsContainer) this.registerFieldsContainer.style.display = 'none';
-                if(this.parentToggleContainer) this.parentToggleContainer.style.display = 'flex';
+                if (this.registerFieldsContainer) this.registerFieldsContainer.style.display = 'none';
+                if (this.parentToggleContainer) this.parentToggleContainer.style.display = 'flex';
             } else {
                 this.title.innerText = 'Crear Cuenta';
-                if(this.subtitle) this.subtitle.innerText = 'Únete a NeuroSpark y transforma tu aprendizaje.';
+                if (this.subtitle) this.subtitle.innerText = 'Únete a NeuroSpark y transforma tu aprendizaje.';
                 this.submitBtn.innerText = 'Registrarse';
                 this.toggleBtn.innerHTML = '¿Ya tienes cuenta? <span style="color: #38bdf8; font-weight: 800;">Inicia sesión aquí</span>';
-                if(this.registerFieldsContainer) this.registerFieldsContainer.style.display = 'flex';
-                if(this.parentToggleContainer) this.parentToggleContainer.style.display = 'none';
+                if (this.registerFieldsContainer) this.registerFieldsContainer.style.display = 'flex';
+                if (this.parentToggleContainer) this.parentToggleContainer.style.display = 'none';
             }
         });
 
@@ -253,12 +253,12 @@ export class AuthUI {
                     if (!firstName || !lastName || !alias || !age || !parentEmail) {
                         throw new Error("Por favor completa tus datos personales (incluyendo el alias) y el correo de tus padres.");
                     }
-                    
+
                     const ageNum = parseInt(age, 10);
                     if (isNaN(ageNum) || ageNum < 6 || ageNum > 17) {
                         throw new Error("NeuroSpark está diseñado exclusivamente para edades entre 6 y 17 años.");
                     }
-                    
+
                     const avatarImgEl = document.getElementById('avatar-preview-img');
                     const avatar = avatarImgEl ? avatarImgEl.getAttribute('data-avatar') : 'sparky';
 
@@ -270,11 +270,11 @@ export class AuthUI {
                         avatar,
                         age: parseInt(age, 10)
                     });
-                    
+
                     // Save the parent email to the 'correos' table
                     try {
                         await authController.saveParentEmail(email, parentEmail);
-                    } catch(e) {
+                    } catch (e) {
                         console.error("Error guardando correo del padre", e);
                     }
 
@@ -285,7 +285,7 @@ export class AuthUI {
                     this.title.innerText = 'Iniciar Sesión';
                     this.submitBtn.innerText = 'Ingresar';
                     this.toggleBtn.innerHTML = '¿No tienes una cuenta? <span style="color: #38bdf8; font-weight: 800;">Crear una ahora</span>';
-                    if(this.registerFieldsContainer) this.registerFieldsContainer.style.display = 'none';
+                    if (this.registerFieldsContainer) this.registerFieldsContainer.style.display = 'none';
                 }
             } catch (error) {
                 console.error("Auth Error:", error);
