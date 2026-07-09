@@ -67,24 +67,57 @@ class GameController {
         };
         const gameIconHTML = iconsDict[gameId] || '<i class="fa-solid fa-gamepad" style="font-size: 3rem; color: #38bdf8;"></i>';
 
-        let extraAnimations = '';
-        if (gameId === 'kids_math' || gameId === 'speed_math') {
-            extraAnimations = `
-                <div style="position:absolute; top:-100px; left:15%; font-size:3rem; animation: fallAnim 2.5s linear infinite;">☄️</div>
-                <div style="position:absolute; top:-100px; left:50%; font-size:4rem; animation: fallAnim 3s linear infinite 1s;">☄️</div>
-                <div style="position:absolute; top:-100px; left:80%; font-size:2.5rem; animation: fallAnim 4s linear infinite 0.5s;">☄️</div>
-                <div style="position:absolute; top:-100px; left:35%; font-size:2rem; animation: fallAnim 3.5s linear infinite 2s;">☄️</div>
-                <style>@keyframes fallAnim { 0% { transform: translateY(0) translateX(0) rotate(0deg); opacity:1;} 100% { transform: translateY(700px) translateX(-100px) rotate(180deg); opacity:0;} }</style>
-            `;
-        } else {
-            extraAnimations = `
-                <div style="position:absolute; width:12px; height:12px; background:rgba(255,255,255,0.4); border-radius:50%; top:20%; left:20%; animation: floatAnimParticle 4s ease-in-out infinite;"></div>
-                <div style="position:absolute; width:18px; height:18px; background:rgba(56,189,248,0.4); border-radius:50%; top:60%; left:80%; animation: floatAnimParticle 5s ease-in-out infinite 1s;"></div>
-                <div style="position:absolute; width:8px; height:8px; background:rgba(167,139,250,0.4); border-radius:50%; top:80%; left:30%; animation: floatAnimParticle 3s ease-in-out infinite 0.5s;"></div>
-                <div style="position:absolute; width:14px; height:14px; background:rgba(250,204,21,0.4); border-radius:50%; top:30%; left:70%; animation: floatAnimParticle 6s ease-in-out infinite 2s;"></div>
-                <style>@keyframes floatAnimParticle { 0%, 100% { transform: translateY(0) scale(1); } 50% { transform: translateY(-25px) scale(1.3); } }</style>
-            `;
-        }
+        const _anim = {
+            meteors: `<div style="position:absolute;top:-100px;left:10%;font-size:3rem;animation:fallAnim 2.5s linear infinite">☄️</div><div style="position:absolute;top:-100px;left:45%;font-size:4rem;animation:fallAnim 3.2s linear infinite 1s">☄️</div><div style="position:absolute;top:-100px;left:75%;font-size:2.5rem;animation:fallAnim 4s linear infinite 0.5s">☄️</div><style>@keyframes fallAnim{0%{transform:translateY(0) rotate(0deg);opacity:1}100%{transform:translateY(700px) translateX(-80px) rotate(180deg);opacity:0}}</style>`,
+            notes: `<div style="position:absolute;top:70%;left:-5%;font-size:3rem;animation:slideRight 8s linear infinite">🎵</div><div style="position:absolute;top:40%;left:-5%;font-size:2.5rem;animation:slideRight 12s linear infinite 3s">🎶</div><div style="position:absolute;top:20%;left:-5%;font-size:4rem;animation:slideRight 10s linear infinite 1s">🎵</div><style>@keyframes slideRight{0%{transform:translateX(-50px);opacity:0}10%{opacity:1}90%{opacity:1}100%{transform:translateX(900px);opacity:0}}</style>`,
+            stars: `<div style="position:absolute;top:15%;left:10%;font-size:2rem;animation:twinkle 2s ease-in-out infinite">⭐</div><div style="position:absolute;top:60%;left:80%;font-size:1.5rem;animation:twinkle 3s ease-in-out infinite 1s">🌟</div><div style="position:absolute;top:80%;left:30%;font-size:2.5rem;animation:twinkle 2.5s ease-in-out infinite 0.5s">✨</div><div style="position:absolute;top:30%;left:70%;font-size:1.8rem;animation:twinkle 4s ease-in-out infinite 2s">⭐</div><style>@keyframes twinkle{0%,100%{transform:scale(1);opacity:0.4}50%{transform:scale(1.4);opacity:1}}</style>`,
+            rockets: `<div style="position:absolute;bottom:-5%;left:15%;font-size:3rem;animation:rocketUp 6s ease-in-out infinite">🚀</div><div style="position:absolute;bottom:-5%;left:65%;font-size:2.5rem;animation:rocketUp 8s ease-in-out infinite 3s">🛸</div><style>@keyframes rocketUp{0%{transform:translateY(0) rotate(-15deg);opacity:0}10%{opacity:1}90%{opacity:1}100%{transform:translateY(-700px) rotate(-15deg);opacity:0}}</style>`,
+            bubbles: `<div style="position:absolute;bottom:-20px;left:20%;width:18px;height:18px;border-radius:50%;border:2px solid rgba(255,255,255,0.6);animation:bubbleUp 5s ease-in infinite"></div><div style="position:absolute;bottom:-20px;left:55%;width:28px;height:28px;border-radius:50%;border:2px solid rgba(255,255,255,0.6);animation:bubbleUp 7s ease-in infinite 2s"></div><div style="position:absolute;bottom:-20px;left:80%;width:12px;height:12px;border-radius:50%;border:2px solid rgba(255,255,255,0.6);animation:bubbleUp 4s ease-in infinite 1s"></div><style>@keyframes bubbleUp{0%{transform:translateY(0) scale(1);opacity:1}100%{transform:translateY(-650px) translateX(20px) scale(1.5);opacity:0}}</style>`,
+            leaves: `<div style="position:absolute;top:-10%;left:20%;font-size:3rem;animation:fallAnim 12s linear infinite">🍃</div><div style="position:absolute;top:-10%;left:55%;font-size:2rem;animation:fallAnim 15s linear infinite 4s">♻️</div><div style="position:absolute;top:-10%;left:80%;font-size:3.5rem;animation:fallAnim 10s linear infinite 2s">🍂</div>`,
+            drops: `<div style="position:absolute;top:-10%;left:25%;font-size:2.5rem;animation:fallAnim 8s linear infinite">💧</div><div style="position:absolute;top:-10%;left:60%;font-size:3rem;animation:fallAnim 10s linear infinite 2s">💧</div><div style="position:absolute;top:-10%;left:40%;font-size:2rem;animation:fallAnim 12s linear infinite 5s">🌊</div>`,
+            cards: `<div style="position:absolute;top:15%;left:5%;font-size:3rem;animation:cardFloat 5s ease-in-out infinite">🃏</div><div style="position:absolute;top:60%;left:85%;font-size:2.5rem;animation:cardFloat 7s ease-in-out infinite 2s">🎴</div><style>@keyframes cardFloat{0%,100%{transform:translateY(0) rotate(-5deg)}50%{transform:translateY(-20px) rotate(5deg)}}</style>`,
+            pulse: `<div style="position:absolute;width:300px;height:300px;background:radial-gradient(circle,rgba(56,189,248,0.15),transparent 70%);top:-50px;left:-50px;animation:pulseGlow 6s infinite alternate"></div><div style="position:absolute;width:400px;height:400px;background:radial-gradient(circle,rgba(167,139,250,0.12),transparent 70%);bottom:-80px;right:-80px;animation:pulseGlow 8s infinite alternate-reverse"></div><style>@keyframes pulseGlow{0%{transform:scale(1)}100%{transform:scale(1.6)}}</style>`
+        };
+        const _extraMap = {
+            'kids_math': _anim.meteors, 'speed_math': _anim.meteors,
+            'musical_memory': _anim.notes, 'teens_sound': _anim.notes,
+            'kids_spatial': _anim.stars, 'spatial_focus': _anim.stars,
+            'kids_routine': _anim.rockets, 'routine_builder': _anim.rockets,
+            'teens_eco_ocean': _anim.bubbles, 'eco_water': _anim.drops,
+            'eco_recycle': _anim.leaves,
+            'memory_cards': _anim.cards, 'teens_cards': _anim.cards,
+            'distraction_hunter': _anim.meteors, 'teens_distraction': _anim.meteors,
+            'teens_eco_energy': _anim.pulse,
+            'emotional_stoplight': _anim.pulse, 'teens_stoplight': _anim.pulse,
+            'kids_pattern': _anim.stars, 'pattern_matcher': _anim.stars
+        };
+        const extraAnimations = _extraMap[gameId] || _anim.pulse;
+
+        const _bgMap = {
+            'kids_math':        `<div style="position:absolute;inset:0;z-index:0;opacity:0.12;overflow:hidden;pointer-events:none">${_anim.meteors}</div>`,
+            'speed_math':       `<div style="position:absolute;inset:0;z-index:0;opacity:0.12;overflow:hidden;pointer-events:none">${_anim.meteors}</div>`,
+            'musical_memory':   `<div style="position:absolute;inset:0;z-index:0;opacity:0.18;overflow:hidden;pointer-events:none">${_anim.notes}</div>`,
+            'teens_sound':      `<div style="position:absolute;inset:0;z-index:0;opacity:0.18;overflow:hidden;pointer-events:none">${_anim.notes}</div>`,
+            'kids_spatial':     `<div style="position:absolute;inset:0;z-index:0;opacity:0.2;overflow:hidden;pointer-events:none">${_anim.stars}</div>`,
+            'spatial_focus':    `<div style="position:absolute;inset:0;z-index:0;opacity:0.2;overflow:hidden;pointer-events:none">${_anim.stars}</div>`,
+            'kids_routine':     `<div style="position:absolute;inset:0;z-index:0;opacity:0.15;overflow:hidden;pointer-events:none">${_anim.rockets}</div>`,
+            'routine_builder':  `<div style="position:absolute;inset:0;z-index:0;opacity:0.15;overflow:hidden;pointer-events:none">${_anim.rockets}</div>`,
+            'teens_eco_ocean':  `<div style="position:absolute;inset:0;z-index:0;opacity:0.3;overflow:hidden;pointer-events:none;background:linear-gradient(to bottom,transparent,rgba(2,132,199,0.35))">${_anim.bubbles}</div>`,
+            'eco_water':        `<div style="position:absolute;inset:0;z-index:0;opacity:0.2;overflow:hidden;pointer-events:none;background:linear-gradient(to bottom,transparent,rgba(56,189,248,0.2))">${_anim.drops}</div>`,
+            'eco_recycle':      `<div style="position:absolute;inset:0;z-index:0;opacity:0.15;overflow:hidden;pointer-events:none">${_anim.leaves}</div>`,
+            'memory_cards':     `<div style="position:absolute;inset:0;z-index:0;opacity:0.1;overflow:hidden;pointer-events:none">${_anim.cards}</div>`,
+            'teens_cards':      `<div style="position:absolute;inset:0;z-index:0;opacity:0.1;overflow:hidden;pointer-events:none">${_anim.cards}</div>`,
+            'distraction_hunter': `<div style="position:absolute;inset:0;z-index:0;opacity:0.1;overflow:hidden;pointer-events:none">${_anim.meteors}</div>`,
+            'teens_distraction':  `<div style="position:absolute;inset:0;z-index:0;opacity:0.1;overflow:hidden;pointer-events:none">${_anim.meteors}</div>`,
+            'teens_eco_energy': `<div style="position:absolute;inset:0;z-index:0;opacity:0.12;overflow:hidden;pointer-events:none">${_anim.pulse}</div>`,
+            'emotional_stoplight': `<div style="position:absolute;inset:0;z-index:0;opacity:0.12;overflow:hidden;pointer-events:none">${_anim.pulse}</div>`,
+            'teens_stoplight':  `<div style="position:absolute;inset:0;z-index:0;opacity:0.12;overflow:hidden;pointer-events:none">${_anim.pulse}</div>`,
+            'kids_pattern':     `<div style="position:absolute;inset:0;z-index:0;opacity:0.15;overflow:hidden;pointer-events:none">${_anim.stars}</div>`,
+            'pattern_matcher':  `<div style="position:absolute;inset:0;z-index:0;opacity:0.15;overflow:hidden;pointer-events:none">${_anim.stars}</div>`
+        };
+        const inGameBackground = _bgMap[gameId] || `<div style="position:absolute;inset:0;z-index:0;opacity:0.1;overflow:hidden;pointer-events:none">${_anim.pulse}</div>`;
+
+
 
         // Load the view in the app
         const mount = document.getElementById('app-view-mount');
@@ -116,8 +149,9 @@ class GameController {
                     </div>
                 </div>
                 
-                <div class="game-canvas-wrapper" id="game-canvas-container" style="position: relative; overflow: hidden; border-radius: 16px;">
-                    <canvas id="game-canvas" width="800" height="500"></canvas>
+                <div class="game-canvas-wrapper" id="game-canvas-container" style="position: relative; overflow: hidden; border-radius: 16px; background: rgba(15,23,42,0.8);">
+                    ${inGameBackground}
+                    <canvas id="game-canvas" width="800" height="500" style="position: relative; z-index: 10; background: transparent;"></canvas>
                     <div id="game-instructions-overlay" style="position: absolute; inset: 0; background: rgba(15,23,42,0.95); backdrop-filter: blur(8px); z-index: 100; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; padding: 40px; border-radius: inherit; overflow: hidden;">
                         ${extraAnimations}
                         <div class="game-thumbnail anim-bg-${gameId}" style="width:120px; height:120px; border-radius:50%; margin:0 auto 20px auto; display:flex; justify-content:center; align-items:center; position:relative; overflow:hidden; box-shadow:0 0 30px rgba(56,189,248,0.3); animation: floatAnimParticle 4s infinite ease-in-out;">
@@ -176,7 +210,11 @@ class GameController {
             
             'teens_eco_energy': '<strong>🕹️ Instrucciones:</strong> Apaga los dispositivos que derrochan energía (rojos) e ignora los eficientes (verdes).<br><br><strong style="color:#a78bfa;">🧠 ¿En qué te ayuda?</strong><br>Entrena la <em>discriminación visual rápida</em> y el control inhibitorio frente a múltiples estímulos.',
             
-            'teens_eco_ocean': '<strong>🕹️ Instrucciones:</strong> Recoge el plástico (rojo) flotando en el agua sin tocar a la fauna marina (peces azules).<br><br><strong style="color:#a78bfa;">🧠 ¿En qué te ayuda?</strong><br>Fortalece tu <em>atención dividida</em> y tu precisión motora fina, permitiendo que tu cerebro maneje dos tareas a la vez.'
+            'teens_eco_ocean': '<strong>🕹️ Instrucciones:</strong> Recoge el plástico (rojo) flotando en el agua sin tocar a la fauna marina (peces azules).<br><br><strong style="color:#a78bfa;">🧠 ¿En qué te ayuda?</strong><br>Fortalece tu <em>atención dividida</em> y tu precisión motora fina, permitiendo que tu cerebro maneje dos tareas a la vez.',
+
+            'premium_kids': '<strong>👑 Misión VIP: Cazador de Estrellas</strong><br><strong>🕹️ Instrucciones:</strong> Atrapa las estrellas de energía (azules y doradas) con el mouse y esquiva los obstáculos (rojos).<br><br><strong style="color:#fcd34d;">🧠 ¿En qué te ayuda?</strong><br>Desarrolla tu <em>coordinación visomotora</em> y tiempo de reacción rápido bajo estímulos cambiantes en un entorno relajante.',
+
+            'premium_teens': '<strong>👑 Misión VIP: Simulador de Foco Profundo</strong><br><strong>🕹️ Instrucciones:</strong> Memoriza la secuencia y presiona los conectores (orbes verdes) mientras ignoras los virus (rojos).<br><br><strong style="color:#fcd34d;">🧠 ¿En qué te ayuda?</strong><br>Lleva tu <em>memoria de trabajo y control inhibitorio</em> al límite absoluto, entrenando tu cerebro para mantener concentración total.'
         };
         const instrText = instructionsDict[gameId] || '<strong>🕹️ Instrucciones:</strong> Sigue las instrucciones en pantalla.<br><br><strong style="color:#a78bfa;">🧠 ¿En qué te ayuda?</strong><br>Entrena tu capacidad cognitiva general y mejora tu enfoque.';
         document.getElementById('game-instructions-text').innerHTML = instrText;
@@ -290,6 +328,10 @@ class GameController {
                 module = await import('./games/teens_eco_energy.js');
             } else if (gameId === 'teens_eco_ocean') {
                 module = await import('./games/teens_eco_ocean.js');
+            } else if (gameId === 'premium_kids') {
+                module = await import('./games/premium_kids.js');
+            } else if (gameId === 'premium_teens') {
+                module = await import('./games/premium_teens.js');
             }
             
             if (module && module.default) {

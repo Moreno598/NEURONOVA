@@ -114,12 +114,12 @@ export default class EcoRecycle {
         if (!this.controller.isPlaying) return;
         this.ctx.clearRect(0, 0, 800, 500);
 
-        // Draw background subtle gradient
-        const bgGrad = this.ctx.createLinearGradient(0, 0, 0, 500);
-        bgGrad.addColorStop(0, '#f8fafc');
-        bgGrad.addColorStop(1, '#e2e8f0');
-        this.ctx.fillStyle = bgGrad;
-        this.ctx.fillRect(0, 0, 800, 500);
+        // Draw background subtle gradient removed to show CSS animated background
+        // const bgGrad = this.ctx.createLinearGradient(0, 0, 0, 500);
+        // bgGrad.addColorStop(0, '#f8fafc');
+        // bgGrad.addColorStop(1, '#e2e8f0');
+        // this.ctx.fillStyle = bgGrad;
+        // this.ctx.fillRect(0, 0, 800, 500);
 
         // Update & Draw Trash
         if (this.currentTrash) {

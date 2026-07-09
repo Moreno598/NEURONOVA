@@ -68,12 +68,12 @@ export default class TeensEcoEnergy {
         if (!this.controller.isPlaying) return;
         this.ctx.clearRect(0, 0, 800, 500);
 
-        // Background
-        const bgGrad = this.ctx.createLinearGradient(0, 0, 0, 500);
-        bgGrad.addColorStop(0, '#020617');
-        bgGrad.addColorStop(1, '#0f172a');
-        this.ctx.fillStyle = bgGrad;
-        this.ctx.fillRect(0, 0, 800, 500);
+        // Background removed to show CSS animated background
+        // const bgGrad = this.ctx.createLinearGradient(0, 0, 0, 500);
+        // bgGrad.addColorStop(0, '#020617');
+        // bgGrad.addColorStop(1, '#0f172a');
+        // this.ctx.fillStyle = bgGrad;
+        // this.ctx.fillRect(0, 0, 800, 500);
 
         if (!timestamp) timestamp = 0;
         

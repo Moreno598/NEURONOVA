@@ -636,9 +636,9 @@
                 </div><!-- end landing hero main content -->
 
                 <!-- Footer / Credits -->
-                <div style="width: 100%; text-align: center; padding-bottom: 25px; z-index: 10;">
+                <div style="width: 100%; text-align: center; padding-bottom: 25px; z-index: 10; margin-top: auto;">
                     <span
-                        style="color: rgba(255,255,255,0.3); font-size: 0.85rem; font-weight: 600; letter-spacing: 1px; font-family: inherit;">Developer
+                        style="color: #64748b; font-size: 0.85rem; font-weight: 700; letter-spacing: 1px; font-family: inherit;">Developer
                         By Neuronova</span>
                 </div>
 
@@ -2584,6 +2584,9 @@
 
         function closeSubModal(modalId) {
             document.getElementById(modalId).style.display = 'none';
+            if (modalId === 'zenModal' && window.sound) {
+                window.sound.stopFocusMusic();
+            }
             openPremiumHub();
         }
 
@@ -2593,8 +2596,14 @@
 
             if (feature === 'zen') {
                 document.getElementById('zenModal').style.display = 'flex';
-                const audio = document.getElementById('ambient-audio');
-                if (audio && audio.src) { audio.play().catch(e => console.log(e)); }
+                if (window.sound) window.sound.startFocusMusic();
+            } else if (feature === 'games') {
+                // Lanza el juego VIP dependiendo del perfil
+                if (state && (state.profile === 'teens' || state.profile === 'adults')) {
+                    window.neuroApp.engine.launch('premium_teens');
+                } else {
+                    window.neuroApp.engine.launch('premium_kids');
+                }
             } else if (feature === 'pomodoro') {
                 document.getElementById('pomodoroModal').style.display = 'flex';
             } else if (feature === 'ia') {

@@ -70,12 +70,12 @@ export default class EcoWater {
         if (!this.controller.isPlaying) return;
         this.ctx.clearRect(0, 0, 800, 500);
 
-        // Background
-        const bgGrad = this.ctx.createLinearGradient(0, 0, 0, 500);
-        bgGrad.addColorStop(0, '#0f172a');
-        bgGrad.addColorStop(1, '#1e293b');
-        this.ctx.fillStyle = bgGrad;
-        this.ctx.fillRect(0, 0, 800, 500);
+        // Background removed to show CSS animated background
+        // const bgGrad = this.ctx.createLinearGradient(0, 0, 0, 500);
+        // bgGrad.addColorStop(0, '#0f172a');
+        // bgGrad.addColorStop(1, '#1e293b');
+        // this.ctx.fillStyle = bgGrad;
+        // this.ctx.fillRect(0, 0, 800, 500);
 
         if (!timestamp) timestamp = 0;
         // Calculate spawn delay: starts at 1500ms, decreases as gameTime increases (min 400ms)

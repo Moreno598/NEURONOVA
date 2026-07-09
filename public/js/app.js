@@ -58,6 +58,7 @@ class NeuroSparkApp {
 
     /* ---- BOOT ---- */
     init() {
+        window.sound = sound;
         window.neuroApp = this;
         this.engine = engine;
         this.loadState();
@@ -656,24 +657,24 @@ class NeuroSparkApp {
                         </div>
 
                         <!-- Search bar -->
-                        <input type="text" id="admin-user-search" placeholder="🔍  Buscar por nombre o correo..." style="width: 100%; padding: 12px 16px; border-radius: 10px; border: 1.5px solid var(--border-color); background: var(--bg-app); color: var(--text-main); font-size: 0.95rem; outline: none; margin-bottom: 14px; transition: border-color 0.3s; font-family: inherit;">
+                        <input type="text" id="admin-user-search" placeholder="🔍  Buscar por nombre o correo..." style="width: 100%; padding: 12px 16px; border-radius: 10px; border: 1.5px solid rgba(255,255,255,0.1); background: #1e293b; color: #f8fafc; font-size: 0.95rem; outline: none; margin-bottom: 14px; transition: border-color 0.3s; font-family: inherit;">
 
                         <!-- Table -->
-                        <div style="overflow-x: auto; border-radius: 12px; border: 1px solid var(--border-color);">
+                        <div style="overflow-x: auto; border-radius: 12px; border: 1px solid rgba(255,255,255,0.1);">
                             <table id="admin-users-table" style="width: 100%; border-collapse: collapse; font-size: 0.9rem;">
                                 <thead>
-                                    <tr style="background: var(--bg-app); border-bottom: 1px solid var(--border-color);">
-                                        <th style="padding: 12px 16px; text-align: left; color: var(--text-muted); font-weight: 600; font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.5px;">Estudiante</th>
-                                        <th style="padding: 12px 16px; text-align: left; color: var(--text-muted); font-weight: 600; font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.5px;">Correo</th>
-                                        <th style="padding: 12px 16px; text-align: center; color: var(--text-muted); font-weight: 600; font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.5px;">Edad</th>
-                                        <th style="padding: 12px 16px; text-align: center; color: var(--text-muted); font-weight: 600; font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.5px;">Perfil</th>
-                                        <th style="padding: 12px 16px; text-align: center; color: var(--text-muted); font-weight: 600; font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.5px;">NeuroCoins</th>
-                                        <th style="padding: 12px 16px; text-align: center; color: var(--text-muted); font-weight: 600; font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.5px;">Nivel</th>
-                                        <th style="padding: 12px 16px; text-align: center; color: var(--text-muted); font-weight: 600; font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.5px;">Acciones</th>
+                                    <tr style="background: #1e293b; border-bottom: 1px solid rgba(255,255,255,0.1);">
+                                        <th style="padding: 12px 16px; text-align: left; color: #94a3b8; font-weight: 600; font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.5px;">Estudiante</th>
+                                        <th style="padding: 12px 16px; text-align: left; color: #94a3b8; font-weight: 600; font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.5px;">Correo</th>
+                                        <th style="padding: 12px 16px; text-align: center; color: #94a3b8; font-weight: 600; font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.5px;">Edad</th>
+                                        <th style="padding: 12px 16px; text-align: center; color: #94a3b8; font-weight: 600; font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.5px;">Perfil</th>
+                                        <th style="padding: 12px 16px; text-align: center; color: #94a3b8; font-weight: 600; font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.5px;">NeuroCoins</th>
+                                        <th style="padding: 12px 16px; text-align: center; color: #94a3b8; font-weight: 600; font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.5px;">Nivel</th>
+                                        <th style="padding: 12px 16px; text-align: center; color: #94a3b8; font-weight: 600; font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.5px;">Acciones</th>
                                     </tr>
                                 </thead>
                                 <tbody id="admin-users-tbody">
-                                    <tr><td colspan="7" style="text-align:center; padding: 30px; color: var(--text-muted);">
+                                    <tr><td colspan="7" style="text-align:center; padding: 30px; color: #94a3b8;">
                                         <i class="fa-solid fa-spinner fa-spin" style="margin-right:8px;"></i>Cargando usuarios...
                                     </td></tr>
                                 </tbody>
@@ -682,14 +683,14 @@ class NeuroSparkApp {
                     </div>
 
                     <!-- Separator -->
-                    <div style="border-top: 1px solid var(--border-color);"></div>
+                    <div style="border-top: 1px solid rgba(255,255,255,0.1);"></div>
 
                     <!-- Dar Coins -->
                     <div>
-                        <p style="color: var(--text-muted); margin: 0 0 14px; font-size: 0.95rem;"><i class="fa-solid fa-coins" style="color:#f59e0b; margin-right:6px;"></i>Otorga NeuroCoins a un estudiante.</p>
+                        <p style="color: #94a3b8; margin: 0 0 14px; font-size: 0.95rem;"><i class="fa-solid fa-coins" style="color:#f59e0b; margin-right:6px;"></i>Otorga NeuroCoins a un estudiante.</p>
                         <div style="display: flex; gap: 12px; flex-wrap: wrap;">
-                            <input type="email" id="admin-coins-email" placeholder="correo_estudiante@ejemplo.com" style="flex: 1; min-width: 200px; padding: 14px; border-radius: 10px; border: 2px solid var(--border-color); background: var(--bg-app); color: var(--text-main); font-size: 0.95rem; outline: none; transition: border-color 0.3s;">
-                            <input type="number" id="admin-coins-amount" placeholder="Cantidad" style="width: 130px; padding: 14px; border-radius: 10px; border: 2px solid var(--border-color); background: var(--bg-app); color: var(--text-main); font-size: 0.95rem; outline: none;">
+                            <input type="email" id="admin-coins-email" placeholder="correo_estudiante@ejemplo.com" style="flex: 1; min-width: 200px; padding: 14px; border-radius: 10px; border: 2px solid rgba(255,255,255,0.1); background: #1e293b; color: #f8fafc; font-size: 0.95rem; outline: none; transition: border-color 0.3s;">
+                            <input type="number" id="admin-coins-amount" placeholder="Cantidad" style="width: 130px; padding: 14px; border-radius: 10px; border: 2px solid rgba(255,255,255,0.1); background: #1e293b; color: #f8fafc; font-size: 0.95rem; outline: none;">
                             <button id="btn-add-coins" class="play-btn" style="background: linear-gradient(135deg, #f59e0b, #d97706); color: white; padding: 0 28px; font-size: 0.95rem; border-radius: 10px; height: 50px; white-space: nowrap;">
                                 <i class="fa-solid fa-coins"></i> Dar Coins
                             </button>
@@ -698,10 +699,10 @@ class NeuroSparkApp {
 
                     <!-- Asignar Rol -->
                     <div>
-                        <p style="color: var(--text-muted); margin: 0 0 14px; font-size: 0.95rem;"><i class="fa-solid fa-user-shield" style="color:#a78bfa; margin-right:6px;"></i>Asigna un rol especial a un usuario.</p>
+                        <p style="color: #94a3b8; margin: 0 0 14px; font-size: 0.95rem;"><i class="fa-solid fa-user-shield" style="color:#a78bfa; margin-right:6px;"></i>Asigna un rol especial a un usuario.</p>
                         <div style="display: flex; gap: 12px; flex-wrap: wrap;">
-                            <input type="email" id="admin-search-email" placeholder="correo@ejemplo.com" style="flex: 1; min-width: 200px; padding: 14px; border-radius: 10px; border: 2px solid var(--border-color); background: var(--bg-app); color: var(--text-main); font-size: 0.95rem; outline: none; transition: border-color 0.3s;">
-                            <select id="admin-role-select" style="padding: 14px; border-radius: 10px; border: 2px solid var(--border-color); background: var(--bg-app); color: var(--text-main); font-size: 0.95rem; outline: none; cursor: pointer; min-width: 190px;">
+                            <input type="email" id="admin-search-email" placeholder="correo@ejemplo.com" style="flex: 1; min-width: 200px; padding: 14px; border-radius: 10px; border: 2px solid rgba(255,255,255,0.1); background: #1e293b; color: #f8fafc; font-size: 0.95rem; outline: none; transition: border-color 0.3s;">
+                            <select id="admin-role-select" style="padding: 14px; border-radius: 10px; border: 2px solid rgba(255,255,255,0.1); background: #1e293b; color: #f8fafc; font-size: 0.95rem; outline: none; cursor: pointer; min-width: 190px;">
                                 <option value="padre">Padre / Apoderado</option>
                                 <option value="docente">Docente / Especialista</option>
                                 <option value="premium">VIP / Premium 👑</option>
@@ -716,10 +717,10 @@ class NeuroSparkApp {
                     <!-- Log -->
                     <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
                         <div>
-                            <h4 style="margin: 0 0 10px; color: var(--text-muted); font-size: 0.9rem;"><i class="fa-solid fa-clock-rotate-left"></i> Asignaciones Recientes</h4>
+                            <h4 style="margin: 0 0 10px; color: #94a3b8; font-size: 0.9rem;"><i class="fa-solid fa-clock-rotate-left"></i> Asignaciones Recientes</h4>
                             <div id="admin-log-list" style="display: flex; flex-direction: column; gap: 10px; max-height: 180px; overflow-y: auto;">
-                                <div style="padding: 14px 18px; background: var(--bg-app); border-radius: 10px; border: 1px solid var(--border-color); display: flex; justify-content: space-between; align-items: center;">
-                                    <span style="font-size: 0.9rem; color: var(--text-muted);"><i class="fa-solid fa-circle-info" style="margin-right: 8px;"></i>Aún no hay asignaciones en esta sesión.</span>
+                                <div style="padding: 14px 18px; background: #1e293b; border-radius: 10px; border: 1px solid rgba(255,255,255,0.1); display: flex; justify-content: space-between; align-items: center;">
+                                    <span style="font-size: 0.9rem; color: #94a3b8;"><i class="fa-solid fa-circle-info" style="margin-right: 8px;"></i>Aún no hay asignaciones en esta sesión.</span>
                                 </div>
                             </div>
                         </div>
@@ -780,7 +781,7 @@ class NeuroSparkApp {
                     <td style="padding: 13px 16px;">
                         <div style="display:flex; align-items:center; gap:12px;">
                             <div style="width:36px;height:36px;border-radius:10px;background:${color}22;border:1px solid ${color}44;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:0.8rem;color:${color};flex-shrink:0;">${initials}</div>
-                            <span style="color:var(--text-main);font-weight:600;">${name}</span>
+                            <span style="color:var(--text-main);font-weight:600;">${name}${s.isPremium ? ' <i class="fa-solid fa-crown" style="color: #fcd34d; font-size: 0.8rem; margin-left: 4px;" title="Usuario Premium"></i>' : ''}</span>
                         </div>
                     </td>
                     <td style="padding: 13px 16px; color: var(--text-muted); font-size:0.85rem;">${u.email}</td>
@@ -881,16 +882,32 @@ class NeuroSparkApp {
             }
 
             const roleValue = roleSelect.value;
-            if (roleValue === 'premium') {
-                localStorage.setItem('ns_is_premium', 'true');
-                const widget = document.getElementById('premiumWidget');
-                if (widget) widget.style.display = 'none';
-                const premiumHubBtn = document.getElementById('btn-premium-hub');
-                if (premiumHubBtn) premiumHubBtn.style.display = 'inline-flex';
+            
+            // Try to load from Supabase first or local
+            const targetKey = 'neurospark_state_' + email;
+            let targetState = await authController.loadUserState(email);
+            if (!targetState) {
+                let targetStateStr = localStorage.getItem(targetKey);
+                targetState = targetStateStr ? JSON.parse(targetStateStr) : null;
+            }
+            if (!targetState) {
+                targetState = {
+                    profile: 'kids',
+                    activeProfileName: 'Estudiante',
+                    coins: 120,
+                    level: 1,
+                    lang: 'es',
+                    unlockedItems: ['classic_skin'],
+                    activeSkin: 'classic_skin',
+                    history: []
+                };
+            }
 
-                const profileSpan = document.getElementById('current-profile-name');
-                if (profileSpan && !profileSpan.innerHTML.includes('fa-crown')) {
-                    profileSpan.innerHTML += ' <i class="fa-solid fa-crown" style="color: #fcd34d; margin-left: 5px; text-shadow: 0 0 10px #fcd34d;" title="Usuario Premium"></i>';
+            if (roleValue === 'premium') {
+                targetState.isPremium = true;
+                if (email === window.neuroApp?.state?.email) {
+                    localStorage.setItem('ns_is_premium', 'true');
+                    window.neuroApp.state.isPremium = true;
                 }
 
                 const premiumList = document.getElementById('admin-premium-list');
@@ -901,14 +918,11 @@ class NeuroSparkApp {
                 premiumList.prepend(div);
                 setTimeout(() => { div.style.opacity = '1'; div.style.transform = 'translateY(0)'; }, 10);
             } else if (roleValue === 'quitar_premium') {
-                localStorage.removeItem('ns_is_premium');
-                const widget = document.getElementById('premiumWidget');
-                if (widget) widget.style.display = 'flex';
-                const premiumHubBtn = document.getElementById('btn-premium-hub');
-                if (premiumHubBtn) premiumHubBtn.style.display = 'none';
-
-                const profileSpan = document.getElementById('current-profile-name');
-                if (profileSpan) profileSpan.innerHTML = profileSpan.innerHTML.replace(/<i[^>]*fa-crown[^>]*><\/i>/g, '');
+                targetState.isPremium = false;
+                if (email === window.neuroApp?.state?.email) {
+                    localStorage.removeItem('ns_is_premium');
+                    window.neuroApp.state.isPremium = false;
+                }
 
                 const logList = document.getElementById('admin-log-list');
                 const item = document.createElement('div');
@@ -931,6 +945,11 @@ class NeuroSparkApp {
                 logList.prepend(item);
                 setTimeout(() => { item.style.opacity = '1'; item.style.transform = 'translateY(0)'; }, 10);
             }
+
+            // Save back target state
+            localStorage.setItem(targetKey, JSON.stringify(targetState));
+            await authController.saveUserState(email, targetState);
+            if (typeof loadUsers === 'function') loadUsers();
 
             this.showToast('Rol "' + roleText + '" asignado a ' + email, 'success');
             emailInput.value = '';

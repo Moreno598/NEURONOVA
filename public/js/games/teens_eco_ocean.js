@@ -83,12 +83,12 @@ export default class TeensEcoOcean {
         if (!this.controller.isPlaying) return;
         this.ctx.clearRect(0, 0, 800, 500);
 
-        // Background
-        const bgGrad = this.ctx.createLinearGradient(0, 0, 0, 500);
-        bgGrad.addColorStop(0, '#0c4a6e');
-        bgGrad.addColorStop(1, '#082f49');
-        this.ctx.fillStyle = bgGrad;
-        this.ctx.fillRect(0, 0, 800, 500);
+        // Background removed to show CSS animated background
+        // const bgGrad = this.ctx.createLinearGradient(0, 0, 0, 500);
+        // bgGrad.addColorStop(0, '#0c4a6e');
+        // bgGrad.addColorStop(1, '#082f49');
+        // this.ctx.fillStyle = bgGrad;
+        // this.ctx.fillRect(0, 0, 800, 500);
 
         // Speed increases over time
         this.speedMultiplier = 1 + (this.controller.gameTime * 0.05);
