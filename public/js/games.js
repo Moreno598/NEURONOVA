@@ -43,6 +43,49 @@ class GameController {
         // Auto adapt difficulty from history of this game
         this.adaptDifficulty(gameId);
 
+        const iconsDict = {
+            'distraction_hunter': '<i class="fa-solid fa-meteor" style="font-size: 3rem; color: #f87171;"></i>',
+            'emotional_stoplight': '<i class="fa-solid fa-traffic-light" style="font-size: 3rem; color: #34d399;"></i>',
+            'musical_memory': '<i class="fa-solid fa-music" style="font-size: 3rem; color: #a78bfa;"></i>',
+            'memory_cards': '<i class="fa-solid fa-layer-group" style="font-size: 3rem; color: #60a5fa;"></i>',
+            'kids_spatial': '<i class="fa-solid fa-star" style="font-size: 3rem; color: #facc15;"></i>',
+            'kids_routine': '<i class="fa-solid fa-rocket" style="font-size: 3rem; color: #fb923c;"></i>',
+            'kids_pattern': '<i class="fa-brands fa-space-awesome" style="font-size: 3rem; color: #a78bfa;"></i>',
+            'kids_math': '<i class="fa-solid fa-calculator" style="font-size: 3rem; color: #fbbf24;"></i>',
+            'spatial_focus': '<i class="fa-solid fa-eye" style="font-size: 3rem; color: #38bdf8;"></i>',
+            'routine_builder': '<i class="fa-solid fa-list-check" style="font-size: 3rem; color: #4ade80;"></i>',
+            'pattern_matcher': '<i class="fa-solid fa-shapes" style="font-size: 3rem; color: #f472b6;"></i>',
+            'speed_math': '<i class="fa-solid fa-calculator" style="font-size: 3rem; color: #fbbf24;"></i>',
+            'teens_distraction': '<i class="fa-solid fa-crosshairs" style="font-size: 3rem; color: #ef4444;"></i>',
+            'teens_stoplight': '<i class="fa-solid fa-hand" style="font-size: 3rem; color: #fb7185;"></i>',
+            'teens_sound': '<i class="fa-solid fa-headphones" style="font-size: 3rem; color: #818cf8;"></i>',
+            'teens_cards': '<i class="fa-solid fa-chess-board" style="font-size: 3rem; color: #cbd5e1;"></i>',
+            'eco_recycle': '<i class="fa-solid fa-trash-can-arrow-up" style="font-size: 3rem; color: #10b981;"></i>',
+            'eco_water': '<i class="fa-solid fa-droplet" style="font-size: 3rem; color: #38bdf8;"></i>',
+            'teens_eco_energy': '<i class="fa-solid fa-plug-circle-xmark" style="font-size: 3rem; color: #f87171;"></i>',
+            'teens_eco_ocean': '<i class="fa-solid fa-water" style="font-size: 3rem; color: #0284c7;"></i>'
+        };
+        const gameIconHTML = iconsDict[gameId] || '<i class="fa-solid fa-gamepad" style="font-size: 3rem; color: #38bdf8;"></i>';
+
+        let extraAnimations = '';
+        if (gameId === 'kids_math' || gameId === 'speed_math') {
+            extraAnimations = `
+                <div style="position:absolute; top:-100px; left:15%; font-size:3rem; animation: fallAnim 2.5s linear infinite;">☄️</div>
+                <div style="position:absolute; top:-100px; left:50%; font-size:4rem; animation: fallAnim 3s linear infinite 1s;">☄️</div>
+                <div style="position:absolute; top:-100px; left:80%; font-size:2.5rem; animation: fallAnim 4s linear infinite 0.5s;">☄️</div>
+                <div style="position:absolute; top:-100px; left:35%; font-size:2rem; animation: fallAnim 3.5s linear infinite 2s;">☄️</div>
+                <style>@keyframes fallAnim { 0% { transform: translateY(0) translateX(0) rotate(0deg); opacity:1;} 100% { transform: translateY(700px) translateX(-100px) rotate(180deg); opacity:0;} }</style>
+            `;
+        } else {
+            extraAnimations = `
+                <div style="position:absolute; width:12px; height:12px; background:rgba(255,255,255,0.4); border-radius:50%; top:20%; left:20%; animation: floatAnimParticle 4s ease-in-out infinite;"></div>
+                <div style="position:absolute; width:18px; height:18px; background:rgba(56,189,248,0.4); border-radius:50%; top:60%; left:80%; animation: floatAnimParticle 5s ease-in-out infinite 1s;"></div>
+                <div style="position:absolute; width:8px; height:8px; background:rgba(167,139,250,0.4); border-radius:50%; top:80%; left:30%; animation: floatAnimParticle 3s ease-in-out infinite 0.5s;"></div>
+                <div style="position:absolute; width:14px; height:14px; background:rgba(250,204,21,0.4); border-radius:50%; top:30%; left:70%; animation: floatAnimParticle 6s ease-in-out infinite 2s;"></div>
+                <style>@keyframes floatAnimParticle { 0%, 100% { transform: translateY(0) scale(1); } 50% { transform: translateY(-25px) scale(1.3); } }</style>
+            `;
+        }
+
         // Load the view in the app
         const mount = document.getElementById('app-view-mount');
         mount.innerHTML = `
@@ -73,17 +116,18 @@ class GameController {
                     </div>
                 </div>
                 
-                <div class="game-canvas-wrapper" id="game-canvas-container" style="position: relative;">
+                <div class="game-canvas-wrapper" id="game-canvas-container" style="position: relative; overflow: hidden; border-radius: 16px;">
                     <canvas id="game-canvas" width="800" height="500"></canvas>
-                    <div id="game-instructions-overlay" style="position: absolute; inset: 0; background: rgba(15,23,42,0.95); backdrop-filter: blur(8px); z-index: 100; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; padding: 40px; border-radius: inherit;">
-                        <div class="game-thumbnail anim-bg-${gameId}" style="width:120px; height:120px; border-radius:50%; margin:0 auto 20px auto; display:flex; justify-content:center; align-items:center; position:relative; overflow:hidden; box-shadow:0 0 30px rgba(56,189,248,0.2);">
-                            <div class="premium-3d-orb" style="position:relative; width:90px; height:90px; margin:0;">
-                                <i class="fa-solid fa-graduation-cap" style="font-size: 2.5rem; color: #38bdf8; position: relative; z-index: 2; text-shadow: 0 0 10px rgba(56,189,248,0.8);"></i>
+                    <div id="game-instructions-overlay" style="position: absolute; inset: 0; background: rgba(15,23,42,0.95); backdrop-filter: blur(8px); z-index: 100; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; padding: 40px; border-radius: inherit; overflow: hidden;">
+                        ${extraAnimations}
+                        <div class="game-thumbnail anim-bg-${gameId}" style="width:120px; height:120px; border-radius:50%; margin:0 auto 20px auto; display:flex; justify-content:center; align-items:center; position:relative; overflow:hidden; box-shadow:0 0 30px rgba(56,189,248,0.3); animation: floatAnimParticle 4s infinite ease-in-out;">
+                            <div class="premium-3d-orb" style="position:relative; width:90px; height:90px; margin:0; display:flex; justify-content:center; align-items:center; z-index:2;">
+                                ${gameIconHTML}
                             </div>
                         </div>
-                        <h2 style="font-size: 2rem; color: white; margin-bottom: 15px;">Misión Cognitiva</h2>
-                        <p id="game-instructions-text" style="color: #cbd5e1; font-size: 1.15rem; max-width: 650px; margin-bottom: 30px; line-height: 1.6;"></p>
-                        <button id="btn-start-mission" style="background: linear-gradient(135deg, #38bdf8, #818cf8); border: none; padding: 15px 40px; border-radius: 12px; font-size: 1.2rem; font-weight: bold; color: white; cursor: pointer; box-shadow: 0 10px 20px rgba(56, 189, 248, 0.3);">🚀 Iniciar Entrenamiento</button>
+                        <h2 style="font-size: 2.2rem; color: white; margin-bottom: 15px; text-shadow: 0 0 15px rgba(255,255,255,0.2); z-index:2;">Misión Cognitiva</h2>
+                        <p id="game-instructions-text" style="color: #cbd5e1; font-size: 1.15rem; max-width: 650px; margin-bottom: 30px; line-height: 1.6; z-index:2;"></p>
+                        <button id="btn-start-mission" style="background: linear-gradient(135deg, #38bdf8, #818cf8); border: none; padding: 15px 40px; border-radius: 12px; font-size: 1.2rem; font-weight: bold; color: white; cursor: pointer; box-shadow: 0 10px 30px rgba(56, 189, 248, 0.4); z-index:2; transition: transform 0.2s;" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'">🚀 Iniciar Entrenamiento</button>
                     </div>
                 </div>
             </div>
