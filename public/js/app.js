@@ -96,6 +96,12 @@ class NeuroSparkApp {
         if (this.state.settings.lowStimulus) document.body.classList.add('low-stimulus');
         if (this.state.settings.ecoMode) document.body.classList.add('eco-mode');
 
+        if (this.state.isPremium) {
+            localStorage.setItem('ns_is_premium', 'true');
+        } else {
+            localStorage.removeItem('ns_is_premium');
+        }
+
         this.updateHeaderHUD();
     }
 
@@ -1018,6 +1024,26 @@ class NeuroSparkApp {
 
     /* ---- ADMIN HOME (standalone page - kept for reference) ---- */
     renderAdminHome(mount) {
+        let premiumUsersHTML = '';
+        for (let i = 0; i < localStorage.length; i++) {
+            const key = localStorage.key(i);
+            if (key.startsWith('neurospark_state_')) {
+                try {
+                    const data = JSON.parse(localStorage.getItem(key));
+                    if (data.isPremium) {
+                        const email = key.replace('neurospark_state_', '');
+                        premiumUsersHTML += `
+                            <div style="padding: 20px; background: rgba(250, 204, 21, 0.05); border-radius: 12px; border: 1px solid rgba(250, 204, 21, 0.2); display: flex; justify-content: space-between; align-items: center;">
+                                <span style="font-size: 1.05rem; color: white;"><i class="fa-solid fa-star text-accent" style="margin-right: 10px;"></i> ${email}</span>
+                                <span class="difficulty-badge" style="border-color: #facc15; background: #facc15; color: #0f172a; font-weight: bold; padding: 6px 12px; font-size: 0.85rem;">VIP / Premium 👑</span>
+                            </div>
+                        `;
+                    }
+                } catch(e) {}
+            }
+        }
+        if (!premiumUsersHTML) premiumUsersHTML = '<p style="color:var(--text-muted); font-size:0.9rem;">No hay usuarios premium.</p>';
+
         mount.innerHTML = `
             <div style="padding: 30px; display: flex; flex-direction: column; gap: 30px; max-width: 1000px; margin: 0 auto; width: 100%;">
                 <div style="background: linear-gradient(135deg, #1e293b, #0f172a); padding: 40px; border-radius: 20px; border: 1px solid rgba(255,255,255,0.1); box-shadow: 0 20px 40px rgba(0,0,0,0.5);">
@@ -1046,20 +1072,13 @@ class NeuroSparkApp {
                         <div style="border-top: 1px solid var(--border-color); padding-top: 30px;">
                             <h4 style="margin-bottom: 20px; color: white; font-size: 1.2rem;"><i class="fa-solid fa-clock-rotate-left"></i> Asignaciones Recientes</h4>
                             <div id="admin-log-list" style="display: flex; flex-direction: column; gap: 15px;">
-                                <div style="padding: 20px; background: rgba(255,255,255,0.03); border-radius: 12px; border: 1px solid rgba(255,255,255,0.05); display: flex; justify-content: space-between; align-items: center;">
-                                    <span style="font-size: 1.05rem;"><i class="fa-solid fa-user-tie text-purple" style="margin-right: 10px;"></i> director@neurospark.edu</span>
-                                    <span class="difficulty-badge diff-easy" style="border-color: #a78bfa; color: #a78bfa; padding: 6px 12px; font-size: 0.85rem;">Docente Especialista</span>
-                                </div>
                             </div>
                         </div>
 
                         <div style="border-top: 1px solid var(--border-color); padding-top: 30px;">
                             <h4 style="margin-bottom: 20px; color: #fcd34d; font-size: 1.2rem;"><i class="fa-solid fa-crown"></i> Usuarios Premium Activos</h4>
-                            <div id="admin-premium-list" style="display: flex; flex-direction: column; gap: 15px;">
-                                <div style="padding: 20px; background: rgba(250, 204, 21, 0.05); border-radius: 12px; border: 1px solid rgba(250, 204, 21, 0.2); display: flex; justify-content: space-between; align-items: center;">
-                                    <span style="font-size: 1.05rem; color: white;"><i class="fa-solid fa-star text-accent" style="margin-right: 10px;"></i> premium@neurospark.com</span>
-                                    <span class="difficulty-badge" style="border-color: #facc15; background: #facc15; color: #0f172a; font-weight: bold; padding: 6px 12px; font-size: 0.85rem;">VIP / Premium 👑</span>
-                                </div>
+                            <div id="admin-premium-list" style="display: flex; flex-direction: column; gap: 15px; max-height: 400px; overflow-y: auto;">
+                                ${premiumUsersHTML}
                             </div>
                         </div>
                     </div>
@@ -1075,7 +1094,7 @@ class NeuroSparkApp {
         });
 
         document.getElementById('btn-assign-role').addEventListener('click', () => {
-            const email = document.getElementById('admin-search-email').value;
+            let email = document.getElementById('admin-search-email').value;
             const roleSelect = document.getElementById('admin-role-select');
             const roleText = roleSelect.options[roleSelect.selectedIndex].text;
             const roleValue = roleSelect.value;
@@ -1084,45 +1103,51 @@ class NeuroSparkApp {
                 this.showToast('Por favor, ingresa un correo electrónico válido.', 'warning');
                 return;
             }
+            email = email.toLowerCase().trim();
+
+            const targetKey = 'neurospark_state_' + email;
+            let targetStateStr = localStorage.getItem(targetKey);
+            let targetState = targetStateStr ? JSON.parse(targetStateStr) : {};
 
             if (roleValue === 'premium') {
-                // Unlock premium instantly
-                localStorage.setItem('ns_is_premium', 'true');
-                const widget = document.getElementById('premiumWidget');
-                if (widget) widget.style.display = 'none';
-                const premiumHubBtn = document.getElementById('btn-premium-hub');
-                if (premiumHubBtn) premiumHubBtn.style.display = 'inline-flex';
-                
-                const profileSpan = document.getElementById('current-profile-name');
-                if (profileSpan && !profileSpan.innerHTML.includes('fa-crown')) {
-                    profileSpan.innerHTML += ' <i class="fa-solid fa-crown" style="color: #fcd34d; margin-left: 5px; text-shadow: 0 0 10px #fcd34d;" title="Usuario Premium"></i>';
+                targetState.isPremium = true;
+                localStorage.setItem(targetKey, JSON.stringify(targetState));
+
+                // If giving to self
+                if (email === (this.state.currentUserEmail || '').toLowerCase()) {
+                    this.state.isPremium = true;
+                    localStorage.setItem('ns_is_premium', 'true');
+                    const widget = document.getElementById('premiumWidget');
+                    if (widget) widget.style.display = 'none';
+                    const premiumHubBtn = document.getElementById('btn-premium-hub');
+                    if (premiumHubBtn) premiumHubBtn.style.display = 'inline-flex';
+                    const profileSpan = document.getElementById('current-profile-name');
+                    if (profileSpan && !profileSpan.innerHTML.includes('fa-crown')) {
+                        profileSpan.innerHTML += ' <i class="fa-solid fa-crown" style="color: #fcd34d; margin-left: 5px; text-shadow: 0 0 10px #fcd34d;" title="Usuario Premium"></i>';
+                    }
                 }
 
-                // Add to premium list
-                const premiumList = document.getElementById('admin-premium-list');
-                const div = document.createElement('div');
-                div.style.cssText = "padding: 20px; background: rgba(250, 204, 21, 0.05); border-radius: 12px; border: 1px solid rgba(250, 204, 21, 0.2); display: flex; justify-content: space-between; align-items: center; opacity: 0; transform: translateY(-10px); transition: all 0.4s ease;";
-                div.innerHTML = '<span style="font-size: 1.05rem; color: white;"><i class="fa-solid fa-star text-accent" style="margin-right: 10px;"></i> ' + email + '</span>' +
-                    '<span class="difficulty-badge" style="border-color: #facc15; background: #facc15; color: #0f172a; font-weight: bold; padding: 6px 12px; font-size: 0.85rem;">VIP / Premium 👑</span>';
-                premiumList.prepend(div);
-                setTimeout(() => { div.style.opacity = '1'; div.style.transform = 'translateY(0)'; }, 10);
+                // Add to premium list if not exists
+                this.renderAdminHome(mount); // re-render to update list
+                this.showToast('Rol "' + roleText.split(':')[1].trim() + '" asignado a ' + email, 'success');
             } else if (roleValue === 'quitar_premium') {
-                localStorage.removeItem('ns_is_premium');
-                const widget = document.getElementById('premiumWidget');
-                if (widget) widget.style.display = 'flex';
-                const premiumHubBtn = document.getElementById('btn-premium-hub');
-                if (premiumHubBtn) premiumHubBtn.style.display = 'none';
-                
-                const profileSpan = document.getElementById('current-profile-name');
-                if (profileSpan) profileSpan.innerHTML = profileSpan.innerHTML.replace(/<i[^>]*fa-crown[^>]*><\/i>/g, '');
+                targetState.isPremium = false;
+                localStorage.setItem(targetKey, JSON.stringify(targetState));
 
-                const logList = document.getElementById('admin-log-list');
-                const div = document.createElement('div');
-                div.style.cssText = "padding: 20px; background: rgba(239,68,68,0.05); border-radius: 12px; border: 1px solid rgba(239,68,68,0.2); display: flex; justify-content: space-between; align-items: center; opacity: 0; transform: translateY(-10px); transition: all 0.4s ease;";
-                div.innerHTML = '<span style="font-size: 1.05rem;"><i class="fa-solid fa-ban text-red-500" style="margin-right: 10px; color:#ef4444;"></i> ' + email + '</span>' +
-                    '<span class="difficulty-badge diff-hard" style="padding: 6px 12px; font-size: 0.85rem;">Premium Revocado</span>';
-                logList.prepend(div);
-                setTimeout(() => { div.style.opacity = '1'; div.style.transform = 'translateY(0)'; }, 10);
+                // If removing from self
+                if (email === (this.state.currentUserEmail || '').toLowerCase()) {
+                    this.state.isPremium = false;
+                    localStorage.removeItem('ns_is_premium');
+                    const widget = document.getElementById('premiumWidget');
+                    if (widget) widget.style.display = 'flex';
+                    const premiumHubBtn = document.getElementById('btn-premium-hub');
+                    if (premiumHubBtn) premiumHubBtn.style.display = 'none';
+                    const profileSpan = document.getElementById('current-profile-name');
+                    if (profileSpan) profileSpan.innerHTML = profileSpan.innerHTML.replace(/<i[^>]*fa-crown[^>]*><\/i>/g, '');
+                }
+
+                this.renderAdminHome(mount); // re-render to update list
+                this.showToast('Premium revocado a ' + email, 'success');
             } else {
                 const logList = document.getElementById('admin-log-list');
                 const div = document.createElement('div');

@@ -2109,8 +2109,12 @@
                     // 1. Ocultar el modal de pago
                     document.getElementById('paymentModal').style.display = 'none';
 
-                    // 2. Guardar el estado PREMIUM en el navegador
+                    // 2. Guardar el estado PREMIUM en el navegador y en el usuario actual
                     localStorage.setItem('ns_is_premium', 'true');
+                    if (window.neuroApp && window.neuroApp.state) {
+                        window.neuroApp.state.isPremium = true;
+                        window.neuroApp.saveState();
+                    }
 
                     // 3. Ocultar el widget de promoción Premium de la pantalla principal
                     const widget = document.getElementById('premiumWidget');
