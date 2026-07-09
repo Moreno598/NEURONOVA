@@ -92,31 +92,50 @@ class GameController {
         this.canvas = document.getElementById('game-canvas');
         this.ctx = this.canvas.getContext('2d');
         
-        // Populate instructions
+        // Populate instructions with cognitive benefits
         const instructionsDict = {
-            'distraction_hunter': 'Debes destruir (haciendo clic) solo los asteroides o amenazas válidas. Ignora y no toques los elementos de distracción para entrenar tu atención selectiva.',
-            'emotional_stoplight': 'Paradigma Go/No-Go: Presiona la pantalla rápido cuando veas el semáforo o indicador en VERDE. Si aparece en ROJO, debes frenar el impulso y no tocar nada.',
-            'musical_memory': 'Escucha y observa la secuencia de sonidos (similares al clásico Simón Dice). Cuando sea tu turno, repite el patrón en el mismo orden.',
-            'memory_cards': 'Encuentra las parejas ocultas en el tablero en el menor tiempo posible para trabajar tu retención de memoria visual a corto plazo.',
-            'kids_spatial': 'Observa el camino iluminado en el laberinto. Retén la secuencia de pasos y replícala exactamente para estimular tu orientación espacial.',
-            'kids_routine': 'Arrastra y organiza las tareas diarias (estudio, juego, sueño) en la agenda. ¡Cuidado con sobrecargar la energía del astronauta!',
-            'kids_pattern': 'Identifica rápidamente al alienígena o figura intrusa que es diferente al resto. ¡Tienes poco tiempo para ejercitar tu flexibilidad cognitiva!',
-            'kids_math': 'Resuelve la ecuación matemática antes de que el meteoro choque. Mejora tu velocidad de procesamiento bajo ligera presión.',
-            'spatial_focus': 'Mantén tu vista en los objetivos que aparecen. Un barrido visual constante es clave para el éxito.',
-            'routine_builder': 'Acomoda las tareas diarias priorizando responsabilidades y tiempo de descanso para evitar la fatiga mental.',
-            'pattern_matcher': 'Encuentra la anomalía en el panel visual. Trabaja tu flexibilidad alternando entre distintos tipos de patrones.',
-            'speed_math': 'Operaciones de cálculo rápido mental sin uso de calculadora, diseñadas para fortalecer la automatización cognitiva.',
-            'teens_distraction': 'Filtra la información irrelevante: ataca a los objetivos clave en un entorno lleno de ruidos visuales e interferencias.',
-            'teens_stoplight': 'Debes reaccionar con un clic lo más rápido posible a la señal de inicio (verde), pero detener por completo tu respuesta motora si la señal cambia de imprevisto a rojo (Stop-Signal).',
-            'teens_sound': 'Identifica qué frecuencias de radar son iguales a las anteriores para entrenar tu memoria de trabajo fonológica.',
-            'teens_cards': 'Descifra la tabla encontrando los pares de datos para ejercitar tu actualización constante (N-Back espacial).',
-            'eco_recycle': 'Clasifica correctamente los residuos y colócalos en el contenedor correspondiente para entrenar tu atención selectiva y cuidar el planeta.',
-            'eco_water': 'Toca las tuberías rotas lo más rápido posible para reparar las fugas de agua y mejorar tu tiempo de reacción.',
-            'teens_eco_energy': 'Gestor de Energía: Apaga (toca) los dispositivos que derrochan energía (en rojo). Ignora los eficientes (verdes). La velocidad aumentará rápidamente.',
-            'teens_eco_ocean': 'Limpiador Oceánico: Recoge todo el plástico (rojo) flotando en el agua. Evita tocar a la fauna marina (peces azules).',
+            'distraction_hunter': '<strong>🕹️ Instrucciones:</strong> Destruye solo los asteroides o amenazas válidas. Ignora y no toques los elementos de distracción.<br><br><strong style="color:#a78bfa;">🧠 ¿En qué te ayuda?</strong><br>Entrena tu <em>atención selectiva</em>, ayudándote a ignorar el ruido y las distracciones a tu alrededor para concentrarte en una sola tarea.',
+            
+            'emotional_stoplight': '<strong>🕹️ Instrucciones:</strong> Presiona la pantalla rápido cuando veas el indicador en VERDE. Si aparece en ROJO, frena tu impulso y no toques nada.<br><br><strong style="color:#a78bfa;">🧠 ¿En qué te ayuda?</strong><br>Mejora tu <em>control inhibitorio</em>, dándote la capacidad de pensar antes de actuar y evitar respuestas impulsivas.',
+            
+            'musical_memory': '<strong>🕹️ Instrucciones:</strong> Escucha y observa la secuencia de sonidos. Luego, repite el patrón en el mismo orden exacto.<br><br><strong style="color:#a78bfa;">🧠 ¿En qué te ayuda?</strong><br>Fortalece tu <em>memoria de trabajo visual y auditiva</em> a corto plazo, vital para seguir instrucciones de múltiples pasos.',
+            
+            'memory_cards': '<strong>🕹️ Instrucciones:</strong> Encuentra las parejas ocultas en el tablero en el menor tiempo posible.<br><br><strong style="color:#a78bfa;">🧠 ¿En qué te ayuda?</strong><br>Trabaja tu <em>retención de memoria visual espacial</em> y tu capacidad de recordar la ubicación de objetos.',
+            
+            'kids_spatial': '<strong>🕹️ Instrucciones:</strong> Observa el camino iluminado en el laberinto. Retén la secuencia de pasos y replícala exactamente.<br><br><strong style="color:#a78bfa;">🧠 ¿En qué te ayuda?</strong><br>Estimula tu <em>orientación espacial</em>, ayudándote a ubicarte en tu entorno y recordar rutas.',
+            
+            'kids_routine': '<strong>🕹️ Instrucciones:</strong> Organiza las tareas diarias en la agenda. ¡Cuidado con sobrecargar la energía del astronauta!<br><br><strong style="color:#a78bfa;">🧠 ¿En qué te ayuda?</strong><br>Desarrolla tu <em>función ejecutiva de planificación</em>, enseñándote a gestionar tu tiempo de forma equilibrada.',
+            
+            'kids_pattern': '<strong>🕹️ Instrucciones:</strong> Identifica rápidamente la figura intrusa que es diferente al resto.<br><br><strong style="color:#a78bfa;">🧠 ¿En qué te ayuda?</strong><br>Ejercita tu <em>flexibilidad cognitiva</em> y agilidad mental, permitiéndote cambiar de tarea y adaptarte con facilidad.',
+            
+            'kids_math': '<strong>🕹️ Instrucciones:</strong> Resuelve la operación matemática correcta antes de que el meteoro choque.<br><br><strong style="color:#a78bfa;">🧠 ¿En qué te ayuda?</strong><br>Mejora tu <em>velocidad de procesamiento</em> y fluidez numérica bajo ligera presión.',
+            
+            'spatial_focus': '<strong>🕹️ Instrucciones:</strong> Mantén tu vista en los objetivos. Un barrido visual constante es la clave.<br><br><strong style="color:#a78bfa;">🧠 ¿En qué te ayuda?</strong><br>Entrena tu <em>atención sostenida</em> y tu capacidad de rastrear información visual durante períodos prolongados.',
+            
+            'routine_builder': '<strong>🕹️ Instrucciones:</strong> Acomoda las tareas diarias priorizando responsabilidades y tiempo de descanso.<br><br><strong style="color:#a78bfa;">🧠 ¿En qué te ayuda?</strong><br>Fomenta la <em>planificación estratégica</em> y te ayuda a crear hábitos de estudio efectivos y saludables.',
+            
+            'pattern_matcher': '<strong>🕹️ Instrucciones:</strong> Encuentra la anomalía en el panel visual, alternando entre distintos tipos de patrones.<br><br><strong style="color:#a78bfa;">🧠 ¿En qué te ayuda?</strong><br>Aumenta tu capacidad de <em>adaptación y reconocimiento de patrones complejos</em>.',
+            
+            'speed_math': '<strong>🕹️ Instrucciones:</strong> Resuelve operaciones de cálculo mental rápido sin usar calculadora.<br><br><strong style="color:#a78bfa;">🧠 ¿En qué te ayuda?</strong><br>Fortalece la <em>automatización cognitiva</em>, haciendo que tu mente resuelva problemas estructurados casi sin esfuerzo.',
+            
+            'teens_distraction': '<strong>🕹️ Instrucciones:</strong> Ataca los objetivos clave filtrando la información irrelevante en un entorno lleno de ruido visual.<br><br><strong style="color:#a78bfa;">🧠 ¿En qué te ayuda?</strong><br>Potencia tu <em>atención selectiva extrema</em>, ideal para poder estudiar en ambientes con muchas distracciones.',
+            
+            'teens_stoplight': '<strong>🕹️ Instrucciones:</strong> Reacciona rapidísimo al inicio (verde), pero detén tu respuesta motora si cambia repentinamente a rojo.<br><br><strong style="color:#a78bfa;">🧠 ¿En qué te ayuda?</strong><br>Refina tu <em>frenado motor y control de impulsos avanzado</em> ante situaciones imprevistas o estresantes.',
+            
+            'teens_sound': '<strong>🕹️ Instrucciones:</strong> Identifica si la frecuencia de radar actual es igual a la anterior.<br><br><strong style="color:#a78bfa;">🧠 ¿En qué te ayuda?</strong><br>Entrena tu <em>memoria de trabajo (N-Back)</em>, crucial para retener, actualizar y manipular información en tiempo real.',
+            
+            'teens_cards': '<strong>🕹️ Instrucciones:</strong> Descifra la tabla encontrando los pares de datos ocultos.<br><br><strong style="color:#a78bfa;">🧠 ¿En qué te ayuda?</strong><br>Ejercita tu <em>memoria de trabajo visuoespacial</em>, fortaleciendo tu retentiva general.',
+            
+            'eco_recycle': '<strong>🕹️ Instrucciones:</strong> Clasifica rápidamente los residuos y colócalos en el contenedor correspondiente.<br><br><strong style="color:#a78bfa;">🧠 ¿En qué te ayuda?</strong><br>Fomenta la <em>categorización mental rápida</em> y la toma de decisiones ecológicas conscientes.',
+            
+            'eco_water': '<strong>🕹️ Instrucciones:</strong> Toca las tuberías rotas lo más rápido posible para reparar las fugas de agua.<br><br><strong style="color:#a78bfa;">🧠 ¿En qué te ayuda?</strong><br>Acelera tu <em>tiempo de reacción</em> y estimula tu coordinación viso-motora (ojo-mano).',
+            
+            'teens_eco_energy': '<strong>🕹️ Instrucciones:</strong> Apaga los dispositivos que derrochan energía (rojos) e ignora los eficientes (verdes).<br><br><strong style="color:#a78bfa;">🧠 ¿En qué te ayuda?</strong><br>Entrena la <em>discriminación visual rápida</em> y el control inhibitorio frente a múltiples estímulos.',
+            
+            'teens_eco_ocean': '<strong>🕹️ Instrucciones:</strong> Recoge el plástico (rojo) flotando en el agua sin tocar a la fauna marina (peces azules).<br><br><strong style="color:#a78bfa;">🧠 ¿En qué te ayuda?</strong><br>Fortalece tu <em>atención dividida</em> y tu precisión motora fina, permitiendo que tu cerebro maneje dos tareas a la vez.'
         };
-        const instrText = instructionsDict[gameId] || 'Sigue las instrucciones en pantalla y haz tu mejor esfuerzo para entrenar tu cerebro.';
-        document.getElementById('game-instructions-text').innerText = instrText;
+        const instrText = instructionsDict[gameId] || '<strong>🕹️ Instrucciones:</strong> Sigue las instrucciones en pantalla.<br><br><strong style="color:#a78bfa;">🧠 ¿En qué te ayuda?</strong><br>Entrena tu capacidad cognitiva general y mejora tu enfoque.';
+        document.getElementById('game-instructions-text').innerHTML = instrText;
         
         // Pausar juego hasta iniciar
         this.isPlaying = false;

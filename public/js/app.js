@@ -1503,7 +1503,12 @@ class NeuroSparkApp {
         const avatar = this.state.avatar;
         const avatarUrl = (avatar && (avatar.startsWith('http') || avatar.startsWith('data:'))) 
             ? avatar 
-            : 'assets/mascota_ninos.png';
+            : 'https://api.dicebear.com/7.x/bottts/svg?seed=' + (name || 'sparky');
+            
+        // Check if pet is acquired
+        const hasPet = this.state.unlockedItems && (this.state.unlockedItems.includes('holo_pet') || this.state.unlockedItems.includes('eco_pet'));
+        const petImg = hasPet ? `<img src="assets/mascota_ninos.png" style="position:absolute; bottom:-10px; right:-25px; width:65px; height:65px; object-fit:contain; filter:drop-shadow(0 0 10px #06b6d4); animation: floatRobot 3s ease-in-out infinite; z-index:10; cursor:pointer;" title="¡Tu mascota te acompaña!" onclick="event.stopPropagation(); sound.playSuccess();">` : '';
+
         mount.innerHTML = `
             <div class="kids-home-view">
                 <div class="kids-welcome-banner">
@@ -1550,6 +1555,7 @@ class NeuroSparkApp {
                             <circle cx="58" cy="39" r="4" fill="#38bdf8"/>
                             <path d="M 44 58 Q 50 63 56 58" stroke="#ffffff" stroke-width="3" fill="none"/>
                         </svg>
+                        ${petImg}
                     </div>
                 </div>
 
@@ -1874,7 +1880,12 @@ class NeuroSparkApp {
         const avatar = this.state.avatar;
         const avatarUrl = (avatar && (avatar.startsWith('http') || avatar.startsWith('data:'))) 
             ? avatar 
-            : 'assets/mascota_adolescentes.png';
+            : 'https://api.dicebear.com/7.x/bottts/svg?seed=' + (name || 'sparky');
+
+        // Check if pet is acquired
+        const hasPet = this.state.unlockedItems && (this.state.unlockedItems.includes('holo_pet') || this.state.unlockedItems.includes('eco_pet'));
+        const petImg = hasPet ? `<img src="assets/mascota_adolescentes.png" style="position:absolute; bottom:-10px; right:-25px; width:60px; height:60px; object-fit:contain; filter:drop-shadow(0 0 10px #c4b5fd); animation: floatRobot 3s ease-in-out infinite reverse; z-index:10; cursor:pointer;" title="¡Mascota acompañante!" onclick="event.stopPropagation(); sound.playSuccess();">` : '';
+
         mount.innerHTML = `
             <div class="teens-home-view">
                 <div class="teens-main-panel" style="display:flex;flex-direction:column;gap:24px;">
@@ -1913,6 +1924,7 @@ class NeuroSparkApp {
                                  data-gidx="0"
                                  style="width:100px;height:100px;border-radius:50%;background:rgba(255,255,255,0.6);border:4px solid #c4b5fd;object-fit:cover;box-shadow:0 0 20px rgba(196,181,253,0.5);cursor:pointer;transition:transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), filter 0.4s ease;filter:drop-shadow(0 0 10px rgba(167,139,250,0.4));"
                                  onerror="this.style.display='none'">
+                            ${petImg}
                         </div>
                     </div>
                     <h3 class="section-title" style="margin-bottom: 10px;"><i class="fa-solid fa-brain text-blue"></i> Juegos para 12-14 años</h3>

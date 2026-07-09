@@ -2052,6 +2052,33 @@
         </div>
     </div>
 
+    <!-- Script to prevent background scroll when modals are open -->
+    <script>
+        (function() {
+            const modalsToWatch = ['premiumModal', 'paymentModal', 'yapeModal'];
+            const observer = new MutationObserver(function() {
+                let anyOpen = false;
+                modalsToWatch.forEach(id => {
+                    const el = document.getElementById(id);
+                    if (el && el.style.display !== 'none' && el.style.display !== '') {
+                        anyOpen = true;
+                    }
+                });
+                document.body.style.overflow = anyOpen ? 'hidden' : '';
+            });
+            
+            // Allow DOM to be parsed first
+            document.addEventListener('DOMContentLoaded', () => {
+                modalsToWatch.forEach(id => {
+                    const el = document.getElementById(id);
+                    if(el) {
+                        observer.observe(el, { attributes: true, attributeFilter: ['style'] });
+                    }
+                });
+            });
+        })();
+    </script>
+
     <!-- Script de Integración PayPal -->
     <!-- Reemplaza el client-id por el de Producción cuando estés listo. -->
     <script
