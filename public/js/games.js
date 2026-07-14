@@ -31,7 +31,8 @@ class GameController {
 
     launch(gameId) {
         this.currentGameId = gameId;
-        this.isPlaying = true;
+        this.isPlaying = false;  // Only set true after user clicks 'Iniciar'
+        this.activeGame = null;  // Reset stale game reference
         this.gameTime = 0;
         this.gameScore = 0;
         this.gameErrors = 0;
@@ -406,16 +407,87 @@ class GameController {
         this.isPlaying = false;
         clearInterval(this.gameInterval);
         if (this.activeGame && this.activeGame.destroy) {
+            this.activeGame._exitedManually = true;
             this.activeGame.destroy();
+            this.activeGame = null;
         }
         const app = getApp();
         if (app) {
-            if (this.currentGameId === 'eco_recycle' || this.currentGameId === 'eco_water' || this.currentGameId === 'teens_eco_energy' || this.currentGameId === 'teens_eco_ocean') {
+            const ecoIds = ['eco_recycle', 'eco_water', 'teens_eco_energy', 'teens_eco_ocean'];
+            const premiumIds = ['premium_kids', 'premium_teens'];
+            if (ecoIds.includes(this.currentGameId)) {
                 app.renderEcoSparkHome();
-            } else {
+            } else if (!premiumIds.includes(this.currentGameId)) {
+                // Regular kids/teens game OR instructions screen with no active game
+                app.renderHome();
+            }
+            // For premium games without an activeGame (e.g. instructions), also go home
+            if (premiumIds.includes(this.currentGameId) && !this.activeGame) {
                 app.renderHome();
             }
         }
+    }
+
+    showResults(data) {
+        // Called by premium games to display the results card and navigate home
+        this.isPlaying = false;
+        clearInterval(this.gameInterval);
+
+        const score = data.score || 0;
+        const coins = data.coins || Math.floor(score / 3);
+        const metrics = data.metrics || { attention: 70, impulsivity: 70 };
+
+        // Save session data
+        const app = getApp();
+        const sessionData = {
+            gameId: this.currentGameId,
+            gameName: this.getGameName(this.currentGameId),
+            timestamp: Date.now(),
+            score,
+            difficulty: this.difficulty || 'medium',
+            metrics: {
+                attention: metrics.attention || 70,
+                impulseControl: metrics.impulsivity || 70,
+                workingMemory: 75,
+                organization: 70
+            },
+            duration: this.gameTime
+        };
+        if (app) app.addGameSession(sessionData, coins);
+
+        sound.playSuccess();
+
+        const container = document.getElementById('game-canvas-container');
+        if (!container) { if (app) app.renderHome(); return; }
+        container.innerHTML = `
+            <div class="game-summary-card" style="display:flex; flex-direction:column; align-items:center; justify-content:center; height:100%; padding: 40px; text-align:center;">
+                <div style="font-size: 4rem; margin-bottom: 16px; animation: pulseGlow 2s infinite;">
+                    <i class="fa-solid fa-crown" style="color:#fcd34d;"></i>
+                </div>
+                <h2 style="color:white; font-size:1.8rem; margin-bottom:8px;">¡Misión VIP Completada!</h2>
+                <p style="color:#94a3b8; margin-bottom:24px;">Entrenamiento cognitivo premium finalizado.</p>
+                <div style="display:grid; grid-template-columns:repeat(3,1fr); gap:12px; margin-bottom:24px; width:100%; max-width:400px;">
+                    <div style="background:rgba(56,189,248,0.1); border:1px solid rgba(56,189,248,0.3); border-radius:12px; padding:16px;">
+                        <div style="font-size:1.6rem; font-weight:800; color:#38bdf8;">${metrics.attention || 70}%</div>
+                        <div style="font-size:0.72rem; color:#94a3b8; margin-top:4px;">Atención</div>
+                    </div>
+                    <div style="background:rgba(167,139,250,0.1); border:1px solid rgba(167,139,250,0.3); border-radius:12px; padding:16px;">
+                        <div style="font-size:1.6rem; font-weight:800; color:#a78bfa;">${metrics.impulsivity || 70}%</div>
+                        <div style="font-size:0.72rem; color:#94a3b8; margin-top:4px;">Control Impulsos</div>
+                    </div>
+                    <div style="background:rgba(252,211,77,0.1); border:1px solid rgba(252,211,77,0.3); border-radius:12px; padding:16px;">
+                        <div style="font-size:1.6rem; font-weight:800; color:#fcd34d;">+${coins}</div>
+                        <div style="font-size:0.72rem; color:#94a3b8; margin-top:4px;">NeuroCoins</div>
+                    </div>
+                </div>
+                <button id="btn-premium-summary-home" style="background:linear-gradient(135deg,#fcd34d,#f59e0b); color:#0f172a; border:none; padding:14px 40px; border-radius:12px; font-size:1rem; font-weight:800; cursor:pointer; box-shadow:0 8px 20px rgba(252,211,77,0.4);">
+                    <i class="fa-solid fa-house"></i> Volver al Inicio
+                </button>
+            </div>
+        `;
+        document.getElementById('btn-premium-summary-home')?.addEventListener('click', () => {
+            if (app) app.renderHome();
+        });
     }
 
     finish() {

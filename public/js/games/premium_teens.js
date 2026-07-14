@@ -174,8 +174,15 @@ export default class PremiumTeensGame {
         clearInterval(this.gameLoop);
         clearInterval(this.spawnLoop);
         this.canvas.removeEventListener('click', this.onClick);
-        
-        // Final score logic
+
+        // If exited manually, navigate home cleanly
+        if (this._exitedManually) {
+            const app = typeof getApp === 'function' ? getApp() : window.neuroApp;
+            if (app) app.renderHome();
+            return;
+        }
+
+        // Natural finish — show premium results card via engine
         const finalScore = this.score * (this.engine.activeEffects?.multiplier || 1);
         const coinsEarned = Math.floor(finalScore / 5) * (this.engine.activeEffects?.coinBonus || 1);
         

@@ -1079,9 +1079,9 @@ class NeuroSparkApp {
                     <div style="display: flex; gap: 20px; margin-bottom: 40px; flex-wrap: wrap;">
                         <input type="email" id="admin-search-email" placeholder="correo_del_usuario@ejemplo.com" style="flex: 1; min-width: 250px; padding: 18px; border-radius: 12px; border: 2px solid var(--border-color); background: rgba(0,0,0,0.2); color: var(--text-main); font-size: 1.1rem; outline: none; transition: border-color 0.3s;">
                         <select id="admin-role-select" style="padding: 18px; border-radius: 12px; border: 2px solid var(--border-color); background: var(--bg-card); color: white; font-size: 1.1rem; outline: none; cursor: pointer; min-width: 250px;">
-                            <option value="padre">Otorgar Rol: Padre / Apoderado</option>
-                            <option value="docente">Otorgar Rol: Docente / Especialista</option>
-                            <option value="premium">Otorgar Rol: VIP / Premium 👑</option>
+                            <option value="padre">Otorgar Rol: Padre</option>
+                            <option value="docente">Otorgar Rol: Docente</option>
+                            <option value="premium">Otorgar Rol: Premium 👑</option>
                             <option value="quitar_premium">❌ Revocar Premium</option>
                         </select>
                         <button id="btn-assign-role" class="play-btn" style="background: linear-gradient(135deg, var(--primary-blue), var(--primary-purple)); padding: 0 40px; font-size: 1.1rem; border-radius: 12px; height: 60px;"><i class="fa-solid fa-check"></i> Asignar</button>

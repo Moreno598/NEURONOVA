@@ -204,6 +204,57 @@ class AudioEngine {
             this.ambientOscs = [];
         }
     }
+
+    /**
+     * Breathing cycle: generates inhale (rising pitch) and exhale (falling pitch)
+     * tones in sync with the 8s breatheAnim CSS cycle.
+     * Inhale: 0-4s  — sine tone rises from 80Hz to 160Hz
+     * Exhale: 4-8s  — sine tone falls from 160Hz to 80Hz
+     */
+    startBreatheCycle() {
+        this.init();
+        if (this.ctx.state === 'suspended') this.ctx.resume();
+        if (this._breatheIntervalId) return; // already running
+
+        const playBreathTone = (inhale) => {
+            const duration = 3.8; // slightly under 4s so tones don't overlap
+            const osc = this.ctx.createOscillator();
+            const gain = this.ctx.createGain();
+            osc.type = 'sine';
+            osc.connect(gain);
+            gain.connect(this.masterGain);
+
+            const now = this.ctx.currentTime;
+            if (inhale) {
+                osc.frequency.setValueAtTime(80, now);
+                osc.frequency.linearRampToValueAtTime(160, now + duration);
+            } else {
+                osc.frequency.setValueAtTime(160, now);
+                osc.frequency.linearRampToValueAtTime(80, now + duration);
+            }
+            // Fade in, sustain, fade out
+            gain.gain.setValueAtTime(0, now);
+            gain.gain.linearRampToValueAtTime(0.07, now + 0.4);
+            gain.gain.setValueAtTime(0.07, now + duration - 0.5);
+            gain.gain.linearRampToValueAtTime(0, now + duration);
+            osc.start(now);
+            osc.stop(now + duration);
+        };
+
+        let inhale = true;
+        playBreathTone(true); // start immediately with inhale
+        this._breatheIntervalId = setInterval(() => {
+            inhale = !inhale;
+            playBreathTone(inhale);
+        }, 4000); // swap every 4 seconds
+    }
+
+    stopBreatheCycle() {
+        if (this._breatheIntervalId) {
+            clearInterval(this._breatheIntervalId);
+            this._breatheIntervalId = null;
+        }
+    }
 }
 
 export const sound = new AudioEngine();
