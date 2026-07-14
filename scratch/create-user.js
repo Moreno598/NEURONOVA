@@ -4,7 +4,7 @@ const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBh
 async function createUser() {
     const email = 'premium@neurospark.com';
     const password = 'premium123';
-    
+
     const res = await fetch(`${SUPABASE_URL}/auth/v1/signup`, {
         method: 'POST',
         headers: {
@@ -32,7 +32,7 @@ async function createUser() {
             }
         })
     });
-    
+
     const data = await res.json();
     console.log(data);
 }
