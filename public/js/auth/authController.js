@@ -46,11 +46,13 @@ export const authController = {
     async saveParentEmail(email, parentEmail) {
         const { error } = await supabase
             .from('correos')
-            .insert([{ user_email: email, parent_email: parentEmail }]);
+            .insert([{ user_email: email.toLowerCase(), parent_email: parentEmail.toLowerCase() }]);
         if (error) throw error;
     },
 
     async getStudentEmailByParent(parentEmail) {
+        if (!parentEmail) return null;
+        const normalizedEmail = parentEmail.toLowerCase();
         try {
             // DEBUG: First check ALL rows in correos table
             const { data: allRows, error: allErr } = await supabase
@@ -62,10 +64,10 @@ export const authController = {
             const { data, error } = await supabase
                 .from('correos')
                 .select('user_email')
-                .eq('parent_email', parentEmail)
+                .ilike('parent_email', normalizedEmail)
                 .limit(1);
 
-            console.log('[Parent Lookup] Specific query for:', parentEmail, '→ data:', data, 'error:', error);
+            console.log('[Parent Lookup] Specific query for:', normalizedEmail, '→ data:', data, 'error:', error);
 
             if (error) {
                 console.warn('[Parent Lookup] Supabase error:', error.message);
@@ -82,6 +84,14 @@ export const authController = {
         const { data: { user }, error } = await supabase.auth.getUser();
         if (error) throw error;
         return user;
+    },
+
+    async updateUserMetadata(metadata) {
+        const { data, error } = await supabase.auth.updateUser({
+            data: metadata
+        });
+        if (error) throw error;
+        return data;
     },
 
     async checkUserExists(email) {

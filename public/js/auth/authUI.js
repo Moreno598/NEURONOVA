@@ -115,8 +115,32 @@ export class AuthUI {
                 const userMeta = session.user?.user_metadata;
                 const email = session.user?.email;
 
-                // Load specific user state
-                await app.loadState(email);
+                // Check if this logged in user is a parent (new way or old way)
+                let isParent = localStorage.getItem('ns_is_parent') === 'true';
+                let studentEmail = null;
+
+                if (email) {
+                    const foundStudent = await authController.getStudentEmailByParent(email);
+                    if (foundStudent) {
+                        isParent = true;
+                        studentEmail = foundStudent;
+                        localStorage.setItem('ns_is_parent', 'true');
+                    } else {
+                        const savedEmail = localStorage.getItem('ns_saved_email');
+                        if (isParent && savedEmail && savedEmail.toLowerCase() !== email.toLowerCase()) {
+                            // Old way / Mapped way: parent logged in with student email, but saved original parent email is different.
+                            // Keep isParent = true
+                            studentEmail = email;
+                        } else {
+                            isParent = false;
+                            localStorage.removeItem('ns_is_parent');
+                        }
+                    }
+                }
+
+                // Load specific user state (load the student's state if we are in parent mode)
+                const loadEmail = (isParent && studentEmail) ? studentEmail : email;
+                await app.loadState(loadEmail);
 
                 // Mark admin and redirect directly to games view
                 app.state.isAdmin = (email === 'sparkneuro64@gmail.com');
@@ -125,36 +149,42 @@ export class AuthUI {
                     // Admin goes to full games view
                     app.state.profile = 'admin';
                     app.state.activeProfileName = 'Matias M.';
-                } else if (userMeta) {
-                    const { firstName, lastName, age, alias, avatar } = userMeta;
-
-                    if (avatar) app.state.avatar = avatar;
-
-                    // Set Profile Name
-                    if (alias) {
-                        app.state.activeProfileName = alias;
-                    } else if (firstName) {
-                        app.state.activeProfileName = `${firstName} ${lastName || ''}`.trim();
-                    }
-
-                    const isParent = localStorage.getItem('ns_is_parent') === 'true';
-
-                    // Save age for parent dashboard
-                    if (age) app.state.userAge = parseInt(age, 10);
-
-                    // Set Game Mode by Age or Role
+                } else {
                     if (isParent) {
                         app.state.profile = 'parent';
-                        // Store the student name cleanly (no hardcoded prefix)
-                        app.state.studentName = app.state.activeProfileName;
-                    } else if (age) {
-                        const userAge = parseInt(age, 10);
-                        if (userAge <= 11) {
-                            app.state.profile = 'kids';
-                        } else if (userAge <= 17) {
-                            app.state.profile = 'teens';
-                        } else {
-                            app.state.profile = 'adults';
+                        if (!app.state.studentName) {
+                            app.state.studentName = app.state.activeProfileName || 'Estudiante';
+                        }
+                        app.state.studentName = app.state.studentName
+                            .replace(/^Apoderado de\s*/i, '')
+                            .replace(/^Qhawaq\s*/i, '')
+                            .replace(/^Guardian of\s*/i, '')
+                            .trim();
+                    } else if (userMeta) {
+                        const { firstName, lastName, age, alias, avatar } = userMeta;
+
+                        if (avatar) app.state.avatar = avatar;
+
+                        // Set Profile Name
+                        if (alias) {
+                            app.state.activeProfileName = alias;
+                        } else if (firstName) {
+                            app.state.activeProfileName = `${firstName} ${lastName || ''}`.trim();
+                        }
+
+                        // Save age for parent dashboard
+                        if (age) app.state.userAge = parseInt(age, 10);
+
+                        // Set Game Mode by Age or Role
+                        if (age) {
+                            const userAge = parseInt(age, 10);
+                            if (userAge <= 11) {
+                                app.state.profile = 'kids';
+                            } else if (userAge <= 17) {
+                                app.state.profile = 'teens';
+                            } else {
+                                app.state.profile = 'adults';
+                            }
                         }
                     }
                 }
@@ -219,7 +249,7 @@ export class AuthUI {
                     let loginEmail = email;
                     let isParent = false;
 
-                    // Auto-detect: check if this email is registered as a parent
+                    // 1. Detect if the entered email is registered as a parent (case-insensitive)
                     const studentEmail = await authController.getStudentEmailByParent(email);
                     if (studentEmail) {
                         loginEmail = studentEmail;
@@ -232,15 +262,17 @@ export class AuthUI {
                         localStorage.removeItem('ns_is_parent');
                     }
 
+                    // 2. Perform authentication with Supabase using the determined login email and password
                     try {
-                        console.log('[LOGIN DEBUG] Attempting login with:', { loginEmail, isParent, originalEmail: email, passwordLength: password.length });
+                        console.log('[LOGIN DEBUG] Attempting login:', { loginEmail, isParent, enteredEmail: email, passwordLength: password.length });
                         await authController.login(loginEmail, password);
                     } catch (loginErr) {
                         if (isParent) {
-                            throw new Error('Contraseña incorrecta. Recuerda que debes usar la misma contraseña que tu hijo(a) creó al registrarse en NeuroSpark.');
+                            throw new Error('Contraseña incorrecta. Recuerda usar la misma contraseña que tu hijo(a) creó al registrarse en NeuroSpark.');
                         }
                         throw loginErr;
                     }
+
                     localStorage.setItem('ns_saved_email', email);
                     localStorage.setItem('ns_saved_password', password);
                 } else {
@@ -263,24 +295,51 @@ export class AuthUI {
                     const avatar = avatarImgEl ? avatarImgEl.getAttribute('data-avatar') : 'sparky';
 
                     window.hasManuallyLoggedIn = true;
-                    await authController.register(email, password, {
-                        firstName,
-                        lastName,
-                        alias,
-                        avatar,
-                        age: parseInt(age, 10)
-                    });
-
-                    // Save the parent email to the 'correos' table
                     try {
-                        await authController.saveParentEmail(email, parentEmail);
-                    } catch (e) {
-                        console.error("Error guardando correo del padre", e);
+                        await authController.register(email, password, {
+                            firstName,
+                            lastName,
+                            alias,
+                            avatar,
+                            age: parseInt(age, 10)
+                        });
+
+                        // Save the parent email to the 'correos' table
+                        try {
+                            await authController.saveParentEmail(email, parentEmail);
+                        } catch (e) {
+                            console.error("Error guardando correo del padre", e);
+                        }
+                    } catch (regErr) {
+                        const errText = regErr.message || '';
+                        if (errText.includes('already exists') || errText.includes('ya existe') || errText.includes('registered') || regErr.status === 400 || regErr.code === 'user_already_exists') {
+                            console.log('[Register Fallback] User already exists, verifying password and linking parent email...');
+                            try {
+                                // Try logging in to verify the password
+                                await authController.login(email, password);
+                                
+                                // Update metadata
+                                await authController.updateUserMetadata({
+                                    firstName,
+                                    lastName,
+                                    alias,
+                                    avatar,
+                                    age: parseInt(age, 10)
+                                });
+                                
+                                // Save/update parent email link
+                                await authController.saveParentEmail(email, parentEmail);
+                            } catch (fallbackErr) {
+                                throw new Error('El usuario ya existe y la contraseña ingresada no coincide con la registrada.');
+                            }
+                        } else {
+                            throw regErr;
+                        }
                     }
 
                     localStorage.setItem('ns_saved_email', email);
                     localStorage.setItem('ns_saved_password', password);
-                    app.showToast('¡Cuenta creada! Hemos enviado un enlace de verificación. Por favor revisa tu correo (y la carpeta de spam).', 'success');
+                    app.showToast('¡Cuenta vinculada correctamente!', 'success');
                     this.isLoginMode = true;
                     this.title.innerText = 'Iniciar Sesión';
                     this.submitBtn.innerText = 'Ingresar';
