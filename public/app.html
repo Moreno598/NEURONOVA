@@ -441,7 +441,8 @@
             transition: color .2s ease;
         }
 
-        .input-wrap input {
+        .input-wrap input,
+        .input-wrap select {
             width: 100%;
             height: 52px;
             padding: 0 46px;
@@ -455,15 +456,27 @@
             transition: border-color .2s ease, background .2s ease, box-shadow .2s ease;
         }
 
+        .input-wrap select {
+            appearance: none;
+            cursor: pointer;
+        }
+
+        .input-wrap select option {
+            color: var(--text);
+            background: #10142d;
+        }
+
         .input-wrap input::placeholder {
             color: #646b86;
         }
 
-        .input-wrap input:hover {
+        .input-wrap input:hover,
+        .input-wrap select:hover {
             background: rgba(255, 255, 255, .06);
         }
 
-        .input-wrap input:focus {
+        .input-wrap input:focus,
+        .input-wrap select:focus {
             border-color: var(--line-focus);
             background: rgba(255, 255, 255, .065);
             box-shadow: 0 0 0 4px rgba(101, 233, 255, .065), inset 0 1px rgba(255, 255, 255, .04);
@@ -473,9 +486,26 @@
             color: var(--cyan);
         }
 
-        .input-wrap.is-invalid input {
+        .input-wrap.is-invalid input,
+        .input-wrap.is-invalid select {
             border-color: rgba(255, 122, 155, .62);
             box-shadow: 0 0 0 4px rgba(255, 122, 155, .06);
+        }
+
+        .field-hint {
+            display: block;
+            min-height: 16px;
+            margin-top: 6px;
+            color: #747d9c;
+            font-size: .66rem;
+        }
+
+        .field-hint.is-success {
+            color: #71f1bd;
+        }
+
+        .field-hint.is-error {
+            color: #ff8da8;
         }
 
         /* Personalizador: el estado existente alimenta un avatar SVG interactivo. */
@@ -1320,20 +1350,61 @@
 
                         <div class="field">
                             <div class="field-row">
-                                <label for="register-name">Nombre de usuario</label>
+                                <label for="register-alias">Alias</label>
                             </div>
                             <div class="input-wrap">
                                 <svg class="input-icon" viewBox="0 0 24 24" fill="none" aria-hidden="true">
                                     <circle cx="12" cy="8" r="4" stroke="currentColor" stroke-width="1.8"/>
                                     <path d="M4.5 21a7.5 7.5 0 0 1 15 0" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
                                 </svg>
-                                <input id="register-name" name="name" type="text" autocomplete="username" placeholder="Tu nombre de usuario" minlength="2" required>
+                                <input id="register-alias" name="alias" type="text" autocomplete="username" placeholder="Tu nombre visible" minlength="3" maxlength="24" pattern="[\p{L}\p{N}_-]{3,24}" required>
+                            </div>
+                            <small class="field-hint" id="alias-feedback">Será tu nombre visible y debe ser único.</small>
+                        </div>
+
+                        <div class="field">
+                            <div class="field-row">
+                                <label for="register-full-name">Nombre completo</label>
+                            </div>
+                            <div class="input-wrap">
+                                <svg class="input-icon" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                                    <circle cx="12" cy="8" r="4" stroke="currentColor" stroke-width="1.8"/>
+                                    <path d="M4.5 21a7.5 7.5 0 0 1 15 0" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+                                </svg>
+                                <input id="register-full-name" name="fullName" type="text" autocomplete="name" placeholder="Nombre y apellidos" minlength="3" maxlength="100" required>
                             </div>
                         </div>
 
                         <div class="field">
                             <div class="field-row">
-                                <label for="register-email">Correo electrónico</label>
+                                <label for="register-age">Edad</label>
+                            </div>
+                            <div class="input-wrap">
+                                <svg class="input-icon" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                                    <path d="M6 3v3M18 3v3M4 9h16M5 5h14a1 1 0 0 1 1 1v14H4V6a1 1 0 0 1 1-1Z" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+                                </svg>
+                                <select id="register-age" name="age" required>
+                                    <option value="">Selecciona la edad</option>
+                                    <option value="6">6 años</option>
+                                    <option value="7">7 años</option>
+                                    <option value="8">8 años</option>
+                                    <option value="9">9 años</option>
+                                    <option value="10">10 años</option>
+                                    <option value="11">11 años</option>
+                                    <option value="12">12 años</option>
+                                    <option value="13">13 años</option>
+                                    <option value="14">14 años</option>
+                                    <option value="15">15 años</option>
+                                    <option value="16">16 años</option>
+                                    <option value="17">17 años</option>
+                                </select>
+                            </div>
+                            <small class="field-hint" id="mode-preview">El modo se asignará automáticamente.</small>
+                        </div>
+
+                        <div class="field">
+                            <div class="field-row">
+                                <label for="register-email">Correo del niño o adolescente</label>
                             </div>
                             <div class="input-wrap">
                                 <svg class="input-icon" viewBox="0 0 24 24" fill="none" aria-hidden="true">
@@ -1341,6 +1412,19 @@
                                     <path d="m5 7 7 6 7-6" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/>
                                 </svg>
                                 <input id="register-email" name="email" type="email" autocomplete="email" placeholder="tu@email.com" required>
+                            </div>
+                        </div>
+
+                        <div class="field">
+                            <div class="field-row">
+                                <label for="register-parent-email">Correo del padre o tutor</label>
+                            </div>
+                            <div class="input-wrap">
+                                <svg class="input-icon" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                                    <path d="M4 6h16v12H4V6Z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/>
+                                    <path d="m5 7 7 6 7-6" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/>
+                                </svg>
+                                <input id="register-parent-email" name="parentEmail" type="email" autocomplete="email" placeholder="padre@email.com" required>
                             </div>
                         </div>
 
@@ -1921,6 +2005,12 @@
                     userId: user.id,
                     username: user.name,
                     email: user.email,
+                    studentEmail: user.studentEmail,
+                    parentEmail: user.parentEmail,
+                    fullName: user.fullName,
+                    age: user.age,
+                    mode: user.mode,
+                    role: user.role,
                     avatar: user.avatar,
                     updatedAt: new Date().toISOString()
                 };
@@ -1935,6 +2025,13 @@
                     id: user.id,
                     name: user.name,
                     email: user.email,
+                    studentId: user.studentId || user.id,
+                    studentEmail: user.studentEmail || user.email,
+                    parentEmail: user.parentEmail || null,
+                    fullName: user.fullName || null,
+                    age: user.age || null,
+                    mode: user.mode || null,
+                    role: user.role || "student",
                     avatar: user.avatar,
                     provider: "supabase",
                     updatedAt: new Date().toISOString()
@@ -1956,6 +2053,13 @@
                     userId: user.id,
                     name: user.name,
                     email: user.email,
+                    studentId: user.studentId || user.id,
+                    studentEmail: user.studentEmail || user.email,
+                    parentEmail: user.parentEmail || null,
+                    fullName: user.fullName || null,
+                    age: user.age || null,
+                    mode: user.mode || null,
+                    role: user.role || "student",
                     profile: profile || null,
                     avatar: profile?.avatar || user.avatar,
                     provider: "supabase",
@@ -1981,48 +2085,99 @@
                 return getAvatarSnapshot();
             }
 
-            async function createAccount({ name, email, password, avatar }) {
+            async function createAccount({
+                alias,
+                fullName,
+                age,
+                email,
+                parentEmail,
+                password,
+                avatar
+            }) {
                 const normalizedEmail = email.trim().toLowerCase();
-                const authData = await authController.register(normalizedEmail, password, {
-                    username: name.trim(),
-                    avatar_config: avatar.config,
-                    profile_version: 2
+                await authController.registerFamily({
+                    alias: alias.trim(),
+                    fullName: fullName.trim(),
+                    age,
+                    userEmail: normalizedEmail,
+                    parentEmail: parentEmail.trim().toLowerCase(),
+                    password,
+                    avatar
                 });
 
-                if (!authData?.user) {
-                    throw new Error("Supabase no devolvió el usuario creado.");
+                // El alta administrativa no expone tokens. Se inicia una sesión
+                // normal del estudiante después de crear ambas identidades.
+                return authenticate({ email: normalizedEmail, password });
+            }
+
+            async function hydrateAuthenticatedUser(remoteUser) {
+                let familyContext = null;
+                try {
+                    familyContext = await authController.getFamilyContext();
+                } catch (error) {
+                    console.warn("[NeuroSpark Auth] Contexto familiar no disponible; usando compatibilidad heredada.", error);
                 }
 
+                const accountType =
+                    familyContext?.viewer_role
+                    || remoteUser.app_metadata?.account_type
+                    || "student";
+                let remoteState = familyContext?.state_data || null;
+
+                if (!remoteState && accountType !== "parent") {
+                    try {
+                        remoteState = await authController.loadUserState(
+                            familyContext?.user_email || remoteUser.email
+                        );
+                    } catch (error) {
+                        console.error("[NeuroSpark Database] No se pudo cargar user_profiles.", error);
+                    }
+                }
+
+                const localProfile = readProfiles()[remoteUser.id];
+                const profileData = remoteState?.profile || {};
+                const avatar =
+                    profileData.avatar
+                    || localProfile?.avatar
+                    || avatarFromConfig(remoteUser.user_metadata?.avatar_config);
                 const user = {
-                    id: authData.user.id,
-                    name: authData.user.user_metadata?.username || name.trim(),
-                    email: authData.user.email || normalizedEmail,
+                    id: remoteUser.id,
+                    studentId: familyContext?.user_id || remoteUser.id,
+                    name:
+                        familyContext?.alias
+                        || profileData.alias
+                        || profileData.username
+                        || remoteUser.user_metadata?.alias
+                        || remoteUser.user_metadata?.username
+                        || localProfile?.username
+                        || remoteUser.email.split("@")[0],
+                    fullName:
+                        familyContext?.full_name
+                        || profileData.fullName
+                        || remoteUser.user_metadata?.full_name
+                        || null,
+                    email: remoteUser.email,
+                    studentEmail: familyContext?.user_email || remoteUser.email,
+                    parentEmail:
+                        familyContext?.parent_email
+                        || remoteUser.user_metadata?.parent_email
+                        || null,
+                    age:
+                        Number(familyContext?.age || profileData.age || remoteUser.user_metadata?.age)
+                        || null,
+                    mode:
+                        familyContext?.mode
+                        || profileData.mode
+                        || remoteUser.app_metadata?.mode
+                        || remoteUser.user_metadata?.mode
+                        || null,
+                    role: accountType === "parent" ? "parent" : "student",
                     avatar,
-                    createdAt: authData.user.created_at || new Date().toISOString()
+                    profile: familyContext || remoteState?.profile || localProfile || null
                 };
 
                 cacheUser(user);
                 saveProfile(user);
-
-                if (!authData.session) {
-                    const confirmationError = new Error(
-                        "Cuenta creada. Revisa tu correo y confirma la cuenta antes de iniciar sesión."
-                    );
-                    confirmationError.code = "email_confirmation_required";
-                    throw confirmationError;
-                }
-
-                try {
-                    await authController.saveUserProfile(user.email, {
-                        userId: user.id,
-                        username: user.name,
-                        email: user.email,
-                        avatar
-                    });
-                } catch (error) {
-                    console.error("[Supabase:registro] La cuenta se creó, pero el perfil remoto no pudo sincronizarse:", error);
-                }
-
                 return user;
             }
 
@@ -2041,49 +2196,7 @@
                     hasSession: Boolean(authData.session)
                 });
 
-                let remoteState = null;
-                try {
-                    remoteState = await authController.loadUserState(remoteUser.email);
-                } catch (error) {
-                    // Un fallo de perfil/RLS no invalida una autenticación correcta.
-                    console.error("[NeuroSpark Database] No se pudo cargar user_profiles.", error);
-                }
-
-                const localProfile = readProfiles()[remoteUser.id];
-                const avatar = remoteState?.profile?.avatar
-                    || localProfile?.avatar
-                    || avatarFromConfig(remoteUser.user_metadata?.avatar_config);
-                const user = {
-                    id: remoteUser.id,
-                    name: remoteState?.profile?.username
-                        || remoteUser.user_metadata?.username
-                        || localProfile?.username
-                        || remoteUser.email.split("@")[0],
-                    email: remoteUser.email,
-                    avatar,
-                    profile: remoteState?.profile || localProfile || null
-                };
-
-                if (!remoteState?.profile) {
-                    try {
-                        await authController.ensureUserProfile(user.email, {
-                            userId: user.id,
-                            username: user.name,
-                            email: user.email,
-                            avatar: user.avatar
-                        });
-                        console.info("[NeuroSpark Database] Perfil creado después del primer acceso.", {
-                            userId: user.id
-                        });
-                    } catch (error) {
-                        // La sesión sigue siendo válida aunque falle la sincronización de perfil.
-                        console.error("[NeuroSpark Database] La sesión es válida, pero no se pudo crear user_profiles.", error);
-                    }
-                }
-
-                cacheUser(user);
-                saveProfile(user);
-                return user;
+                return hydrateAuthenticatedUser(remoteUser);
             }
 
             async function restoreSupabaseSession() {
@@ -2097,30 +2210,12 @@
                         throw new Error("La sesión local no pudo validarse contra Supabase Auth.");
                     }
 
-                    let remoteState = null;
-                    try {
-                        remoteState = await authController.loadUserState(remoteUser.email);
-                    } catch (error) {
-                        console.error("[NeuroSpark Database] No se pudo restaurar user_profiles.", error);
-                    }
-                    const localProfile = readProfiles()[remoteUser.id];
-                    const user = {
-                        id: remoteUser.id,
-                        name: remoteState?.profile?.username
-                            || remoteUser.user_metadata?.username
-                            || localProfile?.username
-                            || remoteUser.email.split("@")[0],
-                        email: remoteUser.email,
-                        avatar: remoteState?.profile?.avatar
-                            || localProfile?.avatar
-                            || avatarFromConfig(remoteUser.user_metadata?.avatar_config),
-                        profile: remoteState?.profile || localProfile || null
-                    };
+                    const user = await hydrateAuthenticatedUser(remoteUser);
 
-                    cacheUser(user);
-                    saveProfile(user);
                     createSession(user);
-                    window.location.replace("index.html");
+                    window.location.replace(
+                        user.role === "parent" ? "parent.html" : "student.html"
+                    );
                     return true;
                 } catch (error) {
                     console.error("[Supabase:session] No se pudo restaurar la sesión:", error);
@@ -2151,7 +2246,7 @@
                 }
 
                 window.setTimeout(() => {
-                    const target = document.getElementById(isRegister ? "register-name" : "login-email");
+                    const target = document.getElementById(isRegister ? "register-alias" : "login-email");
                     target?.focus({ preventScroll: true });
                 }, 80);
             }
@@ -2185,8 +2280,36 @@
                 button.classList.toggle("is-loading", isLoading);
             }
 
-            function redirectToApplication() {
-                window.setTimeout(() => window.location.replace("index.html"), 420);
+            async function checkAliasAvailability(alias) {
+                const feedback = document.getElementById("alias-feedback");
+                const normalizedAlias = alias.trim();
+                feedback.className = "field-hint";
+
+                if (!/^[\p{L}\p{N}_-]{3,24}$/u.test(normalizedAlias)) {
+                    feedback.textContent = "Usa de 3 a 24 letras, números, guiones o guion bajo.";
+                    feedback.classList.add("is-error");
+                    return false;
+                }
+
+                feedback.textContent = "Comprobando disponibilidad…";
+                try {
+                    const available = await authController.isAliasAvailable(normalizedAlias);
+                    feedback.textContent = available
+                        ? "Alias disponible."
+                        : "Ese alias ya está en uso.";
+                    feedback.classList.add(available ? "is-success" : "is-error");
+                    return available;
+                } catch (error) {
+                    console.error("[NeuroSpark Register] No se pudo validar el alias:", error);
+                    feedback.textContent = error.message;
+                    feedback.classList.add("is-error");
+                    throw error;
+                }
+            }
+
+            function redirectToApplication(user) {
+                const target = user.role === "parent" ? "parent.html" : "student.html";
+                window.setTimeout(() => window.location.replace(target), 420);
             }
 
             elements.tabButtons.forEach(button => {
@@ -2221,10 +2344,34 @@
 
             document.getElementById("avatar-randomize").addEventListener("click", randomizeAvatar);
 
-            document.querySelectorAll("input").forEach(input => {
-                input.addEventListener("input", () => {
-                    input.closest(".input-wrap")?.classList.remove("is-invalid");
+            document.querySelectorAll("input, select").forEach(control => {
+                control.addEventListener("input", () => {
+                    control.closest(".input-wrap")?.classList.remove("is-invalid");
                 });
+            });
+
+            const aliasInput = document.getElementById("register-alias");
+            aliasInput.addEventListener("input", () => {
+                const feedback = document.getElementById("alias-feedback");
+                feedback.className = "field-hint";
+                feedback.textContent = "Será tu nombre visible y debe ser único.";
+            });
+            aliasInput.addEventListener("blur", () => {
+                if (aliasInput.value.trim()) {
+                    checkAliasAvailability(aliasInput.value).catch(() => {});
+                }
+            });
+
+            const ageInput = document.getElementById("register-age");
+            ageInput.addEventListener("change", () => {
+                const age = Number(ageInput.value);
+                const preview = document.getElementById("mode-preview");
+                preview.textContent = !age
+                    ? "El modo se asignará automáticamente."
+                    : age <= 11
+                        ? "Modo asignado: Niño."
+                        : "Modo asignado: Adolescente.";
+                preview.className = `field-hint${age ? " is-success" : ""}`;
             });
 
             document.getElementById("forgot-password").addEventListener("click", async () => {
@@ -2275,7 +2422,7 @@
 
                     createSession(user);
                     setMessage(elements.loginMessage, "success", "Acceso correcto. Abriendo NeuroSpark…");
-                    redirectToApplication();
+                    redirectToApplication(user);
                 } catch (error) {
                     console.error("[NeuroSpark Auth] Error original del inicio de sesión:", error);
                     console.error("[NeuroSpark Auth] Fase:", {
@@ -2294,21 +2441,49 @@
                 clearMessages();
                 clearInvalidFields();
 
-                const name = document.getElementById("register-name");
+                const alias = document.getElementById("register-alias");
+                const fullName = document.getElementById("register-full-name");
+                const age = document.getElementById("register-age");
                 const email = document.getElementById("register-email");
+                const parentEmail = document.getElementById("register-parent-email");
                 const password = document.getElementById("register-password");
                 const confirmation = document.getElementById("register-confirm");
                 const terms = document.getElementById("accept-terms");
 
-                if (name.value.trim().length < 2) {
-                    markInvalid(name);
-                    setMessage(elements.registerMessage, "error", "Escribe un nombre de usuario válido.");
+                if (!/^[\p{L}\p{N}_-]{3,24}$/u.test(alias.value.trim())) {
+                    markInvalid(alias);
+                    setMessage(elements.registerMessage, "error", "Escribe un alias válido de 3 a 24 caracteres.");
+                    return;
+                }
+
+                if (fullName.value.trim().length < 3) {
+                    markInvalid(fullName);
+                    setMessage(elements.registerMessage, "error", "Escribe el nombre completo.");
+                    return;
+                }
+
+                const numericAge = Number(age.value);
+                if (!Number.isInteger(numericAge) || numericAge < 6 || numericAge > 17) {
+                    markInvalid(age);
+                    setMessage(elements.registerMessage, "error", "Selecciona una edad entre 6 y 17 años.");
                     return;
                 }
 
                 if (!email.validity.valid) {
                     markInvalid(email);
                     setMessage(elements.registerMessage, "error", "Ingresa un correo electrónico válido.");
+                    return;
+                }
+
+                if (!parentEmail.validity.valid) {
+                    markInvalid(parentEmail);
+                    setMessage(elements.registerMessage, "error", "Ingresa un correo válido para el padre o tutor.");
+                    return;
+                }
+
+                if (email.value.trim().toLowerCase() === parentEmail.value.trim().toLowerCase()) {
+                    markInvalid(parentEmail);
+                    setMessage(elements.registerMessage, "error", "El correo del padre debe ser diferente al del estudiante.");
                     return;
                 }
 
@@ -2333,16 +2508,27 @@
                 setLoading(elements.registerForm, true);
 
                 try {
+                    const aliasAvailable = await checkAliasAvailability(alias.value);
+                    if (!aliasAvailable) {
+                        markInvalid(alias);
+                        setMessage(elements.registerMessage, "error", "Elige otro alias; ese ya está registrado.");
+                        setLoading(elements.registerForm, false);
+                        return;
+                    }
+
                     const user = await createAccount({
-                        name: name.value,
+                        alias: alias.value,
+                        fullName: fullName.value,
+                        age: numericAge,
                         email: email.value,
+                        parentEmail: parentEmail.value,
                         password: password.value,
                         avatar: getAvatarSnapshot()
                     });
 
                     createSession(user);
                     setMessage(elements.registerMessage, "success", "Cuenta creada. Preparando tu experiencia…");
-                    redirectToApplication();
+                    redirectToApplication(user);
                 } catch (error) {
                     console.error("[NeuroSpark Register] Error original del registro:", error);
                     console.error("[NeuroSpark Register] Fase:", {

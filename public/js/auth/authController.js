@@ -79,6 +79,38 @@ async function requireSupabase(operation, phase) {
 }
 
 export const authController = Object.freeze({
+    async registerFamily(registration) {
+        const response = await fetch('/api/auth/register-family', {
+            method: 'POST',
+            headers: {
+                Accept: 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(registration)
+        });
+        const payload = await response.json().catch(() => ({}));
+        if (!response.ok) {
+            const error = new Error(
+                payload.error || `No se pudo crear la cuenta (${response.status}).`
+            );
+            error.code = payload.code || 'family_registration_failed';
+            error.status = response.status;
+            throw reportError('api.registerFamily', error, 'registration');
+        }
+        return payload;
+    },
+
+    async isAliasAvailable(alias) {
+        const normalizedAlias = String(alias || '').trim();
+        if (!normalizedAlias) return false;
+        const supabase = await requireSupabase('rpc.is_alias_available', 'configuration');
+        const { data, error } = await supabase.rpc('is_alias_available', {
+            candidate_alias: normalizedAlias
+        });
+        throwIfError('rpc.is_alias_available', error, 'database');
+        return Boolean(data);
+    },
+
     async register(email, password, metadata = {}) {
         const normalizedEmail = normalizeEmail(email);
         const supabase = await requireSupabase('auth.signUp', 'configuration');
@@ -206,6 +238,42 @@ export const authController = Object.freeze({
         const { data, error } = await supabase.auth.getUser();
         throwIfError('auth.getUser', error, 'session');
         return data.user;
+    },
+
+    async getFamilyContext() {
+        const supabase = await requireSupabase('rpc.get_my_family_context', 'configuration');
+        const { data, error } = await supabase.rpc('get_my_family_context');
+        throwIfError('rpc.get_my_family_context', error, 'database');
+        return data || null;
+    },
+
+    async syncFamilyPassword(newPassword) {
+        const supabase = await requireSupabase('api.syncFamilyPassword', 'configuration');
+        const { data: sessionData, error: sessionError } =
+            await supabase.auth.getSession();
+        throwIfError('auth.getSession.beforePasswordSync', sessionError, 'session');
+        const accessToken = sessionData?.session?.access_token;
+        if (!accessToken) throw new Error('No existe una sesión activa para cambiar la contraseña.');
+
+        const response = await fetch('/api/auth/sync-family-password', {
+            method: 'POST',
+            headers: {
+                Accept: 'application/json',
+                Authorization: `Bearer ${accessToken}`,
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ newPassword })
+        });
+        const payload = await response.json().catch(() => ({}));
+        if (!response.ok) {
+            const error = new Error(
+                payload.error || `No se pudo actualizar la contraseña (${response.status}).`
+            );
+            error.code = payload.code || 'password_sync_failed';
+            error.status = response.status;
+            throw reportError('api.syncFamilyPassword', error, 'authentication');
+        }
+        return payload;
     },
 
     async updateUserMetadata(metadata) {

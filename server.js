@@ -23,6 +23,375 @@ for (const envFile of ['.env.local', '.env']) {
     }
 }
 
+const SUPABASE_URL = process.env.SUPABASE_URL;
+const SUPABASE_ANON_KEY =
+    process.env.SUPABASE_ANON_KEY || process.env.SUPABASE_PUBLISHABLE_KEY;
+const SUPABASE_SERVICE_ROLE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY;
+
+class ApiError extends Error {
+    constructor(status, message, code = 'api_error', details = null) {
+        super(message);
+        this.status = status;
+        this.code = code;
+        this.details = details;
+    }
+}
+
+function sendJson(res, status, payload) {
+    res.writeHead(status, {
+        'Content-Type': 'application/json; charset=utf-8',
+        'Cache-Control': 'no-store'
+    });
+    res.end(JSON.stringify(payload));
+}
+
+function readJsonBody(req, maxBytes = 768 * 1024) {
+    return new Promise((resolve, reject) => {
+        let body = '';
+        let received = 0;
+
+        req.on('data', chunk => {
+            received += chunk.length;
+            if (received > maxBytes) {
+                reject(new ApiError(413, 'La solicitud supera el tamaño permitido.', 'payload_too_large'));
+                req.destroy();
+                return;
+            }
+            body += chunk.toString();
+        });
+
+        req.on('end', () => {
+            try {
+                resolve(body ? JSON.parse(body) : {});
+            } catch {
+                reject(new ApiError(400, 'El cuerpo JSON no es válido.', 'invalid_json'));
+            }
+        });
+        req.on('error', reject);
+    });
+}
+
+function normalizeEmail(value) {
+    return String(value || '').trim().toLowerCase();
+}
+
+function normalizeAlias(value) {
+    return String(value || '').trim();
+}
+
+function isValidEmail(value) {
+    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
+}
+
+function requireAdminConfiguration() {
+    if (!SUPABASE_URL || !SUPABASE_ANON_KEY || !SUPABASE_SERVICE_ROLE_KEY) {
+        throw new ApiError(
+            503,
+            'El servidor aún no tiene configurada SUPABASE_SERVICE_ROLE_KEY.',
+            'supabase_admin_not_configured'
+        );
+    }
+}
+
+async function supabaseAdminRequest(pathname, options = {}) {
+    requireAdminConfiguration();
+    const response = await fetch(`${SUPABASE_URL}${pathname}`, {
+        ...options,
+        headers: {
+            apikey: SUPABASE_SERVICE_ROLE_KEY,
+            Authorization: `Bearer ${SUPABASE_SERVICE_ROLE_KEY}`,
+            'Content-Type': 'application/json',
+            ...(options.headers || {})
+        }
+    });
+    const text = await response.text();
+    let payload = null;
+    try {
+        payload = text ? JSON.parse(text) : null;
+    } catch {
+        payload = text;
+    }
+
+    if (!response.ok) {
+        const message =
+            payload?.msg
+            || payload?.message
+            || payload?.error_description
+            || `Supabase respondió ${response.status}.`;
+        throw new ApiError(
+            response.status,
+            message,
+            payload?.error_code || payload?.code || 'supabase_error',
+            payload
+        );
+    }
+    return payload;
+}
+
+async function createAuthUser({ email, password, userMetadata, appMetadata }) {
+    const payload = await supabaseAdminRequest('/auth/v1/admin/users', {
+        method: 'POST',
+        body: JSON.stringify({
+            email,
+            password,
+            email_confirm: true,
+            user_metadata: userMetadata,
+            app_metadata: appMetadata
+        })
+    });
+    return payload?.user || payload;
+}
+
+async function deleteAuthUser(userId) {
+    if (!userId) return;
+    await supabaseAdminRequest(`/auth/v1/admin/users/${encodeURIComponent(userId)}`, {
+        method: 'DELETE'
+    }).catch(error => {
+        console.error('[Family Registration] No se pudo revertir el usuario Auth:', error);
+    });
+}
+
+async function deleteFamilyRows(childUserId) {
+    if (!childUserId) return;
+    const filter = encodeURIComponent(`eq.${childUserId}`);
+    await Promise.all([
+        supabaseAdminRequest(`/rest/v1/correos?child_user_id=${filter}`, {
+            method: 'DELETE',
+            headers: { Prefer: 'return=minimal' }
+        }).catch(error => console.error('[Family Registration] Limpieza correos:', error)),
+        supabaseAdminRequest(`/rest/v1/user_profiles?user_id=${filter}`, {
+            method: 'DELETE',
+            headers: { Prefer: 'return=minimal' }
+        }).catch(error => console.error('[Family Registration] Limpieza user_profiles:', error))
+    ]);
+}
+
+function validateFamilyRegistration(payload) {
+    const alias = normalizeAlias(payload.alias);
+    const fullName = String(payload.fullName || '').trim();
+    const userEmail = normalizeEmail(payload.userEmail);
+    const parentEmail = normalizeEmail(payload.parentEmail);
+    const password = String(payload.password || '');
+    const age = Number(payload.age);
+
+    if (!/^[\p{L}\p{N}_-]{3,24}$/u.test(alias)) {
+        throw new ApiError(
+            400,
+            'El alias debe tener entre 3 y 24 caracteres y solo usar letras, números, guion o guion bajo.',
+            'invalid_alias'
+        );
+    }
+    if (fullName.length < 3 || fullName.length > 100) {
+        throw new ApiError(400, 'Ingresa el nombre completo.', 'invalid_full_name');
+    }
+    if (!Number.isInteger(age) || age < 6 || age > 17) {
+        throw new ApiError(400, 'La edad debe estar entre 6 y 17 años.', 'invalid_age');
+    }
+    if (!isValidEmail(userEmail) || !isValidEmail(parentEmail)) {
+        throw new ApiError(400, 'Los correos electrónicos no son válidos.', 'invalid_email');
+    }
+    if (userEmail === parentEmail) {
+        throw new ApiError(
+            400,
+            'El correo del padre debe ser diferente al correo del estudiante.',
+            'emails_must_differ'
+        );
+    }
+    if (password.length < 8) {
+        throw new ApiError(
+            400,
+            'La contraseña debe tener al menos 8 caracteres.',
+            'weak_password'
+        );
+    }
+
+    return {
+        alias,
+        fullName,
+        userEmail,
+        parentEmail,
+        password,
+        age,
+        mode: age <= 11 ? 'child' : 'teen',
+        avatar: payload.avatar && typeof payload.avatar === 'object'
+            ? payload.avatar
+            : null
+    };
+}
+
+async function registerFamily(payload) {
+    requireAdminConfiguration();
+    const registration = validateFamilyRegistration(payload);
+    const aliasFilter = encodeURIComponent(`ilike.${registration.alias}`);
+    const existingAlias = await supabaseAdminRequest(
+        `/rest/v1/user_profiles?select=user_id&alias=${aliasFilter}&limit=1`
+    );
+    if (Array.isArray(existingAlias) && existingAlias.length) {
+        throw new ApiError(409, 'Ese alias ya está en uso.', 'alias_already_exists');
+    }
+
+    let childUser = null;
+    let parentUser = null;
+    try {
+        childUser = await createAuthUser({
+            email: registration.userEmail,
+            password: registration.password,
+            userMetadata: {
+                alias: registration.alias,
+                full_name: registration.fullName,
+                age: registration.age,
+                mode: registration.mode,
+                parent_email: registration.parentEmail,
+                avatar_config: registration.avatar?.config || null
+            },
+            appMetadata: {
+                account_type: 'student',
+                mode: registration.mode
+            }
+        });
+
+        parentUser = await createAuthUser({
+            email: registration.parentEmail,
+            password: registration.password,
+            userMetadata: {
+                linked_child_id: childUser.id,
+                linked_child_alias: registration.alias
+            },
+            appMetadata: {
+                account_type: 'parent',
+                child_user_id: childUser.id
+            }
+        });
+
+        const timestamp = new Date().toISOString();
+        const profile = {
+            user_id: childUser.id,
+            parent_user_id: parentUser.id,
+            email: registration.userEmail,
+            user_email: registration.userEmail,
+            parent_email: registration.parentEmail,
+            alias: registration.alias,
+            full_name: registration.fullName,
+            age: registration.age,
+            mode: registration.mode,
+            updated_at: timestamp,
+            state_data: {
+                profile: {
+                    userId: childUser.id,
+                    username: registration.alias,
+                    alias: registration.alias,
+                    fullName: registration.fullName,
+                    email: registration.userEmail,
+                    parentEmail: registration.parentEmail,
+                    age: registration.age,
+                    mode: registration.mode,
+                    avatar: registration.avatar,
+                    updatedAt: timestamp
+                }
+            }
+        };
+        const link = {
+            child_user_id: childUser.id,
+            parent_user_id: parentUser.id,
+            user_email: registration.userEmail,
+            parent_email: registration.parentEmail,
+            alias: registration.alias,
+            full_name: registration.fullName,
+            age: registration.age,
+            mode: registration.mode
+        };
+
+        await supabaseAdminRequest('/rest/v1/user_profiles', {
+            method: 'POST',
+            headers: { Prefer: 'return=representation' },
+            body: JSON.stringify(profile)
+        });
+        await supabaseAdminRequest('/rest/v1/correos', {
+            method: 'POST',
+            headers: { Prefer: 'return=representation' },
+            body: JSON.stringify(link)
+        });
+
+        return {
+            student: {
+                id: childUser.id,
+                email: registration.userEmail,
+                alias: registration.alias,
+                fullName: registration.fullName,
+                age: registration.age,
+                mode: registration.mode
+            },
+            parent: {
+                id: parentUser.id,
+                email: registration.parentEmail
+            }
+        };
+    } catch (error) {
+        console.error('[Family Registration] Error original:', error);
+        await deleteFamilyRows(childUser?.id);
+        await deleteAuthUser(parentUser?.id);
+        await deleteAuthUser(childUser?.id);
+        throw error;
+    }
+}
+
+async function verifyAccessToken(req) {
+    const authorization = req.headers.authorization || '';
+    const token = authorization.startsWith('Bearer ')
+        ? authorization.slice(7)
+        : '';
+    if (!token) throw new ApiError(401, 'Falta la sesión del estudiante.', 'missing_session');
+
+    const response = await fetch(`${SUPABASE_URL}/auth/v1/user`, {
+        headers: {
+            apikey: SUPABASE_ANON_KEY,
+            Authorization: `Bearer ${token}`
+        }
+    });
+    const user = await response.json().catch(() => null);
+    if (!response.ok || !user?.id) {
+        throw new ApiError(401, 'La sesión del estudiante no es válida.', 'invalid_session');
+    }
+    return user;
+}
+
+async function syncFamilyPassword(req, payload) {
+    requireAdminConfiguration();
+    const user = await verifyAccessToken(req);
+    if (user.app_metadata?.account_type !== 'student') {
+        throw new ApiError(
+            403,
+            'Solo la cuenta del estudiante puede cambiar la contraseña familiar.',
+            'student_session_required'
+        );
+    }
+
+    const newPassword = String(payload.newPassword || '');
+    if (newPassword.length < 8) {
+        throw new ApiError(400, 'La contraseña debe tener al menos 8 caracteres.', 'weak_password');
+    }
+
+    const userIdFilter = encodeURIComponent(`eq.${user.id}`);
+    const profiles = await supabaseAdminRequest(
+        `/rest/v1/user_profiles?select=user_id,parent_user_id&user_id=${userIdFilter}&limit=1`
+    );
+    const profile = profiles?.[0];
+    if (!profile?.parent_user_id) {
+        throw new ApiError(404, 'No se encontró la cuenta parental vinculada.', 'parent_not_found');
+    }
+
+    // Supabase Admin no ofrece una transacción entre dos identidades Auth.
+    await supabaseAdminRequest(
+        `/auth/v1/admin/users/${encodeURIComponent(profile.parent_user_id)}`,
+        { method: 'PUT', body: JSON.stringify({ password: newPassword }) }
+    );
+    await supabaseAdminRequest(
+        `/auth/v1/admin/users/${encodeURIComponent(profile.user_id)}`,
+        { method: 'PUT', body: JSON.stringify({ password: newPassword }) }
+    );
+    return { updated: true };
+}
+
 const filesToMove = ['index.html', 'index.css', 'insignia.png', 'js', 'assets'];
 if (!fs.existsSync(publicDir)) {
     fs.mkdirSync(publicDir);
@@ -149,9 +518,37 @@ const server = http.createServer((req, res) => {
     const requestUrl = new URL(req.url, `http://${req.headers.host || 'localhost'}`);
     const pathname = requestUrl.pathname;
 
+    if (req.method === 'POST' && pathname === '/api/auth/register-family') {
+        readJsonBody(req)
+            .then(registerFamily)
+            .then(data => sendJson(res, 201, data))
+            .catch(error => {
+                console.error('[API register-family]', error);
+                sendJson(res, error.status || 500, {
+                    error: error.message || 'No se pudo crear la familia.',
+                    code: error.code || 'registration_failed'
+                });
+            });
+        return;
+    }
+
+    if (req.method === 'POST' && pathname === '/api/auth/sync-family-password') {
+        readJsonBody(req)
+            .then(payload => syncFamilyPassword(req, payload))
+            .then(data => sendJson(res, 200, data))
+            .catch(error => {
+                console.error('[API sync-family-password]', error);
+                sendJson(res, error.status || 500, {
+                    error: error.message || 'No se pudo actualizar la contraseña.',
+                    code: error.code || 'password_sync_failed'
+                });
+            });
+        return;
+    }
+
     if (req.method === 'GET' && pathname === '/api/config/supabase') {
-        const supabaseUrl = process.env.SUPABASE_URL;
-        const supabaseAnonKey = process.env.SUPABASE_ANON_KEY || process.env.SUPABASE_PUBLISHABLE_KEY;
+        const supabaseUrl = SUPABASE_URL;
+        const supabaseAnonKey = SUPABASE_ANON_KEY;
 
         if (!supabaseUrl || !supabaseAnonKey) {
             console.error('[Supabase Config] Faltan SUPABASE_URL y/o SUPABASE_ANON_KEY.');
