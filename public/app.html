@@ -2028,16 +2028,27 @@
 
             async function authenticate({ email, password }) {
                 const normalizedEmail = email.trim().toLowerCase();
+                console.info("[NeuroSpark Auth] Iniciando autenticación con Supabase.", {
+                    email: normalizedEmail
+                });
+
                 const authData = await authController.login(normalizedEmail, password);
                 const remoteUser = authData?.user;
                 if (!remoteUser) throw new Error("Supabase no devolvió el usuario autenticado.");
 
-                const remoteState = await authController
-                    .loadUserState(remoteUser.email)
-                    .catch(error => {
-                        console.warn("[Supabase:login] Se usará el perfil de Auth metadata:", error);
-                        return null;
-                    });
+                console.info("[NeuroSpark Auth] Sesión creada y verificada.", {
+                    userId: remoteUser.id,
+                    hasSession: Boolean(authData.session)
+                });
+
+                let remoteState = null;
+                try {
+                    remoteState = await authController.loadUserState(remoteUser.email);
+                } catch (error) {
+                    // Un fallo de perfil/RLS no invalida una autenticación correcta.
+                    console.error("[NeuroSpark Database] No se pudo cargar user_profiles.", error);
+                }
+
                 const localProfile = readProfiles()[remoteUser.id];
                 const avatar = remoteState?.profile?.avatar
                     || localProfile?.avatar
@@ -2053,6 +2064,23 @@
                     profile: remoteState?.profile || localProfile || null
                 };
 
+                if (!remoteState?.profile) {
+                    try {
+                        await authController.ensureUserProfile(user.email, {
+                            userId: user.id,
+                            username: user.name,
+                            email: user.email,
+                            avatar: user.avatar
+                        });
+                        console.info("[NeuroSpark Database] Perfil creado después del primer acceso.", {
+                            userId: user.id
+                        });
+                    } catch (error) {
+                        // La sesión sigue siendo válida aunque falle la sincronización de perfil.
+                        console.error("[NeuroSpark Database] La sesión es válida, pero no se pudo crear user_profiles.", error);
+                    }
+                }
+
                 cacheUser(user);
                 saveProfile(user);
                 return user;
@@ -2064,9 +2092,17 @@
                     const remoteUser = activeSession?.user;
                     if (!remoteUser) return false;
 
-                    const remoteState = await authController
-                        .loadUserState(remoteUser.email)
-                        .catch(() => null);
+                    const verifiedUser = await authController.getCurrentUser();
+                    if (!verifiedUser || verifiedUser.id !== remoteUser.id) {
+                        throw new Error("La sesión local no pudo validarse contra Supabase Auth.");
+                    }
+
+                    let remoteState = null;
+                    try {
+                        remoteState = await authController.loadUserState(remoteUser.email);
+                    } catch (error) {
+                        console.error("[NeuroSpark Database] No se pudo restaurar user_profiles.", error);
+                    }
                     const localProfile = readProfiles()[remoteUser.id];
                     const user = {
                         id: remoteUser.id,
@@ -2241,6 +2277,13 @@
                     setMessage(elements.loginMessage, "success", "Acceso correcto. Abriendo NeuroSpark…");
                     redirectToApplication();
                 } catch (error) {
+                    console.error("[NeuroSpark Auth] Error original del inicio de sesión:", error);
+                    console.error("[NeuroSpark Auth] Fase:", {
+                        phase: error?.neurosparkPhase || "unknown",
+                        operation: error?.neurosparkOperation || "unknown",
+                        code: error?.code,
+                        status: error?.status
+                    });
                     setMessage(elements.loginMessage, "error", error.message);
                     setLoading(elements.loginForm, false);
                 }

@@ -211,6 +211,14 @@ const server = http.createServer((req, res) => {
 
     const extname = String(path.extname(filePath)).toLowerCase();
     const contentType = mimeTypes[extname] || 'application/octet-stream';
+    const responseHeaders = {
+        'Content-Type': contentType,
+        // Obliga a revalidar el HTML y los módulos de autenticación para evitar
+        // que una versión antigua del login quede activa en el navegador.
+        ...(['.html', '.js'].includes(extname)
+            ? { 'Cache-Control': 'no-cache, must-revalidate' }
+            : {})
+    };
 
     fs.readFile(filePath, (err, content) => {
         if (err) {
@@ -229,7 +237,7 @@ const server = http.createServer((req, res) => {
                 res.end(`Server Error: ${err.code}`);
             }
         } else {
-            res.writeHead(200, { 'Content-Type': contentType });
+            res.writeHead(200, responseHeaders);
             res.end(content, 'utf-8');
         }
     });

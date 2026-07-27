@@ -232,7 +232,8 @@ export class AuthUI {
         // Submit Action
         this.submitBtn.addEventListener('click', async () => {
             const email = this.emailInput.value.trim();
-            const password = this.passwordInput.value.trim();
+            // La contraseña se envía exactamente como fue escrita.
+            const password = this.passwordInput.value;
 
             if (!email || !password) {
                 app.showToast('Por favor completa todos los campos', 'warning');
@@ -265,9 +266,7 @@ export class AuthUI {
                     try {
                         await authController.login(loginEmail, password);
                     } catch (loginErr) {
-                        if (isParent) {
-                            throw new Error('Contraseña incorrecta. Recuerda usar la misma contraseña que tu hijo(a) creó al registrarse en NeuroSpark.');
-                        }
+                        console.error('[NeuroSpark AuthUI] Error original de Supabase:', loginErr);
                         throw loginErr;
                     }
 

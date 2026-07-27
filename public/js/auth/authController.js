@@ -5,24 +5,69 @@ const TABLES = Object.freeze({
     profiles: 'user_profiles'
 });
 
+const AUTH_DEBUG = (() => {
+    try {
+        return ['localhost', '127.0.0.1', '::1'].includes(window.location.hostname)
+            || window.localStorage.getItem('neurospark_auth_debug') === 'true';
+    } catch {
+        return false;
+    }
+})();
+
 function normalizeEmail(value) {
     return String(value || '').trim().toLowerCase();
 }
 
-function reportError(operation, error) {
-    console.error(`[Supabase:${operation}]`, {
+function maskEmail(value) {
+    const [name = '', domain = ''] = normalizeEmail(value).split('@');
+    if (!domain) return '(correo inválido)';
+    return `${name.slice(0, 2)}***@${domain}`;
+}
+
+function tagError(operation, phase, error) {
+    const taggedError = error instanceof Error
+        ? error
+        : new Error(error?.message || 'Error desconocido de Supabase.');
+
+    try {
+        taggedError.neurosparkOperation = operation;
+        taggedError.neurosparkPhase = phase;
+    } catch {
+        // Algunos errores de terceros pueden ser objetos no extensibles.
+    }
+    return taggedError;
+}
+
+function reportError(operation, error, phase = 'database') {
+    const taggedError = tagError(operation, phase, error);
+
+    // Se conserva el objeto original para ver stack, status y causa en DevTools.
+    console.error(`[Supabase:${operation}]`, taggedError);
+    console.error(`[Supabase:${operation}:details]`, {
+        phase,
         message: error?.message || 'Error desconocido',
         code: error?.code,
         details: error?.details,
         hint: error?.hint,
         status: error?.status
     });
+    return taggedError;
 }
 
-function throwIfError(operation, error) {
+function throwIfError(operation, error, phase = 'database') {
     if (!error) return;
-    reportError(operation, error);
-    throw error;
+    throw reportError(operation, error, phase);
+}
+
+function debugAuth(event, details = {}) {
+    if (!AUTH_DEBUG) return;
+    console.info(`[Supabase Auth:${event}]`, details);
+}
+
+function sessionError(message, code) {
+    const error = new Error(message);
+    error.code = code;
+    return tagError('auth.sessionVerification', 'session', error);
 }
 
 export const authController = Object.freeze({
@@ -32,39 +77,94 @@ export const authController = Object.freeze({
             password,
             options: { data: metadata }
         });
-        throwIfError('auth.signUp', error);
+        throwIfError('auth.signUp', error, 'authentication');
         return data;
     },
 
     async login(email, password) {
+        const normalizedEmail = normalizeEmail(email);
+        debugAuth('login:start', { email: maskEmail(normalizedEmail) });
+
         const { data, error } = await supabase.auth.signInWithPassword({
-            email: normalizeEmail(email),
+            email: normalizedEmail,
             password
         });
-        throwIfError('auth.signInWithPassword', error);
-        return data;
+        throwIfError('auth.signInWithPassword', error, 'authentication');
+
+        if (!data?.user || !data?.session?.access_token) {
+            const error = sessionError(
+                'Supabase aceptó el acceso, pero no devolvió una sesión completa.',
+                'auth_session_missing'
+            );
+            reportError('auth.signInWithPassword.session', error, 'session');
+            throw error;
+        }
+
+        const { data: sessionData, error: getSessionError } =
+            await supabase.auth.getSession();
+        throwIfError('auth.getSession.afterLogin', getSessionError, 'session');
+
+        if (!sessionData?.session?.user?.id) {
+            const error = sessionError(
+                'La sesión no quedó persistida después del inicio de sesión.',
+                'auth_session_not_persisted'
+            );
+            reportError('auth.getSession.afterLogin', error, 'session');
+            throw error;
+        }
+
+        // getUser valida el token contra el servidor de Auth.
+        const { data: userData, error: getUserError } =
+            await supabase.auth.getUser();
+        throwIfError('auth.getUser.afterLogin', getUserError, 'session');
+
+        if (!userData?.user || userData.user.id !== data.user.id) {
+            const error = sessionError(
+                'El usuario de la sesión no coincide con el usuario autenticado.',
+                'auth_user_mismatch'
+            );
+            reportError('auth.getUser.afterLogin', error, 'session');
+            throw error;
+        }
+
+        debugAuth('login:success', {
+            userId: userData.user.id,
+            email: maskEmail(userData.user.email),
+            expiresAt: sessionData.session.expires_at
+        });
+
+        return {
+            ...data,
+            user: userData.user,
+            session: sessionData.session
+        };
     },
 
     async logout(scope = 'local') {
         const { error } = await supabase.auth.signOut({ scope });
-        throwIfError('auth.signOut', error);
+        throwIfError('auth.signOut', error, 'authentication');
     },
 
     async getSession() {
         const { data, error } = await supabase.auth.getSession();
-        throwIfError('auth.getSession', error);
+        throwIfError('auth.getSession', error, 'session');
+        debugAuth('session:read', {
+            active: Boolean(data.session),
+            userId: data.session?.user?.id || null,
+            expiresAt: data.session?.expires_at || null
+        });
         return data.session;
     },
 
     async getCurrentUser() {
         const { data, error } = await supabase.auth.getUser();
-        throwIfError('auth.getUser', error);
+        throwIfError('auth.getUser', error, 'session');
         return data.user;
     },
 
     async updateUserMetadata(metadata) {
         const { data, error } = await supabase.auth.updateUser({ data: metadata });
-        throwIfError('auth.updateUser', error);
+        throwIfError('auth.updateUser', error, 'authentication');
         return data;
     },
 
@@ -74,7 +174,7 @@ export const authController = Object.freeze({
             normalizeEmail(email),
             { redirectTo }
         );
-        throwIfError('auth.resetPasswordForEmail', error);
+        throwIfError('auth.resetPasswordForEmail', error, 'authentication');
         return data;
     },
 
@@ -154,8 +254,7 @@ export const authController = Object.freeze({
             .maybeSingle();
 
         if (error) {
-            reportError('user_profiles.select', error);
-            throw error;
+            throw reportError('user_profiles.select', error, 'database');
         }
         return data?.state_data || null;
     },
@@ -188,7 +287,7 @@ export const authController = Object.freeze({
     },
 
     async saveUserProfile(email, profile) {
-        const currentState = await this.loadUserState(email).catch(() => null);
+        const currentState = await this.loadUserState(email);
         const nextState = {
             ...(currentState || {}),
             profile: {
@@ -199,6 +298,12 @@ export const authController = Object.freeze({
         };
         await this.saveUserState(email, nextState);
         return nextState.profile;
+    },
+
+    async ensureUserProfile(email, profile) {
+        const currentState = await this.loadUserState(email);
+        if (currentState?.profile) return currentState.profile;
+        return this.saveUserProfile(email, profile);
     },
 
     onAuthStateChange(callback) {
