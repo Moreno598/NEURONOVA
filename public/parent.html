@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#070817">
+    <title>Panel para padres — NeuroSpark</title>
+    <link rel="stylesheet" href="portal.css">
+</head>
+<body data-portal-role="parent">
+    <div class="loading-screen" id="loading-screen"><span class="loader" aria-label="Cargando"></span></div>
+    <div class="portal-shell">
+        <aside class="portal-sidebar">
+            <a class="portal-brand" href="index.html"><span class="brand-mark"></span><span>Neuro<span class="gradient-text">Spark</span></span></a>
+            <div class="portal-role"><strong>Cuenta parental</strong><span>Seguimiento de <span data-alias>tu hijo</span></span></div>
+            <nav class="portal-nav" aria-label="Dashboard parental">
+                <button class="is-active" data-view-target="overview">Resumen</button>
+                <button data-view-target="statistics">Estadísticas</button>
+                <button data-view-target="progress">Progreso</button>
+                <button data-view-target="activity">Actividad</button>
+                <button data-view-target="results">Resultados</button>
+                <button data-view-target="history">Historial</button>
+                <button data-view-target="reports">Reportes</button>
+                <button data-view-target="settings">Configuración</button>
+            </nav>
+            <div class="sidebar-footer">
+                <a class="sidebar-link" href="index.html">Ver landing</a>
+                <button class="logout-button" id="logout-button">Cerrar sesión</button>
+            </div>
+        </aside>
+
+        <main class="portal-main">
+            <header class="portal-topbar">
+                <div class="portal-heading"><small>Dashboard parental</small><h1>Seguimiento de <span data-alias>tu hijo</span></h1></div>
+                <div class="profile-chip">
+                    <span class="avatar-fallback" id="profile-avatar-fallback">N</span>
+                    <img id="profile-avatar" alt="" hidden>
+                    <div><strong data-alias>Estudiante</strong><span>Acceso de solo lectura</span></div>
+                </div>
+            </header>
+
+            <div class="portal-content">
+                <section class="portal-view is-active" data-view="overview">
+                    <article class="hero-card">
+                        <div><span class="hero-badge">Vista protegida</span><h2>Información clara para acompañar su progreso.</h2><p>Consulta avances, actividad y resultados sin modificar los datos sensibles de la cuenta del estudiante.</p></div>
+                        <div class="student-summary">
+                            <div class="summary-row"><span>Alias</span><strong data-alias>—</strong></div>
+                            <div class="summary-row"><span>Nombre</span><strong data-full-name>—</strong></div>
+                            <div class="summary-row"><span>Edad</span><strong data-age>—</strong></div>
+                            <div class="summary-row"><span>Modo</span><strong data-mode-label>—</strong></div>
+                        </div>
+                    </article>
+                    <div class="metrics-grid">
+                        <article class="metric"><span>Nivel</span><strong data-metric="level">1</strong><small>Etapa actual</small></article>
+                        <article class="metric"><span>Progreso</span><strong data-metric="progress">0%</strong><small>Objetivos completados</small></article>
+                        <article class="metric"><span>Actividad</span><strong data-metric="activities">0</strong><small>Sesiones registradas</small></article>
+                        <article class="metric"><span>Resultados</span><strong data-metric="results">0</strong><small>Evaluaciones guardadas</small></article>
+                    </div>
+                </section>
+
+                <section class="portal-view" data-view="statistics"><article class="glass-card"><span class="read-only">Solo lectura</span><h2 class="section-title">Estadísticas</h2><p class="section-copy">Indicadores consolidados del uso de NeuroSpark.</p><div class="metrics-grid"><article class="metric"><span>NeuroCoins</span><strong data-metric="coins">0</strong></article><article class="metric"><span>EcoPuntos</span><strong data-metric="eco">0</strong></article><article class="metric"><span>Tareas</span><strong data-metric="tasks">0</strong></article><article class="metric"><span>Historial</span><strong data-metric="history">0</strong></article></div></article></section>
+                <section class="portal-view" data-view="progress"><article class="glass-card"><span class="read-only">Solo lectura</span><h2 class="section-title">Progreso</h2><p class="section-copy">Objetivos completados por el estudiante.</p><div class="progress-track"><i id="parent-progress-bar"></i></div></article></section>
+                <section class="portal-view" data-view="activity"><article class="glass-card"><span class="read-only">Solo lectura</span><h2 class="section-title">Actividad</h2><ul class="data-list" id="parent-activity"></ul></article></section>
+                <section class="portal-view" data-view="results"><article class="glass-card"><span class="read-only">Solo lectura</span><h2 class="section-title">Resultados</h2><ul class="data-list" id="parent-results"></ul></article></section>
+                <section class="portal-view" data-view="history"><article class="glass-card"><span class="read-only">Solo lectura</span><h2 class="section-title">Historial</h2><ul class="data-list" id="parent-history"></ul></article></section>
+                <section class="portal-view" data-view="reports"><article class="glass-card"><span class="read-only">Solo lectura</span><h2 class="section-title">Reportes</h2><p class="section-copy">Los reportes generados por la aplicación aparecerán en esta sección.</p><ul class="data-list" id="parent-reports"></ul></article></section>
+                <section class="portal-view" data-view="settings"><article class="glass-card"><span class="read-only">Solo lectura</span><h2 class="section-title">Configuración</h2><p class="section-copy">El padre puede consultar la configuración, pero no modificar datos sensibles del estudiante.</p><ul class="data-list"><li><span>Correo del estudiante</span><strong data-student-email>—</strong></li><li><span>Correo parental</span><strong data-parent-email>—</strong></li><li><span>Tipo de acceso</span><strong>Padre/Tutor</strong></li></ul></article></section>
+            </div>
+        </main>
+    </div>
+    <script type="module" src="js/portal.js"></script>
+</body>
+</html>
