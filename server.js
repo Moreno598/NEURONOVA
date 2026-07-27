@@ -29,6 +29,74 @@ const SUPABASE_ANON_KEY =
     process.env.SUPABASE_ANON_KEY || process.env.SUPABASE_PUBLISHABLE_KEY;
 const SUPABASE_SERVICE_ROLE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY;
 
+function inspectSupabaseKey(value) {
+    if (!value) return { configured: false, format: 'missing' };
+    if (!value.startsWith('eyJ')) return { configured: true, format: 'opaque' };
+
+    try {
+        const encodedPayload = value.split('.')[1];
+        const payload = JSON.parse(
+            Buffer.from(encodedPayload, 'base64url').toString('utf8')
+        );
+        return {
+            configured: true,
+            format: 'jwt',
+            projectRef: payload.ref || null,
+            role: payload.role || null
+        };
+    } catch {
+        return { configured: true, format: 'invalid-jwt' };
+    }
+}
+
+function auditSupabaseConfiguration() {
+    const missing = [
+        ['SUPABASE_URL', SUPABASE_URL],
+        ['SUPABASE_ANON_KEY', SUPABASE_ANON_KEY],
+        ['SUPABASE_SERVICE_ROLE_KEY', SUPABASE_SERVICE_ROLE_KEY]
+    ].filter(([, value]) => !value).map(([name]) => name);
+
+    let projectUrl = null;
+    let projectRef = null;
+    try {
+        const parsedUrl = new URL(SUPABASE_URL);
+        projectUrl = parsedUrl.origin;
+        projectRef = parsedUrl.hostname.endsWith('.supabase.co')
+            ? parsedUrl.hostname.split('.')[0]
+            : null;
+    } catch {
+        // El detalle se informa abajo sin impedir que la landing pueda arrancar.
+    }
+
+    const anon = inspectSupabaseKey(SUPABASE_ANON_KEY);
+    const service = inspectSupabaseKey(SUPABASE_SERVICE_ROLE_KEY);
+    const issues = [];
+
+    if (!projectUrl) issues.push('SUPABASE_URL no es una URL válida.');
+    if (anon.projectRef && projectRef && anon.projectRef !== projectRef) {
+        issues.push('SUPABASE_ANON_KEY pertenece a otro proyecto.');
+    }
+    if (service.projectRef && projectRef && service.projectRef !== projectRef) {
+        issues.push('SUPABASE_SERVICE_ROLE_KEY pertenece a otro proyecto.');
+    }
+    if (anon.role && anon.role !== 'anon') {
+        issues.push(`SUPABASE_ANON_KEY tiene el rol inesperado "${anon.role}".`);
+    }
+    if (service.role && service.role !== 'service_role') {
+        issues.push(
+            `SUPABASE_SERVICE_ROLE_KEY tiene el rol inesperado "${service.role}".`
+        );
+    }
+    if (SUPABASE_ANON_KEY && SUPABASE_SERVICE_ROLE_KEY
+        && SUPABASE_ANON_KEY === SUPABASE_SERVICE_ROLE_KEY) {
+        issues.push('La clave anónima y la clave administrativa no pueden ser iguales.');
+    }
+
+    return { missing, issues, projectUrl, projectRef, anon, service };
+}
+
+const supabaseConfiguration = auditSupabaseConfiguration();
+
 // Cliente administrativo único del proceso servidor. Nunca se exporta al
 // navegador y no persiste sesiones de usuarios.
 const supabaseAdmin =
@@ -102,10 +170,20 @@ function isValidEmail(value) {
 }
 
 function requireAdminConfiguration() {
-    if (!SUPABASE_URL || !SUPABASE_ANON_KEY || !SUPABASE_SERVICE_ROLE_KEY || !supabaseAdmin) {
+    if (
+        supabaseConfiguration.missing.length
+        || supabaseConfiguration.issues.length
+        || !supabaseAdmin
+    ) {
         throw new ApiError(
             503,
-            'La conexión administrativa de Supabase no está configurada en el servidor.',
+            [
+                'La conexión administrativa de Supabase no está configurada correctamente.',
+                supabaseConfiguration.missing.length
+                    ? `Variables ausentes: ${supabaseConfiguration.missing.join(', ')}.`
+                    : '',
+                supabaseConfiguration.issues.join(' ')
+            ].filter(Boolean).join(' '),
             'supabase_admin_not_configured'
         );
     }
@@ -400,6 +478,31 @@ async function syncFamilyPassword(req, payload) {
 }
 
 async function verifySupabaseServerConnection() {
+    console.log(
+        `[Supabase Config] SUPABASE_URL=${supabaseConfiguration.projectUrl || '(inválida o vacía)'}`
+    );
+    console.log(
+        '[Supabase Config] SUPABASE_ANON_KEY='
+        + (supabaseConfiguration.anon.configured
+            ? `configurada (formato=${supabaseConfiguration.anon.format})`
+            : 'vacía o undefined')
+    );
+    console.log(
+        '[Supabase Config] SUPABASE_SERVICE_ROLE_KEY='
+        + (supabaseConfiguration.service.configured
+            ? `configurada (formato=${supabaseConfiguration.service.format}, solo servidor)`
+            : 'vacía o undefined')
+    );
+
+    if (supabaseConfiguration.missing.length) {
+        console.error(
+            `[Supabase Config] Variables vacías/undefined: ${supabaseConfiguration.missing.join(', ')}`
+        );
+    }
+    for (const issue of supabaseConfiguration.issues) {
+        console.error(`[Supabase Config] ${issue}`);
+    }
+
     if (!supabaseAdmin) {
         console.warn(
             '[Supabase Server] Configuración administrativa pendiente: '
@@ -407,6 +510,16 @@ async function verifySupabaseServerConnection() {
         );
         return;
     }
+
+    console.log(
+        `[Supabase Server] Comprobando ${SUPABASE_URL}/auth/v1/admin/users`
+    );
+    console.log(
+        `[Supabase Server] Comprobando ${SUPABASE_URL}/rest/v1/user_profiles`
+    );
+    console.log(
+        `[Supabase Server] Comprobando ${SUPABASE_URL}/rest/v1/correos`
+    );
 
     const checks = await Promise.all([
         supabaseAdmin.auth.admin
@@ -596,13 +709,35 @@ const server = http.createServer((req, res) => {
         const supabaseUrl = SUPABASE_URL;
         const supabaseAnonKey = SUPABASE_ANON_KEY;
 
-        if (!supabaseUrl || !supabaseAnonKey) {
-            console.error('[Supabase Config] Faltan SUPABASE_URL y/o SUPABASE_ANON_KEY.');
+        console.log(
+            `[Supabase Config] GET ${requestUrl.origin}/api/config/supabase`
+            + ` -> proyecto ${supabaseConfiguration.projectUrl || '(sin URL válida)'}`
+        );
+
+        if (
+            !supabaseUrl
+            || !supabaseAnonKey
+            || supabaseConfiguration.issues.some(issue =>
+                issue.includes('SUPABASE_URL')
+                || issue.includes('SUPABASE_ANON_KEY')
+            )
+        ) {
+            const missingPublicVariables = [
+                ['SUPABASE_URL', supabaseUrl],
+                ['SUPABASE_ANON_KEY', supabaseAnonKey]
+            ].filter(([, value]) => !value).map(([name]) => name);
+            console.error('[Supabase Config] Configuración pública inválida.', {
+                missingVariables: missingPublicVariables,
+                issues: supabaseConfiguration.issues
+            });
             res.writeHead(503, {
                 'Content-Type': 'application/json; charset=utf-8',
                 'Cache-Control': 'no-store'
             });
-            res.end(JSON.stringify({ error: 'Supabase no está configurado en el servidor.' }));
+            res.end(JSON.stringify({
+                error: 'Supabase no está configurado correctamente en el servidor.',
+                missingVariables: missingPublicVariables
+            }));
             return;
         }
 

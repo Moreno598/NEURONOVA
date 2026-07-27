@@ -5,15 +5,42 @@ const CLIENT_SLOT = '__NEUROSPARK_SUPABASE_CLIENT__';
 let clientPromise;
 let libraryPromise;
 
+function readApiBaseUrl() {
+    const configuredBase = String(
+        globalThis.__NEUROSPARK_API_BASE_URL__ || ''
+    ).trim();
+
+    if (!configuredBase) return globalThis.location.origin;
+
+    try {
+        return new URL(configuredBase, globalThis.location.href).origin;
+    } catch {
+        throw new Error(
+            `__NEUROSPARK_API_BASE_URL__ no es válida: "${configuredBase}".`
+        );
+    }
+}
+
+export function getApiUrl(pathname) {
+    return new URL(pathname, `${readApiBaseUrl()}/`).href;
+}
+
 async function readRuntimeConfig() {
-    const response = await fetch('/api/config/supabase', {
+    const configUrl = getApiUrl('/api/config/supabase');
+    console.info(`[Supabase Config] Solicitando configuración desde ${configUrl}`);
+
+    const response = await fetch(configUrl, {
         headers: { Accept: 'application/json' },
         cache: 'no-store'
     });
 
     if (!response.ok) {
         const payload = await response.json().catch(() => ({}));
-        throw new Error(payload.error || `No se pudo cargar Supabase (${response.status}).`);
+        const serverMessage = payload.error ? ` ${payload.error}` : '';
+        throw new Error(
+            `No se pudo cargar la configuración de Supabase desde `
+            + `${configUrl} (${response.status}).${serverMessage}`
+        );
     }
 
     const config = await response.json();
@@ -23,6 +50,8 @@ async function readRuntimeConfig() {
     if (!config.anonKey || typeof config.anonKey !== 'string') {
         throw new Error('SUPABASE_ANON_KEY no está configurada.');
     }
+
+    console.info(`[Supabase Config] Proyecto Supabase: ${new URL(config.url).origin}`);
     return config;
 }
 

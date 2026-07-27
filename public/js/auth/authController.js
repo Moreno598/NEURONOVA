@@ -1,4 +1,4 @@
-import { getSupabaseClient } from './supabaseClient.js';
+import { getApiUrl, getSupabaseClient } from './supabaseClient.js';
 
 const TABLES = Object.freeze({
     parentLinks: 'correos',
@@ -80,7 +80,9 @@ async function requireSupabase(operation, phase) {
 
 export const authController = Object.freeze({
     async registerFamily(registration) {
-        const response = await fetch('/api/auth/register-family', {
+        const endpoint = getApiUrl('/api/auth/register-family');
+        console.info(`[NeuroSpark API] Registro familiar: ${endpoint}`);
+        const response = await fetch(endpoint, {
             method: 'POST',
             headers: {
                 Accept: 'application/json',
@@ -255,7 +257,9 @@ export const authController = Object.freeze({
         const accessToken = sessionData?.session?.access_token;
         if (!accessToken) throw new Error('No existe una sesión activa para cambiar la contraseña.');
 
-        const response = await fetch('/api/auth/sync-family-password', {
+        const endpoint = getApiUrl('/api/auth/sync-family-password');
+        console.info(`[NeuroSpark API] Sincronización de contraseña: ${endpoint}`);
+        const response = await fetch(endpoint, {
             method: 'POST',
             headers: {
                 Accept: 'application/json',
