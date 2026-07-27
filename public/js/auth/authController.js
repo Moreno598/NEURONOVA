@@ -322,32 +322,22 @@ export const authController = Object.freeze({
     },
 
     async getStudentEmailByParent(parentEmail) {
-        const supabase = await requireSupabase('correos.getByParent', 'configuration');
         const normalizedEmail = normalizeEmail(parentEmail);
         if (!normalizedEmail) return null;
 
-        const { data: rpcData, error: rpcError } = await supabase.rpc(
-            'get_student_email_by_parent',
-            { lookup_parent_email: normalizedEmail }
-        );
-        if (!rpcError) return rpcData || null;
-        if (rpcError.code !== 'PGRST202') {
-            reportError('rpc.get_student_email_by_parent', rpcError);
-        }
-
-        // Compatibilidad temporal hasta aplicar la migración RLS incluida.
-        const { data, error } = await supabase
-            .from(TABLES.parentLinks)
-            .select('user_email')
-            .eq('parent_email', normalizedEmail)
-            .limit(1)
-            .maybeSingle();
-
-        if (error) {
-            reportError('correos.selectByParent', error);
+        // La función anónima anterior exponía relaciones familiares antes del
+        // login. El flujo actual autentica primero la cuenta parental y obtiene
+        // después su vínculo mediante la RPC protegida por RLS.
+        const supabase = await requireSupabase('correos.getByParent', 'configuration');
+        const { data: userData, error: userError } = await supabase.auth.getUser();
+        if (userError || normalizeEmail(userData?.user?.email) !== normalizedEmail) {
             return null;
         }
-        return data?.user_email || null;
+
+        const context = await this.getFamilyContext();
+        return context?.viewer_role === 'parent'
+            ? context.user_email || null
+            : null;
     },
 
     async checkUserExists(email) {

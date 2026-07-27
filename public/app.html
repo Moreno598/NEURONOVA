@@ -466,6 +466,69 @@
             background: #10142d;
         }
 
+        /* El valor sigue siendo únicamente la edad; el color comunica el modo. */
+        .age-select-wrap::after {
+            content: "";
+            position: absolute;
+            top: 50%;
+            right: 18px;
+            width: 7px;
+            height: 7px;
+            border-right: 1.5px solid #8992b1;
+            border-bottom: 1.5px solid #8992b1;
+            pointer-events: none;
+            transform: translateY(-70%) rotate(45deg);
+            transition: border-color .25s ease;
+        }
+
+        .age-select-wrap select {
+            padding-right: 46px;
+            font-variant-numeric: tabular-nums;
+        }
+
+        .age-select-wrap select optgroup {
+            color: #aeb7d6;
+            font-weight: 750;
+            background: #0d1128;
+        }
+
+        .age-select-wrap select option {
+            padding-block: 7px;
+            font-weight: 600;
+        }
+
+        .age-select-wrap select option.age-option-child {
+            color: #8edfff;
+        }
+
+        .age-select-wrap select option.age-option-teen {
+            color: #b9a6ff;
+        }
+
+        .age-select-wrap.is-child select {
+            border-color: rgba(75, 193, 255, .34);
+            color: #bdeeff;
+            box-shadow: 0 0 0 4px rgba(75, 193, 255, .045);
+        }
+
+        .age-select-wrap.is-child .input-icon,
+        .age-select-wrap.is-child::after {
+            color: #75d7ff;
+            border-color: #75d7ff;
+        }
+
+        .age-select-wrap.is-teen select {
+            border-color: rgba(142, 116, 255, .38);
+            color: #d5cbff;
+            box-shadow: 0 0 0 4px rgba(113, 91, 255, .055);
+        }
+
+        .age-select-wrap.is-teen .input-icon,
+        .age-select-wrap.is-teen::after {
+            color: #91eaff;
+            border-color: #91eaff;
+        }
+
         .input-wrap input::placeholder {
             color: #646b86;
         }
@@ -506,6 +569,43 @@
 
         .field-hint.is-error {
             color: #ff8da8;
+        }
+
+        .mode-preview {
+            display: flex;
+            align-items: center;
+            min-height: 36px;
+            margin-top: 8px;
+            padding: 8px 11px;
+            border: 1px solid rgba(255, 255, 255, .07);
+            border-radius: 10px;
+            color: #8992b0;
+            line-height: 1.35;
+            background: rgba(255, 255, 255, .025);
+            transition: color .25s ease, border-color .25s ease, background .25s ease, box-shadow .25s ease;
+        }
+
+        .mode-preview.is-child {
+            border-color: rgba(75, 193, 255, .2);
+            color: #a9e8ff;
+            background: linear-gradient(135deg, rgba(52, 165, 255, .1), rgba(85, 224, 255, .045));
+            box-shadow: inset 0 1px rgba(255, 255, 255, .025);
+        }
+
+        .mode-preview.is-teen {
+            border-color: rgba(147, 113, 255, .22);
+            color: #cfc3ff;
+            background: linear-gradient(135deg, rgba(124, 89, 255, .11), rgba(55, 225, 255, .05));
+            box-shadow: inset 0 1px rgba(255, 255, 255, .025);
+        }
+
+        .mode-preview.is-changing {
+            animation: mode-preview-enter .28s cubic-bezier(.2, .8, .2, 1);
+        }
+
+        @keyframes mode-preview-enter {
+            from { opacity: .45; transform: translateY(3px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
         /* Personalizador: el estado existente alimenta un avatar SVG interactivo. */
@@ -1379,27 +1479,33 @@
                             <div class="field-row">
                                 <label for="register-age">Edad</label>
                             </div>
-                            <div class="input-wrap">
+                            <div class="input-wrap age-select-wrap" id="age-select-wrap">
                                 <svg class="input-icon" viewBox="0 0 24 24" fill="none" aria-hidden="true">
                                     <path d="M6 3v3M18 3v3M4 9h16M5 5h14a1 1 0 0 1 1 1v14H4V6a1 1 0 0 1 1-1Z" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
                                 </svg>
-                                <select id="register-age" name="age" required>
+                                <select id="register-age" name="age" aria-describedby="mode-preview" required>
                                     <option value="">Selecciona la edad</option>
-                                    <option value="6">6 años</option>
-                                    <option value="7">7 años</option>
-                                    <option value="8">8 años</option>
-                                    <option value="9">9 años</option>
-                                    <option value="10">10 años</option>
-                                    <option value="11">11 años</option>
-                                    <option value="12">12 años</option>
-                                    <option value="13">13 años</option>
-                                    <option value="14">14 años</option>
-                                    <option value="15">15 años</option>
-                                    <option value="16">16 años</option>
-                                    <option value="17">17 años</option>
+                                    <optgroup label="👦 Modo Niño · 6 a 11 años">
+                                        <option class="age-option-child" value="6">6 años — 👦 Modo Niño</option>
+                                        <option class="age-option-child" value="7">7 años — 👦 Modo Niño</option>
+                                        <option class="age-option-child" value="8">8 años — 👦 Modo Niño</option>
+                                        <option class="age-option-child" value="9">9 años — 👦 Modo Niño</option>
+                                        <option class="age-option-child" value="10">10 años — 👦 Modo Niño</option>
+                                        <option class="age-option-child" value="11">11 años — 👦 Modo Niño</option>
+                                    </optgroup>
+                                    <optgroup label="🧑 Modo Adolescente · 12 a 17 años">
+                                        <option class="age-option-teen" value="12">12 años — 🧑 Modo Adolescente</option>
+                                        <option class="age-option-teen" value="13">13 años — 🧑 Modo Adolescente</option>
+                                        <option class="age-option-teen" value="14">14 años — 🧑 Modo Adolescente</option>
+                                        <option class="age-option-teen" value="15">15 años — 🧑 Modo Adolescente</option>
+                                        <option class="age-option-teen" value="16">16 años — 🧑 Modo Adolescente</option>
+                                        <option class="age-option-teen" value="17">17 años — 🧑 Modo Adolescente</option>
+                                    </optgroup>
                                 </select>
                             </div>
-                            <small class="field-hint" id="mode-preview">El modo se asignará automáticamente.</small>
+                            <small class="field-hint mode-preview" id="mode-preview" aria-live="polite">
+                                Selecciona una edad para conocer el modo de la cuenta.
+                            </small>
                         </div>
 
                         <div class="field">
@@ -2363,16 +2469,32 @@
             });
 
             const ageInput = document.getElementById("register-age");
-            ageInput.addEventListener("change", () => {
+            const ageSelectWrap = document.getElementById("age-select-wrap");
+            const modePreview = document.getElementById("mode-preview");
+
+            function updateAgeModePreview(animate = true) {
                 const age = Number(ageInput.value);
-                const preview = document.getElementById("mode-preview");
-                preview.textContent = !age
-                    ? "El modo se asignará automáticamente."
-                    : age <= 11
-                        ? "Modo asignado: Niño."
-                        : "Modo asignado: Adolescente.";
-                preview.className = `field-hint${age ? " is-success" : ""}`;
-            });
+                const mode = !age ? "" : age <= 11 ? "child" : "teen";
+
+                ageInput.dataset.mode = mode;
+                ageSelectWrap.classList.toggle("is-child", mode === "child");
+                ageSelectWrap.classList.toggle("is-teen", mode === "teen");
+                modePreview.className = `field-hint mode-preview${mode ? ` is-${mode}` : ""}`;
+                modePreview.textContent = mode === "child"
+                    ? "👦 Se creará una cuenta en Modo Niño."
+                    : mode === "teen"
+                        ? "🧑 Se creará una cuenta en Modo Adolescente."
+                        : "Selecciona una edad para conocer el modo de la cuenta.";
+
+                if (animate && mode) {
+                    modePreview.classList.remove("is-changing");
+                    void modePreview.offsetWidth;
+                    modePreview.classList.add("is-changing");
+                }
+            }
+
+            ageInput.addEventListener("change", () => updateAgeModePreview());
+            updateAgeModePreview(false);
 
             document.getElementById("forgot-password").addEventListener("click", async () => {
                 const email = document.getElementById("login-email");

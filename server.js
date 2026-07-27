@@ -1,6 +1,7 @@
 const http = require('http');
 const fs = require('fs');
 const path = require('path');
+const { createClient } = require('@supabase/supabase-js');
 
 const publicDir = path.join(__dirname, 'public');
 const PORT = process.env.PORT || 3000;
@@ -27,6 +28,23 @@ const SUPABASE_URL = process.env.SUPABASE_URL;
 const SUPABASE_ANON_KEY =
     process.env.SUPABASE_ANON_KEY || process.env.SUPABASE_PUBLISHABLE_KEY;
 const SUPABASE_SERVICE_ROLE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY;
+
+// Cliente administrativo único del proceso servidor. Nunca se exporta al
+// navegador y no persiste sesiones de usuarios.
+const supabaseAdmin =
+    SUPABASE_URL && SUPABASE_SERVICE_ROLE_KEY
+        ? createClient(SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY, {
+            db: { schema: 'public' },
+            auth: {
+                autoRefreshToken: false,
+                persistSession: false,
+                detectSessionInUrl: false
+            },
+            global: {
+                headers: { 'X-Client-Info': 'neurospark-server' }
+            }
+        })
+        : null;
 
 class ApiError extends Error {
     constructor(status, message, code = 'api_error', details = null) {
@@ -84,85 +102,70 @@ function isValidEmail(value) {
 }
 
 function requireAdminConfiguration() {
-    if (!SUPABASE_URL || !SUPABASE_ANON_KEY || !SUPABASE_SERVICE_ROLE_KEY) {
+    if (!SUPABASE_URL || !SUPABASE_ANON_KEY || !SUPABASE_SERVICE_ROLE_KEY || !supabaseAdmin) {
         throw new ApiError(
             503,
-            'El servidor aún no tiene configurada SUPABASE_SERVICE_ROLE_KEY.',
+            'La conexión administrativa de Supabase no está configurada en el servidor.',
             'supabase_admin_not_configured'
         );
     }
+    return supabaseAdmin;
 }
 
-async function supabaseAdminRequest(pathname, options = {}) {
-    requireAdminConfiguration();
-    const response = await fetch(`${SUPABASE_URL}${pathname}`, {
-        ...options,
-        headers: {
-            apikey: SUPABASE_SERVICE_ROLE_KEY,
-            Authorization: `Bearer ${SUPABASE_SERVICE_ROLE_KEY}`,
-            'Content-Type': 'application/json',
-            ...(options.headers || {})
+function throwSupabaseError(error, fallbackStatus = 500) {
+    if (!error) return;
+    console.error('[Supabase Server] Error original:', error);
+    throw new ApiError(
+        Number(error.status) || fallbackStatus,
+        error.message || 'Supabase devolvió un error sin mensaje.',
+        error.code || 'supabase_error',
+        {
+            details: error.details || null,
+            hint: error.hint || null
         }
-    });
-    const text = await response.text();
-    let payload = null;
-    try {
-        payload = text ? JSON.parse(text) : null;
-    } catch {
-        payload = text;
-    }
-
-    if (!response.ok) {
-        const message =
-            payload?.msg
-            || payload?.message
-            || payload?.error_description
-            || `Supabase respondió ${response.status}.`;
-        throw new ApiError(
-            response.status,
-            message,
-            payload?.error_code || payload?.code || 'supabase_error',
-            payload
-        );
-    }
-    return payload;
+    );
 }
 
 async function createAuthUser({ email, password, userMetadata, appMetadata }) {
-    const payload = await supabaseAdminRequest('/auth/v1/admin/users', {
-        method: 'POST',
-        body: JSON.stringify({
-            email,
-            password,
-            email_confirm: true,
-            user_metadata: userMetadata,
-            app_metadata: appMetadata
-        })
+    const client = requireAdminConfiguration();
+    const { data, error } = await client.auth.admin.createUser({
+        email,
+        password,
+        email_confirm: true,
+        user_metadata: userMetadata,
+        app_metadata: appMetadata
     });
-    return payload?.user || payload;
+    throwSupabaseError(error, 400);
+    return data.user;
 }
 
 async function deleteAuthUser(userId) {
     if (!userId) return;
-    await supabaseAdminRequest(`/auth/v1/admin/users/${encodeURIComponent(userId)}`, {
-        method: 'DELETE'
-    }).catch(error => {
+    const client = requireAdminConfiguration();
+    const { error } = await client.auth.admin.deleteUser(userId);
+    if (error) {
         console.error('[Family Registration] No se pudo revertir el usuario Auth:', error);
-    });
+    }
 }
 
 async function deleteFamilyRows(childUserId) {
     if (!childUserId) return;
-    const filter = encodeURIComponent(`eq.${childUserId}`);
+    const client = requireAdminConfiguration();
     await Promise.all([
-        supabaseAdminRequest(`/rest/v1/correos?child_user_id=${filter}`, {
-            method: 'DELETE',
-            headers: { Prefer: 'return=minimal' }
-        }).catch(error => console.error('[Family Registration] Limpieza correos:', error)),
-        supabaseAdminRequest(`/rest/v1/user_profiles?user_id=${filter}`, {
-            method: 'DELETE',
-            headers: { Prefer: 'return=minimal' }
-        }).catch(error => console.error('[Family Registration] Limpieza user_profiles:', error))
+        client
+            .from('correos')
+            .delete()
+            .eq('child_user_id', childUserId)
+            .then(({ error }) => {
+                if (error) console.error('[Family Registration] Limpieza correos:', error);
+            }),
+        client
+            .from('user_profiles')
+            .delete()
+            .eq('user_id', childUserId)
+            .then(({ error }) => {
+                if (error) console.error('[Family Registration] Limpieza user_profiles:', error);
+            })
     ]);
 }
 
@@ -220,13 +223,16 @@ function validateFamilyRegistration(payload) {
 }
 
 async function registerFamily(payload) {
-    requireAdminConfiguration();
+    const client = requireAdminConfiguration();
     const registration = validateFamilyRegistration(payload);
-    const aliasFilter = encodeURIComponent(`ilike.${registration.alias}`);
-    const existingAlias = await supabaseAdminRequest(
-        `/rest/v1/user_profiles?select=user_id&alias=${aliasFilter}&limit=1`
-    );
-    if (Array.isArray(existingAlias) && existingAlias.length) {
+    const { data: existingAlias, error: aliasError } = await client
+        .from('user_profiles')
+        .select('user_id')
+        .ilike('alias', registration.alias)
+        .eq('is_primary', true)
+        .limit(1);
+    throwSupabaseError(aliasError);
+    if (existingAlias?.length) {
         throw new ApiError(409, 'Ese alias ya está en uso.', 'alias_already_exists');
     }
 
@@ -301,16 +307,15 @@ async function registerFamily(payload) {
             mode: registration.mode
         };
 
-        await supabaseAdminRequest('/rest/v1/user_profiles', {
-            method: 'POST',
-            headers: { Prefer: 'return=representation' },
-            body: JSON.stringify(profile)
-        });
-        await supabaseAdminRequest('/rest/v1/correos', {
-            method: 'POST',
-            headers: { Prefer: 'return=representation' },
-            body: JSON.stringify(link)
-        });
+        const { error: profileError } = await client
+            .from('user_profiles')
+            .insert(profile);
+        throwSupabaseError(profileError, 400);
+
+        const { error: linkError } = await client
+            .from('correos')
+            .insert(link);
+        throwSupabaseError(linkError, 400);
 
         return {
             student: {
@@ -342,21 +347,17 @@ async function verifyAccessToken(req) {
         : '';
     if (!token) throw new ApiError(401, 'Falta la sesión del estudiante.', 'missing_session');
 
-    const response = await fetch(`${SUPABASE_URL}/auth/v1/user`, {
-        headers: {
-            apikey: SUPABASE_ANON_KEY,
-            Authorization: `Bearer ${token}`
-        }
-    });
-    const user = await response.json().catch(() => null);
-    if (!response.ok || !user?.id) {
+    const client = requireAdminConfiguration();
+    const { data, error } = await client.auth.getUser(token);
+    if (error || !data?.user?.id) {
+        if (error) console.error('[Supabase Server] Token inválido:', error);
         throw new ApiError(401, 'La sesión del estudiante no es válida.', 'invalid_session');
     }
-    return user;
+    return data.user;
 }
 
 async function syncFamilyPassword(req, payload) {
-    requireAdminConfiguration();
+    const client = requireAdminConfiguration();
     const user = await verifyAccessToken(req);
     if (user.app_metadata?.account_type !== 'student') {
         throw new ApiError(
@@ -371,25 +372,70 @@ async function syncFamilyPassword(req, payload) {
         throw new ApiError(400, 'La contraseña debe tener al menos 8 caracteres.', 'weak_password');
     }
 
-    const userIdFilter = encodeURIComponent(`eq.${user.id}`);
-    const profiles = await supabaseAdminRequest(
-        `/rest/v1/user_profiles?select=user_id,parent_user_id&user_id=${userIdFilter}&limit=1`
-    );
-    const profile = profiles?.[0];
+    const { data: profile, error: profileError } = await client
+        .from('user_profiles')
+        .select('user_id,parent_user_id')
+        .eq('user_id', user.id)
+        .eq('is_primary', true)
+        .limit(1)
+        .maybeSingle();
+    throwSupabaseError(profileError);
     if (!profile?.parent_user_id) {
         throw new ApiError(404, 'No se encontró la cuenta parental vinculada.', 'parent_not_found');
     }
 
     // Supabase Admin no ofrece una transacción entre dos identidades Auth.
-    await supabaseAdminRequest(
-        `/auth/v1/admin/users/${encodeURIComponent(profile.parent_user_id)}`,
-        { method: 'PUT', body: JSON.stringify({ password: newPassword }) }
+    const { error: parentError } = await client.auth.admin.updateUserById(
+        profile.parent_user_id,
+        { password: newPassword }
     );
-    await supabaseAdminRequest(
-        `/auth/v1/admin/users/${encodeURIComponent(profile.user_id)}`,
-        { method: 'PUT', body: JSON.stringify({ password: newPassword }) }
+    throwSupabaseError(parentError, 400);
+
+    const { error: studentError } = await client.auth.admin.updateUserById(
+        profile.user_id,
+        { password: newPassword }
     );
+    throwSupabaseError(studentError, 400);
     return { updated: true };
+}
+
+async function verifySupabaseServerConnection() {
+    if (!supabaseAdmin) {
+        console.warn(
+            '[Supabase Server] Configuración administrativa pendiente: '
+            + 'define SUPABASE_SERVICE_ROLE_KEY en el entorno del servidor.'
+        );
+        return;
+    }
+
+    const checks = await Promise.all([
+        supabaseAdmin.auth.admin
+            .listUsers({ page: 1, perPage: 1 })
+            .then(({ error }) => ({ name: 'Auth Admin', error })),
+        supabaseAdmin
+            .from('user_profiles')
+            .select('id', { head: true, count: 'exact' })
+            .then(({ error }) => ({ name: 'user_profiles', error })),
+        supabaseAdmin
+            .from('correos')
+            .select('id', { head: true, count: 'exact' })
+            .then(({ error }) => ({ name: 'correos', error }))
+    ]);
+
+    const failures = checks.filter(check => check.error);
+    if (failures.length) {
+        for (const check of failures) {
+            console.error(`[Supabase Server] Falló ${check.name}:`, {
+                message: check.error.message,
+                code: check.error.code,
+                details: check.error.details,
+                hint: check.error.hint
+            });
+        }
+        return;
+    }
+
+    console.log('[Supabase Server] Auth, user_profiles y correos disponibles.');
 }
 
 const filesToMove = ['index.html', 'index.css', 'insignia.png', 'js', 'assets'];
@@ -642,4 +688,5 @@ const server = http.createServer((req, res) => {
 
 server.listen(PORT, () => {
     console.log(`✅ NeuroSpark running on http://localhost:${PORT}`);
+    void verifySupabaseServerConnection();
 });
