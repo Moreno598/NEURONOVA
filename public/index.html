@@ -7,7 +7,7 @@
     <meta name="theme-color" content="#070817">
     <title>NeuroSpark — Aprende a tu manera con IA</title>
 
-    <!-- Guard de acceso: se ejecuta antes de pintar cualquier contenido protegido. -->
+    <!-- La landing es pública; la sesión solo personaliza el acceso de navegación. -->
     <script>
         (() => {
             const STORAGE = Object.freeze({
@@ -36,22 +36,17 @@
             }
 
             let session = getSession();
-
-            if (!session) {
-                document.documentElement.style.display = "none";
-                window.location.replace("app.html#login");
-                return;
-            }
-
             const users = readJSON(STORAGE.users, []);
             const profiles = readJSON(STORAGE.profiles, {});
-            const account = Array.isArray(users)
+            const account = session && Array.isArray(users)
                 ? users.find(user => user.id === session.userId)
                 : null;
-            const profile = profiles[session.userId] || session.profile || null;
-            const savedAvatar = profile?.avatar || account?.avatar || session.avatar || null;
+            const profile = session
+                ? profiles[session.userId] || session.profile || null
+                : null;
+            const savedAvatar = profile?.avatar || account?.avatar || session?.avatar || null;
 
-            if (profile || savedAvatar) {
+            if (session && (profile || savedAvatar)) {
                 session = {
                     ...session,
                     name: profile?.username || account?.name || session.name,
@@ -61,15 +56,34 @@
                 writeJSON(STORAGE.session, session);
             }
 
-            function renderSessionAvatar() {
+            function renderSessionState() {
+                const action = document.getElementById("session-action");
+                const label = document.getElementById("session-action-label");
                 const image = document.getElementById("session-avatar");
-                if (!image || !session.avatar?.image) return;
-                image.src = session.avatar.image;
-                image.alt = `Avatar de ${session.name || "usuario"}`;
-                image.hidden = false;
+                if (!action || !label || !image) return;
+
+                if (!session) {
+                    action.href = "app.html#login";
+                    label.textContent = "Iniciar Sesión";
+                    image.hidden = true;
+                    image.removeAttribute("src");
+                    return;
+                }
+
+                action.href = "#";
+                label.textContent = "Cerrar sesión";
+                if (session.avatar?.image) {
+                    image.src = session.avatar.image;
+                    image.alt = `Avatar de ${session.name || "usuario"}`;
+                    image.hidden = false;
+                }
             }
 
             function updateAvatar(nextAvatar) {
+                if (!session) {
+                    throw new Error("Debes iniciar sesión para actualizar el avatar.");
+                }
+
                 if (!nextAvatar?.config || !nextAvatar?.image) {
                     throw new Error("La configuración del avatar no es válida.");
                 }
@@ -106,7 +120,7 @@
                 };
                 writeJSON(STORAGE.session, session);
                 window.NeuroSparkSession = session;
-                renderSessionAvatar();
+                renderSessionState();
                 window.dispatchEvent(new CustomEvent("neurospark:avatar-updated", {
                     detail: { avatar: nextAvatar, profile: nextProfile }
                 }));
@@ -115,25 +129,36 @@
 
             function logout() {
                 localStorage.removeItem(STORAGE.session);
-                window.location.replace("app.html#login");
+                session = null;
+                window.NeuroSparkSession = null;
+                window.location.replace("index.html");
             }
 
             window.NeuroSparkSession = session;
             window.NeuroSparkAuth = Object.freeze({
-                getSession: () => ({ ...session }),
-                getProfile: () => session.profile,
-                getAvatar: () => session.avatar,
+                getSession: () => session ? { ...session } : null,
+                getProfile: () => session?.profile || null,
+                getAvatar: () => session?.avatar || null,
                 updateAvatar,
                 logout
             });
             window.updateNeuroSparkAvatar = updateAvatar;
             window.logoutNeuroSpark = logout;
 
+            function initializeSessionAction() {
+                renderSessionState();
+                document.getElementById("session-action")?.addEventListener("click", event => {
+                    if (!session) return;
+                    event.preventDefault();
+                    logout();
+                });
+            }
+
             if (document.readyState === "loading") {
-                document.addEventListener("DOMContentLoaded", renderSessionAvatar, { once: true });
+                document.addEventListener("DOMContentLoaded", initializeSessionAction, { once: true });
             } else {
-                renderSessionAvatar();
-            };
+                initializeSessionAction();
+            }
         })();
     </script>
 
@@ -1681,11 +1706,11 @@
             </ul>
 
             <div class="nav-actions">
-                <button class="btn nav-login" type="button" onclick="window.logoutNeuroSpark()">
+                <a class="btn nav-login" id="session-action" href="app.html#login">
                     <img class="session-avatar" id="session-avatar" alt="" hidden>
-                    Cerrar sesión
-                </button>
-                <a class="btn btn-primary nav-cta" href="#plataforma">
+                    <span id="session-action-label">Iniciar Sesión</span>
+                </a>
+                <a class="btn btn-primary nav-cta" href="app.html#register">
                     Probar gratis
                     <svg class="btn-icon" viewBox="0 0 24 24" fill="none" aria-hidden="true">
                         <path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
@@ -1720,7 +1745,7 @@
                     </p>
 
                     <div class="hero-actions">
-                        <a class="btn btn-primary btn-large" href="#plataforma">
+                        <a class="btn btn-primary btn-large" href="app.html#register">
                             Empieza a aprender gratis
                             <svg class="btn-icon" viewBox="0 0 24 24" fill="none" aria-hidden="true">
                                 <path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
@@ -1922,7 +1947,7 @@
                         <p>Empieza hoy con NeuroSpark y descubre todo lo que puedes lograr cuando la tecnología se adapta a tu mente.</p>
                     </div>
                     <div class="cta-action">
-                        <a class="btn btn-primary btn-large" href="#plataforma">
+                        <a class="btn btn-primary btn-large" href="app.html#register">
                             Crear mi cuenta gratis
                             <svg class="btn-icon" viewBox="0 0 24 24" fill="none" aria-hidden="true">
                                 <path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>

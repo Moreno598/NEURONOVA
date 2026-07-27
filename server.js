@@ -128,7 +128,10 @@ function getBotResponse(query, mode, lang) {
 
 // ── Server ───────────────────────────────────────────────────────────────────
 const server = http.createServer((req, res) => {
-    if (req.method === 'POST' && req.url === '/api/chat') {
+    const requestUrl = new URL(req.url, `http://${req.headers.host || 'localhost'}`);
+    const pathname = requestUrl.pathname;
+
+    if (req.method === 'POST' && pathname === '/api/chat') {
         let body = '';
         req.on('data', chunk => body += chunk.toString());
         req.on('end', async () => {
@@ -147,7 +150,22 @@ const server = http.createServer((req, res) => {
         return;
     }
 
-    let filePath = path.join(publicDir, req.url === '/' ? 'index.html' : req.url);
+    let requestedFile;
+    try {
+        requestedFile = decodeURIComponent(pathname === '/' ? 'index.html' : pathname.replace(/^\/+/, ''));
+    } catch {
+        res.writeHead(400, { 'Content-Type': 'text/plain; charset=utf-8' });
+        res.end('Bad Request');
+        return;
+    }
+
+    const filePath = path.resolve(publicDir, requestedFile);
+    if (filePath !== publicDir && !filePath.startsWith(`${publicDir}${path.sep}`)) {
+        res.writeHead(403, { 'Content-Type': 'text/plain; charset=utf-8' });
+        res.end('Forbidden');
+        return;
+    }
+
     const extname = String(path.extname(filePath)).toLowerCase();
     const contentType = mimeTypes[extname] || 'application/octet-stream';
 
