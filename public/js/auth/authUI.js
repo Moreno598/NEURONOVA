@@ -307,8 +307,15 @@ export class AuthUI {
                             console.error("Error guardando correo del padre", e);
                         }
                     } catch (regErr) {
+                        console.error('[NeuroSpark AuthUI] Error original de signUp:', regErr);
                         const errText = regErr.message || '';
-                        if (errText.includes('already exists') || errText.includes('ya existe') || errText.includes('registered') || regErr.status === 400 || regErr.code === 'user_already_exists') {
+                        const isExistingUser =
+                            regErr.code === 'user_already_exists'
+                            || errText.includes('already exists')
+                            || errText.includes('ya existe')
+                            || errText.includes('already registered');
+
+                        if (isExistingUser) {
                             console.log('[Register Fallback] User already exists, verifying password and linking parent email...');
                             try {
                                 // Try logging in to verify the password
@@ -326,7 +333,8 @@ export class AuthUI {
                                 // Save/update parent email link
                                 await authController.saveParentEmail(email, parentEmail);
                             } catch (fallbackErr) {
-                                throw new Error('El usuario ya existe y la contraseña ingresada no coincide con la registrada.');
+                                console.error('[NeuroSpark AuthUI] Error original al vincular una cuenta existente:', fallbackErr);
+                                throw fallbackErr;
                             }
                         } else {
                             throw regErr;
@@ -343,7 +351,11 @@ export class AuthUI {
                 }
             } catch (error) {
                 console.error("Auth Error:", error);
-                const errorMsg = error.message || (Object.keys(error).length ? JSON.stringify(error) : 'Error de conexión o credenciales (revisa la consola)');
+                const errorMsg =
+                    error?.message
+                    || error?.error_description
+                    || error?.code
+                    || 'Supabase devolvió un error sin mensaje; revisa el objeto original en la consola.';
                 app.showToast(errorMsg, 'warning');
             } finally {
                 this.submitBtn.disabled = false;

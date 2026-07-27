@@ -1,4 +1,4 @@
-import { supabase } from './supabaseClient.js';
+import { getSupabaseClient } from './supabaseClient.js';
 
 const TABLES = Object.freeze({
     parentLinks: 'correos',
@@ -70,19 +70,62 @@ function sessionError(message, code) {
     return tagError('auth.sessionVerification', 'session', error);
 }
 
+async function requireSupabase(operation, phase) {
+    try {
+        return await getSupabaseClient();
+    } catch (error) {
+        throw reportError(`${operation}.client`, error, phase);
+    }
+}
+
 export const authController = Object.freeze({
     async register(email, password, metadata = {}) {
+        const normalizedEmail = normalizeEmail(email);
+        const supabase = await requireSupabase('auth.signUp', 'configuration');
+        debugAuth('register:start', { email: maskEmail(normalizedEmail) });
+
         const { data, error } = await supabase.auth.signUp({
-            email: normalizeEmail(email),
+            email: normalizedEmail,
             password,
             options: { data: metadata }
         });
         throwIfError('auth.signUp', error, 'authentication');
+
+        if (!data?.user) {
+            const missingUserError = new Error(
+                'Supabase procesó el registro, pero no devolvió el usuario creado.'
+            );
+            missingUserError.code = 'auth_signup_user_missing';
+            throw reportError('auth.signUp.user', missingUserError, 'authentication');
+        }
+
+        if (data.session) {
+            const { data: sessionData, error: sessionReadError } =
+                await supabase.auth.getSession();
+            throwIfError('auth.getSession.afterSignUp', sessionReadError, 'session');
+
+            if (!sessionData?.session?.user?.id) {
+                const error = sessionError(
+                    'La cuenta se creó, pero la sesión no quedó persistida.',
+                    'auth_signup_session_not_persisted'
+                );
+                throw reportError('auth.getSession.afterSignUp', error, 'session');
+            }
+
+            data.session = sessionData.session;
+        }
+
+        debugAuth('register:success', {
+            userId: data.user.id,
+            email: maskEmail(data.user.email),
+            hasSession: Boolean(data.session)
+        });
         return data;
     },
 
     async login(email, password) {
         const normalizedEmail = normalizeEmail(email);
+        const supabase = await requireSupabase('auth.signInWithPassword', 'configuration');
         debugAuth('login:start', { email: maskEmail(normalizedEmail) });
 
         const { data, error } = await supabase.auth.signInWithPassword({
@@ -141,11 +184,13 @@ export const authController = Object.freeze({
     },
 
     async logout(scope = 'local') {
+        const supabase = await requireSupabase('auth.signOut', 'configuration');
         const { error } = await supabase.auth.signOut({ scope });
         throwIfError('auth.signOut', error, 'authentication');
     },
 
     async getSession() {
+        const supabase = await requireSupabase('auth.getSession', 'configuration');
         const { data, error } = await supabase.auth.getSession();
         throwIfError('auth.getSession', error, 'session');
         debugAuth('session:read', {
@@ -157,18 +202,21 @@ export const authController = Object.freeze({
     },
 
     async getCurrentUser() {
+        const supabase = await requireSupabase('auth.getUser', 'configuration');
         const { data, error } = await supabase.auth.getUser();
         throwIfError('auth.getUser', error, 'session');
         return data.user;
     },
 
     async updateUserMetadata(metadata) {
+        const supabase = await requireSupabase('auth.updateUser', 'configuration');
         const { data, error } = await supabase.auth.updateUser({ data: metadata });
         throwIfError('auth.updateUser', error, 'authentication');
         return data;
     },
 
     async resetPassword(email) {
+        const supabase = await requireSupabase('auth.resetPasswordForEmail', 'configuration');
         const redirectTo = new URL('app.html#login', window.location.href).href;
         const { data, error } = await supabase.auth.resetPasswordForEmail(
             normalizeEmail(email),
@@ -179,6 +227,7 @@ export const authController = Object.freeze({
     },
 
     async saveParentEmail(email, parentEmail) {
+        const supabase = await requireSupabase('correos.save', 'configuration');
         const row = {
             user_email: normalizeEmail(email),
             parent_email: normalizeEmail(parentEmail)
@@ -205,6 +254,7 @@ export const authController = Object.freeze({
     },
 
     async getStudentEmailByParent(parentEmail) {
+        const supabase = await requireSupabase('correos.getByParent', 'configuration');
         const normalizedEmail = normalizeEmail(parentEmail);
         if (!normalizedEmail) return null;
 
@@ -233,6 +283,7 @@ export const authController = Object.freeze({
     },
 
     async checkUserExists(email) {
+        const supabase = await requireSupabase('rpc.check_user_exists', 'configuration');
         const { data, error } = await supabase.rpc('check_user_exists', {
             lookup_email: normalizeEmail(email)
         });
@@ -244,6 +295,7 @@ export const authController = Object.freeze({
     },
 
     async loadUserState(email) {
+        const supabase = await requireSupabase('user_profiles.select', 'configuration');
         const normalizedEmail = normalizeEmail(email);
         if (!normalizedEmail) return null;
 
@@ -260,6 +312,7 @@ export const authController = Object.freeze({
     },
 
     async saveUserState(email, stateData) {
+        const supabase = await requireSupabase('user_profiles.save', 'configuration');
         const normalizedEmail = normalizeEmail(email);
         if (!normalizedEmail) throw new Error('Se requiere un correo para guardar el perfil.');
 
@@ -307,13 +360,31 @@ export const authController = Object.freeze({
     },
 
     onAuthStateChange(callback) {
-        const { data } = supabase.auth.onAuthStateChange((event, session) => {
-            callback(event, session);
-        });
-        return data.subscription;
+        let subscription = null;
+        let cancelled = false;
+
+        requireSupabase('auth.onAuthStateChange', 'configuration')
+            .then(supabase => {
+                if (cancelled) return;
+                const { data } = supabase.auth.onAuthStateChange((event, session) => {
+                    callback(event, session);
+                });
+                subscription = data.subscription;
+            })
+            .catch(error => {
+                console.error('[Supabase:auth.onAuthStateChange]', error);
+            });
+
+        return {
+            unsubscribe() {
+                cancelled = true;
+                subscription?.unsubscribe();
+            }
+        };
     },
 
     async getAllUsers() {
+        const supabase = await requireSupabase('user_profiles.selectAll', 'configuration');
         const { data, error } = await supabase
             .from(TABLES.profiles)
             .select('email,state_data')
@@ -323,6 +394,7 @@ export const authController = Object.freeze({
     },
 
     async deleteUserProfile(email) {
+        const supabase = await requireSupabase('user_profiles.delete', 'configuration');
         const { error } = await supabase
             .from(TABLES.profiles)
             .delete()

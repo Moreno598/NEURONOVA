@@ -90,5 +90,5 @@ export function getSupabaseClient() {
     return clientPromise;
 }
 
-// Un único cliente compartido por todos los módulos consumidores.
-export const supabase = await getSupabaseClient();
+// El cliente se obtiene de forma diferida. Así la navegación del formulario no
+// depende de que el CDN o la configuración remota hayan terminado de cargar.

@@ -2344,6 +2344,13 @@
                     setMessage(elements.registerMessage, "success", "Cuenta creada. Preparando tu experiencia…");
                     redirectToApplication();
                 } catch (error) {
+                    console.error("[NeuroSpark Register] Error original del registro:", error);
+                    console.error("[NeuroSpark Register] Fase:", {
+                        phase: error?.neurosparkPhase || "unknown",
+                        operation: error?.neurosparkOperation || "unknown",
+                        code: error?.code,
+                        status: error?.status
+                    });
                     setMessage(elements.registerMessage, "error", error.message);
                     setLoading(elements.registerForm, false);
                 }
