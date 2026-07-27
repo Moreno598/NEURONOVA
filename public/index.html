@@ -121,17 +121,34 @@
                 writeJSON(STORAGE.session, session);
                 window.NeuroSparkSession = session;
                 renderSessionState();
+                import("./js/auth/authController.js")
+                    .then(({ authController }) => authController.saveUserProfile(session.email, {
+                        userId: session.userId,
+                        username: session.name,
+                        email: session.email,
+                        avatar: nextAvatar
+                    }))
+                    .catch(error => {
+                        console.error("[Supabase:avatar] No se pudo sincronizar el avatar:", error);
+                    });
                 window.dispatchEvent(new CustomEvent("neurospark:avatar-updated", {
                     detail: { avatar: nextAvatar, profile: nextProfile }
                 }));
                 return nextAvatar;
             }
 
-            function logout() {
-                localStorage.removeItem(STORAGE.session);
-                session = null;
-                window.NeuroSparkSession = null;
-                window.location.replace("index.html");
+            async function logout() {
+                try {
+                    const { authController } = await import("./js/auth/authController.js");
+                    await authController.logout();
+                } catch (error) {
+                    console.error("[Supabase:logout] No se pudo cerrar la sesión remota:", error);
+                } finally {
+                    localStorage.removeItem(STORAGE.session);
+                    session = null;
+                    window.NeuroSparkSession = null;
+                    window.location.replace("index.html");
+                }
             }
 
             window.NeuroSparkSession = session;

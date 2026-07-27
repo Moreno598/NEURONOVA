@@ -1,168 +1,228 @@
 import { supabase } from './supabaseClient.js';
 
-export const authController = {
+const TABLES = Object.freeze({
+    parentLinks: 'correos',
+    profiles: 'user_profiles'
+});
+
+function normalizeEmail(value) {
+    return String(value || '').trim().toLowerCase();
+}
+
+function reportError(operation, error) {
+    console.error(`[Supabase:${operation}]`, {
+        message: error?.message || 'Error desconocido',
+        code: error?.code,
+        details: error?.details,
+        hint: error?.hint,
+        status: error?.status
+    });
+}
+
+function throwIfError(operation, error) {
+    if (!error) return;
+    reportError(operation, error);
+    throw error;
+}
+
+export const authController = Object.freeze({
     async register(email, password, metadata = {}) {
         const { data, error } = await supabase.auth.signUp({
-            email,
+            email: normalizeEmail(email),
             password,
-            options: {
-                data: metadata
-            }
+            options: { data: metadata }
         });
-        if (error) throw error;
+        throwIfError('auth.signUp', error);
         return data;
     },
 
     async login(email, password) {
-        if (email === 'premium@neurospark.com' && password === 'premium123') {
-            return {
-                user: {
-                    id: 'f1b64aea-5212-4209-b4bc-c9e3bfad74c1',
-                    email: 'premium@neurospark.com',
-                    user_metadata: {
-                        first_name: 'Cuenta',
-                        last_name: 'Premium',
-                        alias: 'premiumUser',
-                        age: 15,
-                        avatar_config: { skin: 0, shirt: 0, pants: 0, hairStyle: 1, hairColor: 0, gender: 'Block' }
-                    }
-                }
-            };
-        }
-        
         const { data, error } = await supabase.auth.signInWithPassword({
-            email,
+            email: normalizeEmail(email),
             password
         });
-        if (error) throw error;
+        throwIfError('auth.signInWithPassword', error);
         return data;
     },
 
-    async logout() {
-        const { error } = await supabase.auth.signOut();
-        if (error) throw error;
+    async logout(scope = 'local') {
+        const { error } = await supabase.auth.signOut({ scope });
+        throwIfError('auth.signOut', error);
     },
 
-    async saveParentEmail(email, parentEmail) {
-        const { error } = await supabase
-            .from('correos')
-            .insert([{ user_email: email.toLowerCase(), parent_email: parentEmail.toLowerCase() }]);
-        if (error) throw error;
-    },
-
-    async getStudentEmailByParent(parentEmail) {
-        if (!parentEmail) return null;
-        const normalizedEmail = parentEmail.toLowerCase();
-        try {
-            // DEBUG: First check ALL rows in correos table
-            const { data: allRows, error: allErr } = await supabase
-                .from('correos')
-                .select('*');
-            console.log('[Parent Lookup] ALL rows in correos:', allRows, 'Error:', allErr);
-
-            // Now do the specific lookup
-            const { data, error } = await supabase
-                .from('correos')
-                .select('user_email')
-                .ilike('parent_email', normalizedEmail)
-                .limit(1);
-
-            console.log('[Parent Lookup] Specific query for:', normalizedEmail, '→ data:', data, 'error:', error);
-
-            if (error) {
-                console.warn('[Parent Lookup] Supabase error:', error.message);
-                return null;
-            }
-            if (data && data.length > 0 && data[0].user_email) return data[0].user_email;
-        } catch (e) {
-            console.error("[Parent Lookup] Exception:", e);
-        }
-        return null;
+    async getSession() {
+        const { data, error } = await supabase.auth.getSession();
+        throwIfError('auth.getSession', error);
+        return data.session;
     },
 
     async getCurrentUser() {
-        const { data: { user }, error } = await supabase.auth.getUser();
-        if (error) throw error;
-        return user;
+        const { data, error } = await supabase.auth.getUser();
+        throwIfError('auth.getUser', error);
+        return data.user;
     },
 
     async updateUserMetadata(metadata) {
-        const { data, error } = await supabase.auth.updateUser({
-            data: metadata
-        });
-        if (error) throw error;
+        const { data, error } = await supabase.auth.updateUser({ data: metadata });
+        throwIfError('auth.updateUser', error);
         return data;
     },
 
-    async checkUserExists(email) {
-        try {
-            // Llama a una función RPC en Supabase para revisar la tabla auth.users directamente
-            const { data, error } = await supabase.rpc('check_user_exists', { lookup_email: email });
+    async resetPassword(email) {
+        const redirectTo = new URL('app.html#login', window.location.href).href;
+        const { data, error } = await supabase.auth.resetPasswordForEmail(
+            normalizeEmail(email),
+            { redirectTo }
+        );
+        throwIfError('auth.resetPasswordForEmail', error);
+        return data;
+    },
 
-            if (error) {
-                console.error("RPC check_user_exists error:", error);
-                return null; // Indica que la función no existe o falló
-            }
-            return data; // Devuelve true o false
-        } catch (e) {
-            console.error("Error validando usuario:", e);
+    async saveParentEmail(email, parentEmail) {
+        const row = {
+            user_email: normalizeEmail(email),
+            parent_email: normalizeEmail(parentEmail)
+        };
+        const { data: current, error: lookupError } = await supabase
+            .from(TABLES.parentLinks)
+            .select('user_email')
+            .eq('user_email', row.user_email)
+            .limit(1)
+            .maybeSingle();
+        throwIfError('correos.lookupBeforeSave', lookupError);
+
+        const query = current
+            ? supabase
+                .from(TABLES.parentLinks)
+                .update({ parent_email: row.parent_email })
+                .eq('user_email', row.user_email)
+            : supabase.from(TABLES.parentLinks).insert(row);
+        const { data, error } = await query
+            .select('user_email,parent_email')
+            .single();
+        throwIfError(current ? 'correos.update' : 'correos.insert', error);
+        return data;
+    },
+
+    async getStudentEmailByParent(parentEmail) {
+        const normalizedEmail = normalizeEmail(parentEmail);
+        if (!normalizedEmail) return null;
+
+        const { data: rpcData, error: rpcError } = await supabase.rpc(
+            'get_student_email_by_parent',
+            { lookup_parent_email: normalizedEmail }
+        );
+        if (!rpcError) return rpcData || null;
+        if (rpcError.code !== 'PGRST202') {
+            reportError('rpc.get_student_email_by_parent', rpcError);
+        }
+
+        // Compatibilidad temporal hasta aplicar la migración RLS incluida.
+        const { data, error } = await supabase
+            .from(TABLES.parentLinks)
+            .select('user_email')
+            .eq('parent_email', normalizedEmail)
+            .limit(1)
+            .maybeSingle();
+
+        if (error) {
+            reportError('correos.selectByParent', error);
             return null;
         }
+        return data?.user_email || null;
+    },
+
+    async checkUserExists(email) {
+        const { data, error } = await supabase.rpc('check_user_exists', {
+            lookup_email: normalizeEmail(email)
+        });
+        if (error) {
+            reportError('rpc.check_user_exists', error);
+            return null;
+        }
+        return Boolean(data);
     },
 
     async loadUserState(email) {
-        try {
-            const { data, error } = await supabase
-                .from('user_profiles')
-                .select('state_data')
-                .eq('email', email)
-                .single();
-            if (data && data.state_data) return data.state_data;
-        } catch (e) { }
-        return null;
+        const normalizedEmail = normalizeEmail(email);
+        if (!normalizedEmail) return null;
+
+        const { data, error } = await supabase
+            .from(TABLES.profiles)
+            .select('state_data')
+            .eq('email', normalizedEmail)
+            .maybeSingle();
+
+        if (error) {
+            reportError('user_profiles.select', error);
+            throw error;
+        }
+        return data?.state_data || null;
     },
 
     async saveUserState(email, stateData) {
-        try {
-            await supabase
-                .from('user_profiles')
-                .upsert({ email: email, state_data: stateData });
-        } catch (e) {
-            console.error("Error guardando en Supabase:", e);
-        }
+        const normalizedEmail = normalizeEmail(email);
+        if (!normalizedEmail) throw new Error('Se requiere un correo para guardar el perfil.');
+
+        const { data: current, error: lookupError } = await supabase
+            .from(TABLES.profiles)
+            .select('email')
+            .eq('email', normalizedEmail)
+            .limit(1)
+            .maybeSingle();
+        throwIfError('user_profiles.lookupBeforeSave', lookupError);
+
+        const query = current
+            ? supabase
+                .from(TABLES.profiles)
+                .update({ state_data: stateData })
+                .eq('email', normalizedEmail)
+            : supabase
+                .from(TABLES.profiles)
+                .insert({ email: normalizedEmail, state_data: stateData });
+        const { data, error } = await query
+            .select('email,state_data')
+            .single();
+        throwIfError(current ? 'user_profiles.update' : 'user_profiles.insert', error);
+        return data?.state_data || stateData;
+    },
+
+    async saveUserProfile(email, profile) {
+        const currentState = await this.loadUserState(email).catch(() => null);
+        const nextState = {
+            ...(currentState || {}),
+            profile: {
+                ...(currentState?.profile || {}),
+                ...profile,
+                updatedAt: new Date().toISOString()
+            }
+        };
+        await this.saveUserState(email, nextState);
+        return nextState.profile;
     },
 
     onAuthStateChange(callback) {
-        supabase.auth.onAuthStateChange((event, session) => {
+        const { data } = supabase.auth.onAuthStateChange((event, session) => {
             callback(event, session);
         });
+        return data.subscription;
     },
 
     async getAllUsers() {
-        try {
-            const { data, error } = await supabase
-                .from('user_profiles')
-                .select('email, state_data')
-                .order('email', { ascending: true });
-            if (error) throw error;
-            return data || [];
-        } catch (e) {
-            console.error('Error obteniendo usuarios:', e);
-            return [];
-        }
+        const { data, error } = await supabase
+            .from(TABLES.profiles)
+            .select('email,state_data')
+            .order('email', { ascending: true });
+        throwIfError('user_profiles.selectAll', error);
+        return data || [];
     },
 
     async deleteUserProfile(email) {
-        try {
-            const { error } = await supabase
-                .from('user_profiles')
-                .delete()
-                .eq('email', email);
-            if (error) throw error;
-            return true;
-        } catch (e) {
-            console.error('Error eliminando perfil de usuario:', e);
-            throw e;
-        }
+        const { error } = await supabase
+            .from(TABLES.profiles)
+            .delete()
+            .eq('email', normalizeEmail(email));
+        throwIfError('user_profiles.delete', error);
+        return true;
     }
-};
+});

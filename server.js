@@ -5,6 +5,24 @@ const path = require('path');
 const publicDir = path.join(__dirname, 'public');
 const PORT = process.env.PORT || 3000;
 
+// .env.local tiene prioridad para desarrollo; las variables del entorno ganan en producción.
+for (const envFile of ['.env.local', '.env']) {
+    const envPath = path.join(__dirname, envFile);
+    if (!fs.existsSync(envPath)) continue;
+
+    const values = fs.readFileSync(envPath, 'utf8');
+    for (const rawLine of values.split(/\r?\n/)) {
+        const line = rawLine.trim();
+        if (!line || line.startsWith('#')) continue;
+        const separator = line.indexOf('=');
+        if (separator < 1) continue;
+
+        const key = line.slice(0, separator).trim();
+        const value = line.slice(separator + 1).trim().replace(/^(['"])(.*)\1$/, '$2');
+        if (!(key in process.env)) process.env[key] = value;
+    }
+}
+
 const filesToMove = ['index.html', 'index.css', 'insignia.png', 'js', 'assets'];
 if (!fs.existsSync(publicDir)) {
     fs.mkdirSync(publicDir);
@@ -130,6 +148,31 @@ function getBotResponse(query, mode, lang) {
 const server = http.createServer((req, res) => {
     const requestUrl = new URL(req.url, `http://${req.headers.host || 'localhost'}`);
     const pathname = requestUrl.pathname;
+
+    if (req.method === 'GET' && pathname === '/api/config/supabase') {
+        const supabaseUrl = process.env.SUPABASE_URL;
+        const supabaseAnonKey = process.env.SUPABASE_ANON_KEY || process.env.SUPABASE_PUBLISHABLE_KEY;
+
+        if (!supabaseUrl || !supabaseAnonKey) {
+            console.error('[Supabase Config] Faltan SUPABASE_URL y/o SUPABASE_ANON_KEY.');
+            res.writeHead(503, {
+                'Content-Type': 'application/json; charset=utf-8',
+                'Cache-Control': 'no-store'
+            });
+            res.end(JSON.stringify({ error: 'Supabase no está configurado en el servidor.' }));
+            return;
+        }
+
+        res.writeHead(200, {
+            'Content-Type': 'application/json; charset=utf-8',
+            'Cache-Control': 'no-store'
+        });
+        res.end(JSON.stringify({
+            url: supabaseUrl,
+            anonKey: supabaseAnonKey
+        }));
+        return;
+    }
 
     if (req.method === 'POST' && pathname === '/api/chat') {
         let body = '';

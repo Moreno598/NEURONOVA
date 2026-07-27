@@ -7,22 +7,6 @@
     <meta name="theme-color" content="#070817">
     <title>Acceso — NeuroSpark</title>
 
-    <!-- Evita mostrar la autenticación a usuarios con una sesión activa. -->
-    <script>
-        (() => {
-            const SESSION_KEY = "neurospark_session";
-
-            try {
-                const session = JSON.parse(localStorage.getItem(SESSION_KEY));
-                if (session?.userId && session?.email) {
-                    window.location.replace("index.html");
-                }
-            } catch {
-                localStorage.removeItem(SESSION_KEY);
-            }
-        })();
-    </script>
-
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -1618,11 +1602,12 @@
         </section>
     </main>
 
-    <script>
+    <script type="module">
+        import { authController } from "./js/auth/authController.js";
+
         /**
-         * Capa temporal de autenticación local.
-         * Sustituye las funciones createAccount() y authenticate() por Firebase,
-         * Supabase u otro proveedor sin modificar la interfaz.
+         * Supabase gestiona credenciales y sesión; localStorage conserva una
+         * proyección del perfil para pintar la interfaz sin parpadeos.
          */
         (() => {
             "use strict";
@@ -1943,16 +1928,37 @@
                 return profiles[user.id];
             }
 
+            function cacheUser(user) {
+                const users = readUsers();
+                const index = users.findIndex(candidate => candidate.id === user.id);
+                const cachedUser = {
+                    id: user.id,
+                    name: user.name,
+                    email: user.email,
+                    avatar: user.avatar,
+                    provider: "supabase",
+                    updatedAt: new Date().toISOString()
+                };
+
+                if (index >= 0) {
+                    const { passwordHash: _legacyPasswordHash, ...legacyUser } = users[index];
+                    users[index] = { ...legacyUser, ...cachedUser };
+                } else {
+                    users.push(cachedUser);
+                }
+                saveUsers(users);
+            }
+
             function createSession(user) {
                 const profile = readProfiles()[user.id];
                 const session = {
-                    version: 1,
+                    version: 2,
                     userId: user.id,
                     name: user.name,
                     email: user.email,
                     profile: profile || null,
                     avatar: profile?.avatar || user.avatar,
-                    provider: "local-demo",
+                    provider: "supabase",
                     createdAt: new Date().toISOString()
                 };
 
@@ -1960,65 +1966,130 @@
                 return session;
             }
 
-            async function hashPassword(value) {
-                if (window.crypto?.subtle) {
-                    const bytes = new TextEncoder().encode(value);
-                    const digest = await window.crypto.subtle.digest("SHA-256", bytes);
-                    return [...new Uint8Array(digest)]
-                        .map(byte => byte.toString(16).padStart(2, "0"))
-                        .join("");
-                }
+            function avatarFromConfig(config) {
+                if (!config || typeof config !== "object") return null;
 
-                // Fallback determinista para entornos locales sin Web Crypto.
-                let hash = 2166136261;
-                for (let index = 0; index < value.length; index += 1) {
-                    hash ^= value.charCodeAt(index);
-                    hash = Math.imul(hash, 16777619);
+                for (const feature of ["skin", "shirt", "pants", "hairStyle", "hairColor"]) {
+                    const value = Number(config[feature]);
+                    if (Number.isInteger(value) && value >= 0 && value < avatarColors[feature].length) {
+                        avatarState[feature] = value;
+                    }
                 }
-                return `fallback-${(hash >>> 0).toString(16)}`;
+                if (config.gender === "Block" || config.gender === "Round") {
+                    avatarState.gender = config.gender;
+                }
+                return getAvatarSnapshot();
             }
 
             async function createAccount({ name, email, password, avatar }) {
-                const users = readUsers();
                 const normalizedEmail = email.trim().toLowerCase();
+                const authData = await authController.register(normalizedEmail, password, {
+                    username: name.trim(),
+                    avatar_config: avatar.config,
+                    profile_version: 2
+                });
 
-                if (users.some(user => user.email === normalizedEmail)) {
-                    throw new Error("Ya existe una cuenta con este correo electrónico.");
+                if (!authData?.user) {
+                    throw new Error("Supabase no devolvió el usuario creado.");
                 }
 
                 const user = {
-                    id: window.crypto?.randomUUID?.() || `local-${Date.now()}`,
-                    name: name.trim(),
-                    email: normalizedEmail,
-                    passwordHash: await hashPassword(password),
+                    id: authData.user.id,
+                    name: authData.user.user_metadata?.username || name.trim(),
+                    email: authData.user.email || normalizedEmail,
                     avatar,
-                    createdAt: new Date().toISOString()
+                    createdAt: authData.user.created_at || new Date().toISOString()
                 };
 
-                users.push(user);
-                saveUsers(users);
+                cacheUser(user);
                 saveProfile(user);
+
+                if (!authData.session) {
+                    const confirmationError = new Error(
+                        "Cuenta creada. Revisa tu correo y confirma la cuenta antes de iniciar sesión."
+                    );
+                    confirmationError.code = "email_confirmation_required";
+                    throw confirmationError;
+                }
+
+                try {
+                    await authController.saveUserProfile(user.email, {
+                        userId: user.id,
+                        username: user.name,
+                        email: user.email,
+                        avatar
+                    });
+                } catch (error) {
+                    console.error("[Supabase:registro] La cuenta se creó, pero el perfil remoto no pudo sincronizarse:", error);
+                }
+
                 return user;
             }
 
             async function authenticate({ email, password }) {
                 const normalizedEmail = email.trim().toLowerCase();
-                const passwordHash = await hashPassword(password);
-                const user = readUsers().find(candidate =>
-                    candidate.email === normalizedEmail &&
-                    candidate.passwordHash === passwordHash
-                );
+                const authData = await authController.login(normalizedEmail, password);
+                const remoteUser = authData?.user;
+                if (!remoteUser) throw new Error("Supabase no devolvió el usuario autenticado.");
 
-                if (!user) {
-                    throw new Error("El correo o la contraseña no son correctos.");
-                }
-
-                const profile = readProfiles()[user.id];
-                return {
-                    ...user,
-                    avatar: profile?.avatar || user.avatar,
-                    profile: profile || null
+                const remoteState = await authController
+                    .loadUserState(remoteUser.email)
+                    .catch(error => {
+                        console.warn("[Supabase:login] Se usará el perfil de Auth metadata:", error);
+                        return null;
+                    });
+                const localProfile = readProfiles()[remoteUser.id];
+                const avatar = remoteState?.profile?.avatar
+                    || localProfile?.avatar
+                    || avatarFromConfig(remoteUser.user_metadata?.avatar_config);
+                const user = {
+                    id: remoteUser.id,
+                    name: remoteState?.profile?.username
+                        || remoteUser.user_metadata?.username
+                        || localProfile?.username
+                        || remoteUser.email.split("@")[0],
+                    email: remoteUser.email,
+                    avatar,
+                    profile: remoteState?.profile || localProfile || null
                 };
+
+                cacheUser(user);
+                saveProfile(user);
+                return user;
+            }
+
+            async function restoreSupabaseSession() {
+                try {
+                    const activeSession = await authController.getSession();
+                    const remoteUser = activeSession?.user;
+                    if (!remoteUser) return false;
+
+                    const remoteState = await authController
+                        .loadUserState(remoteUser.email)
+                        .catch(() => null);
+                    const localProfile = readProfiles()[remoteUser.id];
+                    const user = {
+                        id: remoteUser.id,
+                        name: remoteState?.profile?.username
+                            || remoteUser.user_metadata?.username
+                            || localProfile?.username
+                            || remoteUser.email.split("@")[0],
+                        email: remoteUser.email,
+                        avatar: remoteState?.profile?.avatar
+                            || localProfile?.avatar
+                            || avatarFromConfig(remoteUser.user_metadata?.avatar_config),
+                        profile: remoteState?.profile || localProfile || null
+                    };
+
+                    cacheUser(user);
+                    saveProfile(user);
+                    createSession(user);
+                    window.location.replace("index.html");
+                    return true;
+                } catch (error) {
+                    console.error("[Supabase:session] No se pudo restaurar la sesión:", error);
+                    return false;
+                }
             }
 
             function setView(view, updateHash = true) {
@@ -2120,12 +2191,22 @@
                 });
             });
 
-            document.getElementById("forgot-password").addEventListener("click", () => {
-                setMessage(
-                    elements.loginMessage,
-                    "error",
-                    "La recuperación estará disponible al conectar Firebase Authentication."
-                );
+            document.getElementById("forgot-password").addEventListener("click", async () => {
+                const email = document.getElementById("login-email");
+                clearMessages();
+
+                if (!email.validity.valid) {
+                    markInvalid(email);
+                    setMessage(elements.loginMessage, "error", "Ingresa primero tu correo electrónico.");
+                    return;
+                }
+
+                try {
+                    await authController.resetPassword(email.value);
+                    setMessage(elements.loginMessage, "success", "Te enviamos un enlace para restablecer tu contraseña.");
+                } catch (error) {
+                    setMessage(elements.loginMessage, "error", error.message);
+                }
             });
 
             elements.loginForm.addEventListener("submit", async event => {
@@ -2229,6 +2310,7 @@
             draw3DAvatar();
             enableAvatarTilt();
             setView(initialView, false);
+            restoreSupabaseSession();
         })();
     </script>
 </body>

@@ -27,11 +27,10 @@ export class AuthUI {
     init() {
         if (!this.overlay) return;
 
-        // Load saved credentials
+        // Solo se recuerda el correo; las contraseñas nunca se guardan en localStorage.
         const savedEmail = localStorage.getItem('ns_saved_email');
-        const savedPass = localStorage.getItem('ns_saved_password');
         if (savedEmail && this.emailInput) this.emailInput.value = savedEmail;
-        if (savedPass && this.passwordInput) this.passwordInput.value = savedPass;
+        localStorage.removeItem('ns_saved_password');
 
         // Setup Avatar Selection
         const avatarOptions = document.querySelectorAll('.avatar-option');
@@ -264,7 +263,6 @@ export class AuthUI {
 
                     // 2. Perform authentication with Supabase using the determined login email and password
                     try {
-                        console.log('[LOGIN DEBUG] Attempting login:', { loginEmail, isParent, enteredEmail: email, passwordLength: password.length });
                         await authController.login(loginEmail, password);
                     } catch (loginErr) {
                         if (isParent) {
@@ -274,7 +272,6 @@ export class AuthUI {
                     }
 
                     localStorage.setItem('ns_saved_email', email);
-                    localStorage.setItem('ns_saved_password', password);
                 } else {
                     const firstName = this.firstNameInput ? this.firstNameInput.value.trim() : '';
                     const lastName = this.lastNameInput ? this.lastNameInput.value.trim() : '';
@@ -338,7 +335,6 @@ export class AuthUI {
                     }
 
                     localStorage.setItem('ns_saved_email', email);
-                    localStorage.setItem('ns_saved_password', password);
                     app.showToast('¡Cuenta vinculada correctamente!', 'success');
                     this.isLoginMode = true;
                     this.title.innerText = 'Iniciar Sesión';
