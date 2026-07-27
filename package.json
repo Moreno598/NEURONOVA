@@ -4,10 +4,15 @@
   "description": "Neurospark web app",
   "main": "server.js",
   "scripts": {
-    "start": "node server.js"
+    "start": "node server.js",
+    "deploy": "wrangler deploy",
+    "preview": "wrangler dev"
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.110.9",
     "express": "^4.18.2"
+  },
+  "devDependencies": {
+    "wrangler": "^4.114.0"
   }
 }
