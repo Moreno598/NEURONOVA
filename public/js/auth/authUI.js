@@ -292,19 +292,24 @@ export class AuthUI {
 
                     window.hasManuallyLoggedIn = true;
                     try {
-                        await authController.register(email, password, {
+                        const registration = await authController.register(email, password, {
                             firstName,
                             lastName,
                             alias,
                             avatar,
-                            age: parseInt(age, 10)
+                            age: parseInt(age, 10),
+                            parent_email: parentEmail
                         });
 
-                        // Save the parent email to the 'correos' table
-                        try {
+                        // Con confirmación de correo activa, signUp no devuelve
+                        // sesión. La escritura se difiere para no enviar un
+                        // INSERT anónimo sin JWT.
+                        if (registration.session) {
                             await authController.saveParentEmail(email, parentEmail);
-                        } catch (e) {
-                            console.error("Error guardando correo del padre", e);
+                        } else {
+                            console.info(
+                                '[NeuroSpark AuthUI] Vínculo familiar diferido hasta el primer inicio de sesión.'
+                            );
                         }
                     } catch (regErr) {
                         console.error('[NeuroSpark AuthUI] Error original de signUp:', regErr);
