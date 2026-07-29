@@ -1,7 +1,6 @@
 import { getApiUrl, getSupabaseClient } from './supabaseClient.js';
 
 const TABLES = Object.freeze({
-    parentLinks: 'correos',
     profiles: 'user_profiles'
 });
 
@@ -156,60 +155,38 @@ export const authController = Object.freeze({
         return Boolean(data);
     },
 
-    async register(email, password, metadata = {}) {
-        const normalizedEmail = normalizeEmail(email);
-        const supabase = await requireSupabase('auth.signUp', 'configuration');
-        debugAuth('register:start', { email: maskEmail(normalizedEmail) });
-
-        const { data, error } = await supabase.auth.signUp({
-            email: normalizedEmail,
-            password,
-            options: { data: metadata }
-        });
-        throwIfError('auth.signUp', error, 'authentication');
-
-        if (!data?.user) {
-            const missingUserError = new Error(
-                'Supabase procesó el registro, pero no devolvió el usuario creado.'
-            );
-            missingUserError.code = 'auth_signup_user_missing';
-            throw reportError('auth.signUp.user', missingUserError, 'authentication');
-        }
-
-        if (data.session) {
-            const { data: sessionData, error: sessionReadError } =
-                await supabase.auth.getSession();
-            throwIfError('auth.getSession.afterSignUp', sessionReadError, 'session');
-
-            if (!sessionData?.session?.user?.id) {
-                const error = sessionError(
-                    'La cuenta se creó, pero la sesión no quedó persistida.',
-                    'auth_signup_session_not_persisted'
-                );
-                throw reportError('auth.getSession.afterSignUp', error, 'session');
-            }
-
-            data.session = sessionData.session;
-        }
-
-        debugAuth('register:success', {
-            userId: data.user.id,
-            email: maskEmail(data.user.email),
-            hasSession: Boolean(data.session)
-        });
-        return data;
-    },
-
     async login(email, password) {
         const normalizedEmail = normalizeEmail(email);
         const supabase = await requireSupabase('auth.signInWithPassword', 'configuration');
         debugAuth('login:start', { email: maskEmail(normalizedEmail) });
 
-        const { data, error } = await supabase.auth.signInWithPassword({
-            email: normalizedEmail,
-            password
+        const endpoint = getApiUrl('/api/auth/login');
+        const response = await fetch(endpoint, {
+            method: 'POST',
+            headers: {
+                Accept: 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                email: normalizedEmail,
+                password
+            })
         });
-        throwIfError('auth.signInWithPassword', error, 'authentication');
+        const payload = await response.json().catch(() => ({}));
+        if (!response.ok) {
+            const error = new Error(
+                payload.error || `No se pudo iniciar sesión (${response.status}).`
+            );
+            error.code = payload.code || 'worker_login_failed';
+            error.status = response.status;
+            throw reportError('api.auth.login', error, 'authentication');
+        }
+
+        const { data, error } = await supabase.auth.setSession({
+            access_token: payload.session?.access_token,
+            refresh_token: payload.session?.refresh_token
+        });
+        throwIfError('auth.setSession.afterWorkerLogin', error, 'session');
 
         if (!data?.user || !data?.session?.access_token) {
             const error = sessionError(
@@ -262,8 +239,38 @@ export const authController = Object.freeze({
 
     async logout(scope = 'local') {
         const supabase = await requireSupabase('auth.signOut', 'configuration');
-        const { error } = await supabase.auth.signOut({ scope });
-        throwIfError('auth.signOut', error, 'authentication');
+        const { data: sessionData, error: sessionError } =
+            await supabase.auth.getSession();
+        throwIfError('auth.getSession.beforeWorkerLogout', sessionError, 'session');
+
+        let workerError = null;
+        const accessToken = sessionData?.session?.access_token;
+        if (accessToken) {
+            const response = await fetch(getApiUrl('/api/auth/logout'), {
+                method: 'POST',
+                headers: {
+                    Accept: 'application/json',
+                    Authorization: `Bearer ${accessToken}`,
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ scope })
+            });
+            const payload = await response.json().catch(() => ({}));
+            if (!response.ok) {
+                workerError = new Error(
+                    payload.error || `No se pudo cerrar sesión (${response.status}).`
+                );
+                workerError.code = payload.code || 'worker_logout_failed';
+                workerError.status = response.status;
+                reportError('api.auth.logout', workerError, 'authentication');
+            }
+        }
+
+        // Siempre se limpia la sesión del navegador, incluso si el token ya
+        // había expirado o fue revocado en otro dispositivo.
+        const { error } = await supabase.auth.signOut({ scope: 'local' });
+        throwIfError('auth.signOut.localCleanup', error, 'authentication');
+        if (workerError) throw workerError;
     },
 
     async getSession() {
@@ -323,13 +330,6 @@ export const authController = Object.freeze({
         return payload;
     },
 
-    async updateUserMetadata(metadata) {
-        const supabase = await requireSupabase('auth.updateUser', 'configuration');
-        const { data, error } = await supabase.auth.updateUser({ data: metadata });
-        throwIfError('auth.updateUser', error, 'authentication');
-        return data;
-    },
-
     async resetPassword(email) {
         const supabase = await requireSupabase('auth.resetPasswordForEmail', 'configuration');
         const redirectTo = new URL('app.html#login', window.location.href).href;
@@ -338,58 +338,6 @@ export const authController = Object.freeze({
             { redirectTo }
         );
         throwIfError('auth.resetPasswordForEmail', error, 'authentication');
-        return data;
-    },
-
-    async saveParentEmail(email, parentEmail) {
-        const supabase = await requireSupabase('correos.save', 'configuration');
-        const { user } = await requireVerifiedSession(supabase, 'correos.save');
-        const normalizedUserEmail = normalizeEmail(email);
-        if (normalizeEmail(user.email) !== normalizedUserEmail) {
-            throw reportError(
-                'correos.save.identity',
-                sessionError(
-                    'Una cuenta solo puede crear su propio vínculo familiar.',
-                    'family_link_identity_mismatch'
-                ),
-                'authorization'
-            );
-        }
-
-        const row = {
-            user_email: normalizedUserEmail,
-            parent_email: normalizeEmail(parentEmail),
-            child_user_id: user.id,
-            is_primary: true
-        };
-        const { data: current, error: lookupError } = await supabase
-            .from(TABLES.parentLinks)
-            .select('user_email,parent_email,child_user_id')
-            .eq('child_user_id', user.id)
-            .eq('is_primary', true)
-            .limit(1)
-            .maybeSingle();
-        throwIfError('correos.lookupBeforeSave', lookupError);
-
-        if (current) {
-            if (normalizeEmail(current.parent_email) !== row.parent_email) {
-                throw reportError(
-                    'correos.save.immutableParent',
-                    new Error(
-                        'El correo del padre/tutor ya está vinculado y no puede cambiarse desde el navegador.'
-                    ),
-                    'authorization'
-                );
-            }
-            return current;
-        }
-
-        const { data, error } = await supabase
-            .from(TABLES.parentLinks)
-            .insert(row)
-            .select('user_email,parent_email,child_user_id')
-            .single();
-        throwIfError('correos.insert', error);
         return data;
     },
 
@@ -500,26 +448,6 @@ export const authController = Object.freeze({
             .single();
         throwIfError(current ? 'user_profiles.update' : 'user_profiles.insert', error);
         return data?.state_data || stateData;
-    },
-
-    async saveUserProfile(email, profile) {
-        const currentState = await this.loadUserState(email);
-        const nextState = {
-            ...(currentState || {}),
-            profile: {
-                ...(currentState?.profile || {}),
-                ...profile,
-                updatedAt: new Date().toISOString()
-            }
-        };
-        await this.saveUserState(email, nextState);
-        return nextState.profile;
-    },
-
-    async ensureUserProfile(email, profile) {
-        const currentState = await this.loadUserState(email);
-        if (currentState?.profile) return currentState.profile;
-        return this.saveUserProfile(email, profile);
     },
 
     onAuthStateChange(callback) {

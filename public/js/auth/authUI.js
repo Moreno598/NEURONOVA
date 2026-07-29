@@ -246,25 +246,10 @@ export class AuthUI {
 
                 if (this.isLoginMode) {
                     window.hasManuallyLoggedIn = true;
-                    let loginEmail = email;
-                    let isParent = false;
-
-                    // 1. Detect if the entered email is registered as a parent (case-insensitive)
-                    const studentEmail = await authController.getStudentEmailByParent(email);
-                    if (studentEmail) {
-                        loginEmail = studentEmail;
-                        isParent = true;
-                    }
-
-                    if (isParent) {
-                        localStorage.setItem('ns_is_parent', 'true');
-                    } else {
-                        localStorage.removeItem('ns_is_parent');
-                    }
-
-                    // 2. Perform authentication with Supabase using the determined login email and password
+                    // El Worker autentica el correo exacto. El contexto familiar
+                    // determina el rol después de que exista una sesión válida.
                     try {
-                        await authController.login(loginEmail, password);
+                        await authController.login(email, password);
                     } catch (loginErr) {
                         console.error('[NeuroSpark AuthUI] Error original de Supabase:', loginErr);
                         throw loginErr;
@@ -291,63 +276,19 @@ export class AuthUI {
                     const avatar = avatarImgEl ? avatarImgEl.getAttribute('data-avatar') : 'sparky';
 
                     window.hasManuallyLoggedIn = true;
-                    try {
-                        const registration = await authController.register(email, password, {
-                            firstName,
-                            lastName,
-                            alias,
-                            avatar,
-                            age: parseInt(age, 10),
-                            parent_email: parentEmail
-                        });
-
-                        // Con confirmación de correo activa, signUp no devuelve
-                        // sesión. La escritura se difiere para no enviar un
-                        // INSERT anónimo sin JWT.
-                        if (registration.session) {
-                            await authController.saveParentEmail(email, parentEmail);
-                        } else {
-                            console.info(
-                                '[NeuroSpark AuthUI] Vínculo familiar diferido hasta el primer inicio de sesión.'
-                            );
-                        }
-                    } catch (regErr) {
-                        console.error('[NeuroSpark AuthUI] Error original de signUp:', regErr);
-                        const errText = regErr.message || '';
-                        const isExistingUser =
-                            regErr.code === 'user_already_exists'
-                            || errText.includes('already exists')
-                            || errText.includes('ya existe')
-                            || errText.includes('already registered');
-
-                        if (isExistingUser) {
-                            console.log('[Register Fallback] User already exists, verifying password and linking parent email...');
-                            try {
-                                // Try logging in to verify the password
-                                await authController.login(email, password);
-                                
-                                // Update metadata
-                                await authController.updateUserMetadata({
-                                    firstName,
-                                    lastName,
-                                    alias,
-                                    avatar,
-                                    age: parseInt(age, 10)
-                                });
-                                
-                                // Save/update parent email link
-                                await authController.saveParentEmail(email, parentEmail);
-                            } catch (fallbackErr) {
-                                console.error('[NeuroSpark AuthUI] Error original al vincular una cuenta existente:', fallbackErr);
-                                throw fallbackErr;
-                            }
-                        } else {
-                            throw regErr;
-                        }
-                    }
+                    await authController.registerFamily({
+                        alias,
+                        fullName: `${firstName} ${lastName}`.trim(),
+                        age: ageNum,
+                        userEmail: email,
+                        parentEmail,
+                        password,
+                        avatar: { preset: avatar }
+                    });
+                    await authController.login(email, password);
 
                     localStorage.setItem('ns_saved_email', email);
-                    app.showToast('¡Cuenta vinculada correctamente!', 'success');
+                    app.showToast('¡Cuenta creada correctamente!', 'success');
                     this.isLoginMode = true;
                     this.title.innerText = 'Iniciar Sesión';
                     this.submitBtn.innerText = 'Ingresar';

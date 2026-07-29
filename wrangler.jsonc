@@ -1,0 +1,23 @@
+{
+  "$schema": "./node_modules/wrangler/config-schema.json",
+  "name": "neurospark",
+  "main": "./server.js",
+  "compatibility_date": "2026-07-28",
+  "keep_vars": true,
+  "assets": {
+    "directory": "./public",
+    "binding": "ASSETS",
+    "run_worker_first": [
+      "/api/*"
+    ]
+  },
+  "observability": {
+    "enabled": true,
+    "head_sampling_rate": 1
+  }
+
+  // SUPABASE_URL, SUPABASE_ANON_KEY y SUPABASE_SERVICE_ROLE_KEY se agregan
+  // desde Cloudflare > Worker > Settings > Variables and Secrets.
+  // keep_vars evita que un deploy automático desde GitHub elimine los
+  // bindings configurados en el Dashboard. Ningún valor secreto vive aquí.
+}

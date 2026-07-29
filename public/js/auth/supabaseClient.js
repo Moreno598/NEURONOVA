@@ -6,19 +6,7 @@ let clientPromise;
 let libraryPromise;
 
 function readApiBaseUrl() {
-    const configuredBase = String(
-        globalThis.__NEUROSPARK_API_BASE_URL__ || ''
-    ).trim();
-
-    if (!configuredBase) return globalThis.location.origin;
-
-    try {
-        return new URL(configuredBase, globalThis.location.href).origin;
-    } catch {
-        throw new Error(
-            `__NEUROSPARK_API_BASE_URL__ no es válida: "${configuredBase}".`
-        );
-    }
+    return globalThis.location.origin;
 }
 
 export function getApiUrl(pathname) {
@@ -36,10 +24,22 @@ async function readRuntimeConfig() {
 
     if (!response.ok) {
         const payload = await response.json().catch(() => ({}));
-        const serverMessage = payload.error ? ` ${payload.error}` : '';
+        const serverMessage = payload.error || 'El Worker no devolvió un error descriptivo.';
+        const missing = Array.isArray(payload.missingVariables)
+            && payload.missingVariables.length
+            ? ` Faltan: ${payload.missingVariables.join(', ')}.`
+            : '';
+        const invalid = Array.isArray(payload.invalidVariables)
+            && payload.invalidVariables.length
+            ? ` Inválidas: ${payload.invalidVariables
+                .map(variable => `${variable.name} (${variable.reason})`)
+                .join(', ')}.`
+            : '';
+        const code = payload.code ? ` [${payload.code}]` : '';
         throw new Error(
             `No se pudo cargar la configuración de Supabase desde `
-            + `${configUrl} (${response.status}).${serverMessage}`
+            + `${configUrl} (${response.status}).${code} `
+            + `${serverMessage}${missing}${invalid}`
         );
     }
 
